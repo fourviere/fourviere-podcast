@@ -1,0 +1,94 @@
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+  xmlns:atom="http://www.w3.org/2005/Atom" xmlns:podcast="https://podcastindex.org/namespace/1.0"
+  xmlns:media="http://search.yahoo.com/mrss/" version="2.0">
+  <channel>
+    <title>Gitbar - Italian developer podcast</title>
+    <link>https://www.gitbar.it</link>
+    <description>
+<![CDATA[ Gitbar, programmazione e sviluppo web. Un piccolo punto di ritrovo per lo sviluppo fullstack. <br /><br /><br />Parleremo di php laravel e symfony, javascript e VueJS, angular o react, di continuous integration, deployment, docker, kubernetes, scrum fino ad arrivare al machine learning e alla blockchain che come sapete sono un pò come il prezzemolo e ci stan bene su tutto.<br /><br />Parleremo anche della vita dello sviluppatore, pattern e soft skills.<br /><br />Io sono @brainrepo, sviluppatore e host di questo podcast e il vostro compagno di chiacchiere. ]]>
+</description>
+    <atom:link href="https://www.spreaker.com/show/4173756/episodes/feed" rel="self"
+      type="application/rss+xml" />
+    <language>it</language>
+    <category>Technology</category>
+    <copyright>Copyright Brainrepo</copyright>
+    <image>
+      <url>
+        https://d3wo5wojvuv7l.cloudfront.net/t_rss_itunes_square_1400/images.spreaker.com/original/46a6a9709653a402249c5b3e728cb7ea.jpg</url>
+      <title>Gitbar - Italian developer podcast</title>
+      <link>https://www.gitbar.it</link>
+    </image>
+    <lastBuildDate>Fri, 27 Oct 2023 13:20:27 +0000</lastBuildDate>
+    <itunes:author>Brainrepo</itunes:author>
+    <itunes:owner>
+      <itunes:name>Brainrepo</itunes:name>
+      <itunes:email>info@gitbar.it</itunes:email>
+    </itunes:owner>
+    <itunes:image
+      href="https://d3wo5wojvuv7l.cloudfront.net/t_rss_itunes_square_1400/images.spreaker.com/original/46a6a9709653a402249c5b3e728cb7ea.jpg" />
+    <itunes:subtitle>Gitbar, programmazione e sviluppo web. Un piccolo punto di ritrovo per lo
+      sviluppo fullstack.</itunes:subtitle>
+    <itunes:summary>
+<![CDATA[ Gitbar, programmazione e sviluppo web. Un piccolo punto di ritrovo per lo sviluppo fullstack. <br /><br /><br />Parleremo di php laravel e symfony, javascript e VueJS, angular o react, di continuous integration, deployment, docker, kubernetes, scrum fino ad arrivare al machine learning e alla blockchain che come sapete sono un pò come il prezzemolo e ci stan bene su tutto.<br /><br />Parleremo anche della vita dello sviluppatore, pattern e soft skills.<br /><br />Io sono @brainrepo, sviluppatore e host di questo podcast e il vostro compagno di chiacchiere. ]]>
+</itunes:summary>
+    <itunes:category text="Technology" />
+    <itunes:category text="Leisure">
+      <itunes:category text="Hobbies" />
+    </itunes:category>
+    <itunes:category text="News">
+      <itunes:category text="Tech News" />
+    </itunes:category>
+    <itunes:explicit>clean</itunes:explicit>
+    <itunes:type>episodic</itunes:type>
+    <item>
+      <title>Ep.175 - Typescript con Luca Del Puppo (Nearform)</title>
+      <link>https://www.spreaker.com/user/brainrepo/ep165-lucadelpuppo-typescript</link>
+      <description>
+<![CDATA[ Essere fan di un tecnologia non vuol dire inibire autamaticamente il senso critico. Con Luca abbiamo provato a guardare oltre il nostro amore per il piú chiacchierato superset di JS cercando di essere piú obbiettivi possibile<br /><br /><br />## Il nuovo store di gitbar<br />- https://www.spreadshirt.it/shop/design/videoterminalista+metalmeccanico+maglietta+uomo-D60dd75d8a30ff14b5e9bfbe1?sellable=5aaY1v4we3SeYEOlVXmx-6-7<br /><br />## Supportaci su<br />https://www.gitbar.it/support<br /><br />## Dobbiamo ringraziare <br />- Livio Francisconi 🍻<br />- Alessandro Balza 🍻<br /><br />## Paese dei balocchi<br /><br />- https://lexical.dev/<br />- https://valibot.dev/<br />- https://amzn.to/3sfa8Mn<br />- https://zod.dev/<br />- https://www.youtube.com/channel/UCaxu1YwTvHgfadKBQSgX60w<br /><br />## Link amazon affiliato<br />https://amzn.to/3XDznm1<br /><br />## Per favore ascoltaci usando una di queste app:<br /><br />https://podcastindex.org/apps<br /><br />## Contatti<br /><br />@brainrepo su twitter o via mail a https://gitbar.it. ]]>
+</description>
+      <guid isPermaLink="false">https://api.spreaker.com/episode/57408755</guid>
+      <pubDate>Fri, 27 Oct 2023 13:09:54 +0000</pubDate>
+      <enclosure
+        url="https://api.spreaker.com/download/episode/57408755/ep165_lucadelpuppo_typescript.mp3"
+        length="88848137" type="audio/mpeg" />
+      <itunes:author>Brainrepo</itunes:author>
+      <itunes:subtitle>Essere fan di un tecnologia non vuol dire inibire autamaticamente il
+        senso critico. Con Luca abbiamo provato a guardare oltre il nostro amore per il piú
+        chiacchierato superset di JS cercando di essere piú obbiettivi possibile ## Il nuovo
+        store di...</itunes:subtitle>
+      <itunes:summary>
+<![CDATA[ Essere fan di un tecnologia non vuol dire inibire autamaticamente il senso critico. Con Luca abbiamo provato a guardare oltre il nostro amore per il piú chiacchierato superset di JS cercando di essere piú obbiettivi possibile<br /><br /><br />## Il nuovo store di gitbar<br />- https://www.spreadshirt.it/shop/design/videoterminalista+metalmeccanico+maglietta+uomo-D60dd75d8a30ff14b5e9bfbe1?sellable=5aaY1v4we3SeYEOlVXmx-6-7<br /><br />## Supportaci su<br />https://www.gitbar.it/support<br /><br />## Dobbiamo ringraziare <br />- Livio Francisconi 🍻<br />- Alessandro Balza 🍻<br /><br />## Paese dei balocchi<br /><br />- https://lexical.dev/<br />- https://valibot.dev/<br />- https://amzn.to/3sfa8Mn<br />- https://zod.dev/<br />- https://www.youtube.com/channel/UCaxu1YwTvHgfadKBQSgX60w<br /><br />## Link amazon affiliato<br />https://amzn.to/3XDznm1<br /><br />## Per favore ascoltaci usando una di queste app:<br /><br />https://podcastindex.org/apps<br /><br />## Contatti<br /><br />@brainrepo su twitter o via mail a https://gitbar.it. ]]>
+</itunes:summary>
+      <itunes:duration>5540</itunes:duration>
+      <itunes:explicit>clean</itunes:explicit>
+      <itunes:image
+        href="https://d3wo5wojvuv7l.cloudfront.net/t_rss_itunes_square_1400/images.spreaker.com/original/5575b9c1d1f306ce4666cd552a6f7546.jpg" />
+      <itunes:episodeType>full</itunes:episodeType>
+    </item>
+    <item>
+      <title>Ep.174 - The vercel drama</title>
+      <link>https://www.spreaker.com/user/brainrepo/ep174-the-vercel-drama</link>
+      <description>
+      <![CDATA[ Questa settimana non abbiamo ospite, anzi ne abbiamo due, DottorBlaster e Chumkiu, con loro parliamo del Vercel Drama.<br /><br />## Supportaci su<br />https://www.gitbar.it/support<br /><br />## Paese dei balocchi<br /><br />- https://www.hetzner.com/sb<br />- https://jakelazaroff.com/words/an-interactive-intro-to-crdts<br />- https://amzn.to/3S4GIva<br />- https://app.leonardo.ai<br />- https://github.com/polyfloyd/rust-id3/issues/99<br />- https://amzn.to/3rOeWbH<br /><br />## Link amazon affiliato<br />https://amzn.to/3XDznm1<br /><br />## Per favore ascoltaci usando una di queste app:<br /><br />https://podcastindex.org/apps<br /><br />## Contatti<br /><br />@brainrepo su twitter o via mail a https://gitbar.it. ]]>
+      </description>
+      <guid isPermaLink="false">https://api.spreaker.com/episode/57300537</guid>
+      <pubDate>Thu, 19 Oct 2023 05:42:10 +0000</pubDate>
+      <enclosure url="https://api.spreaker.com/download/episode/57300537/ep174_the_vercel_drama.mp3"
+        length="84281867" type="audio/mpeg" />
+      <itunes:author>Brainrepo</itunes:author>
+      <itunes:subtitle>Questa settimana non abbiamo ospite, anzi ne abbiamo due, DottorBlaster e
+        Chumkiu, con loro parliamo del Vercel Drama. ## Supportaci su https://www.gitbar.it/support
+        ## Paese dei balocchi - https://www.hetzner.com/sb -...</itunes:subtitle>
+      <itunes:summary>
+      <![CDATA[ Questa settimana non abbiamo ospite, anzi ne abbiamo due, DottorBlaster e Chumkiu, con loro parliamo del Vercel Drama.<br /><br />## Supportaci su<br />https://www.gitbar.it/support<br /><br />## Paese dei balocchi<br /><br />- https://www.hetzner.com/sb<br />- https://jakelazaroff.com/words/an-interactive-intro-to-crdts<br />- https://amzn.to/3S4GIva<br />- https://app.leonardo.ai<br />- https://github.com/polyfloyd/rust-id3/issues/99<br />- https://amzn.to/3rOeWbH<br /><br />## Link amazon affiliato<br />https://amzn.to/3XDznm1<br /><br />## Per favore ascoltaci usando una di queste app:<br /><br />https://podcastindex.org/apps<br /><br />## Contatti<br /><br />@brainrepo su twitter o via mail a https://gitbar.it. ]]>
+      </itunes:summary>
+      <itunes:duration>5259</itunes:duration>
+      <itunes:explicit>clean</itunes:explicit>
+      <itunes:image
+        href="https://d3wo5wojvuv7l.cloudfront.net/t_rss_itunes_square_1400/images.spreaker.com/original/4d2a55064af2b5996102c83a23f0c10f.jpg" />
+      <itunes:season>4</itunes:season>
+      <itunes:episode>174</itunes:episode>
+      <itunes:episodeType>full</itunes:episodeType>
+    </item>
+  </channel>
+</rss>

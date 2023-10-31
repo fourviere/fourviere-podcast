@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+  @apply text-slate-700;
+}
+
+.background-logo {
+  background-image: url("/big-fourviere.svg");
+  background-repeat: no-repeat;
+  background-position-y: bottom;
+  background-position-x: right -20px;
+  background-size: auto 90%;
+}
