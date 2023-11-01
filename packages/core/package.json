@@ -1,16 +1,17 @@
 {
   "name": "@fourviere/core",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Core podcast engine for Fourviere",
-  "main": "lib/index.ts",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "type:check": "tsc --noEmit"
   },
   "keywords": [
     "podcast",
     "rss"
   ],
   "author": "Brainrepo - murru7@gmail.com",
+  "main": "lib/index.ts",
   "license": "MIT",
   "dependencies": {
     "@sinclair/typebox": "^0.31.21",

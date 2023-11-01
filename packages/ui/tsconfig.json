@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
+    "jsx": "react",
     "target": "ES6",
     "module": "CommonJS",
     "outDir": "./dist",
-    "strict": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "declaration": true
   },
-  "files": ["lib/index.ts"]
+  "include": ["lib/**/*.tsx"],
+  "exclude": ["node_modules"]
 }

@@ -3,16 +3,20 @@ import jsonpath from "jsonpath";
 
 interface Patch {
   path: string;
-  value?: any;
+  value?: unknown;
 }
 
-export function patch(obj: any, patch: Patch): any {
-  return produce(obj, (draft: any) => {
+export function patch(obj: unknown, patch: Patch): any {
+  return produce(obj, (draft: unknown) => {
     jsonpath.apply(draft, patch.path, () => patch.value);
   });
 }
 
-export function get(obj: any, path: string, isSingle: boolean = false): any {
+export function get(
+  obj: unknown,
+  path: string,
+  isSingle: boolean = false
+): unknown {
   const f = isSingle ? jsonpath.value : jsonpath.query;
   return f.bind(jsonpath)(obj, path);
 }
