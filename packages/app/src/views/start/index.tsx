@@ -2,6 +2,7 @@ import { FunctionComponent } from "react";
 import { H1, H1Link } from "../../ui/typography";
 import FullPageLayoutBackground from "../../ui/layouts/full-page";
 import appStore from "../../store/app";
+import hello from "@fourviere/core";
 
 interface StartViewProps {}
 

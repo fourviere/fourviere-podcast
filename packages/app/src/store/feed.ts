@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { produce } from "immer";
 import { v4 as uuidv4 } from "uuid";
-import { Feed } from "../services/podcast/_schema";
+import { Feed } from "../../../core/lib/schema/feed";
 
 interface Configuration {}
 

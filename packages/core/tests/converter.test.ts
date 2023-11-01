@@ -1,5 +1,4 @@
 import { parseXML, serializeToXML } from "../lib/converter";
-import "jest-xml-matcher";
 import fs from "node:fs";
 
 describe("PodcastConverter", () => {

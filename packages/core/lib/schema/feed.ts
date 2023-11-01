@@ -3,7 +3,7 @@ import { ChannelSchema } from "./channel";
 
 const FeedSchema = Type.Object({
   rss: Type.Object({
-    channel: ChannelSchema,
+    channel: Type.Array(ChannelSchema),
   }),
 });
 

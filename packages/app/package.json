@@ -1,0 +1,43 @@
+{
+  "name": "@fourviere/app",
+  "version": "0.0.0",
+  "private": true,
+  "author": "Brainrepo - murru7@gmail.com",
+  "license": "MIT",
+  "keywords": [
+    "podcast",
+    "rss"
+  ],
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@fourviere/core": "^1.0.0",
+    "@tauri-apps/api": "^1.5.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwind-styled-components": "^2.2.0",
+    "uuid": "^9.0.1",
+    "zustand": "^4.4.4"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.5.0",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@types/uuid": "^9.0.6",
+    "@vitejs/plugin-react": "^4.0.3",
+    "autoprefixer": "^10.4.16",
+    "jest": "^29.7.0",
+    "jest-xml-matcher": "^1.2.0",
+    "postcss": "^8.4.31",
+    "prettier": "^3.0.3",
+    "prettier-plugin-tailwindcss": "^0.5.6",
+    "tailwindcss": "^3.3.5",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.4"
+  }
+}

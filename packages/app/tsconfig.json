@@ -21,10 +21,6 @@
     "noFallthroughCasesInSwitch": true,
     "esModuleInterop": true
   },
-  "include": [
-    "src",
-    "src/services/podcast/tests",
-    "src/services/podcast/tests"
-  ],
+  "include": ["src", "../core/tests", "../core/tests", "../core/lib"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

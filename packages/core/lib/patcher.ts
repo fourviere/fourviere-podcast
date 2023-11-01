@@ -13,8 +13,6 @@ export function patch(obj: any, patch: Patch): any {
 }
 
 export function get(obj: any, path: string, isSingle: boolean = false): any {
-  const f = isSingle
-    ? jsonpath.value.bind(jsonpath)
-    : jsonpath.query.bind(jsonpath);
-  return f(obj, path);
+  const f = isSingle ? jsonpath.value : jsonpath.query;
+  return f.bind(jsonpath)(obj, path);
 }
