@@ -8,12 +8,11 @@ import { FEED_TEMPLATE } from "@fourviere/core/lib/const";
 import { fetchFeed } from "../native/network";
 
 interface Configuration {
-  storage: (FTPStorage | S3Storage | LocalStorage) & {
-    type: "ftp" | "s3" | "local";
-  };
+  storage: FTPStorage | S3Storage | LocalStorage;
 }
 
 interface FTPStorage {
+  type: "ftp";
   host: string;
   port: number;
   username: string;
@@ -21,12 +20,14 @@ interface FTPStorage {
   path: string;
 }
 interface S3Storage {
+  type: "s3";
   bucket: string;
   accessKey: string;
   secretKey: string;
   path: string;
 }
 interface LocalStorage {
+  type: "local";
   path: string;
 }
 
