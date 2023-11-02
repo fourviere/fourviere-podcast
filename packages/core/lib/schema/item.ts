@@ -3,8 +3,19 @@ import { Type } from "@sinclair/typebox";
 // RSS SPECIFICATION https://www.rssboard.org/rss-specification
 const RSSItemSchema = Type.Object({
   title: Type.String(),
-  link: Type.String(),
-  description: Type.String(),
+  link: Type.Optional(
+    Type.Array(
+      Type.Object({
+        "#text": Type.Optional(Type.String()),
+        "@": Type.Object({
+          rel: Type.Optional(Type.String()),
+          type: Type.Optional(Type.String()),
+          href: Type.Optional(Type.String()),
+        }),
+      })
+    )
+  ),
+  description: Type.Optional(Type.String()),
   guid: Type.Object({
     "#text": Type.String(),
     "@": Type.Object({

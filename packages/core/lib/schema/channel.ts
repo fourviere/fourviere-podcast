@@ -4,7 +4,18 @@ import { ItemSchema } from "./item";
 // RSS SPECIFICATION https://www.rssboard.org/rss-specification
 const RSSChannelSchema = Type.Object({
   title: Type.String(),
-  link: Type.String(),
+  link: Type.Optional(
+    Type.Array(
+      Type.Object({
+        "#text": Type.Optional(Type.String()),
+        "@": Type.Object({
+          rel: Type.Optional(Type.String()),
+          type: Type.Optional(Type.String()),
+          href: Type.Optional(Type.String()),
+        }),
+      })
+    )
+  ),
   description: Type.String(),
   language: Type.Optional(Type.String()),
   copyright: Type.Optional(Type.String()),
@@ -14,13 +25,11 @@ const RSSChannelSchema = Type.Object({
   lastBuildDate: Type.Optional(Type.String()),
   category: Type.Optional(Type.Array(Type.String())),
   generator: Type.Optional(Type.String()),
-  image: Type.Optional(
-    Type.Object({
-      url: Type.String(),
-      title: Type.String(),
-      link: Type.String(),
-    })
-  ),
+  image: Type.Object({
+    url: Type.String(),
+    title: Type.Optional(Type.String()),
+    link: Type.Optional(Type.String()),
+  }),
   ttl: Type.Optional(Type.Number()),
 });
 
@@ -48,7 +57,7 @@ const ItunesChannelSchema = Type.Object({
     })
   ),
   // XML convert the false value as boolean
-  "itunes:explicit": Type.Optional(Type.Union([Type.String(), Type.Boolean()])),
+  "itunes:explicit": Type.Optional(Type.String()),
   "itunes:author": Type.Optional(Type.String()),
   "itunes:link": Type.Optional(Type.String()),
   "itunes:owner": Type.Optional(
