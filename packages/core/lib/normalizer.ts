@@ -1,4 +1,5 @@
 import jsonpath from "jsonpath";
+import { timeToSeconds } from "./utils";
 
 /**
  * The xml to json converting process is not perfect, it is not able to distinguish
@@ -54,12 +55,16 @@ function normalizeItunesExplicit(data: unknown): unknown {
 
 function normalizeItunesDuration(data: unknown): unknown {
   let d = data;
-  jsonpath.apply(data, `$..["itunes:duration"]`, (value) => {
-    if (typeof value !== "number") {
-      return Number(value);
+  jsonpath.apply(
+    data,
+    `rss.channel[*].item[*]..["itunes:duration"]`,
+    (value) => {
+      if (typeof value === "string") {
+        return timeToSeconds(value);
+      }
+      return value;
     }
-    return value;
-  });
+  );
   return d;
 }
 
@@ -84,6 +89,7 @@ function normalizeChannelLink(data: unknown): unknown {
   return d;
 }
 export function normalize(data: unknown): unknown {
+  console.log("pre", data);
   data = normalizeArrays(data);
   data = normalizeChannelLink(data);
   data = normalizeItunesImage(data);

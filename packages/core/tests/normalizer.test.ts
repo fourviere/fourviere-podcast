@@ -80,7 +80,7 @@ describe("PodcastNormalizer", () => {
       rss: {
         channel: {
           item: {
-            "itunes:duration": "3600",
+            "itunes:duration": "01:01:01",
           },
         },
       },
@@ -91,7 +91,7 @@ describe("PodcastNormalizer", () => {
           {
             item: [
               {
-                "itunes:duration": 3600,
+                "itunes:duration": 3661,
               },
             ],
           },
