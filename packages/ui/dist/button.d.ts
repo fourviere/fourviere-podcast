@@ -1,2 +1,6 @@
-/// <reference types="react" />
-export declare const Button: import("tailwind-styled-components/dist/tailwind").TailwindComponent<import("react").DetailedHTMLProps<import("react").ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, {}>;
+import React from "react";
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+    isLoading?: boolean;
+};
+declare const Button: React.FC<ButtonProps>;
+export default Button;

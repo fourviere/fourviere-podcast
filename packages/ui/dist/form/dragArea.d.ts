@@ -3,5 +3,5 @@ interface Props {
     isHover: boolean;
     error: boolean;
 }
-declare const DragArea: ({ children, ...props }: PropsWithChildren<Props>) => React.JSX.Element;
+declare const DragArea: ({ children, isHover, error }: PropsWithChildren<Props>) => React.JSX.Element;
 export default DragArea;

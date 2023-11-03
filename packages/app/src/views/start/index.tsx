@@ -41,6 +41,7 @@ const StartView: FunctionComponent<StartViewProps> = () => {
                 .reverse()
                 .map((feed) => (
                   <ImageLinkCard
+                    key={feed}
                     src={
                       projects[feed].feed.rss.channel[0].image?.url ||
                       projects[feed].feed.rss.channel[0]?.["itunes:image"]?.[

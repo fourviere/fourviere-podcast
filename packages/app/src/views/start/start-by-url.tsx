@@ -2,7 +2,7 @@ import { FunctionComponent, useEffect, useState } from "react";
 import feedStore from "../../store/feed";
 import { Container } from "@fourviere/ui/lib/box";
 import { Title } from "@fourviere/ui/lib/typography";
-import { Button } from "@fourviere/ui/lib/button";
+import Button from "@fourviere/ui/lib/button";
 import Input from "@fourviere/ui/lib/form/fields/input";
 import appStore from "../../store/app";
 import { SubmitHandler, useForm, useWatch } from "react-hook-form";
@@ -77,10 +77,11 @@ const StartByURL: FunctionComponent<Props> = ({ done }) => {
             })}
           />
 
-          <Button type="submit">{t["start.start_by_url.action"]}</Button>
+          <Button type="submit" isLoading={isLoading}>
+            {t["start.start_by_url.action"]}
+          </Button>
         </Container>
       </form>
-      {isLoading && <p>Loading...</p>}
     </Container>
   );
 };
