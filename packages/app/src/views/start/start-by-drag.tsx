@@ -12,7 +12,6 @@ const StartByDrag: FunctionComponent<PropsWithChildren<StartByDragProps>> = ({
   const { loadFeedFromFileContents } = feedStore((state) => state);
   const { isHover, error } = useTauriDragArea({
     onFile: (file) => {
-      console.log(file);
       readFile(file).then((content) => {
         if (!content) {
           return;
@@ -21,7 +20,7 @@ const StartByDrag: FunctionComponent<PropsWithChildren<StartByDragProps>> = ({
       });
     },
     onError: (error) => {
-      console.log(error);
+      console.error(error);
     },
     fileExtensions: ["xml", "rss"],
   });

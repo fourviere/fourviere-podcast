@@ -15,7 +15,7 @@ const CONFIG = {
 
 const parser = new XMLParser(CONFIG);
 const builder = new XMLBuilder(CONFIG);
-const podcastValidator = new Ajv().compile(FeedSchema);
+const podcastValidator = new Ajv({ allErrors: true }).compile(FeedSchema);
 
 export function serializeToXML(feed: Feed): string {
   return builder.build(feed);
@@ -32,7 +32,6 @@ export async function parseXML(xmlString: string) {
   const isValid = podcastValidator(jsData);
   if (!isValid) {
     const validationErrors = podcastValidator.errors;
-    console.error(validationErrors, jsData);
     throw new InvalidPodcastFeedError("Invalid podcast feed", validationErrors);
   }
 

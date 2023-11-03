@@ -18,11 +18,13 @@ const RSSItemSchema = Type.Object({
   description: Type.Optional(Type.String()),
   guid: Type.Object({
     "#text": Type.String(),
-    "@": Type.Object({
-      isPermaLink: Type.Optional(
-        Type.Union([Type.Literal("true"), Type.Literal("false")])
-      ),
-    }),
+    "@": Type.Optional(
+      Type.Object({
+        isPermaLink: Type.Optional(
+          Type.Union([Type.Literal("true"), Type.Literal("false")])
+        ),
+      })
+    ),
   }),
   pubDate: Type.String(),
   enclosure: Type.Object({

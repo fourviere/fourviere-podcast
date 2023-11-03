@@ -16,8 +16,6 @@ export async function persistState(state: FeedState) {
   await writeTextFile("state.json", JSON.stringify(state), {
     dir: BaseDirectory.AppData,
   });
-
-  console.log(BaseDirectory.Document);
 }
 
 export async function loadState() {

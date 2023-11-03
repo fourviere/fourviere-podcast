@@ -75,30 +75,81 @@ describe("PodcastNormalizer", () => {
       },
     });
   });
-  it("normalize itunes:duration", () => {
-    const data = {
-      rss: {
-        channel: {
-          item: {
-            "itunes:duration": "01:01:01",
+  describe("normalize itunes:duration", () => {
+    it("normalize simple", () => {
+      const data = {
+        rss: {
+          channel: {
+            item: {
+              "itunes:duration": "01:01:01",
+            },
           },
         },
-      },
-    };
-    expect(normalize(data)).toEqual({
-      rss: {
-        channel: [
-          {
-            item: [
-              {
-                "itunes:duration": 3661,
-              },
-            ],
+      };
+      expect(normalize(data)).toEqual({
+        rss: {
+          channel: [
+            {
+              item: [
+                {
+                  "itunes:duration": 3661,
+                },
+              ],
+            },
+          ],
+        },
+      });
+    });
+    it("normalize partial 1", () => {
+      const data = {
+        rss: {
+          channel: {
+            item: {
+              "itunes:duration": "01",
+            },
           },
-        ],
-      },
+        },
+      };
+      expect(normalize(data)).toEqual({
+        rss: {
+          channel: [
+            {
+              item: [
+                {
+                  "itunes:duration": 1,
+                },
+              ],
+            },
+          ],
+        },
+      });
+    });
+    it("normalize partial 2", () => {
+      const data = {
+        rss: {
+          channel: {
+            item: {
+              "itunes:duration": "10:01",
+            },
+          },
+        },
+      };
+      expect(normalize(data)).toEqual({
+        rss: {
+          channel: [
+            {
+              item: [
+                {
+                  "itunes:duration": 601,
+                },
+              ],
+            },
+          ],
+        },
+      });
     });
   });
+
   it("normalize channel link", () => {
     const data = {
       rss: {
@@ -146,6 +197,50 @@ describe("PodcastNormalizer", () => {
                     },
                   },
                 ],
+              },
+            ],
+          },
+        ],
+      },
+    });
+  });
+  it("normalize strings", () => {
+    const data = {
+      rss: {
+        channel: {
+          copyright: 1234,
+        },
+      },
+    };
+    expect(normalize(data)).toEqual({
+      rss: {
+        channel: [
+          {
+            copyright: "1234",
+          },
+        ],
+      },
+    });
+  });
+  it("normalize guid", () => {
+    const data = {
+      rss: {
+        channel: {
+          item: {
+            guid: "1234",
+          },
+        },
+      },
+    };
+    expect(normalize(data)).toEqual({
+      rss: {
+        channel: [
+          {
+            item: [
+              {
+                guid: {
+                  "#text": "1234",
+                },
               },
             ],
           },

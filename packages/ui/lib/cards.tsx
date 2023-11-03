@@ -16,7 +16,7 @@ export function ImageLinkCard({
         src={src}
       />
       {showError && (
-        <div className="rounded-full bg-rose-600 absolute -top-1 -right-1 z-10 p-px ">
+        <div className="rounded-full bg-rose-600 absolute -top-1 -right-1 p-px ">
           <ExclamationCircleIcon className="h-5 text-white -mt-px" />
         </div>
       )}

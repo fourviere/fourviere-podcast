@@ -27,6 +27,20 @@ function normalizeArrays(data: unknown): unknown {
   return d;
 }
 
+function normalizeStrings(data: unknown): unknown {
+  const stringFields: string[] = ["$..copyright"];
+  let d = data;
+  for (const field of stringFields) {
+    jsonpath.apply(d, field, (value: unknown) => {
+      if (typeof value !== "string") {
+        return String(value);
+      }
+      return value;
+    });
+  }
+  return d;
+}
+
 function normalizeItunesImage(data: unknown): unknown {
   let d = data;
   jsonpath.apply(data, `$..["itunes:image"]`, (value) => {
@@ -88,12 +102,27 @@ function normalizeChannelLink(data: unknown): unknown {
 
   return d;
 }
+
+function normalizeGuid(data: unknown): unknown {
+  let d = data;
+  jsonpath.apply(data, `rss.channel[*].item[*].guid`, (value) => {
+    if (typeof value === "string") {
+      return {
+        "#text": value,
+      };
+    }
+    return value;
+  });
+  return d;
+}
+
 export function normalize(data: unknown): unknown {
-  console.log("pre", data);
   data = normalizeArrays(data);
   data = normalizeChannelLink(data);
   data = normalizeItunesImage(data);
   data = normalizeItunesExplicit(data);
   data = normalizeItunesDuration(data);
+  data = normalizeStrings(data);
+  data = normalizeGuid(data);
   return data;
 }

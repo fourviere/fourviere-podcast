@@ -25,11 +25,13 @@ const RSSChannelSchema = Type.Object({
   lastBuildDate: Type.Optional(Type.String()),
   category: Type.Optional(Type.Array(Type.String())),
   generator: Type.Optional(Type.String()),
-  image: Type.Object({
-    url: Type.String(),
-    title: Type.Optional(Type.String()),
-    link: Type.Optional(Type.String()),
-  }),
+  image: Type.Optional(
+    Type.Object({
+      url: Type.String(),
+      title: Type.Optional(Type.String()),
+      link: Type.Optional(Type.String()),
+    })
+  ),
   ttl: Type.Optional(Type.Number()),
 });
 
@@ -63,7 +65,7 @@ const ItunesChannelSchema = Type.Object({
   "itunes:owner": Type.Optional(
     Type.Object({
       "itunes:name": Type.String(),
-      "itunes:email": Type.String(),
+      "itunes:email": Type.Optional(Type.String()),
     })
   ),
   "itunes:type": Type.Optional(
