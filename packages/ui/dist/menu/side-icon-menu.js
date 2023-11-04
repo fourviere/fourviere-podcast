@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SideMenuButton = exports.SideIconMenu = void 0;
 const react_1 = __importDefault(require("react"));
 const SideIconMenu = ({ main, logo, footer }) => {
-    return (react_1.default.createElement("div", { className: "bg-slate-900 h-full flex flex-col w-[80px] shadow-lg items-center grow-0 shrink-0 space-y-2 p-2" },
+    return (react_1.default.createElement("div", { className: "bg-slate-800 h-full flex flex-col w-[80px] shadow-lg items-center grow-0 shrink-0 space-y-2 py-2" },
         react_1.default.createElement("div", { className: "grow-0" }, logo),
         react_1.default.createElement("div", { className: "grow shrink overflow-scroll space-y-2 inner-shadow" }, main),
         react_1.default.createElement("div", { className: "grow-0" }, footer)));

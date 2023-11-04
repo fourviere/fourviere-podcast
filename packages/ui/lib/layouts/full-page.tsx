@@ -7,5 +7,9 @@ interface FullPageWithSideMenuProps {}
 export const FullPageColumnLayout = ({
   children,
 }: PropsWithChildren<FullPageWithSideMenuProps>) => {
-  return <div className="h-full w-full flex items-stretch">{children}</div>;
+  return (
+    <div className="h-full w-full flex items-stretch background-logo">
+      {children}
+    </div>
+  );
 };

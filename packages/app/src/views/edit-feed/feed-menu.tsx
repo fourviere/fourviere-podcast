@@ -1,26 +1,32 @@
 import SideMenu, { SideMenuItem } from "@fourviere/ui/lib/menu/side-menu";
-import { Link, LinkProps } from "react-router-dom";
-
-const Main = (
-  <>
-    <SideMenuItem<LinkProps> component={Link} to="/config">
-      Presentation
-    </SideMenuItem>
-    <SideMenuItem<LinkProps> component={Link} to="/a">
-      Artwork
-    </SideMenuItem>
-    <SideMenuItem<LinkProps> component={Link} to="/a">
-      Itunes
-    </SideMenuItem>
-    <SideMenuItem<LinkProps> component={Link} to="/a">
-      Value for value
-    </SideMenuItem>
-    <SideMenuItem<LinkProps> component={Link} to="/a">
-      Freed
-    </SideMenuItem>
-  </>
-);
+import { NavLink, NavLinkProps } from "react-router-dom";
 
 export default function FeedMenu() {
-  return <SideMenu main={Main} />;
+  return (
+    <SideMenu
+      main={
+        <>
+          <SideMenuItem<NavLinkProps> component={NavLink} to="info">
+            Presentation
+          </SideMenuItem>
+          <SideMenuItem<NavLinkProps> component={NavLink} to="artwork">
+            Artwork
+          </SideMenuItem>
+          <SideMenuItem<NavLinkProps> component={NavLink} to="itunes">
+            Itunes
+          </SideMenuItem>
+          <SideMenuItem<NavLinkProps> component={NavLink} to="value-for-value">
+            Value for value
+          </SideMenuItem>
+          <SideMenuItem<NavLinkProps>
+            component={NavLink}
+            to="source-code"
+            className={({ isActive }) => (isActive ? "ide-menu-active " : "")}
+          >
+            Source Code
+          </SideMenuItem>
+        </>
+      }
+    />
+  );
 }

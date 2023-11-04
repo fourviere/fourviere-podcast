@@ -13,10 +13,8 @@ const EditFeed: React.FC<Props> = () => {
   return (
     <FullPageColumnLayout>
       <SideMenu />
+      <Outlet />
       <FeedMenu />
-      <FullPageLayoutBackground>
-        <Outlet />
-      </FullPageLayoutBackground>
     </FullPageColumnLayout>
   );
 };
