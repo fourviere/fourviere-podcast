@@ -11,6 +11,10 @@ const TRANSLATIONS = {
     "start.start_by_url.errors.invalid_podcast_feed":
       "The feed is not a valid podcast feed",
     "start.start_by_url.errors.generic": "Error during fetching podcast feed",
+    "start.start_by_index.title": "Import a podcast feed from podcastindex",
+    "start.start_by_index.action": "Search",
+    "start.start_by_index.importing_in_progress":
+      "Importing in progress... please wait",
   },
 } as const;
 

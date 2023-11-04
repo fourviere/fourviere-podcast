@@ -84,14 +84,14 @@ const feedStore = create<FeedState>((set, _get) => {
   };
 });
 
-loadState().then((state) => {
+loadState<FeedState>("feeds").then((state) => {
   if (state) {
     feedStore.setState(state);
   }
 });
 
 feedStore.subscribe(async (state) => {
-  await persistState(state);
+  await persistState<FeedState>("feeds", state);
 });
 
 export default feedStore;

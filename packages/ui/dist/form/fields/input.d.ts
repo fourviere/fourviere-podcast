@@ -8,7 +8,7 @@ interface InputProps {
     value?: string;
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     size?: InputSize;
-    error: boolean | string;
+    error?: boolean | string;
 }
 declare const Input: React.ForwardRefExoticComponent<InputProps & React.RefAttributes<HTMLInputElement>>;
 export default Input;

@@ -4,26 +4,25 @@ import {
   createDir,
   readTextFile,
 } from "@tauri-apps/api/fs";
-import { FeedState } from "./feed";
 import { appDataDir } from "@tauri-apps/api/path";
 
-export async function persistState(state: FeedState) {
+export async function persistState<T>(store: string, state: T) {
   try {
     await createDir(await appDataDir());
   } catch (e) {
     console.log("createDir error", e);
   }
-  await writeTextFile("state.json", JSON.stringify(state), {
+  await writeTextFile(`${store}.json`, JSON.stringify(state), {
     dir: BaseDirectory.AppData,
   });
 }
 
-export async function loadState() {
+export async function loadState<T>(store: string) {
   try {
-    const state = await readTextFile("state.json", {
+    const state = await readTextFile(`${store}.json`, {
       dir: BaseDirectory.AppData,
     });
-    return JSON.parse(state) as FeedState;
+    return JSON.parse(state) as T;
   } catch (e) {
     console.log("readTextFile error", e);
   }

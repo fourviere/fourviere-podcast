@@ -25,7 +25,7 @@ interface InputProps {
   value?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   size?: InputSize;
-  error: boolean | string;
+  error?: boolean | string;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
