@@ -8,6 +8,7 @@ import { ErrorBox } from "@fourviere/ui/lib/box";
 import { FullPageColumnLayout } from "@fourviere/ui/lib/layouts/full-page";
 import SideMenu from "./components/main-menu";
 import EditFeed from "./views/edit-feed";
+import SourceCode from "./views/edit-feed/source-code";
 
 const router = createBrowserRouter([
   {
@@ -28,12 +29,24 @@ const router = createBrowserRouter([
     element: <EditFeed />,
     children: [
       {
-        path: "",
-        element: <div>general</div>,
+        path: "info",
+        element: <div>info</div>,
       },
       {
-        path: "episodes",
-        element: <div>episodes</div>,
+        path: "artwork",
+        element: <div>artwork</div>,
+      },
+      {
+        path: "itunes",
+        element: <div>itunes</div>,
+      },
+      {
+        path: "source-code",
+        element: <SourceCode />,
+      },
+      {
+        path: "value-for-value",
+        element: <div>v4v</div>,
       },
       {
         path: "episodes/:episodeId",

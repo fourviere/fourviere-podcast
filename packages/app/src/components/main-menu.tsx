@@ -16,7 +16,7 @@ const SideMenu: React.FC = () => {
     .reverse()
     .map((key) => {
       return (
-        <Link to={`/feed/${key}`} style={{ display: "block" }} key={key}>
+        <Link to={`/feed/${key}/info`} style={{ display: "block" }} key={key}>
           <ImageLinkCard
             theme="dark"
             size="xs"
@@ -50,13 +50,11 @@ const SideMenu: React.FC = () => {
   return (
     <SideIconMenu
       logo={
-        <div className="p-3">
-          <img
-            src="/logo.svg"
-            style={{ height: "60px", width: "100%" }}
-            alt="Fourvière logo"
-          />
-        </div>
+        <img
+          src="/logo.svg"
+          style={{ height: "70px", width: "100%" }}
+          alt="Fourvière logo"
+        />
       }
       main={
         <>

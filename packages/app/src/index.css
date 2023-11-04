@@ -5,3 +5,8 @@
   background-position-x: right -20px;
   background-size: auto 90%;
 }
+
+/* Hack the monaco editor to make it transparent */
+.monaco-editor-background {
+  background-color: transparent;
+}

@@ -8,3 +8,7 @@ body,
   height: 100%;
   @apply text-slate-700;
 }
+
+.side-menu-item.active {
+  @apply text-slate-800;
+}
