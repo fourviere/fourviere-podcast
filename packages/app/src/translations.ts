@@ -11,6 +11,7 @@ const TRANSLATIONS = {
     "start.start_by_url.errors.invalid_podcast_feed":
       "The feed is not a valid podcast feed",
     "start.start_by_url.errors.generic": "Error during fetching podcast feed",
+    "start.start_by_url.errors.invalid_url": "The URL provided is not valid",
     "start.start_by_index.title": "Import a podcast feed from podcastindex",
     "start.start_by_index.action": "Search",
     "start.start_by_index.errors.generic":
