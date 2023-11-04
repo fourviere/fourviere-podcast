@@ -3,7 +3,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Toast = void 0;
 const react_1 = __importDefault(require("react"));
 const framer_motion_1 = require("framer-motion");
 function Toast({ children }) {
@@ -17,4 +16,4 @@ function Toast({ children }) {
             transition: { ease: "easeOut" },
         } }, children));
 }
-exports.Toast = Toast;
+exports.default = Toast;

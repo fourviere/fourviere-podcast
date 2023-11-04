@@ -79,3 +79,5 @@ export const Container = ({
 };
 
 export const HalfPageBox = tw.div`w-1/2`;
+
+export const ErrorBox = tw.div`text-rose-100 bg-rose-600 rounded p-3 text-xs uppercase z-30`;

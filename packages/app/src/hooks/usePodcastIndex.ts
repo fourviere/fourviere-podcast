@@ -26,11 +26,13 @@ async function fetchPI(search: string, apiKey: string, apiSecret: string) {
 }
 
 export const usePodcastIndex = (/* arguments */) => {
-  const { getConfigurations } = appStore((state) => state);
-
+  const { getConfigurations, addError, getTranslations } = appStore(
+    (state) => state
+  );
   const [feeds, setFeeds] = useState<any[]>();
-  const [error, setError] = useState<string>();
   const [isLoading, setIsLoading] = useState(false);
+
+  const t = getTranslations();
 
   async function search(query: string) {
     const { apiSecret, apiKey, enabled } = getConfigurations("podcastIndex");
@@ -42,7 +44,7 @@ export const usePodcastIndex = (/* arguments */) => {
       const response = await fetchPI(query, apiKey, apiSecret);
       setFeeds(response.feeds);
     } catch (error) {
-      setError("Error during fetching podcast index");
+      addError(t["start.start_by_index.errors.generic"]);
     } finally {
       setIsLoading(false);
     }
@@ -52,5 +54,5 @@ export const usePodcastIndex = (/* arguments */) => {
     setFeeds(undefined);
   }
 
-  return { search, feeds, error, isLoading, resetFeeds };
+  return { search, feeds, isLoading, resetFeeds };
 };
