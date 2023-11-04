@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.HalfPageBox = exports.Container = void 0;
+exports.ErrorBox = exports.HalfPageBox = exports.Container = void 0;
 const react_1 = __importDefault(require("react"));
 const tailwind_styled_components_1 = __importDefault(require("tailwind-styled-components"));
 const containerXSpaces = {
@@ -51,3 +51,4 @@ const Container = ({ spaceY = "none", spaceX = "none", padding = "none", flex = 
 };
 exports.Container = Container;
 exports.HalfPageBox = tailwind_styled_components_1.default.div `w-1/2`;
+exports.ErrorBox = tailwind_styled_components_1.default.div `text-rose-100 bg-rose-600 rounded p-3 text-xs uppercase z-30`;

@@ -8,6 +8,10 @@ import appStore from "../../store/app";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ImageLinkCard, ImageLinkCardContainer } from "@fourviere/ui/lib/cards";
 import { usePodcastIndex } from "../../hooks/usePodcastIndex";
+import {
+  InvalidPodcastFeedError,
+  InvalidXMLError,
+} from "@fourviere/core/lib/errors";
 
 type Inputs = {
   term: string;
@@ -19,23 +23,12 @@ interface Props {
 
 const StartByIndex: FunctionComponent<Props> = ({ done }) => {
   const { loadFeedFromUrl } = feedStore((state) => state);
-  const { getTranslations } = appStore((state) => state);
-  const {
-    search,
-    error: searchError,
-    isLoading,
-    feeds,
-    resetFeeds,
-  } = usePodcastIndex();
+  const { getTranslations, addError } = appStore((state) => state);
+  const { search, isLoading, feeds, resetFeeds } = usePodcastIndex();
   const [isImporting, setIsImporting] = useState(false);
-  const [error, setError] = useState<string>();
   const t = getTranslations();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>();
+  const { register, handleSubmit } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     search(data.term);
@@ -49,13 +42,13 @@ const StartByIndex: FunctionComponent<Props> = ({ done }) => {
       done();
     } catch (e: any) {
       console.error(e);
-      // if (e instanceof InvalidXMLError) {
-      //   setError(t["start.start_by_url.errors.invalid_xml"]);
-      // } else if (e instanceof InvalidPodcastFeedError) {
-      //   setError(t["start.start_by_url.errors.invalid_podcast_feed"]);
-      // } else {
-      //   setError(t["start.start_by_url.errors.generic"]);
-      // }
+      if (e instanceof InvalidXMLError) {
+        addError(t["start.start_by_url.errors.invalid_xml"]);
+      } else if (e instanceof InvalidPodcastFeedError) {
+        addError(t["start.start_by_url.errors.invalid_podcast_feed"]);
+      } else {
+        addError(t["start.start_by_url.errors.generic"]);
+      }
     } finally {
       setIsImporting(false);
     }

@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { PropsWithChildren } from "react";
 
-export function Toast({ children }: PropsWithChildren<{}>) {
+export default function Toast({ children }: PropsWithChildren<{}>) {
   return (
     <motion.div
       className={`fixed left-0 bottom-0 z-30 m-3 space-y-1`}

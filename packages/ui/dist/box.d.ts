@@ -51,4 +51,5 @@ export declare const Container: ({ spaceY, spaceX, padding, flex, children, wFul
     wFull?: boolean;
 }>) => React.JSX.Element;
 export declare const HalfPageBox: import("tailwind-styled-components/dist/tailwind").TailwindComponent<React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}>;
+export declare const ErrorBox: import("tailwind-styled-components/dist/tailwind").TailwindComponent<React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}>;
 export {};

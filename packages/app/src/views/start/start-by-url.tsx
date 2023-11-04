@@ -23,25 +23,15 @@ interface Props {
 
 const StartByURL: FunctionComponent<Props> = ({ done }) => {
   const { loadFeedFromUrl } = feedStore((state) => state);
-  const { getTranslations } = appStore((state) => state);
-  const [error, setError] = useState<string>();
+  const { getTranslations, addError } = appStore((state) => state);
   const [isLoading, setIsLoading] = useState(false);
   const t = getTranslations();
 
   const {
     register,
     handleSubmit,
-    control,
     formState: { errors },
   } = useForm<Inputs>();
-
-  const formData = useWatch({
-    control,
-  });
-
-  useEffect(() => {
-    setError(undefined);
-  }, [formData]);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setIsLoading(true);
@@ -50,11 +40,11 @@ const StartByURL: FunctionComponent<Props> = ({ done }) => {
       done();
     } catch (e: any) {
       if (e instanceof InvalidXMLError) {
-        setError(t["start.start_by_url.errors.invalid_xml"]);
+        addError(t["start.start_by_url.errors.invalid_xml"]);
       } else if (e instanceof InvalidPodcastFeedError) {
-        setError(t["start.start_by_url.errors.invalid_podcast_feed"]);
+        addError(t["start.start_by_url.errors.invalid_podcast_feed"]);
       } else {
-        setError(t["start.start_by_url.errors.generic"]);
+        addError(t["start.start_by_url.errors.generic"]);
       }
     } finally {
       setIsLoading(false);
@@ -70,7 +60,9 @@ const StartByURL: FunctionComponent<Props> = ({ done }) => {
           <Input
             size="2xl"
             placeholder="https://example.com/feed.xml"
-            error={!!errors?.url?.type || error || false}
+            error={
+              errors?.url?.type && t["start.start_by_url.errors.invalid_url"]
+            }
             {...register("url", {
               required: true,
               pattern: URL_REGEX,
