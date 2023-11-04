@@ -4,6 +4,8 @@ The feed editor for the open podcasting
 
 Fourviere is an opensource Podcast RSS feed editor that supports all the podcasting 2.0 tags and allow to publish the feed and the episode via FTP or Amazon S3 ecc...
 
+![Fourviere](./docs/fourviere.png)
+
 # What is open podcasting
 
 Open podcasting refers to the concept of creating and distributing podcasts in **an open and decentralized manner**, allowing for greater accessibility, interoperability, and freedom in the podcasting ecosystem. It stands in contrast to closed or proprietary podcasting platforms and ecosystems.
