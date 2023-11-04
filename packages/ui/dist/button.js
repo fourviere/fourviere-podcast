@@ -20,7 +20,8 @@ const react_1 = __importDefault(require("react"));
 const Button = (_a) => {
     var { children, isLoading } = _a, rest = __rest(_a, ["children", "isLoading"]);
     return (react_1.default.createElement("button", Object.assign({}, rest, { className: (0, classnames_1.default)(`bg-slate-800 hover:bg-slate-600 rounded-lg hover:text-slate-200 font-semibold text-xs uppercase relative py-4 px-6 text-white transition-all duration-200 ease-linear flex items-center`, { "pl-9": isLoading }) }),
-        isLoading ? (react_1.default.createElement(outline_1.CloudArrowDownIcon, { className: "absolute w-7 h-7 pl-3 left-0 top-[50%] -translate-y-[50%] text-slate-100" })) : null,
+        isLoading ? (react_1.default.createElement("div", { className: "absolute w-7 h-7 pl-3 left-0 top-0 bottom-0 flex flex-col justify-center" },
+            react_1.default.createElement(outline_1.ArrowPathIcon, { className: "w-4 h-4 text-slate-100 animate-spin" }))) : null,
         children));
 };
 exports.default = Button;
