@@ -1,22 +1,18 @@
 import { createPortal } from "react-dom";
 import StartView from "./views/start";
 import appStore from "./store/app";
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Toast from "@fourviere/ui/lib/modals/toast";
 import { ErrorBox } from "@fourviere/ui/lib/box";
 import { FullPageColumnLayout } from "@fourviere/ui/lib/layouts/full-page";
-import SideMenu from "./components/side-menu";
+import SideMenu from "./components/main-menu";
+import EditFeed from "./views/edit-feed";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <FullPageColumnLayout>
-        <SideMenu />
-        <StartView />
-      </FullPageColumnLayout>
-    ),
+    element: <StartView />,
   },
   {
     path: "/config",
@@ -29,12 +25,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/feed/:feedId",
-    element: (
-      <FullPageColumnLayout>
-        <SideMenu />
-        <Outlet />
-      </FullPageColumnLayout>
-    ),
+    element: <EditFeed />,
     children: [
       {
         path: "",

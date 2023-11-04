@@ -1,4 +1,7 @@
-import { SideIconMenu, SideMenuButton } from "@fourviere/ui/lib/menu/side-menu";
+import {
+  SideIconMenu,
+  SideMenuButton,
+} from "@fourviere/ui/lib/menu/side-icon-menu";
 import React from "react";
 import feedStore from "../store/feed";
 import { ImageLinkCard } from "@fourviere/ui/lib/cards";
@@ -7,8 +10,7 @@ import { CogIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
 
 const SideMenu: React.FC = () => {
   let { feedId } = useParams();
-
-  const { projects, currentProject } = feedStore((state) => state);
+  const { projects } = feedStore((state) => state);
 
   const Podcasts = Object.keys(projects)
     .reverse()
@@ -21,7 +23,8 @@ const SideMenu: React.FC = () => {
             faded={!!feedId && feedId !== key}
             active={feedId === key}
             src={
-              projects?.[key].feed.rss.channel[0]["itunes:image"]?.["@"].href
+              projects?.[key]?.feed?.rss?.channel?.[0]["itunes:image"]?.["@"]
+                ?.href || "/logo.svg"
             }
           />
         </Link>

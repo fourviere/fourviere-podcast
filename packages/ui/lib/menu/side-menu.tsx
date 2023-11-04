@@ -1,37 +1,40 @@
-import React, { PropsWithChildren } from "react";
-
+import React from "react";
 interface Props {
-  logo: React.ReactNode;
-  main: React.ReactNode[];
-  footer: React.ReactNode[];
+  header?: React.ReactNode;
+  main: React.ReactNode;
+  footer?: React.ReactNode;
 }
 
-export const SideIconMenu: React.FC<Props> = ({ main, logo, footer }) => {
+const SideMenu: React.FC<Props> = ({ main, header, footer }) => {
   return (
-    <div className="bg-slate-900 h-full flex flex-col w-[80px] shadow-lg items-center grow-0 shrink-0 space-y-2 p-2">
-      <div className="grow-0">{logo}</div>
-      <div className="grow shrink overflow-scroll space-y-2 inner-shadow">
-        {main}
+    <div className="bg-slate-800 grow-0 shrink-0">
+      <div className="bg-white h-full flex flex-col space-y-2 rounded-l-xl">
+        {header && <div className="grow-0">{header}</div>}
+        {main && (
+          <div className="grow shrink overflow-scroll space-y-2 inner-shadow p-6">
+            {main}
+          </div>
+        )}
+        {footer && <div className="grow-0">{footer}</div>}
       </div>
-      <div className="grow-0">{footer}</div>
     </div>
   );
 };
 
-type SideMenuButtonProps = {
-  onClick?: () => void;
-};
-
-export const SideMenuButton = ({
+export function SideMenuItem<T>({
   children,
-  onClick,
-}: PropsWithChildren<SideMenuButtonProps>) => {
+  component,
+  ...props
+}: {
+  children: React.ReactNode;
+  component?: React.ElementType;
+} & T) {
+  const Component = component ?? "div";
   return (
-    <button
-      onClick={onClick}
-      className="w-16 h-16 flex items-center justify-center rounded-lg rouded text-slate-300 hover:text-slate-100 hover:bg-slate-700 hover:border-4 border-slate-700  transition-all duration-200 ease-in-out"
-    >
+    <Component className="text-sm font-semibold block" {...props}>
       {children}
-    </button>
+    </Component>
   );
-};
+}
+
+export default SideMenu;

@@ -1,9 +1,9 @@
 const TRANSLATIONS = {
   en: {
     "start.create": "Create a new feed",
-    "start.or": "or open from",
-    "start.open_file": "file",
-    "start.load_from_url": "remote address",
+    "start.or": "or",
+    "start.open_file": "open from a file",
+    "start.load_from_url": "fetch by remote address",
     "start.load_from_podcastindex": "import from podcastindex",
     "start.start_by_url.title": "Import new feed from remote address",
     "start.start_by_url.action": "Import",
