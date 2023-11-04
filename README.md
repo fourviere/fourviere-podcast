@@ -33,3 +33,15 @@ Open podcasting is generally more accessible because it doesn't require special 
 ### Content Ownership:
 
 Creators retain ownership and control over their podcast content. They are not beholden to a platform or network's terms and conditions.
+
+# How to run the application
+
+## Prerequisite
+
+Nodejs and Rust should be installed in your machine
+
+## Make it working
+
+- Clone the repository
+- Run `npm install` from the project's root folder
+- Run `npm run dev` from the projects root folder
