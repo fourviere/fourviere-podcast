@@ -1,20 +1,49 @@
 import React from "react";
 import tw from "tailwind-styled-components";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+import classNames from "classnames";
+
+const Sizes = {
+  xs: "w-16 h-16",
+  sm: "w-20 h-20",
+  base: "w-24 h-24",
+  lg: "w-32 h-32",
+  xl: "w-48 h-48",
+};
+
+type Sizes = keyof typeof Sizes;
 
 export function ImageLinkCard({
   src,
   showError,
   onClick,
+  theme = "light",
+  size = "base",
+  faded = false,
+  active = false,
 }: {
   src: string;
   showError?: boolean;
   onClick?: () => void;
+  theme: "dark" | "light";
+  size?: Sizes;
+  faded?: boolean;
+  active?: boolean;
 }) {
   return (
-    <div className="w-24 h-24 relative" onClick={onClick}>
+    <div className={`${Sizes[size]} relative`} onClick={onClick}>
       <img
-        className="rounded-lg w-24 h-24 object-cover hover:shadow-lg cursor-pointer border hover:border-4 hover:border-solid hover:border-slate-200 transition-all duration-200 ease-in-out"
+        className={classNames(
+          `rounded-lg ${Sizes[size]} object-cover hover:shadow-lg cursor-pointer hover:opacity-100 hover:border-4 hover:border-solid transition-all duration-200 ease-in-out`,
+          {
+            "border-slate-200 hover:border-slate-200":
+              theme === "light" && !active,
+            "border-slate-900 hover:border-slate-700":
+              theme === "dark" && !active,
+            "opacity-30": faded,
+            "border-4 border-solid border-slate-200": active,
+          }
+        )}
         src={src}
       />
       {showError && (

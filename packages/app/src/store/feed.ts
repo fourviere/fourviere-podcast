@@ -65,7 +65,8 @@ const feedStore = create<FeedState>((set, _get) => {
       const feed = await parseXML(data);
       set((state: FeedState) => {
         return produce(state, (draft) => {
-          draft.projects[feedUrl] = { feed };
+          const id = uuidv4();
+          draft.projects[id] = { feed };
           draft.currentProject = feedUrl;
         });
       });

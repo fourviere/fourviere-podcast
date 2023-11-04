@@ -1,8 +1,7 @@
 import { FunctionComponent, useState } from "react";
 import { H1, H1Link } from "@fourviere/ui/lib/typography";
-import { ImageLinkCard, ImageLinkCardContainer } from "@fourviere/ui/lib/cards";
 import { Container, HalfPageBox } from "@fourviere/ui/lib/box";
-import FullPageLayoutBackground from "@fourviere/ui/lib/layouts/full-page";
+import { FullPageLayoutBackground } from "@fourviere/ui/lib/layouts/full-page";
 import appStore from "../../store/app";
 import feedStore from "../../store/feed";
 import StartByURL from "./start-by-url";
@@ -16,7 +15,7 @@ interface StartViewProps {}
 
 const StartView: FunctionComponent<StartViewProps> = () => {
   const { getTranslations, getConfigurations } = appStore((state) => state);
-  const { projects, createProject } = feedStore((state) => state);
+  const { createProject } = feedStore((state) => state);
   const [startByUrlVisible, setStartByUrlVisible] = useState(false);
   const [startByIndexVisible, setStartByIndexVisible] = useState(false);
 
@@ -46,24 +45,6 @@ const StartView: FunctionComponent<StartViewProps> = () => {
                 </>
               )}
             </p>
-
-            <ImageLinkCardContainer>
-              {Object.keys(projects)
-                .reverse()
-                .map((feed) => (
-                  <ImageLinkCard
-                    key={feed}
-                    src={
-                      projects[feed].feed.rss.channel[0].image?.url ||
-                      projects[feed].feed.rss.channel[0]?.["itunes:image"]?.[
-                        "@"
-                      ]?.href ||
-                      ""
-                    }
-                    showError={!projects[feed].configuration}
-                  />
-                ))}
-            </ImageLinkCardContainer>
           </Container>
         </HalfPageBox>
       </StartByDrag>

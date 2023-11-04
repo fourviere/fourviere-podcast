@@ -1,5 +1,11 @@
+import React, { PropsWithChildren } from "react";
 import tw from "tailwind-styled-components";
 
-const FullPageLayoutBackground = tw.div`bg-white w-full h-full flex flex-col justify-center items-center background-logo`;
+export const FullPageLayoutBackground = tw.div`bg-white w-full h-full flex flex-col justify-center items-center background-logo`;
 
-export default FullPageLayoutBackground;
+interface FullPageWithSideMenuProps {}
+export const FullPageColumnLayout = ({
+  children,
+}: PropsWithChildren<FullPageWithSideMenuProps>) => {
+  return <div className="h-full w-full flex items-stretch">{children}</div>;
+};

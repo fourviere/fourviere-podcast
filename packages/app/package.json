@@ -18,11 +18,13 @@
   "dependencies": {
     "@fourviere/core": "^1.0.0",
     "@fourviere/ui": "^1.0.0",
+    "@heroicons/react": "^2.0.18",
     "@tauri-apps/api": "^1.5.0",
     "framer-motion": "^10.16.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.47.0",
+    "react-router-dom": "^6.18.0",
     "uuid": "^9.0.1",
     "zustand": "^4.4.4"
   },
