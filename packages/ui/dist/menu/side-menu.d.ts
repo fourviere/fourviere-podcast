@@ -1,12 +1,12 @@
-import React, { PropsWithChildren } from "react";
+import React from "react";
 interface Props {
-    logo: React.ReactNode;
-    main: React.ReactNode[];
-    footer: React.ReactNode[];
+    header?: React.ReactNode;
+    main: React.ReactNode;
+    footer?: React.ReactNode;
 }
-export declare const SideIconMenu: React.FC<Props>;
-type SideMenuButtonProps = {
-    onClick?: () => void;
-};
-export declare const SideMenuButton: ({ children, onClick, }: PropsWithChildren<SideMenuButtonProps>) => React.JSX.Element;
-export {};
+declare const SideMenu: React.FC<Props>;
+export declare function SideMenuItem<T>({ children, component, ...props }: {
+    children: React.ReactNode;
+    component?: React.ElementType;
+} & T): React.JSX.Element;
+export default SideMenu;

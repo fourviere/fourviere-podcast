@@ -37,7 +37,6 @@ export interface Project {
 }
 export interface FeedState {
   projects: Record<string, Project>;
-  currentProject?: string;
   createProject: () => void;
   loadFeedFromUrl: (feedUrl: string) => void;
   loadFeedFromFileContents: (feed: string) => void;
@@ -46,7 +45,6 @@ export interface FeedState {
 const feedStore = create<FeedState>((set, _get) => {
   return {
     projects: {},
-    currentProject: undefined,
 
     createProject: async () => {
       const feed = await parseXML(FEED_TEMPLATE);
@@ -54,7 +52,6 @@ const feedStore = create<FeedState>((set, _get) => {
         return produce(state, (draft) => {
           const id = uuidv4();
           draft.projects[id] = { feed };
-          draft.currentProject = id;
         });
       });
     },
@@ -67,7 +64,6 @@ const feedStore = create<FeedState>((set, _get) => {
         return produce(state, (draft) => {
           const id = uuidv4();
           draft.projects[id] = { feed };
-          draft.currentProject = feedUrl;
         });
       });
     },
@@ -78,7 +74,6 @@ const feedStore = create<FeedState>((set, _get) => {
         return produce(state, (draft) => {
           const id = uuidv4();
           draft.projects[id] = { feed };
-          draft.currentProject = id;
         });
       });
     },
