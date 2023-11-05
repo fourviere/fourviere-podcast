@@ -1,4 +1,5 @@
 import React, { PropsWithChildren } from "react";
+import { Scrollbars } from "react-custom-scrollbars-2";
 
 interface Props {
   logo: React.ReactNode;
@@ -8,11 +9,14 @@ interface Props {
 
 export const SideIconMenu: React.FC<Props> = ({ main, logo, footer }) => {
   return (
-    <div className="bg-slate-800 h-full flex flex-col w-[80px] shadow-lg items-center grow-0 shrink-0 space-y-2 py-2">
+    <div className="bg-slate-800 flex flex-col w-[80px] shadow-lg items-center grow-0 shrink-0 space-y-2 py-2">
       <div className="grow-0">{logo}</div>
-      <div className="grow shrink overflow-scroll space-y-2 inner-shadow">
+      <Scrollbars
+        thumbSize={1}
+        className="grow shrink [&>div]:space-y-3 [&>div]:flex [&>div]:flex-col [&>div]:items-center inner-shadow"
+      >
         {main}
-      </div>
+      </Scrollbars>
       <div className="grow-0">{footer}</div>
     </div>
   );

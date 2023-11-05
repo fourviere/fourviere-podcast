@@ -1102,3 +1102,21 @@ body,
   outline: 2px solid transparent;
   outline-offset: 2px;
 }
+
+.\[\&\>div\]\:flex>div {
+  display: flex;
+}
+
+.\[\&\>div\]\:flex-col>div {
+  flex-direction: column;
+}
+
+.\[\&\>div\]\:items-center>div {
+  align-items: center;
+}
+
+.\[\&\>div\]\:space-y-3>div > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
+}
