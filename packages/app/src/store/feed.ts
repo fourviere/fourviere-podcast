@@ -39,6 +39,7 @@ export interface FeedState {
   projects: Record<string, Project>;
   createProject: () => void;
   getProjectById: (id: string) => Project;
+  updateFeed: (id: string, feed: Project["feed"]) => void;
   loadFeedFromUrl: (feedUrl: string) => void;
   loadFeedFromFileContents: (feed: string) => void;
 }
@@ -80,6 +81,14 @@ const feedStore = create<FeedState>((set, _get) => {
         });
       });
     },
+
+    updateFeed: (id: string, feed: Project["feed"]) => {
+      set((state: FeedState) => {
+        return produce(state, (draft) => {
+          draft.projects[id].feed = feed;
+        });
+      });
+    },
   };
 });
 
@@ -90,7 +99,7 @@ loadState<FeedState>("feeds").then((state) => {
 });
 
 feedStore.subscribe(async (state) => {
-  await persistState<FeedState>("feeds", state);
+  persistState("feeds", state);
 });
 
 export default feedStore;

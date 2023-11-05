@@ -18,6 +18,7 @@
     "packages/*"
   ],
   "dependencies": {
+    "@fourviere/utils": "^1.0.0",
     "@monaco-editor/react": "^4.6.0"
   }
 }

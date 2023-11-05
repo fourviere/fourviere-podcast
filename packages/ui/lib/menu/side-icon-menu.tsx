@@ -3,8 +3,8 @@ import { Scrollbars } from "react-custom-scrollbars-2";
 
 interface Props {
   logo: React.ReactNode;
-  main: React.ReactNode[];
-  footer: React.ReactNode[];
+  main: React.ReactNode;
+  footer: React.ReactNode;
 }
 
 export const SideIconMenu: React.FC<Props> = ({ main, logo, footer }) => {
