@@ -1,7 +1,4 @@
-import {
-  FullPageColumnLayout,
-  FullPageLayoutBackground,
-} from "@fourviere/ui/lib/layouts/full-page";
+import { FullPageColumnLayout } from "@fourviere/ui/lib/layouts/full-page";
 import React from "react";
 import SideMenu from "../../components/main-menu";
 import FeedMenu from "./feed-menu";

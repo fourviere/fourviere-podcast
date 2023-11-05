@@ -18,11 +18,7 @@ export default function FeedMenu() {
           <SideMenuItem<NavLinkProps> component={NavLink} to="value-for-value">
             Value for value
           </SideMenuItem>
-          <SideMenuItem<NavLinkProps>
-            component={NavLink}
-            to="source-code"
-            className={({ isActive }) => (isActive ? "ide-menu-active " : "")}
-          >
+          <SideMenuItem<NavLinkProps> component={NavLink} to="source-code">
             Source Code
           </SideMenuItem>
         </>

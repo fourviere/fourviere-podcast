@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent, useState } from "react";
 import feedStore from "../../store/feed";
 import { Container } from "@fourviere/ui/lib/box";
 import { H1, Title } from "@fourviere/ui/lib/typography";
@@ -7,7 +7,7 @@ import Input from "@fourviere/ui/lib/form/fields/input";
 import appStore from "../../store/app";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ImageLinkCard, ImageLinkCardContainer } from "@fourviere/ui/lib/cards";
-import { usePodcastIndex } from "../../hooks/usePodcastIndex";
+import { usePodcastIndex } from "../../hooks/use-podcast-index";
 import {
   InvalidPodcastFeedError,
   InvalidXMLError,
@@ -78,6 +78,7 @@ const StartByIndex: FunctionComponent<Props> = ({ done }) => {
         <ImageLinkCardContainer>
           {feeds.slice(0, 20).map((feed) => (
             <ImageLinkCard
+              theme="light"
               key={feed.id}
               src={feed.artwork}
               onClick={() => podcastSelect(feed.url)}
