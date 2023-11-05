@@ -1,8 +1,8 @@
 import React, { PropsWithChildren } from "react";
 interface Props {
     logo: React.ReactNode;
-    main: React.ReactNode[];
-    footer: React.ReactNode[];
+    main: React.ReactNode;
+    footer: React.ReactNode;
 }
 export declare const SideIconMenu: React.FC<Props>;
 type SideMenuButtonProps = {

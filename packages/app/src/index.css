@@ -8,5 +8,5 @@
 
 /* Hack the monaco editor to make it transparent */
 .monaco-editor-background {
-  background-color: transparent;
+  background-color: transparent !important;
 }

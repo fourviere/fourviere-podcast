@@ -22,9 +22,11 @@ export function serializeToXML(feed: Feed): string {
 }
 
 export async function parseXML(xmlString: string) {
-  const validation = XMLValidator.validate(xmlString);
+  const validation = XMLValidator.validate(xmlString, {
+    allowBooleanAttributes: true,
+  });
   if (validation !== true) {
-    throw new InvalidXMLError("Invalid xml");
+    throw new InvalidXMLError(`Invalid xml ${JSON.stringify(validation.err)}`);
   }
 
   const jsData = normalize(parser.parse(xmlString)) as Feed;
