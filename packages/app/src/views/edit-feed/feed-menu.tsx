@@ -6,22 +6,14 @@ export default function FeedMenu() {
     <SideMenu
       main={
         <>
-          <SideMenuItem<NavLinkProps> component={NavLink} to="info">
+          <SideMenuItem<NavLinkProps> component={NavLink} to="info" key="info">
             Presentation
           </SideMenuItem>
-          <SideMenuItem<NavLinkProps> component={NavLink} to="artwork">
-            Artwork
-          </SideMenuItem>
-          <SideMenuItem<NavLinkProps> component={NavLink} to="itunes">
-            Itunes
-          </SideMenuItem>
-          <SideMenuItem<NavLinkProps> component={NavLink} to="value-for-value">
-            Value for value
-          </SideMenuItem>
+
           <SideMenuItem<NavLinkProps>
             component={NavLink}
             to="source-code"
-            className={({ isActive }) => (isActive ? "ide-menu-active " : "")}
+            key="source-code"
           >
             Source Code
           </SideMenuItem>

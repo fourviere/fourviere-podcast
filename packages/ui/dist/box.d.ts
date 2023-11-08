@@ -43,13 +43,16 @@ declare const containerFlex: {
     col: string;
 };
 type ContainerFlex = keyof typeof containerFlex;
-export declare const Container: ({ spaceY, spaceX, padding, flex, children, wFull, }: React.PropsWithChildren<{
+interface Props<E extends React.ElementType> {
+    as?: E;
     padding?: ContainerPadding;
     spaceY?: ContainerXSpaces;
     spaceX?: ContainerYSpaces;
     flex?: ContainerFlex;
     wFull?: boolean;
-}>) => React.JSX.Element;
+    scroll?: boolean;
+}
+export declare function Container<E extends React.ElementType = "div">({ spaceY, spaceX, padding, flex, children, wFull, scroll, as, ...props }: PropsWithChildren<Props<E>> & React.ComponentPropsWithoutRef<E>): React.JSX.Element;
 export declare const HalfPageBox: import("tailwind-styled-components/dist/tailwind").TailwindComponent<React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}>;
 export declare const ErrorBox: import("tailwind-styled-components/dist/tailwind").TailwindComponent<React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, {}>;
 export {};

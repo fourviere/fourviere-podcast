@@ -79,6 +79,6 @@ export const ChannelSchema = Type.Intersect([
   RSSChannelSchema,
   ItunesChannelSchema,
   Type.Object({
-    item: Type.Array(ItemSchema),
+    item: Type.Optional(Type.Array(ItemSchema)),
   }),
 ]);

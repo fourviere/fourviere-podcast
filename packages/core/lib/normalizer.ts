@@ -56,14 +56,22 @@ function normalizeItunesImage(data: unknown): unknown {
   return d;
 }
 
-function normalizeItunesExplicit(data: unknown): unknown {
+function normalizeBoolean(data: unknown): unknown {
+  const fields: string[] = [
+    `$..["itunes:explicit"]`,
+    `$..item[*].guid["@"].isPermaLink`,
+  ];
+
   let d = data;
-  jsonpath.apply(data, `$..["itunes:explicit"]`, (value) => {
-    if (typeof value === "boolean") {
-      return value ? "true" : "false";
-    }
-    return value;
+  fields.forEach((field) => {
+    jsonpath.apply(d, field, (value) => {
+      if (typeof value === "boolean") {
+        return value ? "true" : "false";
+      }
+      return value;
+    });
   });
+
   return d;
 }
 
@@ -120,7 +128,7 @@ export function normalize(data: unknown): unknown {
   data = normalizeArrays(data);
   data = normalizeChannelLink(data);
   data = normalizeItunesImage(data);
-  data = normalizeItunesExplicit(data);
+  data = normalizeBoolean(data);
   data = normalizeItunesDuration(data);
   data = normalizeStrings(data);
   data = normalizeGuid(data);

@@ -22,6 +22,7 @@ export default function SourceCode() {
       const json = await parseXML(data);
       feedStore.getState().updateFeed(feedId, json);
     } catch (e) {
+      console.log(e);
       addError("Invalid xml");
     }
   }, 1000);

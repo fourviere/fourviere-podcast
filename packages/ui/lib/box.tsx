@@ -53,30 +53,41 @@ const containerFlex = {
 
 type ContainerFlex = keyof typeof containerFlex;
 
-export const Container = ({
+interface Props<E extends React.ElementType> {
+  as?: E;
+  padding?: ContainerPadding;
+  spaceY?: ContainerXSpaces;
+  spaceX?: ContainerYSpaces;
+  flex?: ContainerFlex;
+  wFull?: boolean;
+  scroll?: boolean;
+}
+
+export function Container<E extends React.ElementType = "div">({
   spaceY = "none",
   spaceX = "none",
   padding = "none",
   flex = "none",
   children,
   wFull,
-}: PropsWithChildren<{
-  padding?: ContainerPadding;
-  spaceY?: ContainerXSpaces;
-  spaceX?: ContainerYSpaces;
-  flex?: ContainerFlex;
-  wFull?: boolean;
-}>) => {
+  scroll,
+  as,
+  ...props
+}: PropsWithChildren<Props<E>> & React.ComponentPropsWithoutRef<E>) {
+  const Component = as || "div";
   return (
-    <div
+    <Component
+      {...props}
       className={`${containerXSpaces[spaceX]} ${containerYSpaces[spaceY]} ${
         containerPadding[padding]
-      } ${containerFlex[flex]} ${wFull ? "w-full" : ""}`}
+      } ${containerFlex[flex]} ${wFull ? "w-full" : ""} ${
+        scroll ? "overflow-y-scroll" : ""
+      }`}
     >
       {children}
-    </div>
+    </Component>
   );
-};
+}
 
 export const HalfPageBox = tw.div`w-1/2`;
 

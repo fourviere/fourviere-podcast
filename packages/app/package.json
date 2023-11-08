@@ -21,13 +21,16 @@
     "@heroicons/react": "^2.0.18",
     "@tauri-apps/api": "^1.5.0",
     "debounce": "^1.2.1",
+    "deepmerge": "^4.3.1",
     "framer-motion": "^10.16.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.47.0",
     "react-router-dom": "^6.18.0",
     "uuid": "^9.0.1",
-    "zustand": "^4.4.4"
+    "zustand": "^4.4.4",
+    "@monaco-editor/react": "^4.6.0",
+    "formik": "^2.4.5"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.5.0",

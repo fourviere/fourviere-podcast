@@ -26,12 +26,14 @@ export async function parseXML(xmlString: string) {
     allowBooleanAttributes: true,
   });
   if (validation !== true) {
+    console.log(validation.err);
     throw new InvalidXMLError(`Invalid xml ${JSON.stringify(validation.err)}`);
   }
 
   const jsData = normalize(parser.parse(xmlString)) as Feed;
 
   const isValid = podcastValidator(jsData);
+
   if (!isValid) {
     const validationErrors = podcastValidator.errors;
     throw new InvalidPodcastFeedError("Invalid podcast feed", validationErrors);
