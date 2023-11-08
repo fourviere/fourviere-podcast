@@ -21,6 +21,11 @@
     "noFallthroughCasesInSwitch": true,
     "esModuleInterop": true
   },
-  "include": ["src", "../core/tests", "../core/lib"],
+  "include": [
+    "src",
+    "../core/tests",
+    "../core/lib",
+    "../ui/lib/form/form-field.tsx"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

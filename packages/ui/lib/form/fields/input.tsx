@@ -22,7 +22,7 @@ interface InputProps {
   name?: string;
   type?: string;
   placeholder?: string;
-  value?: string;
+  value?: string | number;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   size?: InputSize;
   error?: boolean | string;
@@ -43,11 +43,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     ref
   ) => (
     <Container wFull flex="col">
-      {label && (
-        <label className="block  text-sm font-bold mb-1" htmlFor={name}>
-          {label}
-        </label>
-      )}
       <input
         ref={ref}
         className={style({ size, error })}

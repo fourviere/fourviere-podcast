@@ -9,6 +9,7 @@ import { FullPageColumnLayout } from "@fourviere/ui/lib/layouts/full-page";
 import SideMenu from "./components/main-menu";
 import EditFeed from "./views/edit-feed";
 import SourceCode from "./views/edit-feed/source-code";
+import General from "./views/edit-feed/general";
 
 const router = createBrowserRouter([
   {
@@ -26,11 +27,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/feed/:feedId",
-    element: <EditFeed />,
+    Component: EditFeed,
     children: [
       {
         path: "info",
-        element: <div>info</div>,
+        Component: General,
       },
       {
         path: "artwork",
@@ -67,7 +68,7 @@ function App() {
           <AnimatePresence>
             <Toast>
               {errors.map((e) => (
-                <ErrorBox>{e.message}</ErrorBox>
+                <ErrorBox key={e.id}>{e.message}</ErrorBox>
               ))}
             </Toast>
           </AnimatePresence>,

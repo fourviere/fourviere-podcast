@@ -3,8 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const react_quill_1 = __importDefault(require("react-quill"));
+require("./text.css");
 const classnames_1 = __importDefault(require("classnames"));
-const box_1 = require("@fourviere/ui/lib/box");
 const react_1 = __importDefault(require("react"));
 const style = ({ error, size }) => (0, classnames_1.default)("shadow appearance-none border rounded-lg w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline ", {
     "text-sm": size === "sm",
@@ -14,7 +15,8 @@ const style = ({ error, size }) => (0, classnames_1.default)("shadow appearance-
     "text-2xl font-light": size === "2xl",
     "text-rose-600 border-rose-600 placeholder:text-rose-400": !!error,
 });
-const Input = react_1.default.forwardRef(({ label, name, type, placeholder, value, onChange, size = "sm", error, }, ref) => (react_1.default.createElement(box_1.Container, { wFull: true, flex: "col" },
-    react_1.default.createElement("input", { ref: ref, className: style({ size, error }), id: name, name: name, type: type, placeholder: placeholder, value: value, onChange: onChange }),
-    error && typeof error === "string" && (react_1.default.createElement("div", { className: "text-xs  bg-rose-50 text-rose-600 px-2 py-1 rounded-b mx-3 w-50%" }, error)))));
-exports.default = Input;
+const Text = react_1.default.forwardRef(({ value, onChange, size = "sm", error }, ref) => {
+    return (react_1.default.createElement(react_1.default.Fragment, null,
+        react_1.default.createElement(react_quill_1.default, { onChange: onChange, theme: "bubble", className: style({ size, error }), value: value })));
+});
+exports.default = Text;
