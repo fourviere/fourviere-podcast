@@ -7,6 +7,7 @@ interface Props {
   value?: string;
   name: string;
   id: string;
+  helpMessage?: string;
   onImageClick?: (oldValue: any) => any;
 }
 
@@ -15,6 +16,7 @@ export default React.forwardRef<HTMLInputElement, Props>(
     {
       id,
       isUploading,
+      helpMessage,
       value,
       onImageClick: _onImageClick,
       ...props
@@ -56,10 +58,7 @@ export default React.forwardRef<HTMLInputElement, Props>(
             )}
           </div>
 
-          <div className="text-slate-400 text-xs">
-            Click on the preview to upload the image from your computer or enter
-            the address in the text field.
-          </div>
+          <div className="text-slate-400 text-xs">{helpMessage}</div>
         </div>
       </div>
     );
