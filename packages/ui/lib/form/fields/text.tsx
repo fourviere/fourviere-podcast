@@ -18,20 +18,31 @@ const style = ({ error, size }: Pick<Props, "error" | "size">) =>
   );
 
 interface Props {
+  name: string;
   value?: string;
-  onChange?: (value: string) => void;
   size?: InputSize;
   error?: boolean | string;
+  setFieldValue?: (
+    field: string,
+    value: any,
+    shouldValidate?: boolean | undefined
+  ) => Promise<unknown>;
 }
 
-const Text = ({ value, onChange, size = "sm", error }: Props) => {
+const Text: React.FC = ({
+  value,
+  setFieldValue,
+  name,
+  size = "sm",
+  error,
+}: Props) => {
   return (
     <>
       <ReactQuill
-        onChange={onChange}
         theme="bubble"
         className={style({ size, error })}
         value={value}
+        onChange={(e) => setFieldValue(name, e)}
       />
     </>
   );

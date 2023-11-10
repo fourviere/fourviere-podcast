@@ -26,6 +26,8 @@ const TRANSLATIONS = {
     "edit-feed.basic.show_name": "Show name",
     "edit-feed.basic.show_description": "Show description",
     "edit-feed.basic.image": "Show image",
+    "edit-feed.basic.image.help":
+      "Click on the preview to upload the image from your computer or enter the address in the text field.",
     "edit-feed.basic.link": "Link",
     "ui.forms.empty_field.message": "Click here to assign a value",
   },

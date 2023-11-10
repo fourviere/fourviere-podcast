@@ -11,6 +11,8 @@ import AddField from "@fourviere/ui/lib/form/add-field";
 import Undefined from "@fourviere/ui/lib/form/fields/undefined";
 import ImageField from "@fourviere/ui/lib/form/fields/image";
 import useUpload from "../../hooks/useUpload";
+import FormObserver from "../../components/form-observer";
+import { Feed } from "@fourviere/core/lib/schema/feed";
 export default function General() {
   const currentFeed = UseCurrentFeed();
   const t = useTranslations();
@@ -36,8 +38,14 @@ export default function General() {
           updateError: (value: string) =>
             setFieldError("rss.channel.0.image.url", value),
         });
+
         return (
           <Container scroll wFull flex="col" as="form" onSubmit={handleSubmit}>
+            <FormObserver<Feed>
+              updateFunction={(values) => {
+                currentFeed.update(values);
+              }}
+            />
             <FormSection
               title={t["edit-feed.basic.title"]}
               description="This is the presentation of your podcast."
@@ -66,6 +74,7 @@ export default function General() {
                   fieldProps={{
                     onImageClick: imageUpload.openFile,
                     isUploading: imageUpload.isUploading,
+                    helpMessage: t["edit-feed.basic.image.help"],
                   }}
                   emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                   initValue="https://"
@@ -80,6 +89,10 @@ export default function General() {
                   id="rss.channel.0.description"
                   name="rss.channel.0.description"
                   as={Text}
+                  fieldProps={{
+                    value: values.rss.channel[0].description,
+                    setFieldValue,
+                  }}
                   initValue="My podcast description"
                   emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                 />
@@ -95,31 +108,42 @@ export default function General() {
                     <Container spaceY="sm">
                       {values.rss.channel[0].link &&
                       values.rss.channel[0].link.length > 0 ? (
-                        values.rss.channel[0].link.map((_, index) => (
-                          <div key={index}>
-                            <FormField
-                              id={`rss.channel.0.link.${index}["@"].href`}
-                              name={`rss.channel.0.link.${index}["@"].href`}
-                              as={Input}
-                              emtpyValueButtonMessage={
-                                t["ui.forms.empty_field.message"]
-                              }
-                              initValue="https://..."
-                              overrideReset={() => arrayHelpers.remove(index)}
-                              postSlot={
-                                <AddField
-                                  onClick={() =>
-                                    arrayHelpers.insert(index, {
-                                      "@": {
-                                        href: "https://...",
-                                      },
-                                    })
-                                  }
-                                ></AddField>
-                              }
-                            />
-                          </div>
-                        ))
+                        <>
+                          {values.rss.channel[0].link.map((_, index) => (
+                            <div key={index}>
+                              <FormField
+                                id={`rss.channel.0.link.${index}["@"].href`}
+                                name={`rss.channel.0.link.${index}["@"].href`}
+                                as={Input}
+                                emtpyValueButtonMessage={
+                                  t["ui.forms.empty_field.message"]
+                                }
+                                initValue="https://..."
+                                overrideReset={() => arrayHelpers.remove(index)}
+                                postSlot={
+                                  <AddField
+                                    onClick={() =>
+                                      arrayHelpers.insert(index, {
+                                        "@": {
+                                          href: "https://...",
+                                        },
+                                      })
+                                    }
+                                  ></AddField>
+                                }
+                              />
+                            </div>
+                          ))}
+                          <AddField
+                            onClick={() =>
+                              arrayHelpers.push({
+                                "@": {
+                                  href: "https://...",
+                                },
+                              })
+                            }
+                          />
+                        </>
                       ) : (
                         <Undefined
                           onClick={() =>
@@ -138,7 +162,6 @@ export default function General() {
                 />
               </FormRow>
             </FormSection>
-
             <button type="submit">Submit</button>
           </Container>
         );
