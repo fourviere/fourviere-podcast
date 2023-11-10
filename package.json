@@ -11,15 +11,14 @@
   "scripts": {
     "test": "npm run test --workspaces --if-present",
     "type:check": "npm run type:check --workspaces --if-present",
-    "dev": "npm run build --workspaces ui & npm run tauri dev --workspaces --if-present",
-    "watch": "npm run build --workspaces ui & npx concurrently \"npm run tauri dev --workspaces --if-present\" \"npm run ui:watch --workspaces --if-present\" ",
+    "dev": "npm run build -w ./packages/ui & npm run tauri dev --workspaces --if-present",
+    "watch": "npm run build -w ./packages/ui & npx concurrently \"npm run tauri dev --workspaces --if-present\" \"npm run ui:watch --workspaces --if-present\" ",
     "lint": "npm run lint --workspaces --if-present"
   },
   "workspaces": [
     "packages/*"
   ],
   "dependencies": {
-    "@fourviere/utils": "^1.0.0",
     "concurrently": "^8.2.2"
   }
 }
