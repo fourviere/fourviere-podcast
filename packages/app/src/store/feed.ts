@@ -8,27 +8,28 @@ import { FEED_TEMPLATE } from "@fourviere/core/lib/const";
 import { fetchFeed } from "../native/network";
 
 interface Configuration {
-  storage: FTPStorage | S3Storage | LocalStorage;
-}
-
-interface FTPStorage {
-  type: "ftp";
-  host: string;
-  port: number;
-  username: string;
-  password: string;
-  path: string;
-}
-interface S3Storage {
-  type: "s3";
-  bucket: string;
-  accessKey: string;
-  secretKey: string;
-  path: string;
-}
-interface LocalStorage {
-  type: "local";
-  path: string;
+  remotes: {
+    remote: "s3" | "ftp" | "none";
+    s3?: {
+      bucket_name: string;
+      region: string;
+      endpoint: string;
+      access_key: string;
+      secret_key: string;
+      http_host: string;
+      https: boolean;
+      path: string;
+    };
+    ftp?: {
+      host: string;
+      port: number;
+      user: string;
+      password: string;
+      path: string | null;
+      http_host: string;
+      https: boolean;
+    };
+  };
 }
 
 export interface Project {
@@ -55,7 +56,14 @@ const feedStore = create<FeedState>((set, _get) => {
       set((state: FeedState) => {
         return produce(state, (draft) => {
           const id = uuidv4();
-          draft.projects[id] = { feed };
+          draft.projects[id] = {
+            feed,
+            configuration: {
+              remotes: {
+                remote: "none",
+              },
+            },
+          };
         });
       });
     },

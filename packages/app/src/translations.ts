@@ -25,7 +25,9 @@ const TRANSLATIONS = {
     "edit-feed.basic.title": "Basic informations",
     "edit-feed.basic.show_name": "Show name",
     "edit-feed.basic.show_description": "Show description",
+    "edit-feed.basic.image": "Show image",
     "edit-feed.basic.link": "Link",
+    "ui.forms.empty_field.message": "Click here to assign a value",
   },
 } as const;
 
