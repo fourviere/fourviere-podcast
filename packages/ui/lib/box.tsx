@@ -48,6 +48,7 @@ const containerFlex = {
   "row-top": `flex flex-row items-start`,
   "row-middle": `flex flex-row items-center`,
   "row-bottom": `flex flex-row items-end`,
+  "row-center": `flex flex-row items-center justify-center`,
   col: `flex flex-col`,
 };
 

@@ -10,9 +10,11 @@ import useTranslations from "../../hooks/useTranslations";
 import AddField from "@fourviere/ui/lib/form/add-field";
 import Undefined from "@fourviere/ui/lib/form/fields/undefined";
 import ImageField from "@fourviere/ui/lib/form/fields/image";
+import Select from "@fourviere/ui/lib/form/fields/select";
 import useUpload from "../../hooks/useUpload";
 import FormObserver from "../../components/form-observer";
 import { Feed } from "@fourviere/core/lib/schema/feed";
+import PODCASTCATEGORIES from "@fourviere/core/lib/podcast-namespace/categories";
 export default function General() {
   const currentFeed = UseCurrentFeed();
   const t = useTranslations();
@@ -80,7 +82,6 @@ export default function General() {
                   initValue="https://"
                 />
               </FormRow>
-
               <FormRow
                 name="rss.channel.0.description"
                 label={t["edit-feed.basic.show_description"]}
@@ -98,6 +99,28 @@ export default function General() {
                 />
               </FormRow>
 
+              <FormRow
+                name="rss.channel.0.category.0"
+                label={t["edit-feed.basic.category"]}
+              >
+                <FormField
+                  id="rss.channel.0.category.0"
+                  name="rss.channel.0.category.0"
+                  as={Select}
+                  fieldProps={{
+                    options: PODCASTCATEGORIES,
+                    labelProperty: "name",
+                    keyProperty: "name",
+                  }}
+                  initValue="My podcast category"
+                  emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                />
+              </FormRow>
+            </FormSection>
+            <FormSection
+              title={t["edit-feed.additional.title"]}
+              description="This is the presentation of your podcast."
+            >
               <FormRow
                 name="rss.channel.0.link"
                 label={t["edit-feed.basic.link"]}
@@ -134,15 +157,17 @@ export default function General() {
                               />
                             </div>
                           ))}
-                          <AddField
-                            onClick={() =>
-                              arrayHelpers.push({
-                                "@": {
-                                  href: "https://...",
-                                },
-                              })
-                            }
-                          />
+                          <Container flex="row-center" spaceX="sm">
+                            <AddField
+                              onClick={() =>
+                                arrayHelpers.push({
+                                  "@": {
+                                    href: "https://...",
+                                  },
+                                })
+                              }
+                            />
+                          </Container>
                         </>
                       ) : (
                         <Undefined
@@ -159,6 +184,18 @@ export default function General() {
                       )}
                     </Container>
                   )}
+                />
+              </FormRow>
+              <FormRow
+                name={`rss.channel.0.["itunes:keywords"]`}
+                label={t["edit-feed.basic.keywords"]}
+              >
+                <FormField
+                  id={`rss.channel.0.["itunes:keywords"]`}
+                  name={`rss.channel.0.["itunes:keywords"]`}
+                  as={Input}
+                  initValue="technology, news, podcast"
+                  emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                 />
               </FormRow>
             </FormSection>

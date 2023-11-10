@@ -27,7 +27,7 @@ export function FormField({
   return (
     <div className="relative">
       {field.value ? (
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-1">
           <Component {...field} {...props} {...fieldProps} />
           <ResetField onClick={overrideReset || reset} />
           {postSlot}
