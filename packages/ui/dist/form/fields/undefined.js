@@ -5,6 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(require("react"));
 function Undefined({ onClick }) {
-    return (react_1.default.createElement("button", { onClick: onClick, className: "w-full block text-xs text-left uppercase text-slate-400 border border-dashed border-slate-400 p-2 rounded-lg" }, "Click here to assign a value"));
+    return (react_1.default.createElement("button", { onClick: onClick, className: "w-full block text-xs text-left uppercase text-slate-600 border border-dashed border-slate-500 p-2 rounded-lg" }, "Click here to assign a value"));
 }
 exports.default = Undefined;

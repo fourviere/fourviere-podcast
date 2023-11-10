@@ -7,6 +7,8 @@ import { FieldArray, Formik } from "formik";
 import { FormField } from "@fourviere/ui/lib/form/form-field";
 import UseCurrentFeed from "../../hooks/useCurrentFeed";
 import useTranslations from "../../hooks/useTranslations";
+import AddField from "@fourviere/ui/lib/form/add-field";
+import Undefined from "@fourviere/ui/lib/form/fields/undefined";
 
 export default function General() {
   const currentFeed = UseCurrentFeed();
@@ -71,7 +73,7 @@ export default function General() {
               <FieldArray
                 name="rss.channel.0.link"
                 render={(arrayHelpers) => (
-                  <div>
+                  <Container spaceY="sm">
                     {values.rss.channel[0].link &&
                     values.rss.channel[0].link.length > 0 ? (
                       values.rss.channel[0].link.map((friend, index) => (
@@ -81,48 +83,38 @@ export default function General() {
                             name={`rss.channel.0.link.${index}["@"].href`}
                             as={Input}
                             initValue="https://..."
+                            overrideReset={() => arrayHelpers.remove(index)}
+                            postSlot={
+                              <AddField
+                                onClick={() =>
+                                  arrayHelpers.insert(index, {
+                                    "@": {
+                                      href: "https://...",
+                                    },
+                                  })
+                                }
+                              ></AddField>
+                            }
                           />
-                          <button
-                            type="button"
-                            onClick={() => arrayHelpers.remove(index)} // remove a friend from the list
-                          >
-                            -
-                          </button>
                         </div>
                       ))
                     ) : (
-                      <button
-                        type="button"
-                        onClick={() => arrayHelpers.push({})}
-                      >
-                        Add a friend
-                      </button>
+                      <Undefined
+                        onClick={() =>
+                          arrayHelpers.push({
+                            "@": {
+                              href: "https://...",
+                            },
+                          })
+                        }
+                      />
                     )}
-                    <div>
-                      <button type="submit">Submit</button>
-                    </div>
-                  </div>
+                  </Container>
                 )}
               />
             </FormRow>
           </FormSection>
-          <FormSection
-            title="RSS base info"
-            description="This is the presentation of your podcast."
-          ></FormSection>
-          <FormSection
-            title="Technical"
-            description="This is the presentation of your podcast."
-          >
-            <FormRow name="ttl" label="ttl">
-              <FormField
-                id="rss.channel.0.ttl"
-                name="rss.channel.0.ttl"
-                as={Input}
-                initValue={10}
-              />
-            </FormRow>
-          </FormSection>
+
           <button type="submit">Submit</button>
         </Container>
       )}

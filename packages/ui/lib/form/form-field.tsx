@@ -7,11 +7,15 @@ export function FormField({
   initValue,
   as,
   fieldProps,
+  overrideReset,
+  postSlot,
   ...props
 }: {
   initValue: unknown;
   as: React.ComponentType;
   fieldProps?: Record<string, unknown>;
+  postSlot?: React.ReactNode;
+  overrideReset?: () => void;
 } & FieldHookConfig<unknown>) {
   const Component = as;
   const [field, meta, helpers] = useField(props);
@@ -22,9 +26,10 @@ export function FormField({
   return (
     <div className="relative">
       {field.value ? (
-        <div className="mr-[24px]">
+        <div className="flex items-center space-x-2">
           <Component {...field} {...props} {...fieldProps} />
-          <ResetField onClick={reset} />
+          <ResetField onClick={overrideReset || reset} />
+          {postSlot}
         </div>
       ) : (
         <Undefined onClick={() => helpers.setValue(initValue)}></Undefined>
