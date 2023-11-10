@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 import tw from "tailwind-styled-components";
 
 export const FullPageLayoutBackground = tw.div` w-full h-full flex flex-col justify-center items-center background-logo`;

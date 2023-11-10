@@ -1,4 +1,3 @@
-import React from "react";
 import Undefined from "@fourviere/ui/lib/form/fields/undefined";
 import { FieldHookConfig, useField } from "formik";
 import ResetField from "./reset-field";
@@ -20,7 +19,7 @@ export function FormField({
   emtpyValueButtonMessage?: string;
 } & FieldHookConfig<unknown>) {
   const Component = as;
-  const [field, meta, helpers] = useField(props);
+  const [field, _, helpers] = useField(props);
   function reset() {
     helpers.setValue(undefined);
   }

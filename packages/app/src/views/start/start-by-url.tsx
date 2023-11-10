@@ -1,11 +1,11 @@
-import { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent, useState } from "react";
 import feedStore from "../../store/feed";
 import { Container } from "@fourviere/ui/lib/box";
 import { Title } from "@fourviere/ui/lib/typography";
 import Button from "@fourviere/ui/lib/button";
 import Input from "@fourviere/ui/lib/form/fields/input";
 import appStore from "../../store/app";
-import { SubmitHandler, useForm, useWatch } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import {
   InvalidPodcastFeedError,
   InvalidXMLError,

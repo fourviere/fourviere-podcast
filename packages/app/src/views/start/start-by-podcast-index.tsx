@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent, useState } from "react";
 import feedStore from "../../store/feed";
 import { Container } from "@fourviere/ui/lib/box";
 import { H1, Title } from "@fourviere/ui/lib/typography";
@@ -78,6 +78,7 @@ const StartByIndex: FunctionComponent<Props> = ({ done }) => {
         <ImageLinkCardContainer>
           {feeds.slice(0, 20).map((feed) => (
             <ImageLinkCard
+              theme="light"
               key={feed.id}
               src={feed.artwork}
               onClick={() => podcastSelect(feed.url)}

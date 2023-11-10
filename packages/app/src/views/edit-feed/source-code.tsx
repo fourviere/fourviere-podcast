@@ -4,7 +4,6 @@ import feedStore from "../../store/feed";
 import { parseXML, serializeToXML } from "@fourviere/core/lib/converter";
 import { debounce } from "debounce";
 import appStore from "../../store/app";
-import { Container } from "@fourviere/ui/lib/box";
 
 export default function SourceCode() {
   const { feedId } = useParams<{ feedId: string }>();

@@ -28,17 +28,7 @@ export default function General() {
         setSubmitting(false);
       }}
     >
-      {({
-        values,
-        errors,
-        touched,
-        handleChange,
-        setFieldValue,
-        setFieldError,
-        handleBlur,
-        handleSubmit,
-        isSubmitting,
-      }) => {
+      {({ values, setFieldValue, setFieldError, handleSubmit }) => {
         const imageUpload = useUpload({
           feedId: currentFeed.feedId,
           updateField: (value: string) =>
@@ -105,7 +95,7 @@ export default function General() {
                     <Container spaceY="sm">
                       {values.rss.channel[0].link &&
                       values.rss.channel[0].link.length > 0 ? (
-                        values.rss.channel[0].link.map((friend, index) => (
+                        values.rss.channel[0].link.map((_, index) => (
                           <div key={index}>
                             <FormField
                               id={`rss.channel.0.link.${index}["@"].href`}

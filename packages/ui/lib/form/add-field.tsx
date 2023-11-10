@@ -1,9 +1,4 @@
-import {
-  CursorArrowRaysIcon,
-  PlusCircleIcon,
-  XCircleIcon,
-} from "@heroicons/react/24/outline";
-import React from "react";
+import { PlusCircleIcon } from "@heroicons/react/24/outline";
 
 const AddField = ({ onClick }: { onClick: () => void }) => {
   return (

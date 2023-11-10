@@ -4,7 +4,7 @@ import React from "react";
 
 type InputSize = "sm" | "base" | "lg" | "xl" | "2xl";
 
-const style = ({ error, size }: { error: boolean | string; size: InputSize }) =>
+const style = ({ error, size }: Pick<InputProps, "error" | "size">) =>
   classNames(
     "shadow appearance-none border rounded-lg w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline ",
     {
@@ -31,7 +31,6 @@ interface InputProps {
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (
     {
-      label,
       name,
       type,
       placeholder,

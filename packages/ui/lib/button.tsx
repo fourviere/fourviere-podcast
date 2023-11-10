@@ -1,4 +1,4 @@
-import { ArrowPathIcon, CloudArrowDownIcon } from "@heroicons/react/24/outline";
+import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import classNames from "classnames";
 import React from "react";
 
