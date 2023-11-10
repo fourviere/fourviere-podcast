@@ -20,14 +20,15 @@ const undefined_1 = __importDefault(require("@fourviere/ui/lib/form/fields/undef
 const formik_1 = require("formik");
 const reset_field_1 = __importDefault(require("./reset-field"));
 function FormField(_a) {
-    var { initValue, as, fieldProps } = _a, props = __rest(_a, ["initValue", "as", "fieldProps"]);
+    var { initValue, as, fieldProps, overrideReset, postSlot } = _a, props = __rest(_a, ["initValue", "as", "fieldProps", "overrideReset", "postSlot"]);
     const Component = as;
     const [field, meta, helpers] = (0, formik_1.useField)(props);
     function reset() {
         helpers.setValue(undefined);
     }
-    return (react_1.default.createElement("div", { className: "relative" }, field.value ? (react_1.default.createElement("div", { className: "mr-[24px]" },
+    return (react_1.default.createElement("div", { className: "relative" }, field.value ? (react_1.default.createElement("div", { className: "flex items-center space-x-2" },
         react_1.default.createElement(Component, Object.assign({}, field, props, fieldProps)),
-        react_1.default.createElement(reset_field_1.default, { onClick: reset }))) : (react_1.default.createElement(undefined_1.default, { onClick: () => helpers.setValue(initValue) }))));
+        react_1.default.createElement(reset_field_1.default, { onClick: overrideReset || reset }),
+        postSlot)) : (react_1.default.createElement(undefined_1.default, { onClick: () => helpers.setValue(initValue) }))));
 }
 exports.FormField = FormField;

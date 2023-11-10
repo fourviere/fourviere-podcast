@@ -18,7 +18,7 @@ exports.SideMenuItem = void 0;
 const classnames_1 = __importDefault(require("classnames"));
 const react_1 = __importDefault(require("react"));
 const SideMenu = ({ main, header, footer }) => {
-    return (react_1.default.createElement("div", { className: "h-full flex flex-col space-y-2 w-1/5" },
+    return (react_1.default.createElement("div", { className: "h-full flex flex-col space-y-2 w-1/5  border-r border-slate-100 text-center" },
         header && react_1.default.createElement("div", { className: "grow-0" }, header),
         main && (react_1.default.createElement("div", { className: "grow shrink overflow-scroll space-y-2 inner-shadow p-6" }, main)),
         footer && react_1.default.createElement("div", { className: "grow-0" }, footer)));

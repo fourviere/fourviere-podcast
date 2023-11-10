@@ -10,6 +10,6 @@ function FormSection({ title, description, children, }) {
         react_1.default.createElement("div", { className: "p-5 space-y-3 lg:w-1/3 md:w-[200px] md:shrink-0 xl:w-1/4" },
             react_1.default.createElement(typography_1.H1, null, title),
             description && react_1.default.createElement("p", { className: "text-xs text-slate-400" }, description)),
-        react_1.default.createElement("div", { className: "space-y-8 w-full py-6" }, children)));
+        react_1.default.createElement("div", { className: "space-y-8 w-full p-6" }, children)));
 }
 exports.default = FormSection;
