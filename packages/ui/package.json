@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc && postcss lib/styles.css -o dist/styles.css",
-    "watch": "watch 'npm run build' lib"
+    "dev": "watch 'npm run build' lib"
   },
   "author": "",
   "license": "ISC",
