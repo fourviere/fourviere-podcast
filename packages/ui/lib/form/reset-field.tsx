@@ -1,6 +1,4 @@
-import { CursorArrowRaysIcon, XCircleIcon } from "@heroicons/react/24/outline";
-import React from "react";
-
+import { XCircleIcon } from "@heroicons/react/24/outline";
 const ResetField = ({ onClick }: { onClick: () => void }) => {
   return (
     <button

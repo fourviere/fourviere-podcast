@@ -1,11 +1,10 @@
 import ReactQuill from "react-quill";
 import "./text.css";
 import classNames from "classnames";
-import React, { useState } from "react";
 
 type InputSize = "sm" | "base" | "lg" | "xl" | "2xl";
 
-const style = ({ error, size }: { error: boolean | string; size: InputSize }) =>
+const style = ({ error, size }: Pick<Props, "error" | "size">) =>
   classNames(
     "shadow appearance-none border bg-white rounded-lg w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline ",
     {
@@ -25,19 +24,17 @@ interface Props {
   error?: boolean | string;
 }
 
-const Text = React.forwardRef<HTMLInputElement, Props>(
-  ({ value, onChange, size = "sm", error }: Props, ref) => {
-    return (
-      <>
-        <ReactQuill
-          onChange={onChange}
-          theme="bubble"
-          className={style({ size, error })}
-          value={value}
-        />
-      </>
-    );
-  }
-);
+const Text = ({ value, onChange, size = "sm", error }: Props) => {
+  return (
+    <>
+      <ReactQuill
+        onChange={onChange}
+        theme="bubble"
+        className={style({ size, error })}
+        value={value}
+      />
+    </>
+  );
+};
 
 export default Text;
