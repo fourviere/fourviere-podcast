@@ -1,8 +1,18 @@
 import React from "react";
 import Undefined from "@fourviere/ui/lib/form/fields/undefined";
-import { useField } from "formik";
+import { FieldHookConfig, useField } from "formik";
 import ResetField from "./reset-field";
-export function FormField({ label, initValue, as, ...props }: any) {
+
+export function FormField({
+  initValue,
+  as,
+  fieldProps,
+  ...props
+}: {
+  initValue: unknown;
+  as: React.ComponentType;
+  fieldProps?: Record<string, unknown>;
+} & FieldHookConfig<unknown>) {
   const Component = as;
   const [field, meta, helpers] = useField(props);
   function reset() {
@@ -12,11 +22,13 @@ export function FormField({ label, initValue, as, ...props }: any) {
   return (
     <div className="relative">
       {field.value ? (
-        <Component {...field} {...props} />
+        <div className="mr-[24px]">
+          <Component {...field} {...props} {...fieldProps} />
+          <ResetField onClick={reset} />
+        </div>
       ) : (
         <Undefined onClick={() => helpers.setValue(initValue)}></Undefined>
       )}
-      <ResetField onClick={reset} />
     </div>
   );
 }

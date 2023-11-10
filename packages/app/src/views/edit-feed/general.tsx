@@ -3,32 +3,25 @@ import FormSection from "@fourviere/ui/lib/form/form-section";
 import FormRow from "@fourviere/ui/lib/form/form-row";
 import Input from "@fourviere/ui/lib/form/fields/input";
 import Text from "@fourviere/ui/lib/form/fields/text";
-import { useParams } from "react-router-dom";
-import feedStore from "../../store/feed";
-import { Field, Formik } from "formik";
-import Undefined from "@fourviere/ui/lib/form/fields/undefined";
+import { FieldArray, Formik } from "formik";
 import { FormField } from "@fourviere/ui/lib/form/form-field";
+import UseCurrentFeed from "../../hooks/useCurrentFeed";
+import useTranslations from "../../hooks/useTranslations";
 
 export default function General() {
-  const { feedId } = useParams<{ feedId: string }>();
+  const currentFeed = UseCurrentFeed();
+  const t = useTranslations();
 
-  if (!feedId) {
-    return null;
-  }
-
-  const project = feedStore((state) => state.getProjectById(feedId));
-  const updateFeed = feedStore((state) => state.updateFeed);
-
-  if (!project) {
+  if (!currentFeed) {
     return null;
   }
 
   return (
     <Formik
-      initialValues={project.feed}
+      initialValues={currentFeed.feed}
       enableReinitialize
       onSubmit={(values, { setSubmitting }) => {
-        updateFeed(feedId, values);
+        currentFeed.update(values);
         setSubmitting(false);
       }}
     >
@@ -41,40 +34,75 @@ export default function General() {
         handleBlur,
         handleSubmit,
         isSubmitting,
-        /* and other goodies */
       }) => (
         <Container scroll wFull flex="col" as="form" onSubmit={handleSubmit}>
           <FormSection
-            title="Presentation"
+            title={t["edit-feed.basic.title"]}
             description="This is the presentation of your podcast."
           >
-            <FormRow name="title" label="title">
+            <FormRow
+              name="rss.channel.0.title"
+              label={t["edit-feed.basic.show_name"]}
+            >
               <FormField
                 id="rss.channel.0.title"
                 name="rss.channel.0.title"
                 as={Input}
-                setFieldValue={setFieldValue}
-                value={values.rss.channel[0].title || ""}
-                initValue="My podcast"
+                fieldProps={{ size: "lg" }}
+                initValue="My podcast title"
               />
             </FormRow>
-            <FormRow name="description" label="description">
+
+            <FormRow
+              name="rss.channel.0.description"
+              label={t["edit-feed.basic.show_description"]}
+            >
               <FormField
                 id="rss.channel.0.description"
                 name="rss.channel.0.description"
                 as={Text}
-                setFieldValue={setFieldValue}
-                value={values.rss.channel[0].description || ""}
                 initValue="My podcast description"
               />
             </FormRow>
-            <FormRow name="guid" label="guid">
-              <Field
-                id="rss.channel.0.guid"
-                name="rss.channel.0.guid"
-                as={Input}
-                setFieldValue={setFieldValue}
-                value={values.rss.channel[0].title || ""}
+            <FormRow
+              name="rss.channel.0.link"
+              label={t["edit-feed.basic.link"]}
+            >
+              <FieldArray
+                name="rss.channel.0.link"
+                render={(arrayHelpers) => (
+                  <div>
+                    {values.rss.channel[0].link &&
+                    values.rss.channel[0].link.length > 0 ? (
+                      values.rss.channel[0].link.map((friend, index) => (
+                        <div key={index}>
+                          <FormField
+                            id={`rss.channel.0.link.${index}["@"].href`}
+                            name={`rss.channel.0.link.${index}["@"].href`}
+                            as={Input}
+                            initValue="https://..."
+                          />
+                          <button
+                            type="button"
+                            onClick={() => arrayHelpers.remove(index)} // remove a friend from the list
+                          >
+                            -
+                          </button>
+                        </div>
+                      ))
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => arrayHelpers.push({})}
+                      >
+                        Add a friend
+                      </button>
+                    )}
+                    <div>
+                      <button type="submit">Submit</button>
+                    </div>
+                  </div>
+                )}
               />
             </FormRow>
           </FormSection>
@@ -87,13 +115,11 @@ export default function General() {
             description="This is the presentation of your podcast."
           >
             <FormRow name="ttl" label="ttl">
-              <Undefined />
-              <Field
+              <FormField
                 id="rss.channel.0.ttl"
                 name="rss.channel.0.ttl"
                 as={Input}
-                setFieldValue={setFieldValue}
-                value={values.rss.channel[0].ttl || 0}
+                initValue={10}
               />
             </FormRow>
           </FormSection>
