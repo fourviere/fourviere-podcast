@@ -7,7 +7,7 @@ type InputSize = "sm" | "base" | "lg" | "xl" | "2xl";
 
 const style = ({ error, size }: { error: boolean | string; size: InputSize }) =>
   classNames(
-    "shadow appearance-none border rounded-lg w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline ",
+    "shadow appearance-none border bg-white rounded-lg w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline ",
     {
       "text-sm": size === "sm",
       "text-base": size === "base",

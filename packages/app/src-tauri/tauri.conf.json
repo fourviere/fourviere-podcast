@@ -7,7 +7,7 @@
     "withGlobalTauri": false
   },
   "package": {
-    "productName": "fourviere-podcast",
+    "productName": "Fourviere Podcast",
     "version": "0.0.0"
   },
   "tauri": {
@@ -15,6 +15,14 @@
       "all": false,
       "path": {
         "all": true
+      },
+      "dialog": {
+        "all": true,
+        "ask": true,
+        "confirm": true,
+        "message": true,
+        "open": true,
+        "save": true
       },
       "fs": {
         "scope": ["$APPDATA/**", "$APPDATA/*", "$APPDATA/", "$APPDATA"],
@@ -53,7 +61,7 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "fourviere-podcast",
+        "title": "Fourviere Podcast Feed Studio",
         "width": 800,
         "height": 600
       }

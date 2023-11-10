@@ -15,6 +15,8 @@ fn main() {
             greet,
             commands::network::fetch_feed,
             commands::fs::read_file,
+            commands::s3::s3_upload,
+            commands::ftp::ftp_upload,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

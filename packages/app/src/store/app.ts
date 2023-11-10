@@ -30,6 +30,7 @@ interface AppState {
       };
     };
   };
+
   getConfigurations: (
     service: keyof AppState["configurations"]["services"]
   ) => AppState["configurations"]["services"][keyof AppState["configurations"]["services"]];
@@ -65,6 +66,9 @@ const appStore = create<AppState>((set, get) => {
 
     // Configurations
     configurations: {
+      remotes: {
+        remote: "none",
+      },
       services: {
         podcastIndex: {
           enabled: false,

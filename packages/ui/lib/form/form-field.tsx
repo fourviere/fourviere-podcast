@@ -9,13 +9,15 @@ export function FormField({
   fieldProps,
   overrideReset,
   postSlot,
+  emtpyValueButtonMessage,
   ...props
 }: {
   initValue: unknown;
-  as: React.ComponentType;
+  as: React.ComponentType<any>;
   fieldProps?: Record<string, unknown>;
   postSlot?: React.ReactNode;
   overrideReset?: () => void;
+  emtpyValueButtonMessage?: string;
 } & FieldHookConfig<unknown>) {
   const Component = as;
   const [field, meta, helpers] = useField(props);
@@ -32,7 +34,9 @@ export function FormField({
           {postSlot}
         </div>
       ) : (
-        <Undefined onClick={() => helpers.setValue(initValue)}></Undefined>
+        <Undefined onClick={() => helpers.setValue(initValue)}>
+          {emtpyValueButtonMessage}
+        </Undefined>
       )}
     </div>
   );

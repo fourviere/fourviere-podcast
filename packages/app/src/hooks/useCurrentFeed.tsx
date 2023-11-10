@@ -19,5 +19,6 @@ export default function UseCurrentFeed() {
   return {
     update: (value: Feed) => updateFeed(feedId, value),
     feed: project.feed,
+    feedId,
   };
 }
