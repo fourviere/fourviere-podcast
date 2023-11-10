@@ -25,6 +25,7 @@ const RSSChannelSchema = Type.Object({
   lastBuildDate: Type.Optional(Type.String()),
   category: Type.Optional(Type.Array(Type.String())),
   generator: Type.Optional(Type.String()),
+  keywords: Type.Optional(Type.String()),
   image: Type.Optional(
     Type.Object({
       url: Type.String(),
@@ -60,6 +61,7 @@ const ItunesChannelSchema = Type.Object({
   ),
   // XML convert the false value as boolean
   "itunes:explicit": Type.Optional(Type.String()),
+  "itunes:keywords": Type.Optional(Type.String()),
   "itunes:author": Type.Optional(Type.String()),
   "itunes:link": Type.Optional(Type.String()),
   "itunes:owner": Type.Optional(
