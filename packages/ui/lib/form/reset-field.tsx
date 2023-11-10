@@ -3,7 +3,7 @@ import React from "react";
 const ResetField = ({ onClick }: { onClick: () => void }) => {
   return (
     <button
-      className="absolute right-1 top-[50%] -translate-y-[50%] rounded-full  text-white hover:bg-slate-600 focus:outline-none bg-slate-400"
+      className="absolute right-0 top-[50%] -translate-y-[50%] rounded-full  text-white hover:bg-slate-600 focus:outline-none bg-slate-300"
       onClick={onClick}
     >
       <svg

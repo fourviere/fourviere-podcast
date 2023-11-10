@@ -22,6 +22,10 @@ const TRANSLATIONS = {
       "The feed is not a valid podcast feed",
     "start.start_by_index.importing_in_progress":
       "Importing in progress... please wait",
+    "edit-feed.basic.title": "Basic informations",
+    "edit-feed.basic.show_name": "Show name",
+    "edit-feed.basic.show_description": "Show description",
+    "edit-feed.basic.link": "Link",
   },
 } as const;
 

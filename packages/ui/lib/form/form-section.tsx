@@ -1,5 +1,4 @@
 import React, { PropsWithChildren } from "react";
-import { useIntersectionObserver } from "@uidotdev/usehooks";
 import { H1 } from "../typography";
 
 interface FormSectionProps {
@@ -20,7 +19,7 @@ export default function FormSection({
         <H1>{title}</H1>
         {description && <p className="text-xs text-slate-400">{description}</p>}
       </div>
-      <div className="space-y-2 w-full p-5">{children}</div>
+      <div className="space-y-8 w-full py-6">{children}</div>
     </section>
   );
 }
