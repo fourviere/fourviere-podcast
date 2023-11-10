@@ -162,7 +162,6 @@ export default function General() {
                 />
               </FormRow>
             </FormSection>
-            <button type="submit">Submit</button>
           </Container>
         );
       }}
