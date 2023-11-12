@@ -140,7 +140,7 @@ mod test {
             user: "ForuviereTestUser".to_string(),
             password: "StealThisUselessPassword".to_string(),
             local_path: test_file!("gitbar.xml").to_string(),
-            path: None, // Some("/".to_string()),
+            path: None,
             file_name: "gitbar".to_string(),
             http_host: "localhost".to_string(),
             https: false,
@@ -165,7 +165,7 @@ mod test {
             user: "ForuviereTestUser".to_string(),
             password: "StealThisUselessPassword".to_string(),
             local_path: test_file!("gitbar.xml").to_string(),
-            path: None, // Some("/".to_string()),
+            path: None,
             file_name: "gitbar".to_string(),
             http_host: "localhosts".to_string(),
             https: false,
@@ -177,7 +177,9 @@ mod test {
 
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
-        assert!(ftp_upload(payload).await.is_err_and(|err| err == "Failed to connect to server"));
+        assert!(ftp_upload(payload)
+            .await
+            .is_err_and(|err| err == "Failed to connect to server"));
         handle.abort();
     }
 
@@ -190,7 +192,7 @@ mod test {
             user: "NotAValidUserName".to_string(),
             password: "StealThisUselessPassword".to_string(),
             local_path: test_file!("gitbar.xml").to_string(),
-            path: None, // Some("/".to_string()),
+            path: None,
             file_name: "gitbar".to_string(),
             http_host: "localhost".to_string(),
             https: false,
@@ -202,7 +204,9 @@ mod test {
 
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
-        assert!(ftp_upload(payload).await.is_err_and(|err| err == "Failed to login to server: {}"));
+        assert!(ftp_upload(payload)
+            .await
+            .is_err_and(|err| err == "Failed to login to server: {}"));
         handle.abort();
     }
 
@@ -215,7 +219,7 @@ mod test {
             user: "ForuviereTestUser".to_string(),
             password: "StealThisUselessPassword".to_string(),
             local_path: test_file!("gitbar.rss").to_string(),
-            path: None, // Some("/".to_string()),
+            path: None,
             file_name: "gitbar".to_string(),
             http_host: "localhost".to_string(),
             https: false,
@@ -227,7 +231,9 @@ mod test {
 
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
-        assert!(ftp_upload(payload).await.is_err_and(|err| err == "Failed to open file"));
+        assert!(ftp_upload(payload)
+            .await
+            .is_err_and(|err| err == "Failed to open file"));
         handle.abort();
     }
 }
