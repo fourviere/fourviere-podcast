@@ -26,3 +26,26 @@ pub async fn read_file(path: &str) -> Result<String, String> {
 
     Ok(utf.unwrap())
 }
+
+#[cfg(test)]
+mod test {
+    use rss::Channel;
+
+    use crate::{commands::fs::read_file, test_file};
+
+    #[tokio::test]
+    async fn test_read_file_ok() {
+        let feed = read_file(test_file!("gitbar.xml")).await;
+        assert!(feed.is_ok());
+        let channel = Channel::read_from(feed.unwrap().as_bytes());
+        assert!(channel.is_ok());
+
+        assert_eq!(channel.unwrap().title, "Gitbar - Italian developer podcast")
+    }
+
+    #[tokio::test]
+    async fn test_read_file_error() {
+        let feed = read_file(test_file!("gitbar.rss")).await;
+        assert!(feed.is_err());
+    }
+}
