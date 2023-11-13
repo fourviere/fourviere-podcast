@@ -17,3 +17,7 @@ updates:
     directory: "/packages/ui"
     schedule:
       interval: "daily"
+  - package-ecosystem: "cargo" 
+    directory: "/packages/app/src-tauri"
+    schedule:
+      interval: "daily"
