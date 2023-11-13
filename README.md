@@ -1,49 +1,21 @@
 # Fourviere Podcast
 
-The feed editor for the open podcasting
-
-Fourviere is an opensource Podcast RSS feed editor that supports all the podcasting 2.0 tags and allow to publish the feed and the episode via FTP or Amazon S3 ecc...
+Fourviere aims to be the most advanced RSS feed editor for open podcasting out there. 
 
 ![Fourviere](./docs/fourviere.png)
 
-# What is open podcasting
+We all see that the world of podcasting is increasingly becoming a walled garden dominated by big players, so returning to its roots, the RSS feed, is both a political act and a matter of survival. To achieve this, we need to create software that meets all the requirements of modern software in terms of functionality, aesthetics, and ease of use, while under the hood, it has a heart made of XML.
 
-Open podcasting refers to the concept of creating and distributing podcasts in **an open and decentralized manner**, allowing for greater accessibility, interoperability, and freedom in the podcasting ecosystem. It stands in contrast to closed or proprietary podcasting platforms and ecosystems.
+The features that Fourviere offers include:
 
-## Key characteristics of open podcasting include:
+- Creation of RSS feeds with the ability to support all the parameters of podcasting 2.0
+- Uploading the feed and assets to S3 or FTP to decouple the creation of the podcast from its hosting (a practice often pushed by hosting providers for feeds). By doing this, we can host our feed on any web space, on a personal server, or even on more advanced cloud providers.
+- File editing and transformation features: creation of chapters and store it in the json file and the multimedia file in the form of ID3V2 tags, integration with Podcast Index web services, ChatGPT for creating episode notes, and integrated transcription function.
+- Native video tag support: It will be possible to configure the embedded tag for the video quickly, as well as upload the video with the same simplicity. Thanks to the power of FFMPEG integrated into the application, it will also be possible to compress and encode the video and audio files automatically.
 
-### Open Standards:
+## Bootstrap the project
 
-Open podcasting relies on open and widely adopted standards, such as **RSS (Really Simple Syndication)** feeds with enclosures. This means that anyone can create, distribute, and consume podcasts using these standards without being tied to a specific platform.
-
-### Interoperability:
-
-Open podcasting encourages compatibility among various podcasting apps and platforms. Podcast listeners can choose from a wide range of apps and services to subscribe to and listen to podcasts, without being limited to a single closed ecosystem.
-
-### Freedom of Choice:
-
-Content creators and listeners have the freedom to use the tools and services of their choice. Creators can host their podcasts on their own servers or with hosting providers of their choosing, while listeners can use any compatible podcast app to access the content.
-
-### No Gatekeepers:
-
-Open podcasting doesn't rely on gatekeepers or exclusive distribution deals. Anyone can start a podcast, and the content is not subject to centralized control or censorship.
-
-### Accessibility:
-
-Open podcasting is generally more accessible because it doesn't require special permissions, approvals, or fees to create or distribute content. This openness promotes a diverse range of voices and content.
-
-### Content Ownership:
-
-Creators retain ownership and control over their podcast content. They are not beholden to a platform or network's terms and conditions.
-
-# How to run the application
-
-## Prerequisite
-
-Nodejs and Rust should be installed in your machine
-
-## Make it working
-
+- Install [Node.js](https://nodejs.org/en) and [Rust](https://www.rust-lang.org/) 
 - Clone the repository
 - Run `npm install` from the project's root folder
 - Run `npm run dev` from the projects root folder
