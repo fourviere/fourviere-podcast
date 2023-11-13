@@ -15,6 +15,8 @@ The features that Fourviere offers include:
 
 ## Bootstrap the project
 
+[![test-on-pr](https://github.com/fourviere/fourviere-podcast/actions/workflows/test-on-pr.yml/badge.svg)](https://github.com/fourviere/fourviere-podcast/actions/workflows/test-on-pr.yml)
+
 - Install [Node.js](https://nodejs.org/en) and [Rust](https://www.rust-lang.org/)
 - Clone the repository
 - Run `npm install` from the project's root folder
