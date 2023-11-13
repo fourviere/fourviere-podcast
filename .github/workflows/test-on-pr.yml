@@ -31,6 +31,6 @@ jobs:
       - name: run rust tests
         run: cargo test
         working-directory: packages/app/src-tauri
-      - name: run rust tests
+      - name: run rust build
         run: cargo build
         working-directory: packages/app/src-tauri
