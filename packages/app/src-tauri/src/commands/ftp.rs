@@ -90,7 +90,7 @@ pub async fn ftp_upload(payload: Payload) -> Result<String, String> {
 
 #[cfg(test)]
 mod test {
-    use std::{sync::Arc, time::Duration};
+    use std::{env::temp_dir, sync::Arc, time::Duration};
 
     use async_trait::async_trait;
     use libunftp::{
@@ -126,7 +126,7 @@ mod test {
 
     async fn ftp_server(port: u16) -> Result<(), ServerError> {
         let server = libunftp::Server::with_authenticator(
-            Box::new(move || unftp_sbe_fs::Filesystem::new("/tmp")),
+            Box::new(move || unftp_sbe_fs::Filesystem::new(temp_dir())),
             Arc::new(TestAuthenticator {}),
         )
         .passive_ports(50000..65535);
