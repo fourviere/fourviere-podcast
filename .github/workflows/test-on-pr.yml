@@ -31,6 +31,6 @@ jobs:
       - name: run rust tests
         run: cargo test
         working-directory: packages/app/src-tauri
-      - uses: tauri-apps/tauri-action@v0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: run rust tests
+        run: cargo build
+        working-directory: packages/app/src-tauri
