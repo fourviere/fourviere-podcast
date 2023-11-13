@@ -26,6 +26,11 @@ jobs:
         run: npm install
       - name: build ui
         run: npm run build:ui
+      - name: run typescript tests
+        run: npm run test
+      - name: run rust tests
+        run: cargo test
+        working-directory: packages/app/src-tauri
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
