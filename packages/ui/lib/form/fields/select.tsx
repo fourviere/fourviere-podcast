@@ -1,17 +1,17 @@
 import { ChevronUpDownIcon } from "@heroicons/react/24/solid";
 import classNames from "classnames";
-import { ClassAttributes, InputHTMLAttributes } from "react";
+import { ClassAttributes, InputHTMLAttributes, FC } from "react";
 import { JSX } from "react/jsx-runtime";
 
-export default function Select<Option extends Record<string, string>>(
-  p: JSX.IntrinsicAttributes &
+const Select: FC<
+  JSX.IntrinsicAttributes &
     ClassAttributes<HTMLSelectElement> &
     InputHTMLAttributes<HTMLSelectElement> & {
-      options: Array<Option>;
-      keyProperty: keyof Option;
-      labelProperty: keyof Option;
+      options: Array<Record<string, string>>;
+      keyProperty: string;
+      labelProperty: string;
     }
-) {
+> = (p) => {
   const { className, options, keyProperty, labelProperty, ...props } = p;
 
   return (
@@ -30,4 +30,6 @@ export default function Select<Option extends Record<string, string>>(
       <ChevronUpDownIcon className="absolute right-[34px] margin-y-auto w-6 h-6 pointer-events-none text-slate-700" />
     </>
   );
-}
+};
+
+export default Select;

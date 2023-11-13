@@ -15,6 +15,7 @@ import useUpload from "../../hooks/useUpload";
 import FormObserver from "../../components/form-observer";
 import { Feed } from "@fourviere/core/lib/schema/feed";
 import PODCASTCATEGORIES from "@fourviere/core/lib/podcast-namespace/categories";
+import { FC } from "react";
 export default function General() {
   const currentFeed = UseCurrentFeed();
   const t = useTranslations();
@@ -89,7 +90,7 @@ export default function General() {
                 <FormField
                   id="rss.channel.0.description"
                   name="rss.channel.0.description"
-                  as={Text}
+                  as={Text as FC}
                   fieldProps={{
                     value: values.rss.channel[0].description,
                     setFieldValue,
@@ -106,7 +107,7 @@ export default function General() {
                 <FormField
                   id="rss.channel.0.category.0"
                   name="rss.channel.0.category.0"
-                  as={Select}
+                  as={Select as FC}
                   fieldProps={{
                     options: PODCASTCATEGORIES,
                     labelProperty: "name",
