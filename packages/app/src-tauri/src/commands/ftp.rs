@@ -31,6 +31,9 @@ pub async fn ftp_upload(payload: Payload) -> Result<String, String> {
         return Err("Failed to login to server: {}".to_string());
     }
 
+    // As default set the FTP connection to passive mode
+    ftp_stream.set_mode(Mode::Passive);
+
     // https://www.iana.org/assignments/ftp-commands-extensions/ftp-commands-extensions.xhtml
     if ftp_stream
         .feat()
