@@ -29,20 +29,20 @@ interface Props {
   ) => Promise<unknown>;
 }
 
-const Text: React.FC = ({
+const Text: React.FC<Props> = ({
   value,
   setFieldValue,
   name,
   size = "sm",
   error,
-}: Props) => {
+}) => {
   return (
     <>
       <ReactQuill
         theme="bubble"
         className={style({ size, error })}
         value={value}
-        onChange={(e) => setFieldValue(name, e)}
+        onChange={(e) => setFieldValue?.(name, e)}
       />
     </>
   );

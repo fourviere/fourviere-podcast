@@ -11,9 +11,10 @@
   "scripts": {
     "test": "npm run test --workspaces --if-present",
     "type:check": "npm run type:check --workspaces --if-present",
-    "dev": "npm run build -w ./packages/ui & npm run tauri dev --workspaces --if-present",
-    "watch": "npm run build -w ./packages/ui & npx concurrently \"npm run tauri dev --workspaces --if-present\" \"npm run ui:watch --workspaces --if-present\" ",
-    "lint": "npm run lint --workspaces --if-present"
+    "dev": "npm run build:ui & npm run tauri dev --workspaces --if-present",
+    "watch": "npm run build:ui & npx concurrently \"npm run tauri dev --workspaces --if-present\" \"npm run ui:watch --workspaces --if-present\" ",
+    "lint": "npm run lint --workspaces --if-present",
+    "build:ui": "npm run build -w ./packages/ui"
   },
   "workspaces": [
     "packages/*"
