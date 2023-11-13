@@ -66,7 +66,7 @@ pub async fn ftp_upload(payload: Payload) -> Result<String, String> {
 
     let mut reader = BufReader::new(file.unwrap());
     let res = ftp_stream.put_file(format!("{}.{}", &payload.file_name, &ext), &mut reader);
-    
+
     if let Err(_) = res {
         return Err("Failed to upload file".to_string());
     }
