@@ -1,4 +1,4 @@
-use std::path::Path;
+use std::{borrow::Cow, path::Path};
 
 use mime_guess::from_path;
 use s3::{creds::Credentials, Bucket, Region};
@@ -51,7 +51,7 @@ pub async fn s3_upload(payload: Payload) -> Result<String, String> {
     let mime = from_path(&payload.local_path).first_or_octet_stream();
     let ext = Path::new(&payload.local_path)
         .extension()
-        .map_or("".to_string(), |ext| ext.to_string_lossy().to_string());
+        .map_or(Cow::default(), |ext| ext.to_string_lossy());
 
     let path = payload.path.unwrap_or("".to_string());
     let new_file_name = format!("{}/{}.{}", &path, &payload.file_name, &ext);

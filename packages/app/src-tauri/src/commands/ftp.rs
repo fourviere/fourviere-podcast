@@ -1,3 +1,4 @@
+use std::borrow::Cow;
 use std::path::Path;
 use std::str;
 use suppaftp::types::FileType;
@@ -19,9 +20,7 @@ pub struct Payload {
 
 #[tauri::command]
 pub async fn ftp_upload(payload: Payload) -> Result<String, String> {
-    let addr = format!("{}:{}", payload.host, payload.port)
-        .as_str()
-        .to_string();
+    let addr = format!("{}:{}", payload.host, payload.port);
 
     let mut ftp_stream = AsyncFtpStream::connect(addr)
         .await
@@ -58,7 +57,7 @@ pub async fn ftp_upload(payload: Payload) -> Result<String, String> {
 
     let ext = Path::new(&payload.local_path)
         .extension()
-        .map_or("".to_string(), |ext| ext.to_string_lossy().to_string());
+        .map_or(Cow::default(), |ext| ext.to_string_lossy());
 
     let mut reader = tokio::fs::File::open(&payload.local_path)
         .await
