@@ -1,5 +1,5 @@
 import { Feed } from "@fourviere/core/lib/schema/feed";
-import feedStore from "../store/feed";
+import feedStore, { Configuration } from "../store/feed";
 import { useParams } from "react-router-dom";
 
 export default function UseCurrentFeed() {
@@ -11,6 +11,7 @@ export default function UseCurrentFeed() {
 
   const project = feedStore((state) => state.getProjectById(feedId));
   const updateFeed = feedStore((state) => state.updateFeed);
+  const updateConfiguration = feedStore((state) => state.updateConfiguration);
 
   if (!project) {
     return null;
@@ -18,7 +19,10 @@ export default function UseCurrentFeed() {
 
   return {
     update: (value: Feed) => updateFeed(feedId, value),
+    updateConfiguration: (value: Configuration) =>
+      updateConfiguration(feedId, value),
     feed: project.feed,
+    configuration: project.configuration,
     feedId,
   };
 }

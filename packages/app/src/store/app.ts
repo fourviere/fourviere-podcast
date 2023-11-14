@@ -7,33 +7,35 @@ export enum View {
   START = "start",
 }
 
-export enum Language {
-  EN = "en",
-}
+const Language = {
+  en: "en",
+  fr: "fr",
+  de: "de",
+  es: "es",
+  it: "it",
+} as const;
 
 const ERROR_TIMEOUT = 5000;
 
-interface AppState {
-  currentView: View;
-
+export interface AppState {
   //Translations
-  currentLanguage: Language;
-  getTranslations: () => (typeof TRANSLATIONS)[Language];
-
-  //Configurations
-  configurations: {
-    services: {
-      podcastIndex: {
-        enabled: boolean;
-        apiKey?: string;
-        apiSecret?: string;
-      };
+  locale: keyof typeof TRANSLATIONS;
+  services: {
+    podcastIndex: {
+      enabled: boolean;
+      apiKey?: string;
+      apiSecret?: string;
     };
   };
+  getTranslations: () => (typeof TRANSLATIONS)[keyof typeof TRANSLATIONS];
+
+  //Configurations
+
+  updateConfigurations: (configurations: AppState) => void;
 
   getConfigurations: (
-    service: keyof AppState["configurations"]["services"]
-  ) => AppState["configurations"]["services"][keyof AppState["configurations"]["services"]];
+    service: keyof AppState["services"]
+  ) => AppState["services"][keyof AppState["services"]];
 
   //Error system
   errors: {
@@ -45,15 +47,18 @@ interface AppState {
 
 const appStore = create<AppState>((set, get) => {
   return {
-    currentView: View.START,
-    // Translations
-    currentLanguage: Language.EN,
-    getTranslations: () => {
-      return TRANSLATIONS[get().currentLanguage];
+    locale: Language.en,
+    services: {
+      podcastIndex: {
+        enabled: false,
+      },
     },
-
-    // Error system
     errors: [],
+
+    getTranslations: () => {
+      return TRANSLATIONS[get().locale];
+    },
+    // Error system
     addError: (error) => {
       const e = { message: error, id: uuidv4() };
       set((state) => ({ errors: [...state.errors, e] }));
@@ -64,19 +69,15 @@ const appStore = create<AppState>((set, get) => {
       }, ERROR_TIMEOUT);
     },
 
-    // Configurations
-    configurations: {
-      remotes: {
-        remote: "none",
-      },
-      services: {
-        podcastIndex: {
-          enabled: false,
-        },
-      },
+    updateConfigurations: (configurations) => {
+      set((state) => ({
+        ...state,
+        ...configurations,
+      }));
     },
+
     getConfigurations: (service) => {
-      return get().configurations.services?.[service];
+      return get().services?.[service];
     },
   };
 });

@@ -5,11 +5,11 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Toast from "@fourviere/ui/lib/modals/toast";
 import { ErrorBox } from "@fourviere/ui/lib/box";
-import { FullPageColumnLayout } from "@fourviere/ui/lib/layouts/full-page";
-import SideMenu from "./components/main-menu";
 import EditFeed from "./views/edit-feed";
 import SourceCode from "./views/edit-feed/source-code";
 import General from "./views/edit-feed/general";
+import FeedConfiguration from "./views/edit-feed/configuration";
+import GlobalConfiguration from "./views/configuration";
 
 const router = createBrowserRouter([
   {
@@ -17,20 +17,15 @@ const router = createBrowserRouter([
     element: <StartView />,
   },
   {
-    path: "/config",
-    element: (
-      <FullPageColumnLayout>
-        <SideMenu />
-        <div>config</div>
-      </FullPageColumnLayout>
-    ),
+    path: "/configurations",
+    Component: GlobalConfiguration,
   },
   {
     path: "/feed/:feedId",
     Component: EditFeed,
     children: [
       {
-        path: "info",
+        path: "feed-basic",
         Component: General,
       },
       {
@@ -42,12 +37,12 @@ const router = createBrowserRouter([
         element: <div>itunes</div>,
       },
       {
-        path: "source-code",
+        path: "feed-source-code",
         element: <SourceCode />,
       },
       {
-        path: "value-for-value",
-        element: <div>v4v</div>,
+        path: "feed-config",
+        Component: FeedConfiguration,
       },
       {
         path: "episodes/:episodeId",

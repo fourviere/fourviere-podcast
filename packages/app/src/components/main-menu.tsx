@@ -16,7 +16,11 @@ const SideMenu: React.FC = () => {
     .reverse()
     .map((key) => {
       return (
-        <Link to={`/feed/${key}/info`} style={{ display: "block" }} key={key}>
+        <Link
+          to={`/feed/${key}/feed-basic`}
+          style={{ display: "block" }}
+          key={key}
+        >
           <ImageLinkCard
             theme="dark"
             size="xs"
@@ -34,7 +38,7 @@ const SideMenu: React.FC = () => {
     });
 
   const Config = (
-    <Link to="/config">
+    <Link to="/configurations">
       <SideMenuButton>
         <CogIcon style={{ width: "30px" }} />
       </SideMenuButton>
