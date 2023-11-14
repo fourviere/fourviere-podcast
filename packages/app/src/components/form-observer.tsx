@@ -16,6 +16,7 @@ export default function FormObserver<T>({ updateFunction }: Props<T>) {
       updateFunction(values);
     }, 1500);
     setTimer(newTimer);
+    return clearTimeout(timer);
   }, [values]);
 
   return null;

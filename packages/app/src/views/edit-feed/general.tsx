@@ -50,12 +50,12 @@ export default function General() {
               }}
             />
             <FormSection
-              title={t["edit-feed.basic.title"]}
+              title={t["edit_feed.basic.title"]}
               description="This is the presentation of your podcast."
             >
               <FormRow
                 name="rss.channel.0.title"
-                label={t["edit-feed.basic.show_name"]}
+                label={t["edit_feed.basic.show_name"]}
               >
                 <FormField
                   id="rss.channel.0.title"
@@ -68,7 +68,7 @@ export default function General() {
               </FormRow>
               <FormRow
                 name="rss.channel.0.image"
-                label={t["edit-feed.basic.image"]}
+                label={t["edit_feed.basic.image"]}
               >
                 <FormField
                   id="rss.channel.0.image.url"
@@ -77,7 +77,7 @@ export default function General() {
                   fieldProps={{
                     onImageClick: imageUpload.openFile,
                     isUploading: imageUpload.isUploading,
-                    helpMessage: t["edit-feed.basic.image.help"],
+                    helpMessage: t["edit_feed.basic.image.help"],
                   }}
                   emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                   initValue="https://"
@@ -85,7 +85,7 @@ export default function General() {
               </FormRow>
               <FormRow
                 name="rss.channel.0.description"
-                label={t["edit-feed.basic.show_description"]}
+                label={t["edit_feed.basic.show_description"]}
               >
                 <FormField
                   id="rss.channel.0.description"
@@ -102,7 +102,7 @@ export default function General() {
 
               <FormRow
                 name="rss.channel.0.category.0"
-                label={t["edit-feed.basic.category"]}
+                label={t["edit_feed.basic.category"]}
               >
                 <FormField
                   id="rss.channel.0.category.0"
@@ -119,12 +119,12 @@ export default function General() {
               </FormRow>
             </FormSection>
             <FormSection
-              title={t["edit-feed.additional.title"]}
+              title={t["edit_feed.additional.title"]}
               description="This is the presentation of your podcast."
             >
               <FormRow
                 name="rss.channel.0.link"
-                label={t["edit-feed.basic.link"]}
+                label={t["edit_feed.basic.link"]}
               >
                 <FieldArray
                   name="rss.channel.0.link"
@@ -189,7 +189,7 @@ export default function General() {
               </FormRow>
               <FormRow
                 name={`rss.channel.0.["itunes:keywords"]`}
-                label={t["edit-feed.basic.keywords"]}
+                label={t["edit_feed.basic.keywords"]}
               >
                 <FormField
                   id={`rss.channel.0.["itunes:keywords"]`}

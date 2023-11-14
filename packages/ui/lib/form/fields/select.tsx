@@ -15,7 +15,8 @@ const Select: FC<
   const { className, options, keyProperty, labelProperty, ...props } = p;
 
   return (
-    <>
+    <div className="relative w-full">
+      <ChevronUpDownIcon className="absolute right-0 w-6 h-6 m-1.5 pointer-events-none text-slate-700" />
       <select
         className={classNames(
           "shadow appearance-none border bg-white rounded-lg w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-sm",
@@ -24,11 +25,12 @@ const Select: FC<
         {...props}
       >
         {options?.map((option) => (
-          <option value={option[keyProperty]}>{option[labelProperty]}</option>
+          <option value={option[keyProperty]} key={option[keyProperty]}>
+            {option[labelProperty]}
+          </option>
         ))}
       </select>
-      <ChevronUpDownIcon className="absolute right-[34px] margin-y-auto w-6 h-6 pointer-events-none text-slate-700" />
-    </>
+    </div>
   );
 };
 

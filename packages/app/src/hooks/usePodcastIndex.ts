@@ -36,7 +36,11 @@ export const usePodcastIndex = (/* arguments */) => {
 
   async function search(query: string) {
     const { apiSecret, apiKey, enabled } = getConfigurations("podcastIndex");
+
+    console.log(apiSecret, apiKey, enabled);
+
     if (!enabled || !apiSecret || !apiKey) {
+      addError(t["start.start_by_index.errors.podcast_index_misconfigured"]);
       return;
     }
     setIsLoading(true);

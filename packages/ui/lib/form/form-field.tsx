@@ -11,7 +11,7 @@ export function FormField({
   emtpyValueButtonMessage,
   ...props
 }: {
-  initValue: unknown;
+  initValue?: unknown;
   as: React.ComponentType<any>;
   fieldProps?: Record<string, unknown>;
   postSlot?: React.ReactNode;
@@ -26,17 +26,17 @@ export function FormField({
 
   return (
     <div className="relative">
-      {field.value ? (
+      {field.value || !emtpyValueButtonMessage ? (
         <div className="flex items-center space-x-1">
           <Component {...field} {...props} {...fieldProps} />
-          <ResetField onClick={overrideReset || reset} />
+          {initValue ? <ResetField onClick={overrideReset || reset} /> : null}
           {postSlot}
         </div>
-      ) : (
+      ) : initValue ? (
         <Undefined onClick={() => helpers.setValue(initValue)}>
           {emtpyValueButtonMessage}
         </Undefined>
-      )}
+      ) : null}
     </div>
   );
 }

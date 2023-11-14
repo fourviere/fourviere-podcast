@@ -7,13 +7,13 @@ import { parseXML } from "@fourviere/core/lib/converter";
 import { FEED_TEMPLATE } from "@fourviere/core/lib/const";
 import { fetchFeed } from "../native/network";
 
-interface Configuration {
+export interface Configuration {
   remotes: {
     remote: "s3" | "ftp" | "none";
     s3?: {
-      bucket_name: string;
-      region: string;
       endpoint: string;
+      region: string;
+      bucket_name: string;
       access_key: string;
       secret_key: string;
       http_host: string;
@@ -34,16 +34,26 @@ interface Configuration {
 
 export interface Project {
   feed: Feed;
-  configuration?: Configuration;
+  configuration: Configuration;
 }
 export interface FeedState {
   projects: Record<string, Project>;
   createProject: () => void;
   getProjectById: (id: string) => Project;
   updateFeed: (id: string, feed: Project["feed"]) => void;
+  updateConfiguration: (
+    id: string,
+    configuration: Project["configuration"]
+  ) => void;
   loadFeedFromUrl: (feedUrl: string) => void;
   loadFeedFromFileContents: (feed: string) => void;
 }
+
+const BASE_CONFIGURATION: Configuration = {
+  remotes: {
+    remote: "none",
+  },
+};
 
 const feedStore = create<FeedState>((set, _get) => {
   return {
@@ -58,11 +68,7 @@ const feedStore = create<FeedState>((set, _get) => {
           const id = uuidv4();
           draft.projects[id] = {
             feed,
-            configuration: {
-              remotes: {
-                remote: "none",
-              },
-            },
+            configuration: BASE_CONFIGURATION,
           };
         });
       });
@@ -75,7 +81,7 @@ const feedStore = create<FeedState>((set, _get) => {
       set((state: FeedState) => {
         return produce(state, (draft) => {
           const id = uuidv4();
-          draft.projects[id] = { feed };
+          draft.projects[id] = { feed, configuration: BASE_CONFIGURATION };
         });
       });
     },
@@ -85,7 +91,7 @@ const feedStore = create<FeedState>((set, _get) => {
       set((state: FeedState) => {
         return produce(state, (draft) => {
           const id = uuidv4();
-          draft.projects[id] = { feed };
+          draft.projects[id] = { feed, configuration: BASE_CONFIGURATION };
         });
       });
     },
@@ -94,6 +100,16 @@ const feedStore = create<FeedState>((set, _get) => {
       set((state: FeedState) => {
         return produce(state, (draft) => {
           draft.projects[id].feed = feed;
+        });
+      });
+    },
+    updateConfiguration: (
+      id: string,
+      configuration: Project["configuration"]
+    ) => {
+      set((state: FeedState) => {
+        return produce(state, (draft) => {
+          draft.projects[id].configuration = configuration;
         });
       });
     },
