@@ -10,6 +10,7 @@ import SourceCode from "./views/edit-feed/source-code";
 import General from "./views/edit-feed/general";
 import FeedConfiguration from "./views/edit-feed/configuration";
 import GlobalConfiguration from "./views/configuration";
+import Itunes from "./views/edit-feed/itunes";
 
 const router = createBrowserRouter([
   {
@@ -33,8 +34,8 @@ const router = createBrowserRouter([
         element: <div>artwork</div>,
       },
       {
-        path: "itunes",
-        element: <div>itunes</div>,
+        path: "feed-itunes",
+        element: <Itunes />,
       },
       {
         path: "feed-source-code",
