@@ -16,6 +16,7 @@ import FormObserver from "../../components/form-observer";
 import { Feed } from "@fourviere/core/lib/schema/feed";
 import PODCASTCATEGORIES from "@fourviere/core/lib/podcast-namespace/categories";
 import { FC } from "react";
+import { LANGUAGE_BY_LOCALE } from "../../consts";
 export default function General() {
   const currentFeed = UseCurrentFeed();
   const t = useTranslations();
@@ -187,15 +188,41 @@ export default function General() {
                   )}
                 />
               </FormRow>
+
               <FormRow
-                name={`rss.channel.0.["itunes:keywords"]`}
-                label={t["edit_feed.basic.keywords"]}
+                name="rss.channel.0.category.0"
+                label={t["edit_feed.additional.language"]}
               >
                 <FormField
-                  id={`rss.channel.0.["itunes:keywords"]`}
-                  name={`rss.channel.0.["itunes:keywords"]`}
+                  id="rss.channel.0.language"
+                  name="rss.channel.0.language"
+                  as={Select as FC}
+                  fieldProps={{
+                    options: Object.entries(LANGUAGE_BY_LOCALE).map(
+                      ([key, value]) => {
+                        return {
+                          name: key.replace("_", "-"),
+                          value: value.replace("_", "-"),
+                        };
+                      }
+                    ),
+                    labelProperty: "value",
+                    keyProperty: "name",
+                    lowercase: true,
+                  }}
+                  initValue="en-us"
+                  emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                />
+              </FormRow>
+              <FormRow
+                name={`rss.channel.0.copyright`}
+                label={t["edit_feed.additional.copyright"]}
+              >
+                <FormField
+                  id={`rss.channel.0.copyright`}
+                  name={`rss.channel.0.copyright`}
                   as={Input}
-                  initValue="technology, news, podcast"
+                  initValue="© 2021 My Podcast"
                   emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                 />
               </FormRow>

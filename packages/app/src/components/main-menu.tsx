@@ -57,7 +57,7 @@ const SideMenu: React.FC = () => {
     <SideIconMenu
       logo={
         <img
-          src="/logo.svg"
+          src="/big-fourviere.svg"
           style={{ height: "70px", width: "100%" }}
           alt="Fourvière logo"
         />
