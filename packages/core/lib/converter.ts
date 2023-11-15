@@ -26,7 +26,6 @@ export async function parseXML(xmlString: string) {
     allowBooleanAttributes: true,
   });
   if (validation !== true) {
-    console.log(validation.err);
     throw new InvalidXMLError(`Invalid xml ${JSON.stringify(validation.err)}`);
   }
 

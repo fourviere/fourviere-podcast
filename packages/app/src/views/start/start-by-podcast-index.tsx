@@ -41,7 +41,6 @@ const StartByIndex: FunctionComponent<Props> = ({ done }) => {
       resetFeeds();
       done();
     } catch (e: any) {
-      console.error(e);
       if (e instanceof InvalidXMLError) {
         addError(t["start.start_by_url.errors.invalid_xml"]);
       } else if (e instanceof InvalidPodcastFeedError) {

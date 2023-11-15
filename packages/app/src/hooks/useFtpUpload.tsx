@@ -4,6 +4,8 @@ import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
 import feedStore from "../store/feed";
 
+const ALLOWED_EXENSIONS = ["png", "jpeg", "jpg"];
+
 export default function useFtpUpload({
   feedId,
   updateField,
@@ -56,7 +58,7 @@ export default function useFtpUpload({
       filters: [
         {
           name: "Image",
-          extensions: ["png", "jpeg", "mov"],
+          extensions: ALLOWED_EXENSIONS,
         },
       ],
     }).then((selected) => {
