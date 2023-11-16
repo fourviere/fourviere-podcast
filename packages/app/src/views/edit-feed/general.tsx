@@ -17,6 +17,7 @@ import { Feed } from "@fourviere/core/lib/schema/feed";
 import PODCASTCATEGORIES from "@fourviere/core/lib/podcast-namespace/categories";
 import { FC } from "react";
 import { LANGUAGE_BY_LOCALE } from "../../consts";
+import FormObjectField from "@fourviere/ui/lib/form/form-object-field";
 export default function General() {
   const currentFeed = UseCurrentFeed();
   const t = useTranslations();
@@ -100,7 +101,6 @@ export default function General() {
                   emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                 />
               </FormRow>
-
               <FormRow
                 name="rss.channel.0.category.0"
                 label={t["edit_feed.basic.category"]}
@@ -188,7 +188,86 @@ export default function General() {
                   )}
                 />
               </FormRow>
-
+              <FormRow
+                name={`rss.channel.0.["itunes:explicit"]`}
+                label={t["edit_feed.additional.explicit"]}
+              >
+                <FormField
+                  id={`rss.channel.0.["itunes:explicit"]`}
+                  name={`rss.channel.0.["itunes:explicit"]`}
+                  fieldProps={{
+                    options: [
+                      { name: "No", value: "no" },
+                      { name: "Yes", value: "yes" },
+                    ],
+                    labelProperty: "name",
+                    keyProperty: "value",
+                  }}
+                  as={Select as FC}
+                  initValue="yes"
+                  emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                />
+              </FormRow>
+              <FormRow
+                name={`rss.channel.0.["itunes:block"]`}
+                label={t["edit_feed.additional.block"]}
+              >
+                <FormField
+                  id={`rss.channel.0.["itunes:block"]`}
+                  name={`rss.channel.0.["itunes:block"]`}
+                  fieldProps={{
+                    options: [
+                      { name: "No", value: "no" },
+                      { name: "Yes", value: "yes" },
+                    ],
+                    labelProperty: "name",
+                    keyProperty: "value",
+                  }}
+                  as={Select as FC}
+                  initValue="yes"
+                  emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                />
+              </FormRow>
+              <FormRow
+                name={`rss.channel.0.["itunes:complete"]`}
+                label={t["edit_feed.additional.complete"]}
+              >
+                <FormField
+                  id={`rss.channel.0.["itunes:complete"]`}
+                  name={`rss.channel.0.["itunes:complete"]`}
+                  fieldProps={{
+                    options: [
+                      { name: "No", value: "no" },
+                      { name: "Yes", value: "yes" },
+                    ],
+                    labelProperty: "name",
+                    keyProperty: "value",
+                  }}
+                  as={Select as FC}
+                  initValue="yes"
+                  emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                />
+              </FormRow>
+              <FormRow
+                name={`rss.channel.0.["itunes:type"]`}
+                label={t["edit_feed.additional.type"]}
+              >
+                <FormField
+                  id={`rss.channel.0.["itunes:type"]`}
+                  name={`rss.channel.0.["itunes:type"]`}
+                  fieldProps={{
+                    options: [
+                      { name: "Episodic", value: "episodic" },
+                      { name: "Serial", value: "serial" },
+                    ],
+                    labelProperty: "name",
+                    keyProperty: "value",
+                  }}
+                  as={Select as FC}
+                  initValue="yes"
+                  emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                />
+              </FormRow>
               <FormRow
                 name="rss.channel.0.category.0"
                 label={t["edit_feed.additional.language"]}
@@ -223,6 +302,62 @@ export default function General() {
                   name={`rss.channel.0.copyright`}
                   as={Input}
                   initValue="© 2021 My Podcast"
+                  emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                />
+              </FormRow>
+              <FormRow
+                name={`rss.channel.0.["itunes:author"]`}
+                label={t["edit_feed.additional.author"]}
+              >
+                <FormField
+                  id={`rss.channel.0.["itunes:author"]`}
+                  name={`rss.channel.0.["itunes:author"]`}
+                  as={Input}
+                  initValue="Jhon Doe"
+                  emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                />
+              </FormRow>
+
+              <FormObjectField
+                emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                fieldName={`rss.channel.0.["itunes:owner"]`}
+                initValue={{
+                  "itunes:name": "Jhon Doe",
+                  "itunes:email": "jhon@doe.audio",
+                }}
+                label={t["edit_feed.additional.owner"]}
+              >
+                <FormRow
+                  name={`rss.channel.0.["itunes:owner"].name`}
+                  label={t["edit_feed.additional.owner.name"]}
+                >
+                  <FormField
+                    id={`rss.channel.0.["itunes:owner"].["itunes:name"]]`}
+                    name={`rss.channel.0.["itunes:owner"].["itunes:name"]`}
+                    as={Input}
+                  />
+                </FormRow>
+                <FormRow
+                  name={`rss.channel.0.["itunes:owner"].email`}
+                  label={t["edit_feed.additional.owner.email"]}
+                >
+                  <FormField
+                    id={`rss.channel.0.["itunes:owner"].["itunes:email"]]`}
+                    name={`rss.channel.0.["itunes:owner"].["itunes:email"]`}
+                    as={Input}
+                  />
+                </FormRow>
+              </FormObjectField>
+
+              <FormRow
+                name={`rss.channel.0.["itunes:new-feed-url"]`}
+                label={t["edit_feed.additional.new_feed_url"]}
+              >
+                <FormField
+                  id={`rss.channel.0.["itunes:new-feed-url"]`}
+                  name={`rss.channel.0.["itunes:new-feed-url"]`}
+                  as={Input}
+                  initValue="Jhon Doe"
                   emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                 />
               </FormRow>
