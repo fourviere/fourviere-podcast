@@ -1,9 +1,9 @@
-use std::fs::File;
-use std::io::BufReader;
+use std::borrow::Cow;
 use std::path::Path;
 use std::str;
 use suppaftp::types::FileType;
-use suppaftp::{FtpStream, Mode};
+use suppaftp::{AsyncFtpStream, Mode};
+use tokio_util::compat::TokioAsyncReadCompatExt;
 
 #[derive(serde::Deserialize)]
 pub struct Payload {
@@ -20,16 +20,16 @@ pub struct Payload {
 
 #[tauri::command]
 pub async fn ftp_upload(payload: Payload) -> Result<String, String> {
-    let ftp = FtpStream::connect(format!("{}:{}", payload.host, payload.port).as_str());
-    if let Err(_) = ftp {
-        return Err("Failed to connect to server".to_string());
-    }
+    let addr = format!("{}:{}", payload.host, payload.port);
 
-    let mut ftp_stream = ftp.unwrap();
-    let login = ftp_stream.login(payload.user, payload.password);
-    if let Err(_) = login {
-        return Err("Failed to login to server: {}".to_string());
-    }
+    let mut ftp_stream = AsyncFtpStream::connect(addr)
+        .await
+        .map_err(|_| "Failed to connect to server".to_string())?;
+
+    ftp_stream
+        .login(&payload.user, &payload.password)
+        .await
+        .map_err(|_| "Failed to login to server".to_string())?;
 
     // As default set the FTP connection to passive mode
     ftp_stream.set_mode(Mode::Passive);
@@ -37,44 +37,43 @@ pub async fn ftp_upload(payload: Payload) -> Result<String, String> {
     // https://www.iana.org/assignments/ftp-commands-extensions/ftp-commands-extensions.xhtml
     if ftp_stream
         .feat()
+        .await
         .is_ok_and(|opts| opts.get("EPSV").is_some())
     {
         ftp_stream.set_mode(Mode::ExtendedPassive);
     }
 
     if let Some(path) = &payload.path {
-        let change_path = ftp_stream.cwd(path);
-        if let Err(_) = change_path {
-            return Err("Failed to change directory".to_string());
-        }
+        ftp_stream
+            .cwd(path)
+            .await
+            .map_err(|_| "Failed to change directory".to_string())?;
     }
 
-    if let Err(_) = ftp_stream.transfer_type(FileType::Binary) {
-        return Err("Failed setting transfer type".to_string());
-    }
+    ftp_stream
+        .transfer_type(FileType::Binary)
+        .await
+        .map_err(|_| "Failed setting transfer type".to_string())?;
 
-    let file = File::open(&payload.local_path);
-    if let Err(_) = file {
-        return Err("Failed to open file".to_string());
-    }
+    let ext = Path::new(&payload.local_path)
+        .extension()
+        .map_or(Cow::default(), |ext| ext.to_string_lossy());
 
-    let path = Path::new(&payload.local_path);
-    let ext = match path.extension() {
-        Some(ext) => ext.to_string_lossy().to_string(),
-        None => "".to_string(),
-    };
+    let mut reader = tokio::fs::File::open(&payload.local_path)
+        .await
+        .map(tokio::io::BufReader::new)
+        .map_err(|_| "Failed to open file".to_string())?
+        .compat();
 
-    let mut reader = BufReader::new(file.unwrap());
-    let res = ftp_stream.put_file(format!("{}.{}", &payload.file_name, &ext), &mut reader);
+    ftp_stream
+        .put_file(&format!("{}.{}", &payload.file_name, &ext), &mut reader)
+        .await
+        .map_err(|err| err.to_string())?;
 
-    if let Err(_) = res {
-        return Err("Failed to upload file".to_string());
-    }
-
-    let res = ftp_stream.quit();
-    if let Err(_) = res {
-        return Err("Failed to quit".to_string());
-    }
+    let _ = ftp_stream
+        .quit()
+        .await
+        .map_err(|_| "Failed to quit".to_string());
 
     let protocol = if payload.https { "https" } else { "http" };
 
@@ -209,7 +208,7 @@ mod test {
         sleep(Duration::from_secs(2)).await;
         assert!(ftp_upload(payload)
             .await
-            .is_err_and(|err| err == "Failed to login to server: {}"));
+            .is_err_and(|err| err == "Failed to login to server"));
         handle.abort();
     }
 

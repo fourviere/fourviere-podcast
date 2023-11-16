@@ -15,7 +15,7 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             greet,
             commands::network::fetch_feed,
-            commands::fs::read_file,
+            commands::fs::read_text_file,
             commands::s3::s3_upload,
             commands::ftp::ftp_upload,
         ])
