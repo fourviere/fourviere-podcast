@@ -1,8 +1,11 @@
-use std::{borrow::Cow, path::Path};
-
+use ::function_name::named;
+use log::{debug, error};
 use mime_guess::from_path;
 use s3::{creds::Credentials, Bucket, Region};
+use std::{borrow::Cow, path::Path};
 use tokio::fs;
+
+use crate::utils::result::Result;
 
 #[derive(serde::Deserialize)]
 pub struct Payload {
@@ -19,16 +22,25 @@ pub struct Payload {
     file_name: String,
 }
 
+#[named]
 #[tauri::command]
-pub async fn s3_upload(payload: Payload) -> Result<String, String> {
+pub async fn s3_upload(payload: Payload) -> Result<String> {
+    let upload_result = s3_upload_internal(payload).await;
+    debug!("{} result {:?}", function_name!(), upload_result);
+    if let Err(err) = &upload_result {
+        error!("{} function failed: {:?}", function_name!(), err);
+    }
+    upload_result
+}
+
+async fn s3_upload_internal(payload: Payload) -> Result<String> {
     let credentials = Credentials::new(
         Some(&payload.access_key),
         Some(&payload.secret_key),
         None,
         None,
         None,
-    )
-    .map_err(|e| format!("Error creating credentials {}", e))?;
+    )?;
 
     let mut bucket = Bucket::new(
         &payload.bucket_name,
@@ -37,15 +49,12 @@ pub async fn s3_upload(payload: Payload) -> Result<String, String> {
             endpoint: payload.endpoint,
         },
         credentials,
-    )
-    .map_err(|e| format!("Error defininf bucket connection {}", e))?;
+    )?;
 
     // this header is required to make the uploaded file public readable.
     bucket.add_header("x-amz-acl", "public-read");
 
-    let file = fs::read(&payload.local_path)
-        .await
-        .map_err(|e| format!("Error opening file {}", e))?;
+    let file = fs::read(&payload.local_path).await?;
 
     // Guess the MIME type based on the file extension
     let mime = from_path(&payload.local_path).first_or_octet_stream();
@@ -58,8 +67,7 @@ pub async fn s3_upload(payload: Payload) -> Result<String, String> {
 
     bucket
         .put_object_with_content_type(new_file_name, &file, mime.as_ref())
-        .await
-        .map_err(|e| format!("Error writing file {}", e))?;
+        .await?;
 
     let protocol = if payload.https { "https" } else { "http" };
     Ok(format!(
