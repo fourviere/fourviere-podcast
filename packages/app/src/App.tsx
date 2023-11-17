@@ -10,6 +10,9 @@ import SourceCode from "./views/edit-feed/source-code";
 import General from "./views/edit-feed/general";
 import FeedConfiguration from "./views/edit-feed/configuration";
 import GlobalConfiguration from "./views/configuration";
+import { attachConsole } from "@tauri-apps/plugin-log";
+
+const detach = await attachConsole();
 
 const router = createBrowserRouter([
   {
@@ -54,7 +57,6 @@ const router = createBrowserRouter([
 
 function App() {
   const { errors } = appStore((state) => state);
-
   return (
     <>
       <RouterProvider router={router} />
