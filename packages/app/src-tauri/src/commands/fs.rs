@@ -6,8 +6,8 @@ use crate::utils::result::Result;
 
 #[named]
 #[tauri::command]
-pub async fn read_file(path: &str) -> Result<String> {
-    let read_result = read_file_internal(path).await;
+pub async fn read_text_file(path: &str) -> Result<String> {
+    let read_result = read_text_file_internal(path).await;
     debug!("{} result {:?}", function_name!(), read_result);
     if let Err(err) = &read_result {
         error!("{} function failed: {:?}", function_name!(), err);
@@ -15,7 +15,7 @@ pub async fn read_file(path: &str) -> Result<String> {
     read_result
 }
 
-async fn read_file_internal(path: &str) -> Result<String> {
+async fn read_text_file_internal(path: &str) -> Result<String> {
     read_to_string(path).await.map_err(|err| err.into())
 }
 
@@ -23,11 +23,11 @@ async fn read_file_internal(path: &str) -> Result<String> {
 mod test {
     use rss::Channel;
 
-    use crate::{commands::fs::read_file, test_file};
+    use crate::{commands::fs::read_text_file, test_file};
 
     #[tokio::test]
-    async fn test_read_file_ok() {
-        let feed = read_file(test_file!("gitbar.xml")).await;
+    async fn test_read_text_file_ok() {
+        let feed = read_text_file(test_file!("gitbar.xml")).await;
         assert!(feed.is_ok());
         let channel = Channel::read_from(feed.unwrap().as_bytes());
         assert!(channel.is_ok());
@@ -36,8 +36,8 @@ mod test {
     }
 
     #[tokio::test]
-    async fn test_read_file_error() {
-        let feed = read_file(test_file!("gitbar.rss")).await;
+    async fn test_read_text_file_error() {
+        let feed = read_text_file(test_file!("gitbar.rss")).await;
         assert!(feed.is_err());
     }
 }

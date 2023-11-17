@@ -28,7 +28,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, InputProps>(
           checked={value}
           onChange={onChange}
         />
-        <span className="text-xs uppercase ">{label}</span>
+        <span className="text-xs ">{label}</span>
       </label>
 
       {error && typeof error === "string" && (

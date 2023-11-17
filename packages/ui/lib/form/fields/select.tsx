@@ -10,9 +10,17 @@ const Select: FC<
       options: Array<Record<string, string>>;
       keyProperty: string;
       labelProperty: string;
+      lowercase?: boolean;
     }
 > = (p) => {
-  const { className, options, keyProperty, labelProperty, ...props } = p;
+  const {
+    className,
+    options,
+    keyProperty,
+    labelProperty,
+    lowercase,
+    ...props
+  } = p;
 
   return (
     <div className="relative w-full">
@@ -24,11 +32,14 @@ const Select: FC<
         )}
         {...props}
       >
-        {options?.map((option) => (
-          <option value={option[keyProperty]} key={option[keyProperty]}>
-            {option[labelProperty]}
-          </option>
-        ))}
+        {options?.map((option, i) => {
+          const v = keyProperty ? option?.[keyProperty] : i;
+          return (
+            <option value={lowercase ? v.toString().toLowerCase() : v} key={i}>
+              {option[labelProperty]}
+            </option>
+          );
+        })}
       </select>
     </div>
   );
