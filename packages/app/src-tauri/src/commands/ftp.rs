@@ -79,7 +79,7 @@ async fn ftp_upload_internal(payload: Payload) -> Result<String> {
         "{}://{}/{}/{}.{}",
         protocol,
         payload.http_host,
-        payload.path.unwrap_or("".to_string()),
+        payload.path.unwrap_or("".to_owned()),
         payload.file_name,
         ext
     ))
@@ -101,6 +101,9 @@ mod test {
         test_file,
     };
 
+    const USER: &str = "ForuviereTestUser";
+    const PASSWORD: &str = "StealThisUselessPassword";
+
     #[derive(Debug)]
     struct TestAuthenticator;
 
@@ -112,8 +115,8 @@ mod test {
             creds: &Credentials,
         ) -> Result<DefaultUser, AuthenticationError> {
             match username {
-                "ForuviereTestUser" => match creds.password.as_deref() {
-                    Some("StealThisUselessPassword") => Ok(DefaultUser),
+                USER => match creds.password.as_deref() {
+                    Some(PASSWORD) => Ok(DefaultUser),
                     _ => Err(AuthenticationError::BadPassword),
                 },
                 _ => Err(AuthenticationError::BadUser),
@@ -135,14 +138,14 @@ mod test {
     async fn test_ftp_upload_ok() {
         let port = 2121;
         let payload = Payload {
-            host: "localhost".to_string(),
+            host: "localhost".to_owned(),
             port: port,
-            user: "ForuviereTestUser".to_string(),
-            password: "StealThisUselessPassword".to_string(),
-            local_path: test_file!("gitbar.xml").to_string(),
+            user: USER.to_owned(),
+            password: PASSWORD.to_owned(),
+            local_path: test_file!("gitbar.xml").to_owned(),
             path: None,
-            file_name: "gitbar".to_string(),
-            http_host: "localhost".to_string(),
+            file_name: "gitbar".to_owned(),
+            http_host: "localhost".to_owned(),
             https: false,
         };
 
@@ -160,14 +163,14 @@ mod test {
     async fn test_ftp_upload_err_host() {
         let port = 2122;
         let payload = Payload {
-            host: "localhosts".to_string(),
+            host: "localhosts".to_owned(),
             port: port,
-            user: "ForuviereTestUser".to_string(),
-            password: "StealThisUselessPassword".to_string(),
-            local_path: test_file!("gitbar.xml").to_string(),
+            user: USER.to_owned(),
+            password: PASSWORD.to_owned(),
+            local_path: test_file!("gitbar.xml").to_owned(),
             path: None,
-            file_name: "gitbar".to_string(),
-            http_host: "localhosts".to_string(),
+            file_name: "gitbar".to_owned(),
+            http_host: "localhosts".to_owned(),
             https: false,
         };
 
@@ -185,14 +188,14 @@ mod test {
     async fn test_ftp_upload_err_user() {
         let port = 2123;
         let payload = Payload {
-            host: "localhost".to_string(),
+            host: "localhost".to_owned(),
             port: port,
-            user: "NotAValidUserName".to_string(),
-            password: "StealThisUselessPassword".to_string(),
-            local_path: test_file!("gitbar.xml").to_string(),
+            user: "NotAValidUserName".to_owned(),
+            password: PASSWORD.to_owned(),
+            local_path: test_file!("gitbar.xml").to_owned(),
             path: None,
-            file_name: "gitbar".to_string(),
-            http_host: "localhost".to_string(),
+            file_name: "gitbar".to_owned(),
+            http_host: "localhost".to_owned(),
             https: false,
         };
 
@@ -210,14 +213,14 @@ mod test {
     async fn test_ftp_upload_err_local_path() {
         let port = 2124;
         let payload = Payload {
-            host: "localhost".to_string(),
+            host: "localhost".to_owned(),
             port: port,
-            user: "ForuviereTestUser".to_string(),
-            password: "StealThisUselessPassword".to_string(),
-            local_path: test_file!("gitbar.rss").to_string(),
+            user: USER.to_owned(),
+            password: PASSWORD.to_owned(),
+            local_path: test_file!("gitbar.rss").to_owned(),
             path: None,
-            file_name: "gitbar".to_string(),
-            http_host: "localhost".to_string(),
+            file_name: "gitbar".to_owned(),
+            http_host: "localhost".to_owned(),
             https: false,
         };
 
