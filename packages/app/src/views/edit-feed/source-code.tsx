@@ -2,7 +2,7 @@ import { Editor } from "@monaco-editor/react";
 import { useParams } from "react-router-dom";
 import feedStore from "../../store/feed";
 import { parseXML, serializeToXML } from "@fourviere/core/lib/converter";
-import { debounce } from "debounce";
+import debounce from "debounce";
 import appStore from "../../store/app";
 
 export default function SourceCode() {
