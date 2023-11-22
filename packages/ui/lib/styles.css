@@ -10,5 +10,8 @@ body,
 }
 
 .side-menu-item.active {
-  @apply text-slate-800;
+  @apply bg-slate-700 rounded-lg text-slate-100;
+  &:hover {
+    @apply bg-slate-800 text-slate-50;
+  }
 }

@@ -14,6 +14,7 @@ import FormObserver from "../../components/form-observer";
 import { AppState } from "../../store/app";
 import Select from "@fourviere/ui/lib/form/fields/select";
 import TRANSLATIONS from "../../translations";
+import Boolean from "@fourviere/ui/lib/form/fields/boolean";
 
 interface Props {}
 
@@ -31,7 +32,7 @@ const Configurations: React.FC<Props> = () => {
           setSubmitting(false);
         }}
       >
-        {({ handleSubmit }) => {
+        {({ handleSubmit, setFieldValue, values }) => {
           return (
             <Container
               scroll
@@ -83,10 +84,10 @@ const Configurations: React.FC<Props> = () => {
                     name="services.podcastIndex.enabled"
                     fieldProps={{
                       label: t["configurations.podcast_index.enabled.label"],
+                      setFieldValue,
+                      value: values.services.podcastIndex.enabled,
                     }}
-                    initValue={false}
-                    emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
-                    as={Checkbox}
+                    as={Boolean}
                   />
                 </FormRow>
                 <FormRow

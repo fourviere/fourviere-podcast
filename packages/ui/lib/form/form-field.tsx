@@ -26,7 +26,7 @@ export function FormField({
 
   return (
     <div className="relative">
-      {field.value || !emtpyValueButtonMessage ? (
+      {typeof field.value !== "undefined" || !emtpyValueButtonMessage ? (
         <div className="flex items-center space-x-1">
           <Component {...field} {...props} {...fieldProps} />
           {initValue ? <ResetField onClick={overrideReset || reset} /> : null}
