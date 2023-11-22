@@ -77,13 +77,19 @@ pub async fn ftp_upload(payload: Payload) -> Result<String, String> {
 
     let protocol = if payload.https { "https" } else { "http" };
 
+    let file_path = if let Some(path) = payload.path {
+        if !path.is_empty() {
+            format!("{}/{}.{}", path, payload.file_name, ext)
+        } else {
+            format!("{}.{}", payload.file_name, ext)
+        }
+    } else {
+        format!("{}.{}", payload.file_name, ext)
+    };
+
     Ok(format!(
-        "{}://{}/{}/{}.{}",
-        protocol,
-        payload.http_host,
-        payload.path.unwrap_or("".to_string()),
-        payload.file_name,
-        ext
+        "{}://{}/{}",
+        protocol, payload.http_host, file_path
     ))
 }
 

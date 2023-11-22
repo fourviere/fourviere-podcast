@@ -53,7 +53,7 @@ pub async fn s3_upload(payload: Payload) -> Result<String, String> {
         .extension()
         .map_or(Cow::default(), |ext| ext.to_string_lossy());
 
-    let path = payload.path.unwrap_or("".to_string());
+    let path = &payload.path.unwrap_or("".to_string());
     let new_file_name = format!("{}/{}.{}", &path, &payload.file_name, &ext);
 
     bucket
@@ -62,8 +62,15 @@ pub async fn s3_upload(payload: Payload) -> Result<String, String> {
         .map_err(|e| format!("Error writing file {}", e))?;
 
     let protocol = if payload.https { "https" } else { "http" };
+
+    let file_path = if !path.is_empty() {
+        format!("{}/{}.{}", path, payload.file_name, ext)
+    } else {
+        format!("{}.{}", payload.file_name, ext)
+    };
+
     Ok(format!(
-        "{}://{}/{}/{}.{}",
-        protocol, payload.http_host, path, payload.file_name, ext
+        "{}://{}/{}",
+        protocol, payload.http_host, file_path
     ))
 }
