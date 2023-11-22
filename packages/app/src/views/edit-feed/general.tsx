@@ -45,19 +45,26 @@ export default function General() {
         });
 
         return (
-          <Container scroll wFull flex="col" as="form" onSubmit={handleSubmit}>
+          <Container
+            scroll
+            wFull
+            spaceY="3xl"
+            flex="col"
+            as="form"
+            onSubmit={handleSubmit}
+          >
             <FormObserver<Feed>
               updateFunction={(values) => {
                 currentFeed.update(values);
               }}
             />
             <FormSection
-              title={t["edit_feed.basic.title"]}
-              description="This is the presentation of your podcast."
+              title={t["edit_feed.presentation.title"]}
+              description={t["edit_feed.presentation.title.description"]}
             >
               <FormRow
                 name="rss.channel.0.title"
-                label={t["edit_feed.basic.show_name"]}
+                label={t["edit_feed.channel_field.show_name"]}
               >
                 <FormField
                   id="rss.channel.0.title"
@@ -70,7 +77,7 @@ export default function General() {
               </FormRow>
               <FormRow
                 name="rss.channel.0.image"
-                label={t["edit_feed.basic.image"]}
+                label={t["edit_feed.channel_field.image"]}
               >
                 <FormField
                   id="rss.channel.0.image.url"
@@ -79,7 +86,7 @@ export default function General() {
                   fieldProps={{
                     onImageClick: imageUpload.openFile,
                     isUploading: imageUpload.isUploading,
-                    helpMessage: t["edit_feed.basic.image.help"],
+                    helpMessage: t["edit_feed.channel_field.image.help"],
                   }}
                   emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                   initValue="https://"
@@ -87,7 +94,7 @@ export default function General() {
               </FormRow>
               <FormRow
                 name="rss.channel.0.description"
-                label={t["edit_feed.basic.show_description"]}
+                label={t["edit_feed.channel_field.show_description"]}
               >
                 <FormField
                   id="rss.channel.0.description"
@@ -102,30 +109,28 @@ export default function General() {
                 />
               </FormRow>
               <FormRow
-                name="rss.channel.0.category.0"
-                label={t["edit_feed.basic.category"]}
+                name={`rss.channel.0.["itunes:type"]`}
+                label={t["edit_feed.channel_field.type"]}
               >
                 <FormField
-                  id="rss.channel.0.category.0"
-                  name="rss.channel.0.category.0"
-                  as={Select as FC}
+                  id={`rss.channel.0.["itunes:type"]`}
+                  name={`rss.channel.0.["itunes:type"]`}
                   fieldProps={{
-                    options: PODCASTCATEGORIES,
+                    options: [
+                      { name: "Episodic", value: "episodic" },
+                      { name: "Serial", value: "serial" },
+                    ],
                     labelProperty: "name",
-                    keyProperty: "name",
+                    keyProperty: "value",
                   }}
-                  initValue="My podcast category"
+                  as={Select as FC}
+                  initValue="yes"
                   emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                 />
               </FormRow>
-            </FormSection>
-            <FormSection
-              title={t["edit_feed.additional.title"]}
-              description="This is the presentation of your podcast."
-            >
               <FormRow
                 name="rss.channel.0.link"
-                label={t["edit_feed.basic.link"]}
+                label={t["edit_feed.channel_field.link"]}
               >
                 <FieldArray
                   name="rss.channel.0.link"
@@ -188,89 +193,14 @@ export default function General() {
                   )}
                 />
               </FormRow>
-              <FormRow
-                name={`rss.channel.0.["itunes:explicit"]`}
-                label={t["edit_feed.additional.explicit"]}
-              >
-                <FormField
-                  id={`rss.channel.0.["itunes:explicit"]`}
-                  name={`rss.channel.0.["itunes:explicit"]`}
-                  fieldProps={{
-                    options: [
-                      { name: "No", value: "no" },
-                      { name: "Yes", value: "yes" },
-                    ],
-                    labelProperty: "name",
-                    keyProperty: "value",
-                  }}
-                  as={Select as FC}
-                  initValue="yes"
-                  emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
-                />
-              </FormRow>
-              <FormRow
-                name={`rss.channel.0.["itunes:block"]`}
-                label={t["edit_feed.additional.block"]}
-              >
-                <FormField
-                  id={`rss.channel.0.["itunes:block"]`}
-                  name={`rss.channel.0.["itunes:block"]`}
-                  fieldProps={{
-                    options: [
-                      { name: "No", value: "no" },
-                      { name: "Yes", value: "yes" },
-                    ],
-                    labelProperty: "name",
-                    keyProperty: "value",
-                  }}
-                  as={Select as FC}
-                  initValue="yes"
-                  emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
-                />
-              </FormRow>
-              <FormRow
-                name={`rss.channel.0.["itunes:complete"]`}
-                label={t["edit_feed.additional.complete"]}
-              >
-                <FormField
-                  id={`rss.channel.0.["itunes:complete"]`}
-                  name={`rss.channel.0.["itunes:complete"]`}
-                  fieldProps={{
-                    options: [
-                      { name: "No", value: "no" },
-                      { name: "Yes", value: "yes" },
-                    ],
-                    labelProperty: "name",
-                    keyProperty: "value",
-                  }}
-                  as={Select as FC}
-                  initValue="yes"
-                  emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
-                />
-              </FormRow>
-              <FormRow
-                name={`rss.channel.0.["itunes:type"]`}
-                label={t["edit_feed.additional.type"]}
-              >
-                <FormField
-                  id={`rss.channel.0.["itunes:type"]`}
-                  name={`rss.channel.0.["itunes:type"]`}
-                  fieldProps={{
-                    options: [
-                      { name: "Episodic", value: "episodic" },
-                      { name: "Serial", value: "serial" },
-                    ],
-                    labelProperty: "name",
-                    keyProperty: "value",
-                  }}
-                  as={Select as FC}
-                  initValue="yes"
-                  emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
-                />
-              </FormRow>
+            </FormSection>
+            <FormSection
+              title={t["edit_feed.indexing.title"]}
+              description={t["edit_feed.indexing.title.description"]}
+            >
               <FormRow
                 name="rss.channel.0.category.0"
-                label={t["edit_feed.additional.language"]}
+                label={t["edit_feed.channel_field.language"]}
               >
                 <FormField
                   id="rss.channel.0.language"
@@ -294,8 +224,103 @@ export default function General() {
                 />
               </FormRow>
               <FormRow
+                name="rss.channel.0.category.0"
+                label={t["edit_feed.channel_field.category"]}
+              >
+                <FormField
+                  id="rss.channel.0.category.0"
+                  name="rss.channel.0.category.0"
+                  as={Select as FC}
+                  fieldProps={{
+                    options: PODCASTCATEGORIES,
+                    labelProperty: "name",
+                    keyProperty: "name",
+                  }}
+                  initValue="My podcast category"
+                  emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                />
+              </FormRow>
+              <FormRow
+                name={`rss.channel.0.["itunes:explicit"]`}
+                label={t["edit_feed.channel_field.explicit"]}
+              >
+                <FormField
+                  id={`rss.channel.0.["itunes:explicit"]`}
+                  name={`rss.channel.0.["itunes:explicit"]`}
+                  fieldProps={{
+                    options: [
+                      { name: "No", value: "no" },
+                      { name: "Yes", value: "yes" },
+                    ],
+                    labelProperty: "name",
+                    keyProperty: "value",
+                  }}
+                  as={Select as FC}
+                  initValue="yes"
+                  emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                />
+              </FormRow>
+              <FormRow
+                name={`rss.channel.0.["itunes:block"]`}
+                label={t["edit_feed.channel_field.block"]}
+              >
+                <FormField
+                  id={`rss.channel.0.["itunes:block"]`}
+                  name={`rss.channel.0.["itunes:block"]`}
+                  fieldProps={{
+                    options: [
+                      { name: "No", value: "no" },
+                      { name: "Yes", value: "yes" },
+                    ],
+                    labelProperty: "name",
+                    keyProperty: "value",
+                  }}
+                  as={Select as FC}
+                  initValue="yes"
+                  emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                />
+              </FormRow>
+              <FormRow
+                name={`rss.channel.0.["itunes:complete"]`}
+                label={t["edit_feed.channel_field.complete"]}
+              >
+                <FormField
+                  id={`rss.channel.0.["itunes:complete"]`}
+                  name={`rss.channel.0.["itunes:complete"]`}
+                  fieldProps={{
+                    options: [
+                      { name: "No", value: "no" },
+                      { name: "Yes", value: "yes" },
+                    ],
+                    labelProperty: "name",
+                    keyProperty: "value",
+                  }}
+                  as={Select as FC}
+                  initValue="yes"
+                  emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                />
+              </FormRow>
+
+              <FormRow
+                name={`rss.channel.0.["itunes:new-feed-url"]`}
+                label={t["edit_feed.channel_field.new_feed_url"]}
+              >
+                <FormField
+                  id={`rss.channel.0.["itunes:new-feed-url"]`}
+                  name={`rss.channel.0.["itunes:new-feed-url"]`}
+                  as={Input}
+                  initValue="Jhon Doe"
+                  emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                />
+              </FormRow>
+            </FormSection>
+            <FormSection
+              title={t["edit_feed.ownership.title"]}
+              description={t["edit_feed.ownership.title.description"]}
+            >
+              <FormRow
                 name={`rss.channel.0.copyright`}
-                label={t["edit_feed.additional.copyright"]}
+                label={t["edit_feed.channel_field.copyright"]}
               >
                 <FormField
                   id={`rss.channel.0.copyright`}
@@ -307,7 +332,7 @@ export default function General() {
               </FormRow>
               <FormRow
                 name={`rss.channel.0.["itunes:author"]`}
-                label={t["edit_feed.additional.author"]}
+                label={t["edit_feed.channel_field.author"]}
               >
                 <FormField
                   id={`rss.channel.0.["itunes:author"]`}
@@ -325,11 +350,11 @@ export default function General() {
                   "itunes:name": "Jhon Doe",
                   "itunes:email": "jhon@doe.audio",
                 }}
-                label={t["edit_feed.additional.owner"]}
+                label={t["edit_feed.channel_field.owner"]}
               >
                 <FormRow
                   name={`rss.channel.0.["itunes:owner"].name`}
-                  label={t["edit_feed.additional.owner.name"]}
+                  label={t["edit_feed.channel_field.owner.name"]}
                 >
                   <FormField
                     id={`rss.channel.0.["itunes:owner"].["itunes:name"]]`}
@@ -339,7 +364,7 @@ export default function General() {
                 </FormRow>
                 <FormRow
                   name={`rss.channel.0.["itunes:owner"].email`}
-                  label={t["edit_feed.additional.owner.email"]}
+                  label={t["edit_feed.channel_field.owner.email"]}
                 >
                   <FormField
                     id={`rss.channel.0.["itunes:owner"].["itunes:email"]]`}
@@ -348,19 +373,6 @@ export default function General() {
                   />
                 </FormRow>
               </FormObjectField>
-
-              <FormRow
-                name={`rss.channel.0.["itunes:new-feed-url"]`}
-                label={t["edit_feed.additional.new_feed_url"]}
-              >
-                <FormField
-                  id={`rss.channel.0.["itunes:new-feed-url"]`}
-                  name={`rss.channel.0.["itunes:new-feed-url"]`}
-                  as={Input}
-                  initValue="Jhon Doe"
-                  emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
-                />
-              </FormRow>
             </FormSection>
           </Container>
         );

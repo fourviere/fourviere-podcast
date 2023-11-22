@@ -9,10 +9,10 @@ interface Props {
 
 const SideMenu: React.FC<Props> = ({ main, header, footer }) => {
   return (
-    <div className="h-full flex flex-col space-y-2 w-1/5 bg-slate-50  border-r border-slate-100 ">
+    <div className="h-full flex flex-col w-1/5 bg-slate-50  border-r border-slate-100 ">
       {header && <div className="grow-0">{header}</div>}
       {main && (
-        <div className="grow shrink overflow-scroll space-y-2 inner-shadow p-6">
+        <div className="grow shrink overflow-scroll space-y-2 inner-shadow px-3 py-3">
           {main}
         </div>
       )}
@@ -38,13 +38,15 @@ export function SideMenuItem<T>({
   return (
     <Component
       className={classNames(
-        "side-menu-item flex items-center text-xs font-semibold text-slate-400 hover:text-slate-900  transition-all duration-300 ease-in-out",
+        "side-menu-item leading-tight flex px-2 py-2 items-center text-xs font-semibold text-slate-400 hover:text-slate-900  transition-all duration-300 ease-in-out",
         className
       )}
       {...props}
     >
       {icon && (
-        <div className="mr-[6px] w-5 h-5 children:text-slate-600">{icon}</div>
+        <div className="mr-[6px] w-5 h-5 children:text-slate-600 shrink-0">
+          {icon}
+        </div>
       )}
       {children}
     </Component>

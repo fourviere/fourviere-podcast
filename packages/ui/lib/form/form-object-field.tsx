@@ -10,12 +10,14 @@ export default function FormObjectField({
   overrideReset,
   emtpyValueButtonMessage,
   label,
+  cols = 2,
 }: PropsWithChildren<{
   fieldName: string;
   initValue?: unknown;
   overrideReset?: () => void;
   emtpyValueButtonMessage?: string;
   label?: string;
+  cols?: 1 | 2;
 }>) {
   const [field, _, helpers] = useField(fieldName);
 
@@ -23,11 +25,13 @@ export default function FormObjectField({
     helpers.setValue(undefined);
   }
 
+  const colsStyle = { 1: "grid-cols-1", 2: "grid-cols-2" }[cols];
+
   return (
     <div className="relative w-full">
       {field.value || !emtpyValueButtonMessage ? (
         <div className="flex items-center">
-          <div className="grid grid-cols-2 gap-2 items-center w-full mr-1">
+          <div className={`grid ${colsStyle} gap-2 items-center w-full mr-1`}>
             {children}
           </div>
           <div className="w-5 mt-5">
