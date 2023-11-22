@@ -11,7 +11,7 @@ body,
 
 .side-menu-item.active {
   @apply bg-slate-700 rounded-lg text-slate-100;
-  &:hover {
-    @apply bg-slate-800 text-slate-50;
-  }
+}
+.side-menu-item.active &:hover {
+  @apply bg-slate-800 text-slate-50;
 }
