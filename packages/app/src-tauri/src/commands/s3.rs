@@ -1,5 +1,4 @@
 use ::function_name::named;
-use log::error;
 use mime_guess::from_path;
 use s3::{creds::Credentials, Bucket, Region};
 use std::{borrow::Cow, path::Path};

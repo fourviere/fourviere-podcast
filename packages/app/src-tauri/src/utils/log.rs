@@ -36,7 +36,7 @@ fn filter_log(_: &Metadata<'_>) -> bool {
 macro_rules! log_if_error {
     ($result:expr) => {
         if let Err(err) = &$result {
-            error!("{} function failed: {:?}", function_name!(), err);
+            log::error!("[{}] error: {err:?}", function_name!());
             $result
         } else {
             $result

@@ -1,5 +1,4 @@
 use ::function_name::named;
-use log::error;
 
 use crate::{log_if_error, utils::result::Result};
 

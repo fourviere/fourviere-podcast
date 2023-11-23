@@ -1,10 +1,6 @@
 use ::function_name::named;
-use log::error;
-use std::borrow::Cow;
-use std::path::Path;
-use std::str;
-use suppaftp::types::FileType;
-use suppaftp::{AsyncFtpStream, Mode};
+use std::{borrow::Cow, path::Path, str};
+use suppaftp::{types::FileType, AsyncFtpStream, Mode};
 use tokio_util::compat::TokioAsyncReadCompatExt;
 
 use crate::log_if_error;
