@@ -5,7 +5,7 @@ use s3::{creds::Credentials, Bucket, Region};
 use std::{borrow::Cow, path::Path};
 use tokio::fs;
 
-use crate::{utils::result::Result, log_if_error};
+use crate::{log_if_error, utils::result::Result};
 
 #[derive(serde::Deserialize)]
 pub struct Payload {

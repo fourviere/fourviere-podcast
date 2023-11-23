@@ -1,7 +1,7 @@
 use ::function_name::named;
 use log::error;
 
-use crate::{utils::result::Result, log_if_error};
+use crate::{log_if_error, utils::result::Result};
 
 #[named]
 #[tauri::command]
