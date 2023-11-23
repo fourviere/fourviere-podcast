@@ -1,11 +1,11 @@
 use ::function_name::named;
-use log::{debug, error};
+use log::error;
 use mime_guess::from_path;
 use s3::{creds::Credentials, Bucket, Region};
 use std::{borrow::Cow, path::Path};
 use tokio::fs;
 
-use crate::utils::result::Result;
+use crate::{utils::result::Result, log_if_error};
 
 #[derive(serde::Deserialize)]
 pub struct Payload {
@@ -26,11 +26,7 @@ pub struct Payload {
 #[tauri::command]
 pub async fn s3_upload(payload: Payload) -> Result<String> {
     let upload_result = s3_upload_internal(payload).await;
-    debug!("{} result {:?}", function_name!(), upload_result);
-    if let Err(err) = &upload_result {
-        error!("{} function failed: {:?}", function_name!(), err);
-    }
-    upload_result
+    log_if_error!(upload_result)
 }
 
 async fn s3_upload_internal(payload: Payload) -> Result<String> {

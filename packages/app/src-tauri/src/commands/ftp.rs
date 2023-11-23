@@ -1,5 +1,5 @@
 use ::function_name::named;
-use log::{debug, error};
+use log::error;
 use std::borrow::Cow;
 use std::path::Path;
 use std::str;
@@ -7,6 +7,7 @@ use suppaftp::types::FileType;
 use suppaftp::{AsyncFtpStream, Mode};
 use tokio_util::compat::TokioAsyncReadCompatExt;
 
+use crate::log_if_error;
 use crate::utils::result::Result;
 
 #[derive(serde::Deserialize)]
@@ -26,11 +27,7 @@ pub struct Payload {
 #[tauri::command]
 pub async fn ftp_upload(payload: Payload) -> Result<String> {
     let upload_result = ftp_upload_internal(payload).await;
-    debug!("{} result {:?}", function_name!(), upload_result);
-    if let Err(err) = &upload_result {
-        error!("{} function failed: {:?}", function_name!(), err);
-    }
-    upload_result
+    log_if_error!(upload_result)
 }
 
 async fn ftp_upload_internal(payload: Payload) -> Result<String> {

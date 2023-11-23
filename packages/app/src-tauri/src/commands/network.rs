@@ -1,17 +1,13 @@
 use ::function_name::named;
-use log::{debug, error};
+use log::error;
 
-use crate::utils::result::Result;
+use crate::{utils::result::Result, log_if_error};
 
 #[named]
 #[tauri::command]
 pub async fn fetch_feed(url: &str) -> Result<String> {
     let fetch_result = fetch_feed_internal(url).await;
-    debug!("{} result {:?}", function_name!(), fetch_result);
-    if let Err(err) = &fetch_result {
-        error!("{} function failed: {:?}", function_name!(), err);
-    }
-    fetch_result
+    log_if_error!(fetch_result)
 }
 
 async fn fetch_feed_internal(url: &str) -> Result<String> {

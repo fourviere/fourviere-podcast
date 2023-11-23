@@ -1,41 +1,46 @@
-use log::LevelFilter;
+use std::sync::OnceLock;
+
+use log::{LevelFilter, Metadata};
 use tauri_plugin_log::LogTarget;
 
-#[cfg(not(debug_assertions))]
-const FORCE_DEBUG_LOG_FLAG: &str = "FOURVIERE_FORCE_DEBUG";
+const LOG_LEVEL: LevelFilter = LevelFilter::Error;
+const LOG_TARGETS: [LogTarget; 3] = [LogTarget::Stderr, LogTarget::LogDir, LogTarget::Webview];
 
-const LOG_LEVEL_DEBUG: LevelFilter = LevelFilter::Debug;
-const LOG_TARGETS_DEBUG: [LogTarget; 3] =
-    [LogTarget::Stderr, LogTarget::LogDir, LogTarget::Webview];
+static LOG_ENABLED: OnceLock<bool> = OnceLock::new();
 
-pub fn log_settings() -> (LevelFilter, Vec<LogTarget>) {
-    (log_level(), log_targets())
+pub fn log_settings() -> (
+    LevelFilter,
+    Vec<LogTarget>,
+    impl Fn(&Metadata<'_>) -> bool + Send + Sync + 'static,
+) {
+    (LOG_LEVEL, Vec::from(LOG_TARGETS), filter_log)
 }
 
+pub fn set_log_status(status: bool) -> Result<(),bool> {
+    LOG_ENABLED.set(status)
+}
 #[cfg(debug_assertions)]
-fn log_level() -> LevelFilter {
-    LOG_LEVEL_DEBUG
+pub fn log_status() -> bool {
+    *LOG_ENABLED.get_or_init(|| true)
 }
 
 #[cfg(not(debug_assertions))]
-fn log_level() -> LevelFilter {
-    if std::env::var(FORCE_DEBUG_LOG_FLAG).is_ok_and(|val| val.eq_ignore_ascii_case("TRUE")) {
-        LevelFilter::Debug
-    } else {
-        LevelFilter::Error
-    }
+pub fn log_status() -> bool {
+    *LOG_ENABLED.get_or_init(|| false)
 }
 
-#[cfg(debug_assertions)]
-fn log_targets() -> Vec<LogTarget> {
-    Vec::from(LOG_TARGETS_DEBUG)
+fn filter_log(_: &Metadata<'_>) -> bool {
+    log_status()
 }
 
-#[cfg(not(debug_assertions))]
-fn log_targets() -> Vec<LogTarget> {
-    if std::env::var(FORCE_DEBUG_LOG_FLAG).is_ok_and(|val| val.eq_ignore_ascii_case("TRUE")) {
-        Vec::from(LOG_TARGETS_DEBUG)
-    } else {
-        vec![LogTarget::LogDir]
-    }
+#[macro_export]
+macro_rules! log_if_error {
+    ($result:expr) => {
+        if let Err(err) = &$result {
+            error!("{} function failed: {:?}", function_name!(), err);
+            $result
+        } else {
+            $result
+        }
+    };
 }
