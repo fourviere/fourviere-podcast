@@ -7,7 +7,7 @@ interface Props<T> {
 }
 export default function FormObserver<T>({ updateFunction }: Props<T>) {
   const { values } = useFormikContext<T>();
-  const [timer, setTimer] = useState<NodeJS.Timeout>();
+  const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
 
   //TODO: improve this pls
   useEffect(() => {
