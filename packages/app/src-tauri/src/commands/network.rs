@@ -1,13 +1,20 @@
-use reqwest;
+use ::function_name::named;
 
+use crate::{log_if_error_and_return, utils::result::Result};
+
+#[named]
 #[tauri::command]
-pub async fn fetch_feed(url: &str) -> Result<String, String> {
+pub async fn fetch_feed(url: &str) -> Result<String> {
+    let fetch_result = fetch_feed_internal(url).await;
+    log_if_error_and_return!(fetch_result)
+}
+
+async fn fetch_feed_internal(url: &str) -> Result<String> {
     reqwest::get(url)
-        .await
-        .map_err(|_| "Error getting the data from remote endpoint".to_string())?
+        .await?
         .text()
         .await
-        .map_err(|_| "Error getting the data from remote endpoint".to_string())
+        .map_err(|err| err.into())
 }
 
 #[cfg(test)]

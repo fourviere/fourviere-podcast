@@ -1,9 +1,10 @@
-use std::borrow::Cow;
-use std::path::Path;
-use std::str;
-use suppaftp::types::FileType;
-use suppaftp::{AsyncFtpStream, Mode};
+use ::function_name::named;
+use std::{borrow::Cow, path::Path, str};
+use suppaftp::{types::FileType, AsyncFtpStream, Mode};
 use tokio_util::compat::TokioAsyncReadCompatExt;
+
+use crate::log_if_error_and_return;
+use crate::utils::result::Result;
 
 #[derive(serde::Deserialize)]
 pub struct Payload {
@@ -18,18 +19,19 @@ pub struct Payload {
     https: bool,
 }
 
+#[named]
 #[tauri::command]
-pub async fn ftp_upload(payload: Payload) -> Result<String, String> {
+pub async fn ftp_upload(payload: Payload) -> Result<String> {
+    let upload_result = ftp_upload_internal(payload).await;
+    log_if_error_and_return!(upload_result)
+}
+
+async fn ftp_upload_internal(payload: Payload) -> Result<String> {
     let addr = format!("{}:{}", payload.host, payload.port);
 
-    let mut ftp_stream = AsyncFtpStream::connect(addr)
-        .await
-        .map_err(|_| "Failed to connect to server".to_string())?;
+    let mut ftp_stream = AsyncFtpStream::connect(addr).await?;
 
-    ftp_stream
-        .login(&payload.user, &payload.password)
-        .await
-        .map_err(|_| "Failed to login to server".to_string())?;
+    ftp_stream.login(&payload.user, &payload.password).await?;
 
     // As default set the FTP connection to passive mode
     ftp_stream.set_mode(Mode::Passive);
@@ -44,16 +46,10 @@ pub async fn ftp_upload(payload: Payload) -> Result<String, String> {
     }
 
     if let Some(path) = &payload.path {
-        ftp_stream
-            .cwd(path)
-            .await
-            .map_err(|_| "Failed to change directory".to_string())?;
+        ftp_stream.cwd(path).await?;
     }
 
-    ftp_stream
-        .transfer_type(FileType::Binary)
-        .await
-        .map_err(|_| "Failed setting transfer type".to_string())?;
+    ftp_stream.transfer_type(FileType::Binary).await?;
 
     let ext = Path::new(&payload.local_path)
         .extension()
@@ -61,30 +57,20 @@ pub async fn ftp_upload(payload: Payload) -> Result<String, String> {
 
     let mut reader = tokio::fs::File::open(&payload.local_path)
         .await
-        .map(tokio::io::BufReader::new)
-        .map_err(|_| "Failed to open file".to_string())?
+        .map(tokio::io::BufReader::new)?
         .compat();
 
     ftp_stream
         .put_file(&format!("{}.{}", &payload.file_name, &ext), &mut reader)
-        .await
-        .map_err(|err| err.to_string())?;
+        .await?;
 
-    let _ = ftp_stream
-        .quit()
-        .await
-        .map_err(|_| "Failed to quit".to_string());
+    ftp_stream.quit().await?;
 
     let protocol = if payload.https { "https" } else { "http" };
 
-    let file_path = if let Some(path) = payload.path {
-        if !path.is_empty() {
-            format!("{}/{}.{}", path, payload.file_name, ext)
-        } else {
-            format!("{}.{}", payload.file_name, ext)
-        }
-    } else {
-        format!("{}.{}", payload.file_name, ext)
+    let file_path = match payload.path.filter(|path| !path.is_empty()) {
+        Some(path) => format!("{}/{}.{}", path, payload.file_name, ext),
+        None => format!("{}.{}", payload.file_name, ext),
     };
 
     Ok(format!(
@@ -185,9 +171,7 @@ mod test {
 
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
-        assert!(ftp_upload(payload)
-            .await
-            .is_err_and(|err| err == "Failed to connect to server"));
+        assert!(ftp_upload(payload).await.is_err());
         handle.abort();
     }
 
@@ -212,9 +196,7 @@ mod test {
 
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
-        assert!(ftp_upload(payload)
-            .await
-            .is_err_and(|err| err == "Failed to login to server"));
+        assert!(ftp_upload(payload).await.is_err());
         handle.abort();
     }
 
@@ -239,9 +221,7 @@ mod test {
 
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
-        assert!(ftp_upload(payload)
-            .await
-            .is_err_and(|err| err == "Failed to open file"));
+        assert!(ftp_upload(payload).await.is_err());
         handle.abort();
     }
 }
