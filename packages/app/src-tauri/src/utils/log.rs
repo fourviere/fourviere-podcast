@@ -33,7 +33,7 @@ fn filter_log(_: &Metadata<'_>) -> bool {
 }
 
 #[macro_export]
-macro_rules! log_if_error {
+macro_rules! log_if_error_and_return {
     ($result:expr) => {
         if let Err(err) = &$result {
             log::error!("[{}] error: {err:?}", function_name!());

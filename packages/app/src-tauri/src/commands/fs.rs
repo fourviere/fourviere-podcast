@@ -1,13 +1,13 @@
 use ::function_name::named;
 use tokio::fs::read_to_string;
 
-use crate::{log_if_error, utils::result::Result};
+use crate::{log_if_error_and_return, utils::result::Result};
 
 #[named]
 #[tauri::command]
 pub async fn read_text_file(path: &str) -> Result<String> {
     let read_result = read_text_file_internal(path).await;
-    log_if_error!(read_result)
+    log_if_error_and_return!(read_result)
 }
 
 async fn read_text_file_internal(path: &str) -> Result<String> {

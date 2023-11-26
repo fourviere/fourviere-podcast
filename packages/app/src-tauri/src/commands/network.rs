@@ -1,12 +1,12 @@
 use ::function_name::named;
 
-use crate::{log_if_error, utils::result::Result};
+use crate::{log_if_error_and_return, utils::result::Result};
 
 #[named]
 #[tauri::command]
 pub async fn fetch_feed(url: &str) -> Result<String> {
     let fetch_result = fetch_feed_internal(url).await;
-    log_if_error!(fetch_result)
+    log_if_error_and_return!(fetch_result)
 }
 
 async fn fetch_feed_internal(url: &str) -> Result<String> {

@@ -4,7 +4,7 @@ use s3::{creds::Credentials, Bucket, Region};
 use std::{borrow::Cow, path::Path};
 use tokio::fs;
 
-use crate::{log_if_error, utils::result::Result};
+use crate::{log_if_error_and_return, utils::result::Result};
 
 #[derive(serde::Deserialize)]
 pub struct Payload {
@@ -25,7 +25,7 @@ pub struct Payload {
 #[tauri::command]
 pub async fn s3_upload(payload: Payload) -> Result<String> {
     let upload_result = s3_upload_internal(payload).await;
-    log_if_error!(upload_result)
+    log_if_error_and_return!(upload_result)
 }
 
 async fn s3_upload_internal(payload: Payload) -> Result<String> {

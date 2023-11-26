@@ -3,7 +3,7 @@ use std::{borrow::Cow, path::Path, str};
 use suppaftp::{types::FileType, AsyncFtpStream, Mode};
 use tokio_util::compat::TokioAsyncReadCompatExt;
 
-use crate::log_if_error;
+use crate::log_if_error_and_return;
 use crate::utils::result::Result;
 
 #[derive(serde::Deserialize)]
@@ -23,7 +23,7 @@ pub struct Payload {
 #[tauri::command]
 pub async fn ftp_upload(payload: Payload) -> Result<String> {
     let upload_result = ftp_upload_internal(payload).await;
-    log_if_error!(upload_result)
+    log_if_error_and_return!(upload_result)
 }
 
 async fn ftp_upload_internal(payload: Payload) -> Result<String> {
