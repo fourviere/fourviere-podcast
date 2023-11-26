@@ -68,13 +68,14 @@ async fn ftp_upload_internal(payload: Payload) -> Result<String> {
 
     let protocol = if payload.https { "https" } else { "http" };
 
+    let file_path = match payload.path.filter(|path| !path.is_empty()) {
+        Some(path) => format!("{}/{}.{}", path, payload.file_name, ext),
+        None => format!("{}.{}", payload.file_name, ext),
+    };
+
     Ok(format!(
-        "{}://{}/{}/{}.{}",
-        protocol,
-        payload.http_host,
-        payload.path.unwrap_or("".to_string()),
-        payload.file_name,
-        ext
+        "{}://{}/{}",
+        protocol, payload.http_host, file_path
     ))
 }
 
