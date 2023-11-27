@@ -1,12 +1,9 @@
 use ::function_name::named;
-use log::{debug, error};
-use std::borrow::Cow;
-use std::path::Path;
-use std::str;
-use suppaftp::types::FileType;
-use suppaftp::{AsyncFtpStream, Mode};
+use std::{borrow::Cow, path::Path, str};
+use suppaftp::{types::FileType, AsyncFtpStream, Mode};
 use tokio_util::compat::TokioAsyncReadCompatExt;
 
+use crate::log_if_error_and_return;
 use crate::utils::result::Result;
 
 #[derive(serde::Deserialize)]
@@ -26,11 +23,7 @@ pub struct Payload {
 #[tauri::command]
 pub async fn ftp_upload(payload: Payload) -> Result<String> {
     let upload_result = ftp_upload_internal(payload).await;
-    debug!("{} result {:?}", function_name!(), upload_result);
-    if let Err(err) = &upload_result {
-        error!("{} function failed: {:?}", function_name!(), err);
-    }
-    upload_result
+    log_if_error_and_return!(upload_result)
 }
 
 async fn ftp_upload_internal(payload: Payload) -> Result<String> {
@@ -75,16 +68,16 @@ async fn ftp_upload_internal(payload: Payload) -> Result<String> {
 
     let protocol = if payload.https { "https" } else { "http" };
 
+    let file_path = match payload.path.filter(|path| !path.is_empty()) {
+        Some(path) => format!("{}/{}.{}", path, payload.file_name, ext),
+        None => format!("{}.{}", payload.file_name, ext),
+    };
+
     Ok(format!(
-        "{}://{}/{}/{}.{}",
-        protocol,
-        payload.http_host,
-        payload.path.unwrap_or("".to_owned()),
-        payload.file_name,
-        ext
+        "{}://{}/{}",
+        protocol, payload.http_host, file_path
     ))
 }
-
 #[cfg(test)]
 mod test {
     use std::{env::temp_dir, sync::Arc, time::Duration};

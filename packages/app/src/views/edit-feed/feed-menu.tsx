@@ -20,7 +20,7 @@ export default function FeedMenu() {
             key="feed-basic"
             icon={<PencilSquareIcon />}
           >
-            {t["edit_feed.basic.title"]}
+            {t["edit_feed.presentation.title"]}
           </SideMenuItem>
 
           <SideMenuItem<NavLinkProps>
@@ -29,7 +29,7 @@ export default function FeedMenu() {
             key="feed-itunes"
             icon={<MusicalNoteIcon />}
           >
-            {t["edit_feed.itunes.title"]}
+            {t["edit_feed.channel_field.itunes.title"]}
           </SideMenuItem>
           <hr />
 

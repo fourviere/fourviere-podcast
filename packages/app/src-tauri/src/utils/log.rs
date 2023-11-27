@@ -1,41 +1,68 @@
-use log::LevelFilter;
+use std::sync::atomic::{AtomicBool, Ordering};
+
+use log::{LevelFilter, Metadata};
 use tauri_plugin_log::LogTarget;
 
+const LOG_LEVEL: LevelFilter = LevelFilter::Error;
+const LOG_TARGETS: [LogTarget; 3] = [LogTarget::Stderr, LogTarget::LogDir, LogTarget::Webview];
+
 #[cfg(not(debug_assertions))]
-const FORCE_DEBUG_LOG_FLAG: &str = "FOURVIERE_FORCE_DEBUG";
-
-const LOG_LEVEL_DEBUG: LevelFilter = LevelFilter::Debug;
-const LOG_TARGETS_DEBUG: [LogTarget; 3] =
-    [LogTarget::Stderr, LogTarget::LogDir, LogTarget::Webview];
-
-pub fn log_settings() -> (LevelFilter, Vec<LogTarget>) {
-    (log_level(), log_targets())
-}
+static LOG_ENABLED: AtomicBool = AtomicBool::new(false);
 
 #[cfg(debug_assertions)]
-fn log_level() -> LevelFilter {
-    LOG_LEVEL_DEBUG
+static LOG_ENABLED: AtomicBool = AtomicBool::new(true);
+
+pub fn log_settings() -> (
+    LevelFilter,
+    Vec<LogTarget>,
+    impl Fn(&Metadata<'_>) -> bool + Send + Sync + 'static,
+) {
+    (LOG_LEVEL, Vec::from(LOG_TARGETS), filter_log)
 }
 
-#[cfg(not(debug_assertions))]
-fn log_level() -> LevelFilter {
-    if std::env::var(FORCE_DEBUG_LOG_FLAG).is_ok_and(|val| val.eq_ignore_ascii_case("TRUE")) {
-        LevelFilter::Debug
-    } else {
-        LevelFilter::Error
-    }
+pub fn set_log_status(status: bool) {
+    LOG_ENABLED.store(status, Ordering::Relaxed);
 }
 
-#[cfg(debug_assertions)]
-fn log_targets() -> Vec<LogTarget> {
-    Vec::from(LOG_TARGETS_DEBUG)
+pub fn log_status() -> bool {
+    LOG_ENABLED.load(Ordering::Relaxed)
 }
 
-#[cfg(not(debug_assertions))]
-fn log_targets() -> Vec<LogTarget> {
-    if std::env::var(FORCE_DEBUG_LOG_FLAG).is_ok_and(|val| val.eq_ignore_ascii_case("TRUE")) {
-        Vec::from(LOG_TARGETS_DEBUG)
-    } else {
-        vec![LogTarget::LogDir]
+fn filter_log(_: &Metadata<'_>) -> bool {
+    log_status()
+}
+
+#[macro_export]
+macro_rules! log_if_error_and_return {
+    ($result:expr) => {
+        if let Err(err) = &$result {
+            log::error!("[{}] error: {err:?}", function_name!());
+            $result
+        } else {
+            $result
+        }
+    };
+}
+
+#[cfg(test)]
+mod test {
+    use std::{
+        thread::{self, spawn},
+        time::Duration,
+    };
+
+    use crate::utils::log::{log_status, set_log_status};
+
+    #[test]
+    fn test_log_status() {
+        set_log_status(true);
+        assert!(log_status());
+
+        spawn(|| {
+            set_log_status(false);
+        });
+
+        thread::sleep(Duration::from_secs(1));
+        assert!(!log_status())
     }
 }

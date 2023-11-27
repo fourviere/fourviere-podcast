@@ -1,11 +1,10 @@
 use ::function_name::named;
-use log::{debug, error};
 use mime_guess::from_path;
 use s3::{creds::Credentials, Bucket, Region};
 use std::{borrow::Cow, path::Path};
 use tokio::fs;
 
-use crate::utils::result::Result;
+use crate::{log_if_error_and_return, utils::result::Result};
 
 #[derive(serde::Deserialize)]
 pub struct Payload {
@@ -26,11 +25,7 @@ pub struct Payload {
 #[tauri::command]
 pub async fn s3_upload(payload: Payload) -> Result<String> {
     let upload_result = s3_upload_internal(payload, false).await;
-    debug!("{} result {:?}", function_name!(), upload_result);
-    if let Err(err) = &upload_result {
-        error!("{} function failed: {:?}", function_name!(), err);
-    }
-    upload_result
+    log_if_error_and_return!(upload_result)
 }
 
 async fn s3_upload_internal(payload: Payload, use_path_style: bool) -> Result<String> {
@@ -75,9 +70,16 @@ async fn s3_upload_internal(payload: Payload, use_path_style: bool) -> Result<St
         .await?;
 
     let protocol = if payload.https { "https" } else { "http" };
+
+    let file_path = if !path.is_empty() {
+        format!("{}/{}.{}", path, payload.file_name, ext)
+    } else {
+        format!("{}.{}", payload.file_name, ext)
+    };
+
     Ok(format!(
-        "{}://{}/{}/{}.{}",
-        protocol, payload.http_host, path, payload.file_name, ext
+        "{}://{}/{}",
+        protocol, payload.http_host, file_path
     ))
 }
 

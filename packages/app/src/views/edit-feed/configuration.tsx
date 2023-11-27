@@ -2,7 +2,7 @@ import { Container } from "@fourviere/ui/lib/box";
 import FormSection from "@fourviere/ui/lib/form/form-section";
 import FormRow from "@fourviere/ui/lib/form/form-row";
 import Input from "@fourviere/ui/lib/form/fields/input";
-import Checkbox from "@fourviere/ui/lib/form/fields/checkbox";
+import Boolean from "@fourviere/ui/lib/form/fields/Boolean";
 import { Formik } from "formik";
 import { FormField } from "@fourviere/ui/lib/form/form-field";
 import UseCurrentFeed from "../../hooks/useCurrentFeed";
@@ -28,7 +28,7 @@ export default function Configuration() {
         setSubmitting(false);
       }}
     >
-      {({ values, handleSubmit }) => {
+      {({ values, handleSubmit, setFieldValue }) => {
         return (
           <Container scroll wFull flex="col" as="form" onSubmit={handleSubmit}>
             <FormObserver<ConfigurationInterface>
@@ -132,8 +132,10 @@ export default function Configuration() {
                       name="remotes.s3.https"
                       fieldProps={{
                         label: t["edit_feed.configuration.s3.https.info"],
+                        value: values.remotes.s3?.https,
+                        setFieldValue,
                       }}
-                      as={Checkbox}
+                      as={Boolean}
                     />
                   </FormRow>
                   <FormRow
@@ -212,8 +214,14 @@ export default function Configuration() {
                       name="remotes.ftp.https"
                       fieldProps={{
                         label: t["edit_feed.configuration.ftp.https.info"],
+                        value: values.remotes.ftp?.https,
+                        setFieldValue,
                       }}
-                      as={Checkbox}
+                      initValue={true}
+                      emtpyValueButtonMessage={
+                        t["ui.forms.empty_field.message"]
+                      }
+                      as={Boolean}
                     />
                   </FormRow>
                   <FormRow
