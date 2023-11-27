@@ -78,6 +78,7 @@ async fn ftp_upload_internal(payload: Payload) -> Result<String> {
         protocol, payload.http_host, file_path
     ))
 }
+
 #[cfg(test)]
 mod test {
     use std::{env::temp_dir, sync::Arc, time::Duration};
