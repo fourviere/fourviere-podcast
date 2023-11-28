@@ -2,7 +2,7 @@ import { Container } from "@fourviere/ui/lib/box";
 import FormSection from "@fourviere/ui/lib/form/form-section";
 import FormRow from "@fourviere/ui/lib/form/form-row";
 import Input from "@fourviere/ui/lib/form/fields/input";
-import Boolean from "@fourviere/ui/lib/form/fields/Boolean";
+import Boolean from "@fourviere/ui/lib/form/fields/boolean";
 import { Formik } from "formik";
 import { FormField } from "@fourviere/ui/lib/form/form-field";
 import UseCurrentFeed from "../../hooks/useCurrentFeed";
