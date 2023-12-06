@@ -30,7 +30,6 @@ const TRANSLATIONS = {
     "edit_feed.indexing.title": "Indexing",
     "edit_feed.indexing.title.description":
       "This area will contain the fields necessary for allowing the podcast client and the podcast directories to index the podcast.",
-
     "edit_feed.channel_field.show_name": "Show name",
     "edit_feed.channel_field.show_description": "Show description",
     "edit_feed.channel_field.image": "Show image",
@@ -69,6 +68,21 @@ const TRANSLATIONS = {
     "edit_feed.channel_field.itunes.complete": "Itunes complete",
     "edit_feed.channel_field.itunes.complete.description":
       "If you will never publish another episode to your show, use this tag.",
+    //-----
+    "edit_feed.items_fields.media.title": "Media",
+    "edit_feed.items_fields.media.description":
+      "This section contains the podcast media file and the title",
+    "edit_feed.items.title": "Episodes",
+    "edit_feed.items_fields.title": "Title",
+    "edit_feed.items_fields.image": "Episode image",
+    "edit_feed.items_fields.description": "Episode description",
+    "edit_feed.items_fields.enclosure_url": "Media file",
+    "edit_feed.items_fields.presentation.title": "Presentation",
+    "edit_feed.items_fields.presentation.description":
+      "This area will contain the fields necessary for, once completed, having defined the presentation of the episode.",
+
+    //-----
+
     "ui.forms.empty_field.message": "Click here to assign a value",
     "edit_feed.configuration.title": "Configuration",
     "edit_feed.configuration.remotes.title": "Remote configuration",

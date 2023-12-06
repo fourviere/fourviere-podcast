@@ -4,15 +4,26 @@ import React from "react";
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   isLoading?: boolean;
+  size?: "sm" | "md" | "lg";
 };
 
-const Button: React.FC<ButtonProps> = ({ children, isLoading, ...rest }) => {
+const Button: React.FC<ButtonProps> = ({
+  children,
+  isLoading,
+  className,
+  size,
+  ...rest
+}) => {
   return (
     <button
       {...rest}
       className={classNames(
-        `bg-slate-800 hover:bg-slate-600 rounded-lg hover:text-slate-200 font-semibold text-xs uppercase relative py-4 px-6 text-white transition-all duration-200 ease-linear flex items-center`,
-        { "pl-9": isLoading }
+        `bg-slate-800 hover:bg-slate-600 rounded-lg hover:text-slate-200 font-semibold text-xs uppercase relative  text-white transition-all duration-200 ease-linear flex items-center`,
+        { "pl-9": isLoading },
+        { "py-2 px-3": size === "sm" },
+        { "py-3 px-4": size === "md" },
+        { "py-4 px-6": size === "lg" },
+        className
       )}
     >
       {isLoading ? (

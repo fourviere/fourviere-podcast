@@ -5,7 +5,6 @@ import { Container } from "@fourviere/ui/lib/box";
 import FormSection from "@fourviere/ui/lib/form/form-section";
 import FormRow from "@fourviere/ui/lib/form/form-row";
 import Input from "@fourviere/ui/lib/form/fields/input";
-import Checkbox from "@fourviere/ui/lib/form/fields/checkbox";
 import { Formik } from "formik";
 import { FormField } from "@fourviere/ui/lib/form/form-field";
 import useConfigurations from "../../hooks/useConfigurations";

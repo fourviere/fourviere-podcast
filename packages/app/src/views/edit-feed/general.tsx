@@ -42,6 +42,7 @@ export default function General() {
             setFieldValue("rss.channel.0.image.url", value),
           updateError: (value: string) =>
             setFieldError("rss.channel.0.image.url", value),
+          fileFamily: "image",
         });
 
         return (

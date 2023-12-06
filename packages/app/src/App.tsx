@@ -12,8 +12,10 @@ import FeedConfiguration from "./views/edit-feed/configuration";
 import GlobalConfiguration from "./views/configuration";
 import Itunes from "./views/edit-feed/itunes";
 import { attachConsole } from "@tauri-apps/plugin-log";
+import ItemsIndex from "./views/edit-item/items-index";
+import ItemGeneral from "./views/edit-item/item-general";
 
-const detach = await attachConsole();
+attachConsole();
 
 const router = createBrowserRouter([
   {
@@ -33,24 +35,26 @@ const router = createBrowserRouter([
         Component: General,
       },
       {
-        path: "artwork",
-        element: <div>artwork</div>,
+        path: "feed-itunes",
+        Component: Itunes,
       },
       {
-        path: "feed-itunes",
-        element: <Itunes />,
+        path: "feed-items",
+        children: [
+          { path: "", Component: ItemsIndex },
+          {
+            path: ":itemIndex",
+            Component: ItemGeneral,
+          },
+        ],
       },
       {
         path: "feed-source-code",
-        element: <SourceCode />,
+        Component: SourceCode,
       },
       {
         path: "feed-config",
         Component: FeedConfiguration,
-      },
-      {
-        path: "episodes/:episodeId",
-        element: <div>episode</div>,
       },
     ],
   },
