@@ -12,6 +12,7 @@ pub enum Error {
     S3Credentials(#[from] ::s3::creds::error::CredentialsError),
     #[error("Error while operationing on s3 storage")]
     S3Operation(#[from] ::s3::error::S3Error),
+    //reqwest::Error with anyhow
 }
 
 impl serde::Serialize for Error {

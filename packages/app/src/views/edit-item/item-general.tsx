@@ -3,7 +3,7 @@ import FormSection from "@fourviere/ui/lib/form/form-section";
 import FormRow from "@fourviere/ui/lib/form/form-row";
 import Input from "@fourviere/ui/lib/form/fields/input";
 import Text from "@fourviere/ui/lib/form/fields/text";
-import AudioField from "@fourviere/ui/lib/form/fields/audio";
+import AudioField from "../../components/form-fields/audio";
 import { Formik } from "formik";
 import ImageField from "@fourviere/ui/lib/form/fields/image";
 import { FormField } from "@fourviere/ui/lib/form/form-field";
@@ -115,9 +115,9 @@ export default function ItemGeneral() {
                   label={t["edit_feed.items_fields.enclosure_url"]}
                 >
                   <FormField
-                    id={`rss.channel.0.item[${itemIndex}].enclosure.@.url`}
-                    name={`rss.channel.0.item[${itemIndex}].enclosure.@.url`}
-                    as={AudioField}
+                    id={`rss.channel.0.item[${itemIndex}].enclosure.@`}
+                    name={`rss.channel.0.item[${itemIndex}].enclosure.@`}
+                    as={AudioField as FC}
                     fieldProps={{
                       onButtonClick: enclosureUpload.openFile,
                       isUploading: enclosureUpload.isUploading,
