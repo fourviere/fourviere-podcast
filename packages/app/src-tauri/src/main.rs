@@ -19,6 +19,7 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             commands::network::fetch_feed,
             commands::fs::read_text_file,
+            commands::fs::read_file_info,
             commands::s3::s3_upload,
             commands::ftp::ftp_upload,
             commands::log::log_status,
