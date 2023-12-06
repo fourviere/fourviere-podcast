@@ -57,6 +57,9 @@ const AudioField = React.forwardRef<HTMLInputElement, Props>(
                   <input
                     ref={ref}
                     {...field}
+                    onChange={(e) => {
+                      console.log("value changed");
+                    }}
                     className="shadow appearance-none border rounded-lg w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-sm"
                   />
                   <Button size="sm" onClick={onButtonClick}>

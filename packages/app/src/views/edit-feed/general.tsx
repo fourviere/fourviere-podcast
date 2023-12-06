@@ -11,7 +11,7 @@ import AddField from "@fourviere/ui/lib/form/add-field";
 import Undefined from "@fourviere/ui/lib/form/fields/undefined";
 import ImageField from "@fourviere/ui/lib/form/fields/image";
 import Select from "@fourviere/ui/lib/form/fields/select";
-import useUpload from "../../hooks/useUpload";
+import useUpload, { UploadResponse } from "../../hooks/useUpload";
 import FormObserver from "../../components/form-observer";
 import { Feed } from "@fourviere/core/lib/schema/feed";
 import PODCASTCATEGORIES from "@fourviere/core/lib/podcast-namespace/categories";
@@ -38,8 +38,10 @@ export default function General() {
       {({ values, setFieldValue, setFieldError, handleSubmit }) => {
         const imageUpload = useUpload({
           feedId: currentFeed.feedId,
-          updateField: (value: string) =>
-            setFieldValue("rss.channel.0.image.url", value),
+          updateField: (value: UploadResponse) => {
+            console.log("set url", value.url);
+            setFieldValue("rss.channel.0.image.url", value.url);
+          },
           updateError: (value: string) =>
             setFieldError("rss.channel.0.image.url", value),
           fileFamily: "image",

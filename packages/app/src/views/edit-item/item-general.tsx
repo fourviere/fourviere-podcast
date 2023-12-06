@@ -13,7 +13,7 @@ import useTranslations from "../../hooks/useTranslations";
 import FormObserver from "../../components/form-observer";
 import { Feed } from "@fourviere/core/lib/schema/feed";
 import { useParams } from "react-router-dom";
-import useUpload from "../../hooks/useUpload";
+import useUpload, { UploadResponse } from "../../hooks/useUpload";
 import { FC } from "react";
 import { FullPageColumnLayout } from "@fourviere/ui/lib/layouts/full-page";
 
@@ -39,10 +39,10 @@ export default function ItemGeneral() {
         {({ setFieldValue, setFieldError, handleSubmit, values }) => {
           const imageUpload = useUpload({
             feedId: currentFeed.feedId,
-            updateField: (value: string) =>
+            updateField: (value: UploadResponse) =>
               setFieldValue(
                 `rss.channel.0.item.${itemIndex}.["itunes:image"].@.href`,
-                value
+                value.url
               ),
             updateError: (value: string) =>
               setFieldError(
@@ -54,11 +54,21 @@ export default function ItemGeneral() {
 
           const enclosureUpload = useUpload({
             feedId: currentFeed.feedId,
-            updateField: (value: string) =>
+            updateField: (value: UploadResponse) => {
               setFieldValue(
                 `rss.channel.0.item[${itemIndex}].enclosure.@.url`,
-                value
+                value.url
               ),
+                setFieldValue(
+                  `rss.channel.0.item[${itemIndex}].enclosure.@.length`,
+                  value.size
+                ),
+                setFieldValue(
+                  `rss.channel.0.item[${itemIndex}].enclosure.@.type`,
+                  value.mime_type
+                );
+            },
+
             updateError: (value: string) => {
               setFieldError(
                 `rss.channel.0.item[${itemIndex}].enclosure.@.url`,

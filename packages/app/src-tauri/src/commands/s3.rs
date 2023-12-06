@@ -21,14 +21,21 @@ pub struct Payload {
     file_name: String,
 }
 
+#[derive(serde::Serialize)]
+pub struct UploadResult {
+    pub url: String,
+    pub mime_type: String,
+    pub size: u64,
+}
+
 #[named]
 #[tauri::command]
-pub async fn s3_upload(payload: Payload) -> Result<String> {
+pub async fn s3_upload(payload: Payload) -> Result<UploadResult> {
     let upload_result = s3_upload_internal(payload, false).await;
     log_if_error_and_return!(upload_result)
 }
 
-async fn s3_upload_internal(payload: Payload, use_path_style: bool) -> Result<String> {
+async fn s3_upload_internal(payload: Payload, use_path_style: bool) -> Result<UploadResult> {
     let credentials = Credentials::new(
         Some(&payload.access_key),
         Some(&payload.secret_key),
@@ -58,6 +65,8 @@ async fn s3_upload_internal(payload: Payload, use_path_style: bool) -> Result<St
 
     // Guess the MIME type based on the file extension
     let mime = from_path(&payload.local_path).first_or_octet_stream();
+    let size = tokio::fs::metadata(&payload.local_path).await?.len();
+
     let ext = Path::new(&payload.local_path)
         .extension()
         .map_or(Cow::default(), |ext| ext.to_string_lossy());
@@ -77,10 +86,11 @@ async fn s3_upload_internal(payload: Payload, use_path_style: bool) -> Result<St
         format!("{}.{}", payload.file_name, ext)
     };
 
-    Ok(format!(
-        "{}://{}/{}",
-        protocol, payload.http_host, file_path
-    ))
+    Ok(UploadResult {
+        size,
+        mime_type: mime.to_string(),
+        url: format!("{}://{}/{}", protocol, payload.http_host, file_path),
+    })
 }
 
 #[cfg(test)]

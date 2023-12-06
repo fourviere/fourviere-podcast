@@ -3,7 +3,7 @@ import { open } from "@tauri-apps/api/dialog";
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
 import feedStore from "../store/feed";
-import { FILE_FAMILIES } from "./useUpload";
+import { FILE_FAMILIES, UploadResponse } from "./useUpload";
 
 export default function useS3Upload({
   feedId,
@@ -12,7 +12,7 @@ export default function useS3Upload({
   fileFamily,
 }: {
   feedId: string;
-  updateField: (value: string) => void;
+  updateField: (value: UploadResponse) => void;
   updateError: (value: string) => void;
   fileFamily: keyof typeof FILE_FAMILIES;
 }) {
@@ -36,7 +36,7 @@ export default function useS3Upload({
 
   function upload(local_path: string, fileName: string) {
     setIsUploading(true);
-    invoke<string>("s3_upload", {
+    invoke<UploadResponse>("s3_upload", {
       payload: {
         local_path,
         file_name: fileName,

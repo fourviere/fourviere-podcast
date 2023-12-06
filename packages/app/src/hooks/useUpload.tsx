@@ -15,6 +15,12 @@ export const FILE_FAMILIES = {
   },
 };
 
+export type UploadResponse = {
+  url: string;
+  mime_type: string;
+  size: number;
+};
+
 export default function ({
   feedId,
   updateField,
@@ -22,7 +28,7 @@ export default function ({
   fileFamily,
 }: {
   feedId: string;
-  updateField: (value: string) => void;
+  updateField: (value: UploadResponse) => void;
   updateError: (value: string) => void;
   fileFamily: keyof typeof FILE_FAMILIES;
 }) {

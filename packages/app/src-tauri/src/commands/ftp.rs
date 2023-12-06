@@ -1,4 +1,5 @@
 use ::function_name::named;
+use mime_guess::from_path;
 use std::{borrow::Cow, path::Path, str};
 use suppaftp::{types::FileType, AsyncFtpStream, Mode};
 use tokio_util::compat::TokioAsyncReadCompatExt;
@@ -19,14 +20,21 @@ pub struct Payload {
     https: bool,
 }
 
+#[derive(serde::Serialize)]
+pub struct UploadResult {
+    pub url: String,
+    pub mime_type: String,
+    pub size: u64,
+}
+
 #[named]
 #[tauri::command]
-pub async fn ftp_upload(payload: Payload) -> Result<String> {
+pub async fn ftp_upload(payload: Payload) -> Result<UploadResult> {
     let upload_result = ftp_upload_internal(payload).await;
     log_if_error_and_return!(upload_result)
 }
 
-async fn ftp_upload_internal(payload: Payload) -> Result<String> {
+async fn ftp_upload_internal(payload: Payload) -> Result<UploadResult> {
     let addr = format!("{}:{}", payload.host, payload.port);
 
     let mut ftp_stream = AsyncFtpStream::connect(addr).await?;
@@ -51,6 +59,9 @@ async fn ftp_upload_internal(payload: Payload) -> Result<String> {
 
     ftp_stream.transfer_type(FileType::Binary).await?;
 
+    let mime = from_path(&payload.local_path).first_or_octet_stream();
+    let size = tokio::fs::metadata(&payload.local_path).await?.len();
+
     let ext = Path::new(&payload.local_path)
         .extension()
         .map_or(Cow::default(), |ext| ext.to_string_lossy());
@@ -73,10 +84,11 @@ async fn ftp_upload_internal(payload: Payload) -> Result<String> {
         None => format!("{}.{}", payload.file_name, ext),
     };
 
-    Ok(format!(
-        "{}://{}/{}",
-        protocol, payload.http_host, file_path
-    ))
+    Ok(UploadResult {
+        size,
+        mime_type: mime.to_string(),
+        url: format!("{}://{}/{}", protocol, payload.http_host, file_path),
+    })
 }
 
 #[cfg(test)]
