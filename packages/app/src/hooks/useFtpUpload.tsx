@@ -3,17 +3,18 @@ import { open } from "@tauri-apps/api/dialog";
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
 import feedStore from "../store/feed";
-
-const ALLOWED_EXENSIONS = ["png", "jpeg", "jpg"];
+import { FILE_FAMILIES } from "./useUpload";
 
 export default function useFtpUpload({
   feedId,
   updateField,
   updateError,
+  fileFamily,
 }: {
   feedId: string;
   updateField: (value: string) => void;
   updateError: (value: string) => void;
+  fileFamily: keyof typeof FILE_FAMILIES;
 }) {
   const [isUploading, setIsUploading] = useState(false);
   const { remote, ftp } = feedStore(
@@ -57,8 +58,8 @@ export default function useFtpUpload({
       multiple: true,
       filters: [
         {
-          name: "Image",
-          extensions: ALLOWED_EXENSIONS,
+          name: FILE_FAMILIES[fileFamily].title,
+          extensions: FILE_FAMILIES[fileFamily].extensions,
         },
       ],
     }).then((selected) => {

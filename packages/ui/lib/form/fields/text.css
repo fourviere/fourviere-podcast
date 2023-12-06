@@ -32,7 +32,7 @@
   line-height: 1.42;
   height: 100%;
   outline: none;
-  overflow-y: auto;
+  width: inherit;
   /*min-height: 100px;*/
 
   padding: 4px 4px;
@@ -41,9 +41,27 @@
   text-align: left;
   white-space: pre-wrap;
   word-wrap: break-word;
+  overflow-wrap: break-all;
+  inline-size: inherit;
 }
-.ql-editor > * {
+/* .ql-editor > * {
   cursor: text;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+} */
+
+.ql-editor * {
+  cursor: text;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+.ql-editor a {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-all;
+  inline-size: inherit;
 }
 .ql-editor p,
 .ql-editor ol,
@@ -59,6 +77,10 @@
   margin: 0;
   padding: 0;
   counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+  word-break: break-all;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-all;
 }
 .ql-editor ol,
 .ql-editor ul {
@@ -67,6 +89,10 @@
 .ql-editor ol > li,
 .ql-editor ul > li {
   list-style-type: none;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-all;
+  inline-size: inherit;
 }
 .ql-editor ul > li::before {
   content: "\2022";

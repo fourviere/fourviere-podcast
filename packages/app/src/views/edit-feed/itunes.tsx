@@ -40,6 +40,7 @@ export default function Itunes() {
             setFieldValue(`rss.channel.0.['itunes:image'].@.href`, value),
           updateError: (value: string) =>
             setFieldError(`rss.channel.0.['itunes:image'].@.href`, value),
+          fileFamily: "image",
         });
         return (
           <Container
