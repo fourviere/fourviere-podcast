@@ -77,10 +77,13 @@ const TRANSLATIONS = {
     "edit_feed.items_fields.image": "Episode image",
     "edit_feed.items_fields.description": "Episode description",
     "edit_feed.items_fields.enclosure_url": "Media file",
+    "edit_feed.items_fields.enclosure_url.url": "File url",
+    "edit_feed.items_fields.enclosure_url.type": "File type",
+    "edit_feed.items_fields.enclosure_url.length": "Length in bytes",
     "edit_feed.items_fields.presentation.title": "Presentation",
     "edit_feed.items_fields.presentation.description":
       "This area will contain the fields necessary for, once completed, having defined the presentation of the episode.",
-
+    "edit_feed.items_fields.duration": "Duration",
     //-----
 
     "ui.forms.empty_field.message": "Click here to assign a value",

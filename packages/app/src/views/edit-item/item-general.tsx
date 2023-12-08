@@ -16,6 +16,7 @@ import { useParams } from "react-router-dom";
 import useUpload, { UploadResponse } from "../../hooks/useUpload";
 import { FC } from "react";
 import { FullPageColumnLayout } from "@fourviere/ui/lib/layouts/full-page";
+import { Command } from "@tauri-apps/api/shell";
 
 export default function ItemGeneral() {
   const currentFeed = UseCurrentFeed();
@@ -67,6 +68,25 @@ export default function ItemGeneral() {
                   `rss.channel.0.item[${itemIndex}].enclosure.@.type`,
                   value.mime_type
                 );
+              const getDuration = Command.sidecar("binaries/ffprobe", [
+                "-v",
+                "quiet",
+                "-print_format",
+                "json",
+                "-show_format",
+                "-show_streams",
+                value.url,
+              ]);
+              getDuration
+                .execute()
+                .then((d) => {
+                  const duration = JSON.parse(d?.stdout)?.format.duration;
+                  setFieldValue(
+                    `rss.channel.0.item[${itemIndex}]["itunes:duration"]`,
+                    duration
+                  );
+                })
+                .catch(console.error);
             },
 
             updateError: (value: string) => {
@@ -97,6 +117,67 @@ export default function ItemGeneral() {
                 description={t["edit_feed.items_fields.media.description"]}
               >
                 <FormRow
+                  name="rss.channel.0.item[${itemIndex}].enclosure.@.url"
+                  label={t["edit_feed.items_fields.enclosure_url"]}
+                >
+                  <FormField
+                    id={`rss.channel.0.item[${itemIndex}].enclosure.@`}
+                    name={`rss.channel.0.item[${itemIndex}].enclosure.@`}
+                    as={AudioField as FC}
+                    fieldProps={{
+                      onButtonClick: enclosureUpload.openFile,
+                      isUploading: enclosureUpload.isUploading,
+                      onChange: (s: string) => {
+                        const getDuration = Command.sidecar(
+                          "binaries/ffprobe",
+                          [
+                            "-v",
+                            "quiet",
+                            "-print_format",
+                            "json",
+                            "-show_format",
+                            "-show_streams",
+                            s,
+                          ]
+                        );
+                        getDuration
+                          .execute()
+                          .then((d) => {
+                            const duration = JSON.parse(d?.stdout)?.format
+                              .duration;
+                            setFieldValue(
+                              `rss.channel.0.item[${itemIndex}]["itunes:duration"]`,
+                              duration
+                            );
+                          })
+                          .catch(console.error);
+                      },
+                    }}
+                    initValue="https://www.spreaker.com/user/brainrepo/ep-190-matteo-croce-kernel"
+                    emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                  />
+                </FormRow>
+                <FormRow
+                  name={`rss.channel.0.item[${itemIndex}]["itunes:duration"]`}
+                  label={t["edit_feed.items_fields.duration"]}
+                >
+                  <FormField
+                    id={`rss.channel.0.item[${itemIndex}]["itunes:duration"]`}
+                    name={`rss.channel.0.item[${itemIndex}]["itunes:duration"]`}
+                    as={Input}
+                    initValue="My podcast title"
+                    emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                  />
+                </FormRow>
+              </FormSection>
+
+              <FormSection
+                title={t["edit_feed.items_fields.presentation.title"]}
+                description={
+                  t["edit_feed.items_fields.presentation.description"]
+                }
+              >
+                <FormRow
                   name="rss.channel.0.title"
                   label={t["edit_feed.items_fields.title"]}
                 >
@@ -109,30 +190,6 @@ export default function ItemGeneral() {
                     emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                   />
                 </FormRow>
-
-                <FormRow
-                  name="rss.channel.0.item[${itemIndex}].enclosure.@.url"
-                  label={t["edit_feed.items_fields.enclosure_url"]}
-                >
-                  <FormField
-                    id={`rss.channel.0.item[${itemIndex}].enclosure.@`}
-                    name={`rss.channel.0.item[${itemIndex}].enclosure.@`}
-                    as={AudioField as FC}
-                    fieldProps={{
-                      onButtonClick: enclosureUpload.openFile,
-                      isUploading: enclosureUpload.isUploading,
-                    }}
-                    initValue="https://www.spreaker.com/user/brainrepo/ep-190-matteo-croce-kernel"
-                    emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
-                  />
-                </FormRow>
-              </FormSection>
-              <FormSection
-                title={t["edit_feed.items_fields.presentation.title"]}
-                description={
-                  t["edit_feed.items_fields.presentation.description"]
-                }
-              >
                 <FormRow
                   name="rss.channel.0.image"
                   label={t["edit_feed.items_fields.image"]}

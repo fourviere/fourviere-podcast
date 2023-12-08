@@ -1,6 +1,5 @@
 use ::function_name::named;
-use anyhow::Error;
-use reqwest::{header, Request};
+use reqwest::header;
 use tokio::fs::read_to_string;
 
 use crate::{log_if_error_and_return, utils::result::Result};
@@ -25,7 +24,8 @@ pub struct FileInfo {
 #[named]
 #[tauri::command]
 pub async fn read_file_info(url: &str) -> Result<FileInfo> {
-    let read_result = read_file_info_internal(url).await;
+    let read_result: std::prelude::v1::Result<FileInfo, crate::utils::result::Error> =
+        read_file_info_internal(url).await;
     log_if_error_and_return!(read_result)
 }
 
