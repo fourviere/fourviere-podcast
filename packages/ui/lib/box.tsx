@@ -49,6 +49,7 @@ const containerFlex = {
   "row-middle": `flex flex-row items-center`,
   "row-bottom": `flex flex-row items-end`,
   "row-center": `flex flex-row items-center justify-center`,
+  "row-v-stretch": `flex flex-row items-stretch justify-center`,
   col: `flex flex-col`,
 };
 

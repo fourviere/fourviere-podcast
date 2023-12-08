@@ -5,6 +5,7 @@ import React from "react";
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   isLoading?: boolean;
   size?: "sm" | "md" | "lg";
+  Icon?: React.ElementType;
 };
 
 const Button: React.FC<ButtonProps> = ({
@@ -12,6 +13,7 @@ const Button: React.FC<ButtonProps> = ({
   isLoading,
   className,
   size,
+  Icon,
   ...rest
 }) => {
   return (
@@ -31,6 +33,7 @@ const Button: React.FC<ButtonProps> = ({
           <ArrowPathIcon className="w-4 h-4 text-slate-100 animate-spin" />
         </div>
       ) : null}
+      {Icon && <Icon className="text-slate-50 w-3" />}
       {children}
     </button>
   );
