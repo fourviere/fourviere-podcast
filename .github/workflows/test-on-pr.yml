@@ -28,6 +28,8 @@ jobs:
         run: npm run build:ui
       - name: run typescript tests
         run: npm run test
+      - name: rustc details
+        run: rustc -vV
       - name: run rust tests
         run: cargo test
         working-directory: packages/app/src-tauri
