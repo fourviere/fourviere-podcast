@@ -15,7 +15,7 @@ import ResetField from "@fourviere/ui/lib/form/reset-field";
 import FormObjectField from "@fourviere/ui/lib/form/form-object-field";
 import Boolean from "@fourviere/ui/lib/form/fields/boolean";
 import ImageField from "@fourviere/ui/lib/form/fields/image";
-import useUpload from "../../hooks/useUpload";
+import useUpload, { UploadResponse } from "../../hooks/useUpload";
 export default function Itunes() {
   const currentFeed = UseCurrentFeed();
   const t = useTranslations();
@@ -36,8 +36,8 @@ export default function Itunes() {
       {({ values, handleSubmit, setFieldValue, setFieldError }) => {
         const imageUpload = useUpload({
           feedId: currentFeed.feedId,
-          updateField: (value: string) =>
-            setFieldValue(`rss.channel.0.['itunes:image'].@.href`, value),
+          updateField: (value: UploadResponse) =>
+            setFieldValue(`rss.channel.0.['itunes:image'].@.href`, value.url),
           updateError: (value: string) =>
             setFieldError(`rss.channel.0.['itunes:image'].@.href`, value),
           fileFamily: "image",

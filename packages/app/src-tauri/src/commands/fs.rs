@@ -1,8 +1,7 @@
+use crate::{log_if_error_and_return, utils::result::Result};
 use ::function_name::named;
 use reqwest::header;
 use tokio::fs::read_to_string;
-
-use crate::{log_if_error_and_return, utils::result::Result};
 
 #[named]
 #[tauri::command]
@@ -29,7 +28,7 @@ pub async fn read_file_info(url: &str) -> Result<FileInfo> {
     log_if_error_and_return!(read_result)
 }
 
-pub async fn read_file_info_internal(url: &str) -> Result<FileInfo> {
+async fn read_file_info_internal(url: &str) -> Result<FileInfo> {
     let client = reqwest::Client::new();
 
     let resp = client
@@ -37,24 +36,25 @@ pub async fn read_file_info_internal(url: &str) -> Result<FileInfo> {
         .send()
         .await?
         .error_for_status()
-        .and_then(|resp| {
+        .map(|resp| {
             let content_type = resp
                 .headers()
                 .get(header::CONTENT_TYPE)
-                .map(|header| header.to_str().unwrap_or_default().to_string())
-                .unwrap_or_default();
+                .map_or(String::default(), |header| {
+                    header.to_str().unwrap_or_default().to_owned()
+                });
+
             let content_length = resp
                 .headers()
                 .get(header::CONTENT_LENGTH)
-                .map(|header| header.to_str().unwrap_or_default().to_string())
-                .unwrap_or_default();
+                .map_or(String::default(), |header| {
+                    header.to_str().unwrap_or_default().to_owned()
+                });
 
-            let status = resp.status();
-
-            Ok(FileInfo {
+            FileInfo {
                 content_type,
                 content_length,
-            })
+            }
         });
 
     resp.map_err(|err| err.into())
@@ -84,7 +84,10 @@ mod test {
 
     #[tokio::test]
     async fn read_file_info_ok() {
-        let data = read_file_info("https://api.spreaker.com/download/episode/57683371/ep178_diversity_ios_anna_chiara_beltrami.mp3").await.unwrap();
+        let info = read_file_info("https://api.spreaker.com/download/episode/57683371/ep178_diversity_ios_anna_chiara_beltrami.mp3").await;
+        assert!(info.is_ok());
+
+        let data = info.unwrap();
         assert_eq!(data.content_length, "78266580");
         assert_eq!(data.content_type, "audio/mpeg");
     }
