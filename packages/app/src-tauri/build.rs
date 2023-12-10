@@ -33,9 +33,10 @@ fn download_binaries() -> Result<()> {
     }
 
     match std::env::var("TARGET") {
-        Ok(var) => match var.as_str() {
+        Ok(platform) => match platform.as_str() {
             "x86_64-unknown-linux-gnu" => download_linux(),
-            _ => panic!(),
+            "x86_64-pc-windows-msvc" => download_windows(),
+            _ => panic!("Platform {platform} not supported"),
         },
         Err(_) => panic!("Failing acquiring target information"),
     }
@@ -44,9 +45,15 @@ fn download_binaries() -> Result<()> {
 fn check_binaries() -> bool {
     let _ = create_dir(BINARIES_PATH);
     let target_triple = std::env::var("TARGET").unwrap_or_default();
-    if metadata(BINARIES_PATH.to_owned() + "/ffmpeg-" + &target_triple).is_ok()
-        && metadata(BINARIES_PATH.to_owned() + "/ffprobe-" + &target_triple).is_ok()
-    {
+    let mut ffmpeg = BINARIES_PATH.to_owned() + "/ffmpeg-" + &target_triple;
+    let mut ffprobe = BINARIES_PATH.to_owned() + "/ffprobe-" + &target_triple;
+
+    if target_triple.contains("windows") {
+        ffmpeg = ffmpeg + ".exe";
+        ffprobe = ffprobe + ".exe";
+    }
+
+    if metadata(ffmpeg).is_ok() && metadata(ffprobe).is_ok() {
         return true;
     }
 
@@ -104,11 +111,11 @@ fn download_windows() -> Result<()> {
 
     copy(
         windows_binaries_path.join("ffmpeg.exe"),
-        BINARIES_PATH.to_owned() + "/ffmpeg-" + &target_triple,
+        BINARIES_PATH.to_owned() + "/ffmpeg-" + &target_triple + ".exe",
     )?;
     copy(
         windows_binaries_path.join("ffprobe.exe"),
-        BINARIES_PATH.to_owned() + "/ffprobe-" + &target_triple,
+        BINARIES_PATH.to_owned() + "/ffprobe-" + &target_triple + ".exe",
     )?;
     Ok(())
 }
