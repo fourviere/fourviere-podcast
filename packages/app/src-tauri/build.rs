@@ -169,11 +169,11 @@ fn download_x86_64_apple_darwin() -> Result<()> {
 
     copy(
         tmp_dir.path().join("ffmpeg"),
-        "/home/flavio/downlaod_test/download/ffmpeg-".to_owned() + &target_triple,
+        BINARIES_PATH.to_owned() + &target_triple,
     )?;
     copy(
         tmp_dir.path().join("ffprobe"),
-        "/home/flavio/downlaod_test/download/ffprobe-".to_owned() + &target_triple,
+        BINARIES_PATH.to_owned() + &target_triple,
     )?;
 
     Ok(())
@@ -204,11 +204,11 @@ fn download_aarch64_apple_darwin() -> Result<()> {
 
     copy(
         tmp_dir.path().join("ffmpeg"),
-        "/home/flavio/downlaod_test/download/ffmpeg-".to_owned() + &target_triple,
+        BINARIES_PATH.to_owned() + &target_triple,
     )?;
     copy(
         tmp_dir.path().join("ffprobe"),
-        "/home/flavio/downlaod_test/download/ffprobe-".to_owned() + &target_triple,
+        BINARIES_PATH.to_owned() + &target_triple,
     )?;
 
     Ok(())
