@@ -69,7 +69,7 @@ const AudioField = ({
           type: fileInfo?.content_type,
         });
       })
-      .catch((e) => {
+      .catch(() => {
         helpers.setError("File not found");
       });
   }
