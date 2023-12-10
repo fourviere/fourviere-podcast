@@ -160,9 +160,13 @@ mod test {
 
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
-        assert!(ftp_upload(payload)
-            .await
-            .is_ok_and(|data| data.size == 9063 && data.mime_type == "text/xml"));
+
+        let info_result = ftp_upload(payload).await;
+        assert!(info_result.is_ok());
+        let file_info = info_result.unwrap();
+        assert_eq!(file_info.size, 9063);
+        assert_eq!(file_info.mime_type, "text/xml");
+
         handle.abort();
     }
 

@@ -176,9 +176,13 @@ mod test {
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
         prepare_s3_bucket(port, bucket).await;
-        assert!(s3_upload_internal(payload, true)
-            .await
-            .is_ok_and(|data| data.size == 9063 && data.mime_type == "text/xml"));
+
+        let info_result = s3_upload_internal(payload, true).await;
+        assert!(info_result.is_ok());
+        let file_info = info_result.unwrap();
+        assert_eq!(file_info.size, 9063);
+        assert_eq!(file_info.mime_type, "text/xml");
+
         handle.abort();
     }
 
