@@ -4,6 +4,8 @@ use std::{
 };
 
 use anyhow::Result;
+use sevenz_rust::decompress;
+use sha2::{Digest, Sha256};
 use tar::Archive;
 use tempfile::tempdir;
 
@@ -11,6 +13,11 @@ const LINUX_64_ARCHIVE: &'static str =
     "https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz";
 const LINUX_64_MD5: &'static str =
     "https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz.md5";
+
+const WINDOWS_64_ARCHIVE: &'static str =
+    "https://github.com/GyanD/codexffmpeg/releases/download/6.1/ffmpeg-6.1-essentials_build.7z";
+const WINDOWS_64_SHA256: &'static str =
+    "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.7z.sha256";
 
 const BINARIES_PATH: &'static str = concat!(env!("CARGO_MANIFEST_DIR"), "/binaries");
 
@@ -24,8 +31,8 @@ fn download_binaries() -> Result<()> {
     if check_binaries() {
         return Ok(());
     }
-    
-    match std::env::var("TARGET").as_ref() {
+
+    match std::env::var("TARGET") {
         Ok(var) => match var.as_str() {
             "x86_64-unknown-linux-gnu" => download_linux(),
             _ => panic!(),
@@ -74,6 +81,33 @@ fn download_linux() -> Result<()> {
     )?;
     copy(
         tarball_path.join("ffprobe"),
+        BINARIES_PATH.to_owned() + "/ffprobe-" + &target_triple,
+    )?;
+    Ok(())
+}
+
+fn download_windows() -> Result<()> {
+    let target_triple = std::env::var("TARGET")?;
+
+    let tmp_dir = tempdir()?;
+    let windows_binaries_path: std::path::PathBuf =
+        tmp_dir.path().join("ffmpeg-6.1-essentials_build/bin");
+
+    let sha256 = reqwest::blocking::get(WINDOWS_64_SHA256)?.text()?;
+    let raw_data = reqwest::blocking::get(WINDOWS_64_ARCHIVE)?.bytes()?;
+
+    let mut hasher = Sha256::new();
+    hasher.update(&raw_data);
+    assert_eq!(format!("{:x}", hasher.finalize()), sha256);
+
+    decompress(&mut Cursor::new(raw_data), &tmp_dir)?;
+
+    copy(
+        windows_binaries_path.join("ffmpeg.exe"),
+        BINARIES_PATH.to_owned() + "/ffmpeg-" + &target_triple,
+    )?;
+    copy(
+        windows_binaries_path.join("ffprobe.exe"),
         BINARIES_PATH.to_owned() + "/ffprobe-" + &target_triple,
     )?;
     Ok(())
