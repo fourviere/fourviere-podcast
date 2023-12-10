@@ -16,7 +16,7 @@ import { useParams } from "react-router-dom";
 import useUpload, { UploadResponse } from "../../hooks/useUpload";
 import { FC } from "react";
 import { FullPageColumnLayout } from "@fourviere/ui/lib/layouts/full-page";
-import { Command } from "@tauri-apps/api/shell";
+import { getDuration } from "../../native/audio";
 
 export default function ItemGeneral() {
   const currentFeed = UseCurrentFeed();
@@ -53,40 +53,33 @@ export default function ItemGeneral() {
             fileFamily: "image",
           });
 
+          const getDurationCallback = (s: string) => {
+            getDuration(s)
+              .then((duration) => {
+                setFieldValue(
+                  `rss.channel.0.item[${itemIndex}]["itunes:duration"]`,
+                  duration
+                );
+              })
+              .catch(console.error);
+          };
+
           const enclosureUpload = useUpload({
             feedId: currentFeed.feedId,
             updateField: (value: UploadResponse) => {
               setFieldValue(
                 `rss.channel.0.item[${itemIndex}].enclosure.@.url`,
                 value.url
-              ),
-                setFieldValue(
-                  `rss.channel.0.item[${itemIndex}].enclosure.@.length`,
-                  value.size
-                ),
-                setFieldValue(
-                  `rss.channel.0.item[${itemIndex}].enclosure.@.type`,
-                  value.mime_type
-                );
-              const getDuration = Command.sidecar("binaries/ffprobe", [
-                "-v",
-                "quiet",
-                "-print_format",
-                "json",
-                "-show_format",
-                "-show_streams",
-                value.url,
-              ]);
-              getDuration
-                .execute()
-                .then((d) => {
-                  const duration = JSON.parse(d?.stdout)?.format.duration;
-                  setFieldValue(
-                    `rss.channel.0.item[${itemIndex}]["itunes:duration"]`,
-                    duration
-                  );
-                })
-                .catch(console.error);
+              );
+              setFieldValue(
+                `rss.channel.0.item[${itemIndex}].enclosure.@.length`,
+                value.size
+              );
+              setFieldValue(
+                `rss.channel.0.item[${itemIndex}].enclosure.@.type`,
+                value.mime_type
+              );
+              getDurationCallback(value.url);
             },
 
             updateError: (value: string) => {
@@ -128,29 +121,7 @@ export default function ItemGeneral() {
                       onButtonClick: enclosureUpload.openFile,
                       isUploading: enclosureUpload.isUploading,
                       onChange: (s: string) => {
-                        const getDuration = Command.sidecar(
-                          "binaries/ffprobe",
-                          [
-                            "-v",
-                            "quiet",
-                            "-print_format",
-                            "json",
-                            "-show_format",
-                            "-show_streams",
-                            s,
-                          ]
-                        );
-                        getDuration
-                          .execute()
-                          .then((d) => {
-                            const duration = JSON.parse(d?.stdout)?.format
-                              .duration;
-                            setFieldValue(
-                              `rss.channel.0.item[${itemIndex}]["itunes:duration"]`,
-                              duration
-                            );
-                          })
-                          .catch(console.error);
+                        getDurationCallback(s);
                       },
                     }}
                     initValue="https://www.spreaker.com/user/brainrepo/ep-190-matteo-croce-kernel"
