@@ -1,5 +1,5 @@
 use std::{
-    fs::{copy, create_dir, metadata, self},
+    fs::{self, copy, create_dir, metadata},
     io::Cursor,
 };
 
@@ -9,12 +9,11 @@ use sha2::{Digest, Sha256};
 use tar::Archive;
 use tempfile::tempdir;
 
-// LINUX SECTION 
+// LINUX SECTION
 const X86_64_UNKNOWN_LINUX_GNU_ARCHIVE: &'static str =
     "https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz";
 const X86_64_UNKNOWN_LINUX_GNU_MD5: &'static str =
     "https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz.md5";
-
 
 // WINDOWS SECTION
 const X86_64_PC_WINDOWS_MSVC_ARCHIVE: &'static str =
@@ -22,7 +21,7 @@ const X86_64_PC_WINDOWS_MSVC_ARCHIVE: &'static str =
 const X86_64_PC_WINDOWS_MSVC_SHA256: &'static str =
     "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.7z.sha256";
 
-// APPLE SILICON SECTON    
+// APPLE SILICON SECTON
 const AARCH64_APPLE_DARWIN_FFMPEG_ARCHIVE: &'static str =
     "https://www.osxexperts.net/ffmpeg61arm.zip";
 const AARCH64_APPLE_DARWIN_FFMPEG_SHA256: &'static str =
@@ -154,21 +153,27 @@ fn download_x86_64_apple_darwin() -> Result<()> {
     zip_extract::extract(Cursor::new(raw_data_ffmpeg), &tmp_dir.path(), false)?;
     let mut hasher = Sha256::new();
     hasher.update(fs::read(&tmp_dir.path().join("ffmpeg"))?);
-    assert_eq!(format!("{:x}", hasher.finalize()), X86_64_APPLE_DARWIN_FFMPEG_SHA256);
+    assert_eq!(
+        format!("{:x}", hasher.finalize()),
+        X86_64_APPLE_DARWIN_FFMPEG_SHA256
+    );
 
     let raw_data_ffprobe = reqwest::blocking::get(X86_64_APPLE_DARWIN_FFPROBE_ARCHIVE)?.bytes()?;
     zip_extract::extract(Cursor::new(raw_data_ffprobe), &tmp_dir.path(), false)?;
     let mut hasher = Sha256::new();
     hasher.update(fs::read(&tmp_dir.path().join("ffprobe"))?);
-    assert_eq!(format!("{:x}", hasher.finalize()), X86_64_APPLE_DARWIN_FFPROBE_SHA256);
-    
+    assert_eq!(
+        format!("{:x}", hasher.finalize()),
+        X86_64_APPLE_DARWIN_FFPROBE_SHA256
+    );
+
     copy(
         tmp_dir.path().join("ffmpeg"),
-        "/home/flavio/downlaod_test/download/ffmpeg-".to_owned()+ &target_triple,
+        "/home/flavio/downlaod_test/download/ffmpeg-".to_owned() + &target_triple,
     )?;
     copy(
         tmp_dir.path().join("ffprobe"),
-        "/home/flavio/downlaod_test/download/ffprobe-".to_owned()+ &target_triple,
+        "/home/flavio/downlaod_test/download/ffprobe-".to_owned() + &target_triple,
     )?;
 
     Ok(())
@@ -183,21 +188,27 @@ fn download_aarch64_apple_darwin() -> Result<()> {
     zip_extract::extract(Cursor::new(raw_data_ffmpeg), &tmp_dir.path(), false)?;
     let mut hasher = Sha256::new();
     hasher.update(fs::read(&tmp_dir.path().join("ffmpeg"))?);
-    assert_eq!(format!("{:x}", hasher.finalize()), AARCH64_APPLE_DARWIN_FFMPEG_SHA256);
+    assert_eq!(
+        format!("{:x}", hasher.finalize()),
+        AARCH64_APPLE_DARWIN_FFMPEG_SHA256
+    );
 
     let raw_data_ffprobe = reqwest::blocking::get(AARCH64_APPLE_DARWIN_FFPROBE_ARCHIVE)?.bytes()?;
     zip_extract::extract(Cursor::new(raw_data_ffprobe), &tmp_dir.path(), false)?;
     let mut hasher = Sha256::new();
     hasher.update(fs::read(&tmp_dir.path().join("ffprobe"))?);
-    assert_eq!(format!("{:x}", hasher.finalize()), AARCH64_APPLE_DARWIN_FFPROBE_SHA256);
-    
+    assert_eq!(
+        format!("{:x}", hasher.finalize()),
+        AARCH64_APPLE_DARWIN_FFPROBE_SHA256
+    );
+
     copy(
         tmp_dir.path().join("ffmpeg"),
-        "/home/flavio/downlaod_test/download/ffmpeg-".to_owned()+ &target_triple,
+        "/home/flavio/downlaod_test/download/ffmpeg-".to_owned() + &target_triple,
     )?;
     copy(
         tmp_dir.path().join("ffprobe"),
-        "/home/flavio/downlaod_test/download/ffprobe-".to_owned()+ &target_triple,
+        "/home/flavio/downlaod_test/download/ffprobe-".to_owned() + &target_triple,
     )?;
 
     Ok(())
