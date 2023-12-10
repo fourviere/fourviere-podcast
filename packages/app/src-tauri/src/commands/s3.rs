@@ -112,6 +112,15 @@ mod test {
     const SECRET_KEY: &str = "StealThisUselessSecretKey";
     const REGION: &str = "wonderland";
 
+    #[cfg(target_os = "windows")]
+    const FILESIZE: u64 = 9156;
+
+    #[cfg(target_os = "linux")]
+    const FILESIZE: u64 = 9063;
+
+    #[cfg(target_os = "macos")]
+    const FILESIZE: u64 = 9063;
+
     async fn s3_server(port: u16) {
         let fs = FileSystem::new(temp_dir()).unwrap();
 
@@ -180,7 +189,7 @@ mod test {
         let info_result = s3_upload_internal(payload, true).await;
         assert!(info_result.is_ok());
         let file_info = info_result.unwrap();
-        assert_eq!(file_info.size, 9063);
+        assert_eq!(file_info.size, FILESIZE);
         assert_eq!(file_info.mime_type, "text/xml");
 
         handle.abort();

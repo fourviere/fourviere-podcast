@@ -106,6 +106,15 @@ mod test {
         test_file,
     };
 
+    #[cfg(target_os = "windows")]
+    const FILESIZE: u64 = 9156;
+
+    #[cfg(target_os = "linux")]
+    const FILESIZE: u64 = 9063;
+
+    #[cfg(target_os = "macos")]
+    const FILESIZE: u64 = 9063;
+
     const USER: &str = "ForuviereTestUser";
     const PASSWORD: &str = "StealThisUselessPassword";
 
@@ -164,7 +173,7 @@ mod test {
         let info_result = ftp_upload(payload).await;
         assert!(info_result.is_ok());
         let file_info = info_result.unwrap();
-        assert_eq!(file_info.size, 9063);
+        assert_eq!(file_info.size, FILESIZE);
         assert_eq!(file_info.mime_type, "text/xml");
 
         handle.abort();

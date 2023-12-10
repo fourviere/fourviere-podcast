@@ -12,8 +12,6 @@ pub enum Error {
     S3Credentials(#[from] ::s3::creds::error::CredentialsError),
     #[error("Error while operationing on s3 storage")]
     S3Operation(#[from] ::s3::error::S3Error),
-    #[error("Error while decoding audio to get length")]
-    Symphonia(#[from] ::symphonia::core::errors::Error),
 }
 
 impl serde::Serialize for Error {
