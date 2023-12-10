@@ -747,6 +747,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "crc"
+version = "3.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "86ec7a15cbe22e59248fc7eadb1907dab5ba09372595da4d73dd805ed4417dfe"
+dependencies = [
+ "crc-catalog",
+]
+
+[[package]]
+name = "crc-catalog"
+version = "2.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "19d374276b40fb8bbdee95aef7c7fa6b5316ec764510eb64b8dd0e2ed0d7e7f5"
+
+[[package]]
 name = "crc32c"
 version = "0.6.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1275,6 +1290,8 @@ dependencies = [
  "hyper",
  "libunftp",
  "log",
+ "lzma-rs",
+ "md5",
  "mime_guess",
  "reqwest",
  "rss",
@@ -1285,9 +1302,11 @@ dependencies = [
  "serde_json",
  "suppaftp",
  "symphonia",
+ "tar",
  "tauri",
  "tauri-build",
  "tauri-plugin-log",
+ "tempfile",
  "thiserror",
  "tokio",
  "tokio-util",
@@ -2294,6 +2313,16 @@ dependencies = [
  "serde_json",
  "tracing",
  "tracing-subscriber",
+]
+
+[[package]]
+name = "lzma-rs"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "297e814c836ae64db86b36cf2a557ba54368d03f6afcd7d947c266692f71115e"
+dependencies = [
+ "byteorder",
+ "crc",
 ]
 
 [[package]]
