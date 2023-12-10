@@ -24,6 +24,7 @@ fn download_binaries() -> Result<()> {
     if check_binaries() {
         return Ok(());
     }
+    
     match std::env::var("TARGET").as_ref() {
         Ok(var) => match var.as_str() {
             "x86_64-unknown-linux-gnu" => download_linux(),
