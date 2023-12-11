@@ -3,10 +3,16 @@ import { useField } from "formik";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import "./audio.css";
-import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
+import { ArrowUpTrayIcon } from "@fourviere/ui/lib/icons";
 import { Container } from "@fourviere/ui/lib/box";
 import Button from "@fourviere/ui/lib/button";
 import { readFileInfo } from "../../native/fs";
+import Input from "@fourviere/ui/lib/form/fields/input";
+import ErrorContainer from "@fourviere/ui/lib/form/error-container";
+import FormRow from "@fourviere/ui/lib/form/form-row";
+import { FILE_FAMILIES } from "../../hooks/useUpload";
+import useTranslations from "../../hooks/useTranslations";
+import Loader from "@fourviere/ui/lib/loader";
 
 interface Props {
   isUploading?: boolean;
@@ -19,6 +25,7 @@ interface Props {
   id: string;
   helpMessage?: string;
   onButtonClick?: (oldValue: any) => any;
+  onChange?: (url: string) => void;
 }
 
 const AudioField = ({
@@ -26,8 +33,10 @@ const AudioField = ({
   value,
   onButtonClick: _onButtonClick,
   name,
+  onChange,
 }: Props) => {
   const [field, meta, helpers] = useField(name);
+  const t = useTranslations();
 
   function onButtonClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
@@ -37,8 +46,7 @@ const AudioField = ({
     }
   }
 
-  function onChange(e: React.ChangeEvent<HTMLInputElement>) {
-    console.log("onChange", e.target.value);
+  function onInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     helpers.setValue({
       url: e.target.value,
       length: undefined,
@@ -46,58 +54,97 @@ const AudioField = ({
     });
     readFileInfo(e.target.value)
       .then((fileInfo) => {
+        if (
+          !fileInfo ||
+          fileInfo.content_type ||
+          FILE_FAMILIES["image"].mime.includes(fileInfo.content_type)
+        ) {
+          helpers.setError("Not correct file type");
+        }
+        onChange?.(e.target.value);
         helpers.setValue({
           url: e.target.value,
           length: fileInfo?.content_length,
           type: fileInfo?.content_type,
         });
       })
-      .catch((e) => {
-        console.log("boom", e);
+      .catch(() => {
         helpers.setError("File not found");
       });
+  }
+
+  function onChangeLength(e: React.ChangeEvent<HTMLInputElement>) {
+    helpers.setValue({
+      ...field.value,
+      length: e.target.value,
+    });
+  }
+
+  function onChangeType(e: React.ChangeEvent<HTMLInputElement>) {
+    helpers.setValue({
+      ...field.value,
+      type: e.target.value,
+    });
   }
 
   return (
     <Container wFull spaceY="md">
       {isUploading ? (
-        "LOADING"
+        <Container>
+          <Loader />
+        </Container>
       ) : (
         <>
-          {JSON.stringify(meta)}
-          <AudioPlayer src={value?.url} />
+          <Container>
+            <AudioPlayer src={value?.url} />
+            {meta.error && typeof meta.error === "string" && (
+              <ErrorContainer error={meta.error} />
+            )}
+          </Container>
 
-          <Container wFull>
-            <Container wFull flex="row-center">
-              <input
-                value={value?.url}
-                onChange={onChange}
-                className="shadow appearance-none border rounded-lg w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-sm"
-              />
-
-              <Button size="sm" onClick={onButtonClick}>
-                <ArrowUpTrayIcon className="text-slate-50 w-3" />
-              </Button>
+          <Container wFull spaceY="md">
+            <Container>
+              <FormRow
+                name="sadas"
+                label={t["edit_feed.items_fields.enclosure_url.url"]}
+              >
+                <Container wFull flex="row-v-stretch" spaceX="sm">
+                  <Input value={value?.url} onChange={onInputChange} />
+                  <Button
+                    size="sm"
+                    onClick={onButtonClick}
+                    Icon={ArrowUpTrayIcon}
+                  ></Button>
+                </Container>
+              </FormRow>
             </Container>
-            <input type="text" name="" id="" value={value?.length} />
-            <input type="text" name="" id="" value={value?.type} />
-            <div className="flex space-x-2 items-start justify-center mt-px">
-              {/* {fileData && (
-                <>
-                  <div className="rounded-b bg-slate-700 text-xs text-slate-50 shadow uppercase px-2 py-1 ">
-                    {fileData.mimeType}
-                  </div>
-                  <div className="rounded-b bg-slate-700 text-xs text-slate-50 shadow px-2 py-1 ">
-                    {fileData.size}
-                  </div>
-                </>
-              )} */}
-              {meta.error && typeof meta.error === "string" && (
-                <div className="text-xs  bg-rose-50 text-rose-600 px-2 py-1 rounded-b mx-3 w-50%">
-                  {meta.error}
-                </div>
-              )}
-            </div>
+
+            <Container wFull flex="row-center" spaceX="md">
+              <FormRow
+                name="sadas"
+                label={t["edit_feed.items_fields.enclosure_url.length"]}
+              >
+                <Input
+                  type="text"
+                  name=""
+                  value={value?.length}
+                  onChange={onChangeLength}
+                />
+              </FormRow>
+              <FormRow
+                name="sadas"
+                label={t["edit_feed.items_fields.enclosure_url.type"]}
+              >
+                <Input
+                  type="text"
+                  name=""
+                  value={value?.type}
+                  onChange={onChangeType}
+                />
+              </FormRow>
+            </Container>
+
+            <Container className="flex space-x-2 items-start justify-center mt-px"></Container>
           </Container>
         </>
       )}

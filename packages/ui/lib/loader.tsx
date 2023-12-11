@@ -1,4 +1,4 @@
-export default function Loader({ className }: { className: string }) {
+export default function Loader({ className }: { className?: string }) {
   return (
     <svg
       width="37"

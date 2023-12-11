@@ -5,6 +5,7 @@ use suppaftp::{types::FileType, AsyncFtpStream, Mode};
 use tokio_util::compat::TokioAsyncReadCompatExt;
 
 use crate::log_if_error_and_return;
+use crate::utils::file::get_file_info;
 use crate::utils::result::Result;
 
 #[derive(serde::Deserialize)]
@@ -21,7 +22,8 @@ pub struct Payload {
 }
 
 #[derive(serde::Serialize)]
-pub struct UploadResult {
+pub struct FileInfo {
+
     pub url: String,
     pub mime_type: String,
     pub size: u64,
@@ -29,12 +31,14 @@ pub struct UploadResult {
 
 #[named]
 #[tauri::command]
-pub async fn ftp_upload(payload: Payload) -> Result<UploadResult> {
+pub async fn ftp_upload(payload: Payload) -> Result<FileInfo> {
+
     let upload_result = ftp_upload_internal(payload).await;
     log_if_error_and_return!(upload_result)
 }
 
-async fn ftp_upload_internal(payload: Payload) -> Result<UploadResult> {
+async fn ftp_upload_internal(payload: Payload) -> Result<FileInfo> {
+
     let addr = format!("{}:{}", payload.host, payload.port);
 
     let mut ftp_stream = AsyncFtpStream::connect(addr).await?;
@@ -59,8 +63,7 @@ async fn ftp_upload_internal(payload: Payload) -> Result<UploadResult> {
 
     ftp_stream.transfer_type(FileType::Binary).await?;
 
-    let mime = from_path(&payload.local_path).first_or_octet_stream();
-    let size = tokio::fs::metadata(&payload.local_path).await?.len();
+    let file_info: crate::utils::file::FileInfo = get_file_info(&payload.local_path).await?;
 
     let ext = Path::new(&payload.local_path)
         .extension()
@@ -84,9 +87,9 @@ async fn ftp_upload_internal(payload: Payload) -> Result<UploadResult> {
         None => format!("{}.{}", payload.file_name, ext),
     };
 
-    Ok(UploadResult {
-        size,
-        mime_type: mime.to_string(),
+    Ok(FileInfo {
+        size: file_info.size,
+        mime_type: file_info.mime_type,
         url: format!("{}://{}/{}", protocol, payload.http_host, file_path),
     })
 }
@@ -106,6 +109,15 @@ mod test {
         commands::ftp::{ftp_upload, Payload},
         test_file,
     };
+
+    #[cfg(target_os = "windows")]
+    const FILESIZE: u64 = 9156;
+
+    #[cfg(target_os = "linux")]
+    const FILESIZE: u64 = 9063;
+
+    #[cfg(target_os = "macos")]
+    const FILESIZE: u64 = 9063;
 
     const USER: &str = "ForuviereTestUser";
     const PASSWORD: &str = "StealThisUselessPassword";
@@ -161,7 +173,13 @@ mod test {
 
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
-        assert!(ftp_upload(payload).await.is_ok());
+
+        let info_result = ftp_upload(payload).await;
+        assert!(info_result.is_ok());
+        let file_info = info_result.unwrap();
+        assert_eq!(file_info.size, FILESIZE);
+        assert_eq!(file_info.mime_type, "text/xml");
+
         handle.abort();
     }
 
