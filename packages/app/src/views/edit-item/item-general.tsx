@@ -162,6 +162,32 @@ export default function ItemGeneral() {
                     emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                   />
                 </FormRow>
+
+                <FormRow
+                  name={`rss.channel.0.item[${itemIndex}]["podcast:season"]`}
+                  label={t["edit_feed.items_fields.podcast_season"]}
+                >
+                  <FormField
+                    id={`rss.channel.0.item[${itemIndex}]["podcast:season"]`}
+                    name={`rss.channel.0.item[${itemIndex}]["podcast:season"]`}
+                    as={Input}
+                    initValue="1"
+                    emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                  />
+                </FormRow>
+                <FormRow
+                  name={`rss.channel.0.item[${itemIndex}]["podcast:episode"]`}
+                  label={t["edit_feed.items_fields.podcast_episode"]}
+                >
+                  <FormField
+                    id={`rss.channel.0.item[${itemIndex}]["podcast:episode"]`}
+                    name={`rss.channel.0.item[${itemIndex}]["podcast:episode"]`}
+                    as={Input}
+                    initValue="1"
+                    emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                  />
+                </FormRow>
+
                 <FormRow
                   name="rss.channel.0.guid.#text"
                   label={t["edit_feed.items_fields.guid"]}
@@ -193,7 +219,18 @@ export default function ItemGeneral() {
                     />
                   </Container>
                 </FormRow>
-
+                <FormRow
+                  name={`rss.channel.0.item[${itemIndex}].author`}
+                  label={t["edit_feed.items_fields.author"]}
+                >
+                  <FormField
+                    id={`rss.channel.0.item[${itemIndex}].author]`}
+                    name={`rss.channel.0.item[${itemIndex}].author`}
+                    as={Input}
+                    initValue="Mauro Murru"
+                    emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                  />
+                </FormRow>
                 <FormRow
                   name="rss.channel.0.image"
                   label={t["edit_feed.items_fields.image"]}

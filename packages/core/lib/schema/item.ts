@@ -23,6 +23,7 @@ const RSSItemSchema = Type.Object({
       type: Type.String(),
     }),
   }),
+  author: Type.Optional(Type.String()),
 });
 
 // ITUNES http://www.itunes.com/dtds/podcast-1.0.dtd

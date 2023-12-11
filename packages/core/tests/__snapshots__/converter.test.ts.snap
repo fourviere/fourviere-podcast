@@ -63,14 +63,14 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         Deepfake, televendite e la nuova ultima canzone dei Beatles. Su Tiktok le guerre tra
         streamers. Shadowban e conflitto israelo-palestinese...</itunes:subtitle>
       <itunes:duration>6097</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>696</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Deep Mastrota</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia696.srt" type="application/srt"></podcast:transcript>
       <itunes:image href="https://cdn.dgt.fm/digitalia696.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia696.jpg 1400w"></podcast:images>
       <itunes:keywords>x, elon_musk, shadowban, censura, infowars, deep_fake, vintage, maps</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>696</podcast:episode>
     </item>
     <item>
       <title>Digitalia #695 - L&apos;uomo più intelligente dell&apos;ascensore</title>
@@ -85,14 +85,14 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         Dichiarazione di Westminster. In galera per un meme. Il manifesto dei
         tecno-ottimisti...</itunes:subtitle>
       <itunes:duration>6105</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>695</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>L&apos;uomo più intelligente dell&apos;ascensore</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia695.srt" type="application/srt"></podcast:transcript>
       <itunes:image href="https://cdn.dgt.fm/digitalia695.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia695.jpg 1400w"></podcast:images>
       <itunes:keywords>DSA, EU, westminster_declaration, meme, ai, glasshole, aeronautica</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>695</podcast:episode>
     </item>
     <item>
       <title>Digitalia #694 - Gli idranti di Pompei</title>
@@ -106,8 +106,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:subtitle>I negozi fisici di Netflix. Telegram, X e i contenuti di Hamas. Google
         torna agli anni 90. Una taglia sulle curve ellittiche. AI, stereotipi e verità...</itunes:subtitle>
       <itunes:duration>6090</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>694</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Gli idranti di Pompei</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia694.srt" type="application/srt"></podcast:transcript>
@@ -115,6 +113,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia694.jpg 1400w"></podcast:images>
       <itunes:keywords>netflix, telegram, hamas, israele, crittografia, machine_learning,
         fotoritocco</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>694</podcast:episode>
     </item>
     <item>
       <title>Digitalia #693 - Googlecore</title>
@@ -129,8 +129,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         e il fake english. Vaporwave, musica al sapore di retrocomputing. Il leak di
         23andMe. Videogiochi di guerra e segreti militari...</itunes:subtitle>
       <itunes:duration>6025</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>693</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Googlecore</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia693.srt" type="application/srt"></podcast:transcript>
@@ -138,6 +136,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia693.jpg 1400w"></podcast:images>
       <itunes:keywords>gig_economy, sanità, dating, vaporwave, musica, humane, llm,
         advertising, videogame, captcha</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>693</podcast:episode>
     </item>
     <item>
       <title>Digitalia #692 - Il bias di Asdrubale</title>
@@ -152,14 +152,14 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         per raffreddare i datacenter dell’IA. Arriva Raspberry Pi5. La cabina telefonica
         2.0. ChatGPT4 e le 20 personalità dell’IA di Meta...</itunes:subtitle>
       <itunes:duration>6270</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>692</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Il bias di Asdrubale</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia692.srt" type="application/srt"></podcast:transcript>
       <itunes:image href="https://cdn.dgt.fm/digitalia692.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia692.jpg 1400w"></podcast:images>
       <itunes:keywords>google, chatGPT, Lama, Meta, LLM, TIM, snoop_dog, t-red</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>692</podcast:episode>
     </item>
     <item>
       <title>Digitalia #691 - Nintendo e due pizzette</title>
@@ -175,14 +175,14 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         IA. Spotify clona e traduce i podcaster. Ricercatori trasformano i router in
         telecamere...</itunes:subtitle>
       <itunes:duration>6003</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>691</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Nintendo e due pizzette</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia691.srt" type="application/srt"></podcast:transcript>
       <itunes:image href="https://cdn.dgt.fm/digitalia691.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia691.jpg 1400w"></podcast:images>
       <itunes:keywords>microsoft, xbox, nintendo, leak, assistenti_vocali, LLM, privacy</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>691</podcast:episode>
     </item>
     <item>
       <title>Digitalia #690 - L&apos;agence de la baguette</title>
@@ -197,8 +197,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         Americano contro Google. Apple presenta i nuovi iPhone ed Apple Watch.
         L&apos;intelligenza artificiale impazzisce, come le mucche...</itunes:subtitle>
       <itunes:duration>5847</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>690</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>L&apos;agence de la baguette</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia690.srt" type="application/srt"></podcast:transcript>
@@ -206,6 +204,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia690.jpg 1400w"></podcast:images>
       <itunes:keywords>unity, videogames, apple, iPhone, emf, pirateria, crypto, llm, chatgpt,
         airbnb</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>690</podcast:episode>
     </item>
     <item>
       <title>Digitalia #689 - Francesco Supernova</title>
@@ -220,14 +220,14 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         gatekeeper secondo DMA e DSA. Privacy e produttori di automobili. Elon Musk genio o
         villano. Apocalisse Airbnb a New York...</itunes:subtitle>
       <itunes:duration>6015</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>689</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Francesco Supernova</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia689.srt" type="application/srt"></podcast:transcript>
       <itunes:image href="https://cdn.dgt.fm/digitalia689.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia689.jpg 1400w"></podcast:images>
       <itunes:keywords>automotive, privacy, DSA, europa, spotify, deezer, airbnb</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>689</podcast:episode>
     </item>
     <item>
       <title>Digitalia #688 - San Michele da Retrolandia</title>
@@ -242,8 +242,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         soluzione del Codice Mandia. Nessuno scrive più sui Social. Piccioni viaggiatori più
         veloci della fibra. Brian May preoccupato per la IA...</itunes:subtitle>
       <itunes:duration>6797</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>688</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>San Michele da Retrolandia</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia688.srt" type="application/srt"></podcast:transcript>
@@ -251,6 +249,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia688.jpg 1400w"></podcast:images>
       <itunes:keywords>retrogaming, utopia, smart_city, moderazione, LLM, openAI, x,
         instagram, tiktok</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>688</podcast:episode>
     </item>
     <item>
       <title>Digitalia #687 - Speciale ChatGPT contro gli scammers</title>
@@ -267,14 +267,14 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         automatiche tramite ChatGPT, approfondendo alcuni passaggi del mondo delle truffe
         online.</itunes:subtitle>
       <itunes:duration>4043</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>687</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Speciale ChatGPT contro gli scammers</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia687.srt" type="application/srt"></podcast:transcript>
       <itunes:image href="https://cdn.dgt.fm/digitalia687.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia687.jpg 1400w"></podcast:images>
       <itunes:keywords>infosec, privacy, scam, spam, chatGPT, LLM</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>687</podcast:episode>
     </item>
     <item>
       <title>Digitalia #686 - Speciale Electric Bartezzaghi</title>
@@ -289,14 +289,14 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         sollazzarvi in spiaggia o sui sentieri di montagna. 30 gingilli in 30 minuti, che
         poi sono diventati 60 minuti.</itunes:subtitle>
       <itunes:duration>4227</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>686</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Speciale Electric Bartezzaghi</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia686.srt" type="application/srt"></podcast:transcript>
       <itunes:image href="https://cdn.dgt.fm/digitalia686.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia686.jpg 1400w"></podcast:images>
       <itunes:keywords>speciale, gingilli, utility, libri, software</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>686</podcast:episode>
     </item>
     <item>
       <title>Digitalia #685 - Buffer cerebrale</title>
@@ -311,8 +311,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         IA. Il momento Oppenheimer. Il globo magico di Sam Altman. Dark pattern da Microsoft
         e bizzarrie da Elon Musk...</itunes:subtitle>
       <itunes:duration>6057</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>685</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Buffer cerebrale</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia685.srt" type="application/srt"></podcast:transcript>
@@ -320,6 +318,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia685.jpg 1400w"></podcast:images>
       <itunes:keywords>miiyo, retrogaming, stack_overflow, sam_altman, oppenheimer, LLM,
         dark_pattern, tiktok, x.com</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>685</podcast:episode>
     </item>
     <item>
       <title>Digitalia #684 - Le polpette di Pol Pot</title>
@@ -334,8 +334,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         Sorveglianza del traffico con AI. Apple cerca di registrare la mela. Il decalogo USA
         per le AI...</itunes:subtitle>
       <itunes:duration>6465</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>684</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Le polpette di Pol Pot</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia684.srt" type="application/srt"></podcast:transcript>
@@ -343,6 +341,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia684.jpg 1400w"></podcast:images>
       <itunes:keywords>openAI, traffico, automotive, sorveglianza, palm_pilot, crittografia,
         LLM, oppenheimer</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>684</podcast:episode>
     </item>
     <item>
       <title>Digitalia #683 - L&apos;indice di perplessità</title>
@@ -357,8 +357,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         legge anti-pezzotto. Obbligo di batterie sostituibili. Sorveglianza tramite veicoli
         autonomi. Il DNA dei cani. Barbenheimer...</itunes:subtitle>
       <itunes:duration>5944</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>683</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>L&apos;indice di perplessità</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia683.srt" type="application/srt"></podcast:transcript>
@@ -366,6 +364,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia683.jpg 1400w"></podcast:images>
       <itunes:keywords>call_of_duty, pirateria, batterie, sorveglianza, dna, threads, tiktok,
         zuckerberg, ai</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>683</podcast:episode>
     </item>
     <item>
       <title>Digitalia #682 - Basilico, basilico ovunque</title>
@@ -380,8 +380,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         Twitter, attacco alla privacy in Francia, i dark pattern di Adobe, OpenAI studia il
         Superallineamento...</itunes:subtitle>
       <itunes:duration>5993</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>682</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Basilico, basilico ovunque</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia682.srt" type="application/srt"></podcast:transcript>
@@ -389,6 +387,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia682.jpg 1400w"></podcast:images>
       <itunes:keywords>jony_ive, threads, twitter, reddit, privacy, dark_pattern,
         superallineamento, LLM, arte</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>682</podcast:episode>
     </item>
     <item>
       <title>Digitalia #681 - Il birraio contro gli LLM</title>
@@ -403,8 +403,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         GameBoy di guerra. Aziende europee contro AI act. Gli LLM senza censure. Reddit il
         giorno dopo...</itunes:subtitle>
       <itunes:duration>5633</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>681</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Il birraio contro gli LLM</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia681.srt" type="application/srt"></podcast:transcript>
@@ -412,6 +410,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia681.jpg 1400w"></podcast:images>
       <itunes:keywords>waze, snowden, twitter, IRL, Stitcher, gameboy, IA_act, LLM, valve,
         disinformazione, euro_digitale, reddit</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>681</podcast:episode>
     </item>
     <item>
       <title>Digitalia #680 - The Quest of the Commercialist</title>
@@ -426,8 +426,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         mostra i primi segni di problemi. Che cos&apos;è l&apos;intelligenza secondo il fondatore di
         DeepMind...</itunes:subtitle>
       <itunes:duration>5658</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>680</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>The Quest of the Commercialist</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia680.srt" type="application/srt"></podcast:transcript>
@@ -435,6 +433,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia680.jpg 1400w"></podcast:images>
       <itunes:keywords>amazon_ring, data_broker, sorveglianza, privacy, reddit, twitter, IA,
         chatGPT, automotive, beatles</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>680</podcast:episode>
     </item>
     <item>
       <title>Digitalia #679 - Solo siti satanisti</title>
@@ -449,8 +449,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         brokers. Amazon Ring usate per spiare i proprietari. La legge europea per l’IA.
         ChatGPT dice messa...</itunes:subtitle>
       <itunes:duration>5863</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>679</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Solo siti satanisti</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia679.srt" type="application/srt"></podcast:transcript>
@@ -458,6 +456,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia679.jpg 1400w"></podcast:images>
       <itunes:keywords>amazon_ring, data_broker, sorveglianza, privacy, reddit, twitter, IA,
         chatGPT, automotive, beatles</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>679</podcast:episode>
     </item>
     <item>
       <title>Digitalia #678 - Il navigatore col compasso</title>
@@ -472,8 +472,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         software di polizia predittiva in Italia. Il bias degli algoritmi. Pedofili su
         Instagram...</itunes:subtitle>
       <itunes:duration>5761</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>678</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Il navigatore col compasso</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia678.srt" type="application/srt"></podcast:transcript>
@@ -481,6 +479,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia678.jpg 1400w"></podcast:images>
       <itunes:keywords>berlusconi, snowden, reddit, ufo, vision_pro, stack_overflow, bias,
         videogames, twitter</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>678</podcast:episode>
     </item>
     <item>
       <title>Digitalia #677 - Bannato in Mesopotamia</title>
@@ -495,14 +495,14 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         bandiera sbagliata su Wikipedia. Obbligo di security.txt. TikTok bannato in Montana.
         Il robot maggiordomo...</itunes:subtitle>
       <itunes:duration>5596</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>677</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Bannato in Mesopotamia</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia677.srt" type="application/srt"></podcast:transcript>
       <itunes:image href="https://cdn.dgt.fm/digitalia677.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia677.jpg 1400w"></podcast:images>
       <itunes:keywords>tiktok, vision_pro, airpods, chatGPT, spam, robotica, droni, scuola</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>677</podcast:episode>
     </item>
     <item>
       <title>Digitalia #676 - Il Bumbulus Legalis</title>
@@ -517,8 +517,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         del pentagono in fiamme. L’avvocato che usa ChatGPT. Copilot integrato in Windows
         11. Pubblicità su podcast e IA generativa...</itunes:subtitle>
       <itunes:duration>5478</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>676</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Il Bumbulus Legalis</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia676.srt" type="application/srt"></podcast:transcript>
@@ -526,6 +524,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia676.jpg 1400w"></podcast:images>
       <itunes:keywords>avvocato, giurisprudenza, amore, scrittura, chatGPT, LLM, windows11,
         rider, gig_economy</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>676</podcast:episode>
     </item>
     <item>
       <title>Digitalia #675 - Il plateau della soddisfazione</title>
@@ -540,14 +540,14 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         linguaggio ragionano come umani? Secondo Sting sarà battaglia tra umani e AI. EU
         multa Meta per 1,3 miliardi...</itunes:subtitle>
       <itunes:duration>6244</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>675</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Il plateau della soddisfazione</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia675.srt" type="application/srt"></podcast:transcript>
       <itunes:image href="https://cdn.dgt.fm/digitalia675.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia675.jpg 1400w"></podcast:images>
       <itunes:keywords>llm, AI, sting, politica, multa, robotica, swatting, tiktok</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>675</podcast:episode>
     </item>
     <item>
       <title>Digitalia #674 - Kafka nello scatolone</title>
@@ -562,8 +562,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         fiducia. Problemi in paradiso per Mastodon. Stack Overflow in calo per colpa di
         ChatGPT e Copilot. Palantir e la IA di guerra...</itunes:subtitle>
       <itunes:duration>6205</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>674</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Kafka nello scatolone</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia674.srt" type="application/srt"></podcast:transcript>
@@ -571,6 +569,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia674.jpg 1400w"></podcast:images>
       <itunes:keywords>llm, chatGPT, copilot, ligabue, mantellini, stack_overflow, videogames,
         palantir, passkeys</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>674</podcast:episode>
     </item>
     <item>
       <title>Digitalia #673 - Il tubo dei leak</title>
@@ -585,8 +585,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         hackerano il sistema operativo della civiltà. Leggere la mente con le reti
         neurali...</itunes:subtitle>
       <itunes:duration>6068</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>673</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Il tubo dei leak</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia673.srt" type="application/srt"></podcast:transcript>
@@ -594,6 +592,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia673.jpg 1400w"></podcast:images>
       <itunes:keywords>llm, gmail, amp, esport, fortnite, ultima_online, openAI,
         brain_scanner, blue_sky</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>673</podcast:episode>
     </item>
     <item>
       <title>Digitalia #672 - Bollitore per cervi</title>
@@ -607,8 +607,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:subtitle>Reddit chiude le API gratuite. L’email è il vecchio fediverso. L’ascesa
         dei servizi FAST. La campagna Open to meraviglia. Open source a rischio in UE...</itunes:subtitle>
       <itunes:duration>5536</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>672</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Bollitore per cervi</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia672.srt" type="application/srt"></podcast:transcript>
@@ -616,6 +614,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia672.jpg 1400w"></podcast:images>
       <itunes:keywords>reddit, API, alby, FAST, open_to_meraviglia, turismo, open_source,
         fitness</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>672</podcast:episode>
     </item>
     <item>
       <title>Digitalia #671 - Speciale amore, sesso e digitale</title>
@@ -629,14 +629,14 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:subtitle>Amore e sesso ai tempi delle applicazioni di dating e di tutti gli
         altri strumenti digitali divenuti famosi soprattutto in lockdown...</itunes:subtitle>
       <itunes:duration>3116</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>671</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Speciale amore, sesso e digitale</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia671.srt" type="application/srt"></podcast:transcript>
       <itunes:image href="https://cdn.dgt.fm/digitalia671.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia671.jpg 1400w"></podcast:images>
       <itunes:keywords>speciale, sex, dating, sexting, tinder, monster_match, relazioni</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>671</podcast:episode>
     </item>
     <item>
       <title>Digitalia #670 - La rotatoria di Möbius</title>
@@ -651,8 +651,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         L’evoluzione dei droni nella guerra in Ucraina. Windows 11 supporta Apple Silicon.
         IA generative e sessualità...</itunes:subtitle>
       <itunes:duration>5953</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>670</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>La rotatoria di Möbius</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia670.srt" type="application/srt"></podcast:transcript>
@@ -660,6 +658,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia670.jpg 1400w"></podcast:images>
       <itunes:keywords>android_auto, carplay, automotive, droni, apple_silicon, windows,
         virtualizzazione, sex</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>670</podcast:episode>
     </item>
     <item>
       <title>Digitalia #669 - Ci sono un italiano, un giapponese e ChatGPT</title>
@@ -674,8 +674,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         garante. Litigi e revisionismi su Wikipedia. Mastodon: cuoricini o stelline? ChatGPT
         denunciato per diffamazione...</itunes:subtitle>
       <itunes:duration>5941</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>669</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Ci sono un italiano, un giapponese e ChatGPT</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia669.srt" type="application/srt"></podcast:transcript>
@@ -683,6 +681,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia669.jpg 1400w"></podcast:images>
       <itunes:keywords>crittovalute, chatGPT, generativeAI, mastodon, wikipedia, dogecoin,
         substack, twitter, palantir</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>669</podcast:episode>
     </item>
     <item>
       <title>Digitalia #668 - La fiera del guardone tecnologico</title>
@@ -697,14 +697,14 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         Privacy vs ChatGPT. Leader tech chiedono una pausa nello sviluppo di AI. Monopattini
         in affitto vietati a Parigi...</itunes:subtitle>
       <itunes:duration>5909</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>668</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>La fiera del guardone tecnologico</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia668.srt" type="application/srt"></podcast:transcript>
       <itunes:image href="https://cdn.dgt.fm/digitalia668.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia668.jpg 1400w"></podcast:images>
       <itunes:keywords>tiktok, boring_ah, chatGPT, LLM, AI, monopattini, sharing, dating</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>668</podcast:episode>
     </item>
     <item>
       <title>Digitalia #667 - El Bardo</title>
@@ -720,14 +720,14 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         parlato al Congresso Americano. Queste e molte altre le notizie tech commentate
         nella puntata di questa settimana.</itunes:subtitle>
       <itunes:duration>6155</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>667</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>El Bardo</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia667.srt" type="application/srt"></podcast:transcript>
       <itunes:image href="https://cdn.dgt.fm/digitalia667.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia667.jpg 1400w"></podcast:images>
       <itunes:keywords>gordon_moore, internet_archive, TikTok, openAI, chatGPT, bard</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>667</podcast:episode>
     </item>
     <item>
       <title>Digitalia #666 - Le cappellette di Zuckerberg</title>
@@ -742,14 +742,14 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         prodotti, mentre Google non sta ad aspettare. Da Meta spariscono la musica, gli NFT
         e altri 10.000 dipendenti...</itunes:subtitle>
       <itunes:duration>6123</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>666</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Le cappellette di Zuckerberg</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia666.srt" type="application/srt"></podcast:transcript>
       <itunes:image href="https://cdn.dgt.fm/digitalia666.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia666.jpg 1400w"></podcast:images>
       <itunes:keywords>wikipedia, gpt-4, llm, openAI, microsoft, meta, siae, nft</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>666</podcast:episode>
     </item>
     <item>
       <title>Digitalia #665 - Il selfostatore compulsivo</title>
@@ -765,14 +765,14 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         torna online. Queste e molte altre le notizie tech commentate nella puntata di
         questa settimana.</itunes:subtitle>
       <itunes:duration>6146</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>665</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Il selfostatore compulsivo</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia665.srt" type="application/srt"></podcast:transcript>
       <itunes:image href="https://cdn.dgt.fm/digitalia665.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia665.jpg 1400w"></podcast:images>
       <itunes:keywords>llm, ia, OpenAI, twitter, svb, startup, religione, Spotify, fediverso</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>665</podcast:episode>
     </item>
     <item>
       <title>Digitalia #664 - Macchine affamate sognano salami elettrici</title>
@@ -787,14 +787,14 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         quattro colori per il traffico autonomo. Bing nella taskbar di Windows. Intelligenze
         artificiali oppure SALAMI? Il social credit score cinese...</itunes:subtitle>
       <itunes:duration>6162</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>664</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Macchine affamate sognano salami elettrici</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia664.srt" type="application/srt"></podcast:transcript>
       <itunes:image href="https://cdn.dgt.fm/digitalia664.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia664.jpg 1400w"></podcast:images>
       <itunes:keywords>llm, ia, automotive, OpenAI, WokeGPT, sharenting, social_credit_score</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>664</podcast:episode>
     </item>
     <item>
       <title> Digitalia #663 - L&apos;uomo che scorreva i feed </title>
@@ -809,14 +809,14 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         disinnamorano dell’auto. Il DJ a intelligenza artificiale di Spotify. L’invasione
         dei contenuti LLM. FBI consiglia gli ad blocker...</itunes:subtitle>
       <itunes:duration>5800</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>663</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title> L&apos;uomo che scorreva i feed </itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia663.srt" type="application/srt"></podcast:transcript>
       <itunes:image href="https://cdn.dgt.fm/digitalia663.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia663.jpg 1400w"></podcast:images>
       <itunes:keywords>automotive, TikTok, censura, videogames, donne, LLM, IA, ad_blocker</itunes:keywords>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>663</podcast:episode>
     </item>
     <item>
       <title>Digitalia #662 - Speciale donne e videogiochi</title>
@@ -831,13 +831,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         Annachiara Guerra e Fabrizia Malgieri, videogiocatrici e ricercatrici in diversi
         ambiti del gaming.</itunes:subtitle>
       <itunes:duration>3664</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>662</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Speciale donne e videogiochi</itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia662.srt" type="application/srt"></podcast:transcript>
       <itunes:image href="https://cdn.dgt.fm/digitalia662.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia662.jpg 1400w"></podcast:images>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>662</podcast:episode>
     </item>
     <item>
       <title>Digitalia #661 - Il trucco del telegiornale</title>
@@ -852,13 +852,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         Facebook e la finocchiona. La lavatrice in abbonamento. Il team anti-meme di
         Putin...</itunes:subtitle>
       <itunes:duration>6275</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>661</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Il trucco del telegiornale</itunes:title>
       <itunes:image href="https://cdn.dgt.fm/digitalia661.jpg"></itunes:image>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia661.srt" type="application/srt"></podcast:transcript>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia661.jpg 1400w"></podcast:images>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>661</podcast:episode>
     </item>
     <item>
       <title>Digitalia #660 - Il manualetto di Amadeus</title>
@@ -873,13 +873,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         presenta Bing con chatGPT. Google rincorre con Bard. Chatbot e potere. I primi
         DeepFake in vivo. Carmack e la conservazione dei videogame...</itunes:subtitle>
       <itunes:duration>6204</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>660</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Il manualetto di Amadeus</itunes:title>
       <itunes:image href="https://cdn.dgt.fm/digitalia660.jpg"></itunes:image>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia660.srt" type="application/srt"></podcast:transcript>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia660.jpg 1400w"></podcast:images>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>660</podcast:episode>
     </item>
     <item>
       <title>Digitalia #659 - Il Dodo vegano</title>
@@ -894,13 +894,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         robotaxi a San Francisco. L’assassino su Tinder. Il bias politico di ChatGPT. La
         PTSD dei moderatori di Meta. Videogames e ambienti tossici.</itunes:subtitle>
       <itunes:duration>6102</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>659</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Il Dodo vegano</itunes:title>
       <itunes:image href="https://cdn.dgt.fm/digitalia659.jpg"></itunes:image>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia659.srt" type="application/srt"></podcast:transcript>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia659.jpg 1400w"></podcast:images>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>659</podcast:episode>
     </item>
     <item>
       <title> Digitalia #658 - La legge ineluttabile dell&apos;Inscittificazione </title>
@@ -916,12 +916,12 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         Apple. Lega Calcio e blocco IP istantaneo...</itunes:subtitle>
       <itunes:image href="http://cdn.dgt.fm/digitalia658.jpg"></itunes:image>
       <itunes:duration>6212</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>658</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title> La legge ineluttabile dell&apos;Inscittificazione </itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia658.srt" type="application/srt" rel="captions"></podcast:transcript>
       <podcast:images srcset="http://cdn.dgt.fm/digitalia658.jpg 1400w"></podcast:images>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>658</podcast:episode>
     </item>
     <item>
       <title>Digitalia #657 - Digitaliani odiatori tedeschi</title>
@@ -936,12 +936,12 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         si parla di ChatGPT. CNET usava l’IA per scrivere articoli. FBI preoccupata per lo
         sviluppo di IA in Cina. I licenziamenti di Big Tech...</itunes:subtitle>
       <itunes:duration>5963</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>657</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Digitaliani odiatori tedeschi</itunes:title>
       <itunes:image href="http://cdn.dgt.fm/digitalia657.jpg"></itunes:image>
       <podcast:images srcset="http://cdn.dgt.fm/digitalia657.jpg 1400w"></podcast:images>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>657</podcast:episode>
     </item>
     <item>
       <title> Digitalia #656 - Tagliare l&apos;erba nei campi digitali </title>
@@ -956,10 +956,10 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         per un file scambiato. Joe Biden sul WSJ contro Big Tech. Twitter files: le
         pressioni di Pfizer su Twitter. Dati radioattivi per il machine learning...</itunes:subtitle>
       <itunes:duration>6323</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>656</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title> Tagliare l&apos;erba nei campi digitali </itunes:title>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>656</podcast:episode>
     </item>
     <item>
       <title>Digitalia #655 - Sfonda la sbarra</title>
@@ -974,10 +974,10 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         di Bitcoin Core perde i suoi bitcoin. Wikipedia non ha bisogno di soldi. Nuova norma
         per il diritto all’oblio...</itunes:subtitle>
       <itunes:duration>6477</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>655</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Sfonda la sbarra</itunes:title>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>655</podcast:episode>
     </item>
     <item>
       <title>Digitalia #654 - Il consolador umano</title>
@@ -992,10 +992,10 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         Textcasting. La Cina vieta i contenuti generati da modelli deep learning senza
         watermark. L’inutilità del 5G...</itunes:subtitle>
       <itunes:duration>6891</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>654</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Il consolador umano</itunes:title>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>654</podcast:episode>
     </item>
     <item>
       <title>Digitalia #653 - Mean time to disillusion</title>
@@ -1010,10 +1010,10 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         vendita di spyware. EU dichiara il tracciamento di FB illegale. Modelli ML: le prime
         criticità. Nomadi digitali...</itunes:subtitle>
       <itunes:duration>6625</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>653</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Mean time to disillusion</itunes:title>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>653</podcast:episode>
     </item>
     <item>
       <title>Digitalia #652 - Segue dibattito</title>
@@ -1028,10 +1028,10 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         Elon Musk annuncia i Twitter Files. Novità modelli deep learning: Davinci003 e
         ChatGPT. Human Chess. Sport, regole e digitale...</itunes:subtitle>
       <itunes:duration>6191</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>652</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Segue dibattito</itunes:title>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>652</podcast:episode>
     </item>
     <item>
       <title> Digitalia #651 - Elon alle porte dell&apos;inferno </title>
@@ -1046,10 +1046,10 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         generazione di immagini hot. Deepfake porno vietati negli UK. Apple, ads e
         tracciamento. La caduta degli dei della Silicon Valley...</itunes:subtitle>
       <itunes:duration>6073</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>651</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title> Elon alle porte dell&apos;inferno </itunes:title>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>651</podcast:episode>
     </item>
     <item>
       <title>Digitalia #650 - Quando torneremo a comprare carta igienica</title>
@@ -1063,10 +1063,10 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:subtitle>Amazon svuota il team di Alexa. Twitter va verso la sua apocalisse?
         Transumanesimo e pronatalisti. La cultura parziale della Silicon Valley...</itunes:subtitle>
       <itunes:duration>6374</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>650</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Quando torneremo a comprare carta igienica</itunes:title>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>650</podcast:episode>
     </item>
     <item>
       <title>Digitalia #649 - Filetto di panda</title>
@@ -1081,10 +1081,10 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         COP27 spia i partecipanti. Il visore VR che uccide. Il crack FTX e il momento Lehman
         delle criptovalute...</itunes:subtitle>
       <itunes:duration>6415</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>649</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Filetto di panda</itunes:title>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>649</podcast:episode>
     </item>
     <item>
       <title>Digitalia #648 - A Roma si dice come dico io</title>
@@ -1100,10 +1100,10 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         tech. Windows 365 supportato da pubblicità. Riciclaggio dei dati. Algoritmi e
         città...</itunes:subtitle>
       <itunes:duration>6792</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>648</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>A Roma si dice come dico io</itunes:title>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>648</podcast:episode>
     </item>
     <item>
       <title>Digitalia #647 - Speciale Machine Learning</title>
@@ -1118,10 +1118,10 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         di intelligenza artificiale e della sua applicazione al mondo della sanità e della
         medicina con Eugenio Zuccarelli, Data Scientist di stanza a New York.</itunes:subtitle>
       <itunes:duration>2743</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>647</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Speciale Machine Learning</itunes:title>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>647</podcast:episode>
     </item>
     <item>
       <title>Digitalia #646 - La postilla di Solerio</title>
@@ -1136,10 +1136,10 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         il 75% dei dipendenti di Twitter. La lunga e pericolosa strada verso l’identità
         digitale europea. Il flop del registro delle opposizioni...</itunes:subtitle>
       <itunes:duration>6265</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>646</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>La postilla di Solerio</itunes:title>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>646</podcast:episode>
     </item>
     <item>
       <title>Digitalia #645 - Oggi lavoro due giorni in più</title>
@@ -1152,10 +1152,10 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:author>info@digitalia.fm</itunes:author>
       <itunes:subtitle> Arrivano le gambe nel metaverso, mentre ci interroghiamo sul futuro del mondo del lavoro. Quanti lavori è possibile fare in smartworking? Il profumo di Elon Musk. L&apos;AI decide il prezzo degli affitti e chi assumere... </itunes:subtitle>
       <itunes:duration>6417</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>645</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Oggi lavoro due giorni in più</itunes:title>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>645</podcast:episode>
     </item>
     <item>
       <title>Digitalia #644 - Il Metaverso è dentro di te</title>
@@ -1169,10 +1169,10 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:subtitle>Qualche giorno nel Metaverso. Licenziamenti a Patreon, Meta, Spotify.
         Paypal multa gli utenti che fanno “disinformazione”. Lufthansa banna gli AirTag...</itunes:subtitle>
       <itunes:duration>6398</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>644</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Il Metaverso è dentro di te</itunes:title>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>644</podcast:episode>
     </item>
     <item>
       <title>Digitalia #643 - Vado a farmi su DALL-E</title>
@@ -1187,10 +1187,10 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         vietati in classe. Medici arruolati via chat. DALL-E disponibile per tutti. Bruce
         Willis, diritti di immagine e deep-fake. Le chat di Elon Musk.</itunes:subtitle>
       <itunes:duration>6305</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>643</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Vado a farmi su DALL-E</itunes:title>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>643</podcast:episode>
     </item>
     <item>
       <title>Digitalia #642 - Google come Maradona</title>
@@ -1205,10 +1205,10 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         bro-culture. Cosa non va nei Ted Talk. Il pollo alla Tachipirina su TikTok. Il
         metaverso in 3 step secondo Zuckerberg...</itunes:subtitle>
       <itunes:duration>5919</itunes:duration>
-      <itunes:season>0</itunes:season>
-      <itunes:episode>642</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Google come Maradona</itunes:title>
+      <podcast:season>0</podcast:season>
+      <podcast:episode>642</podcast:episode>
     </item>
   </channel>
 </rss>
@@ -1268,7 +1268,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6097,
-            "itunes:episode": 696,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -1276,7 +1275,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               },
             },
             "itunes:keywords": "x, elon_musk, shadowban, censura, infowars, deep_fake, vintage, maps",
-            "itunes:season": 0,
             "itunes:subtitle": "I problemi di Franco con EasyPark. Facebook e Instagram a pagamento.
         Deepfake, televendite e la nuova ultima canzone dei Beatles. Su Tiktok le guerre tra
         streamers. Shadowban e conflitto israelo-palestinese...",
@@ -1284,11 +1282,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/696/",
             ],
+            "podcast:episode": 696,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia696.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1316,7 +1316,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6105,
-            "itunes:episode": 695,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -1324,7 +1323,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               },
             },
             "itunes:keywords": "DSA, EU, westminster_declaration, meme, ai, glasshole, aeronautica",
-            "itunes:season": 0,
             "itunes:subtitle": "L’EU ha fretta di applicare il DSA. Jon Stewart cancellato da Apple. La
         Dichiarazione di Westminster. In galera per un meme. Il manifesto dei
         tecno-ottimisti...",
@@ -1332,11 +1330,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/695/",
             ],
+            "podcast:episode": 695,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia695.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1364,7 +1364,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6090,
-            "itunes:episode": 694,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -1373,18 +1372,19 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:keywords": "netflix, telegram, hamas, israele, crittografia, machine_learning,
         fotoritocco",
-            "itunes:season": 0,
             "itunes:subtitle": "I negozi fisici di Netflix. Telegram, X e i contenuti di Hamas. Google
         torna agli anni 90. Una taglia sulle curve ellittiche. AI, stereotipi e verità...",
             "itunes:title": "Gli idranti di Pompei",
             "link": [
               "http://digitalia.fm/694/",
             ],
+            "podcast:episode": 694,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia694.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1412,7 +1412,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6025,
-            "itunes:episode": 693,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -1421,7 +1420,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:keywords": "gig_economy, sanità, dating, vaporwave, musica, humane, llm,
         advertising, videogame, captcha",
-            "itunes:season": 0,
             "itunes:subtitle": "Cercare lavoro con le app di dating. Gig economy e sanità. Gli italiani
         e il fake english. Vaporwave, musica al sapore di retrocomputing. Il leak di
         23andMe. Videogiochi di guerra e segreti militari...",
@@ -1429,11 +1427,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/693/",
             ],
+            "podcast:episode": 693,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia693.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1461,7 +1461,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6270,
-            "itunes:episode": 692,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -1469,7 +1468,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               },
             },
             "itunes:keywords": "google, chatGPT, Lama, Meta, LLM, TIM, snoop_dog, t-red",
-            "itunes:season": 0,
             "itunes:subtitle": "Google altera le ricerche degli utenti. Microsoft prosciuga le falde
         per raffreddare i datacenter dell’IA. Arriva Raspberry Pi5. La cabina telefonica
         2.0. ChatGPT4 e le 20 personalità dell’IA di Meta...",
@@ -1477,11 +1475,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/692/",
             ],
+            "podcast:episode": 692,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia692.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1509,7 +1509,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6003,
-            "itunes:episode": 691,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -1517,7 +1516,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               },
             },
             "itunes:keywords": "microsoft, xbox, nintendo, leak, assistenti_vocali, LLM, privacy",
-            "itunes:season": 0,
             "itunes:subtitle": "Una brutta settimana per Microsoft con i leak sui suoi piani per Xbox.
         La nuova generazione di assistenti vocali. Foto di nudo di studentesse generate con
         IA. Spotify clona e traduce i podcaster. Ricercatori trasformano i router in
@@ -1526,11 +1524,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/691/",
             ],
+            "podcast:episode": 691,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia691.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1558,7 +1558,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 5847,
-            "itunes:episode": 690,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -1567,7 +1566,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:keywords": "unity, videogames, apple, iPhone, emf, pirateria, crypto, llm, chatgpt,
         airbnb",
-            "itunes:season": 0,
             "itunes:subtitle": "I designer di videogame contro Unity. Il Dipartimento di Giustizia
         Americano contro Google. Apple presenta i nuovi iPhone ed Apple Watch.
         L'intelligenza artificiale impazzisce, come le mucche...",
@@ -1575,11 +1573,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/690/",
             ],
+            "podcast:episode": 690,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia690.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1607,7 +1607,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6015,
-            "itunes:episode": 689,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -1615,7 +1614,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               },
             },
             "itunes:keywords": "automotive, privacy, DSA, europa, spotify, deezer, airbnb",
-            "itunes:season": 0,
             "itunes:subtitle": "La sera prima della presentazione dei nuovi iPhone. Chi sono i
         gatekeeper secondo DMA e DSA. Privacy e produttori di automobili. Elon Musk genio o
         villano. Apocalisse Airbnb a New York...",
@@ -1623,11 +1621,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/689/",
             ],
+            "podcast:episode": 689,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia689.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1655,7 +1655,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6797,
-            "itunes:episode": 688,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -1664,7 +1663,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:keywords": "retrogaming, utopia, smart_city, moderazione, LLM, openAI, x,
         instagram, tiktok",
-            "itunes:season": 0,
             "itunes:subtitle": "Un’estate con Miyoo Mini Plus. Il mercato pubblicitario su podcast. La
         soluzione del Codice Mandia. Nessuno scrive più sui Social. Piccioni viaggiatori più
         veloci della fibra. Brian May preoccupato per la IA...",
@@ -1672,11 +1670,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/688/",
             ],
+            "podcast:episode": 688,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia688.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1704,7 +1704,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 4043,
-            "itunes:episode": 687,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -1712,7 +1711,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               },
             },
             "itunes:keywords": "infosec, privacy, scam, spam, chatGPT, LLM",
-            "itunes:season": 0,
             "itunes:subtitle": "Puntata speciale estiva in compagnia di Enrico Cambiaso, ricercatore in
         tema cyber-security presso il CNR di Genova; ci racconta di una ricerca effettuata
         con Luca Caviglione per far spendere tempo agli scammer generando risposte
@@ -1722,11 +1720,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/687/",
             ],
+            "podcast:episode": 687,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia687.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1754,7 +1754,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 4227,
-            "itunes:episode": 686,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -1762,7 +1761,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               },
             },
             "itunes:keywords": "speciale, gingilli, utility, libri, software",
-            "itunes:season": 0,
             "itunes:subtitle": "Come da tradizione estiva di Digitalia, uno speciale tutto gingilli per
         sollazzarvi in spiaggia o sui sentieri di montagna. 30 gingilli in 30 minuti, che
         poi sono diventati 60 minuti.",
@@ -1770,11 +1768,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/686/",
             ],
+            "podcast:episode": 686,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia686.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1802,7 +1802,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6057,
-            "itunes:episode": 685,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -1811,7 +1810,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:keywords": "miiyo, retrogaming, stack_overflow, sam_altman, oppenheimer, LLM,
         dark_pattern, tiktok, x.com",
-            "itunes:season": 0,
             "itunes:subtitle": "Le prime impressioni su Miiyo Mini Plus. Stack Overflow presenta la sua
         IA. Il momento Oppenheimer. Il globo magico di Sam Altman. Dark pattern da Microsoft
         e bizzarrie da Elon Musk...",
@@ -1819,11 +1817,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/685/",
             ],
+            "podcast:episode": 685,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia685.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1851,7 +1851,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6465,
-            "itunes:episode": 684,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -1860,7 +1859,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:keywords": "openAI, traffico, automotive, sorveglianza, palm_pilot, crittografia,
         LLM, oppenheimer",
-            "itunes:season": 0,
             "itunes:subtitle": "Twitter diventa X.com. Ragazza in carcere intercettata su Facebook.
         Sorveglianza del traffico con AI. Apple cerca di registrare la mela. Il decalogo USA
         per le AI...",
@@ -1868,11 +1866,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/684/",
             ],
+            "podcast:episode": 684,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia684.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1900,7 +1900,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 5944,
-            "itunes:episode": 683,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -1909,7 +1908,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:keywords": "call_of_duty, pirateria, batterie, sorveglianza, dna, threads, tiktok,
         zuckerberg, ai",
-            "itunes:season": 0,
             "itunes:subtitle": "Microsoft continuerà a pubblicare Call of Duty per Playstation. La
         legge anti-pezzotto. Obbligo di batterie sostituibili. Sorveglianza tramite veicoli
         autonomi. Il DNA dei cani. Barbenheimer...",
@@ -1917,11 +1915,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/683/",
             ],
+            "podcast:episode": 683,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia683.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1949,7 +1949,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 5993,
-            "itunes:episode": 682,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -1958,7 +1957,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:keywords": "jony_ive, threads, twitter, reddit, privacy, dark_pattern,
         superallineamento, LLM, arte",
-            "itunes:season": 0,
             "itunes:subtitle": "Il giradischi di Jony Ive, Meta lancia Threads e si scontra subito con
         Twitter, attacco alla privacy in Francia, i dark pattern di Adobe, OpenAI studia il
         Superallineamento...",
@@ -1966,11 +1964,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/682/",
             ],
+            "podcast:episode": 682,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia682.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1998,7 +1998,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 5633,
-            "itunes:episode": 681,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -2007,7 +2006,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:keywords": "waze, snowden, twitter, IRL, Stitcher, gameboy, IA_act, LLM, valve,
         disinformazione, euro_digitale, reddit",
-            "itunes:season": 0,
             "itunes:subtitle": "Il 95% degli utenti di IRL erano fake. La chiusura di Stitcher. Il
         GameBoy di guerra. Aziende europee contro AI act. Gli LLM senza censure. Reddit il
         giorno dopo...",
@@ -2015,11 +2013,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/681/",
             ],
+            "podcast:episode": 681,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia681.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2047,7 +2047,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 5658,
-            "itunes:episode": 680,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -2056,7 +2055,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:keywords": "amazon_ring, data_broker, sorveglianza, privacy, reddit, twitter, IA,
         chatGPT, automotive, beatles",
-            "itunes:season": 0,
             "itunes:subtitle": "Elon Musk e Mark Zuckerberg si sfidano a combattimento. Il fediverso
         mostra i primi segni di problemi. Che cos'è l'intelligenza secondo il fondatore di
         DeepMind...",
@@ -2064,11 +2062,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/680/",
             ],
+            "podcast:episode": 680,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia680.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2096,7 +2096,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 5863,
-            "itunes:episode": 679,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -2105,7 +2104,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:keywords": "amazon_ring, data_broker, sorveglianza, privacy, reddit, twitter, IA,
         chatGPT, automotive, beatles",
-            "itunes:season": 0,
             "itunes:subtitle": "Addio a Daniel Ellsberg. Il governo USA compra sorveglianza dai data
         brokers. Amazon Ring usate per spiare i proprietari. La legge europea per l’IA.
         ChatGPT dice messa...",
@@ -2113,11 +2111,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/679/",
             ],
+            "podcast:episode": 679,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia679.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2145,7 +2145,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 5761,
-            "itunes:episode": 678,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -2154,7 +2153,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:keywords": "berlusconi, snowden, reddit, ufo, vision_pro, stack_overflow, bias,
         videogames, twitter",
-            "itunes:season": 0,
             "itunes:subtitle": "La rivolta dei moderatori su Reddit. Snowden 10 anni dopo. Giove il
         software di polizia predittiva in Italia. Il bias degli algoritmi. Pedofili su
         Instagram...",
@@ -2162,11 +2160,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/678/",
             ],
+            "podcast:episode": 678,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia678.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2194,7 +2194,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 5596,
-            "itunes:episode": 677,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -2202,7 +2201,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               },
             },
             "itunes:keywords": "tiktok, vision_pro, airpods, chatGPT, spam, robotica, droni, scuola",
-            "itunes:season": 0,
             "itunes:subtitle": "Le primissime impressioni dopo la presentazione di Apple Vision Pro. La
         bandiera sbagliata su Wikipedia. Obbligo di security.txt. TikTok bannato in Montana.
         Il robot maggiordomo...",
@@ -2210,11 +2208,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/677/",
             ],
+            "podcast:episode": 677,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia677.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2242,7 +2242,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 5478,
-            "itunes:episode": 676,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -2251,7 +2250,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:keywords": "avvocato, giurisprudenza, amore, scrittura, chatGPT, LLM, windows11,
         rider, gig_economy",
-            "itunes:season": 0,
             "itunes:subtitle": "L’amore tra IA e umani. La macchina per generare i compiti. Foto false
         del pentagono in fiamme. L’avvocato che usa ChatGPT. Copilot integrato in Windows
         11. Pubblicità su podcast e IA generativa...",
@@ -2259,11 +2257,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/676/",
             ],
+            "podcast:episode": 676,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia676.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2291,7 +2291,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6244,
-            "itunes:episode": 675,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -2299,7 +2298,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               },
             },
             "itunes:keywords": "llm, AI, sting, politica, multa, robotica, swatting, tiktok",
-            "itunes:season": 0,
             "itunes:subtitle": "SIAE fa pace con Meta. IA e persuasione politica. I modelli di
         linguaggio ragionano come umani? Secondo Sting sarà battaglia tra umani e AI. EU
         multa Meta per 1,3 miliardi...",
@@ -2307,11 +2305,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/675/",
             ],
+            "podcast:episode": 675,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia675.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2339,7 +2339,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6205,
-            "itunes:episode": 674,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -2348,7 +2347,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:keywords": "llm, chatGPT, copilot, ligabue, mantellini, stack_overflow, videogames,
         palantir, passkeys",
-            "itunes:season": 0,
             "itunes:subtitle": "ChatGPT e livellamento in basso della qualità. Sistemi generativi e
         fiducia. Problemi in paradiso per Mastodon. Stack Overflow in calo per colpa di
         ChatGPT e Copilot. Palantir e la IA di guerra...",
@@ -2356,11 +2354,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/674/",
             ],
+            "podcast:episode": 674,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia674.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2388,7 +2388,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6068,
-            "itunes:episode": 673,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -2397,7 +2396,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:keywords": "llm, gmail, amp, esport, fortnite, ultima_online, openAI,
         brain_scanner, blue_sky",
-            "itunes:season": 0,
             "itunes:subtitle": "Le spunte blu anche su Gmail. Fortnite diventa eSport olimpico. Le AI
         hackerano il sistema operativo della civiltà. Leggere la mente con le reti
         neurali...",
@@ -2405,11 +2403,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/673/",
             ],
+            "podcast:episode": 673,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia673.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2437,7 +2437,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 5536,
-            "itunes:episode": 672,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -2446,18 +2445,19 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:keywords": "reddit, API, alby, FAST, open_to_meraviglia, turismo, open_source,
         fitness",
-            "itunes:season": 0,
             "itunes:subtitle": "Reddit chiude le API gratuite. L’email è il vecchio fediverso. L’ascesa
         dei servizi FAST. La campagna Open to meraviglia. Open source a rischio in UE...",
             "itunes:title": "Bollitore per cervi",
             "link": [
               "http://digitalia.fm/672/",
             ],
+            "podcast:episode": 672,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia672.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2485,7 +2485,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 3116,
-            "itunes:episode": 671,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -2493,18 +2492,19 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               },
             },
             "itunes:keywords": "speciale, sex, dating, sexting, tinder, monster_match, relazioni",
-            "itunes:season": 0,
             "itunes:subtitle": "Amore e sesso ai tempi delle applicazioni di dating e di tutti gli
         altri strumenti digitali divenuti famosi soprattutto in lockdown...",
             "itunes:title": "Speciale amore, sesso e digitale",
             "link": [
               "http://digitalia.fm/671/",
             ],
+            "podcast:episode": 671,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia671.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2532,7 +2532,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 5953,
-            "itunes:episode": 670,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -2541,7 +2540,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:keywords": "android_auto, carplay, automotive, droni, apple_silicon, windows,
         virtualizzazione, sex",
-            "itunes:season": 0,
             "itunes:subtitle": "GM abbandona CarPlay. Ford presenta la guida autonoma di livello 2.
         L’evoluzione dei droni nella guerra in Ucraina. Windows 11 supporta Apple Silicon.
         IA generative e sessualità...",
@@ -2549,11 +2547,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/670/",
             ],
+            "podcast:episode": 670,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia670.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2581,7 +2581,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 5941,
-            "itunes:episode": 669,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -2590,7 +2589,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:keywords": "crittovalute, chatGPT, generativeAI, mastodon, wikipedia, dogecoin,
         substack, twitter, palantir",
-            "itunes:season": 0,
             "itunes:subtitle": "Il whitepaper di Bitcoin dentro MacOS. Meta vs SIAE, l’intervento del
         garante. Litigi e revisionismi su Wikipedia. Mastodon: cuoricini o stelline? ChatGPT
         denunciato per diffamazione...",
@@ -2598,11 +2596,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/669/",
             ],
+            "podcast:episode": 669,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia669.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2630,7 +2630,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 5909,
-            "itunes:episode": 668,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -2638,7 +2637,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               },
             },
             "itunes:keywords": "tiktok, boring_ah, chatGPT, LLM, AI, monopattini, sharing, dating",
-            "itunes:season": 0,
             "itunes:subtitle": "Il disegno di legge in USA per bloccare TikTok. Il Garante per la
         Privacy vs ChatGPT. Leader tech chiedono una pausa nello sviluppo di AI. Monopattini
         in affitto vietati a Parigi...",
@@ -2646,11 +2644,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/668/",
             ],
+            "podcast:episode": 668,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia668.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2678,7 +2678,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6155,
-            "itunes:episode": 667,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -2686,7 +2685,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               },
             },
             "itunes:keywords": "gordon_moore, internet_archive, TikTok, openAI, chatGPT, bard",
-            "itunes:season": 0,
             "itunes:subtitle": "Ricordiamo Gordon E. Moore e la sua legge. The Internet Archive ha
         appena conosciuto l'esito del processo che lo vedeva imputato. Il CEO di TikTok ha
         parlato al Congresso Americano. Queste e molte altre le notizie tech commentate
@@ -2695,11 +2693,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/667/",
             ],
+            "podcast:episode": 667,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia667.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2727,7 +2727,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6123,
-            "itunes:episode": 666,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -2735,7 +2734,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               },
             },
             "itunes:keywords": "wikipedia, gpt-4, llm, openAI, microsoft, meta, siae, nft",
-            "itunes:season": 0,
             "itunes:subtitle": "OpenAI lancia GPT4, Microsoft lo implementa un po’ in tutti i suoi
         prodotti, mentre Google non sta ad aspettare. Da Meta spariscono la musica, gli NFT
         e altri 10.000 dipendenti...",
@@ -2743,11 +2741,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/666/",
             ],
+            "podcast:episode": 666,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia666.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2775,7 +2775,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6146,
-            "itunes:episode": 665,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -2783,7 +2782,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               },
             },
             "itunes:keywords": "llm, ia, OpenAI, twitter, svb, startup, religione, Spotify, fediverso",
-            "itunes:season": 0,
             "itunes:subtitle": "Buddisti su TikTok. Gruppo cattolico paga per il tracciamento dei preti
         gay. Il crack di Silicon Valley Bank. Il declino dei social network. AI Seinfeld
         torna online. Queste e molte altre le notizie tech commentate nella puntata di
@@ -2792,11 +2790,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/665/",
             ],
+            "podcast:episode": 665,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia665.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2824,7 +2824,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6162,
-            "itunes:episode": 664,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -2832,7 +2831,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               },
             },
             "itunes:keywords": "llm, ia, automotive, OpenAI, WokeGPT, sharenting, social_credit_score",
-            "itunes:season": 0,
             "itunes:subtitle": "La proposta di legge per lo sharenting in Francia. Il semaforo a
         quattro colori per il traffico autonomo. Bing nella taskbar di Windows. Intelligenze
         artificiali oppure SALAMI? Il social credit score cinese...",
@@ -2840,11 +2838,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/664/",
             ],
+            "podcast:episode": 664,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia664.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2872,7 +2872,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 5800,
-            "itunes:episode": 663,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
@@ -2880,7 +2879,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               },
             },
             "itunes:keywords": "automotive, TikTok, censura, videogames, donne, LLM, IA, ad_blocker",
-            "itunes:season": 0,
             "itunes:subtitle": "Niente TikTok per il personale della Commissione Europea. I giovani si
         disinnamorano dell’auto. Il DJ a intelligenza artificiale di Spotify. L’invasione
         dei contenuti LLM. FBI consiglia gli ad blocker...",
@@ -2888,11 +2886,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/663/",
             ],
+            "podcast:episode": 663,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia663.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2920,14 +2920,12 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 3664,
-            "itunes:episode": 662,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
                 "href": "https://cdn.dgt.fm/digitalia662.jpg",
               },
             },
-            "itunes:season": 0,
             "itunes:subtitle": "Puntata speciale dedicata alle donne nel mondo dei videogiochi. Ospiti
         Annachiara Guerra e Fabrizia Malgieri, videogiocatrici e ricercatrici in diversi
         ambiti del gaming.",
@@ -2935,11 +2933,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/662/",
             ],
+            "podcast:episode": 662,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia662.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2967,14 +2967,12 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6275,
-            "itunes:episode": 661,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
                 "href": "https://cdn.dgt.fm/digitalia661.jpg",
               },
             },
-            "itunes:season": 0,
             "itunes:subtitle": "La prima settimana di Bing AI. L’uso responsabile dell’IA in guerra.
         Facebook e la finocchiona. La lavatrice in abbonamento. Il team anti-meme di
         Putin...",
@@ -2982,11 +2980,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/661/",
             ],
+            "podcast:episode": 661,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia661.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -3014,14 +3014,12 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6204,
-            "itunes:episode": 660,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
                 "href": "https://cdn.dgt.fm/digitalia660.jpg",
               },
             },
-            "itunes:season": 0,
             "itunes:subtitle": "Le polemiche per l’utilizzo dei social sul palco di Sanremo. Microsoft
         presenta Bing con chatGPT. Google rincorre con Bard. Chatbot e potere. I primi
         DeepFake in vivo. Carmack e la conservazione dei videogame...",
@@ -3029,11 +3027,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/660/",
             ],
+            "podcast:episode": 660,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia660.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -3061,14 +3061,12 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6102,
-            "itunes:episode": 659,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
                 "href": "https://cdn.dgt.fm/digitalia659.jpg",
               },
             },
-            "itunes:season": 0,
             "itunes:subtitle": "I falsi allarmi del rilevamento incidenti di Apple Watch e iPhone. Caos
         robotaxi a San Francisco. L’assassino su Tinder. Il bias politico di ChatGPT. La
         PTSD dei moderatori di Meta. Videogames e ambienti tossici.",
@@ -3076,11 +3074,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/659/",
             ],
+            "podcast:episode": 659,
             "podcast:images": {
               "@": {
                 "srcset": "https://cdn.dgt.fm/digitalia659.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -3108,14 +3108,12 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6212,
-            "itunes:episode": 658,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
                 "href": "http://cdn.dgt.fm/digitalia658.jpg",
               },
             },
-            "itunes:season": 0,
             "itunes:subtitle": "Il blackout delle mail di Libero e Virgilio. L’articolo di Cory
         Doctorow sul declino delle piattaforme online. Anticipazioni sul sistema AR/VR di
         Apple. Lega Calcio e blocco IP istantaneo...",
@@ -3123,11 +3121,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/658",
             ],
+            "podcast:episode": 658,
             "podcast:images": {
               "@": {
                 "srcset": "http://cdn.dgt.fm/digitalia658.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "rel": "captions",
@@ -3156,14 +3156,12 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 5963,
-            "itunes:episode": 657,
             "itunes:episodeType": "full",
             "itunes:image": {
               "@": {
                 "href": "http://cdn.dgt.fm/digitalia657.jpg",
               },
             },
-            "itunes:season": 0,
             "itunes:subtitle": "Le somme dopo 5 anni per la legge tedesca contro l’hate speech. A Davos
         si parla di ChatGPT. CNET usava l’IA per scrivere articoli. FBI preoccupata per lo
         sviluppo di IA in Cina. I licenziamenti di Big Tech...",
@@ -3171,11 +3169,13 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/657/",
             ],
+            "podcast:episode": 657,
             "podcast:images": {
               "@": {
                 "srcset": "http://cdn.dgt.fm/digitalia657.jpg 1400w",
               },
             },
+            "podcast:season": 0,
             "pubDate": "Mon, 23 Jan 2023 23:47:10 +0100",
             "title": "Digitalia #657 - Digitaliani odiatori tedeschi",
           },
@@ -3197,9 +3197,7 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6323,
-            "itunes:episode": 656,
             "itunes:episodeType": "full",
-            "itunes:season": 0,
             "itunes:subtitle": "Twitter chiude le API per le app di terze parti. Sistema Notam in tilt
         per un file scambiato. Joe Biden sul WSJ contro Big Tech. Twitter files: le
         pressioni di Pfizer su Twitter. Dati radioattivi per il machine learning...",
@@ -3207,6 +3205,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/656/",
             ],
+            "podcast:episode": 656,
+            "podcast:season": 0,
             "pubDate": "Mon, 16 Jan 2023 23:48:49 +0100",
             "title": " Digitalia #656 - Tagliare l'erba nei campi digitali ",
           },
@@ -3228,9 +3228,7 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6477,
-            "itunes:episode": 655,
             "itunes:episodeType": "full",
-            "itunes:season": 0,
             "itunes:subtitle": "Burocrazia digitale. Verso l’eliminazione dello SPID. Lo sviluppatore
         di Bitcoin Core perde i suoi bitcoin. Wikipedia non ha bisogno di soldi. Nuova norma
         per il diritto all’oblio...",
@@ -3238,6 +3236,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/655/",
             ],
+            "podcast:episode": 655,
+            "podcast:season": 0,
             "pubDate": "Tue, 10 Jan 2023 00:00:32 +0100",
             "title": "Digitalia #655 - Sfonda la sbarra",
           },
@@ -3259,9 +3259,7 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6891,
-            "itunes:episode": 654,
             "itunes:episodeType": "full",
-            "itunes:season": 0,
             "itunes:subtitle": "Le ultime da Twitter e la Mastodon Migration. Dave Winer propone il
         Textcasting. La Cina vieta i contenuti generati da modelli deep learning senza
         watermark. L’inutilità del 5G...",
@@ -3269,6 +3267,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/654",
             ],
+            "podcast:episode": 654,
+            "podcast:season": 0,
             "pubDate": "Mon, 19 Dec 2022 23:50:56 +0100",
             "title": "Digitalia #654 - Il consolador umano",
           },
@@ -3290,9 +3290,7 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6625,
-            "itunes:episode": 653,
             "itunes:episodeType": "full",
-            "itunes:season": 0,
             "itunes:subtitle": "Apple rinuncia al riconoscimento CSAM on device. La Grecia proibisce la
         vendita di spyware. EU dichiara il tracciamento di FB illegale. Modelli ML: le prime
         criticità. Nomadi digitali...",
@@ -3300,6 +3298,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/653/",
             ],
+            "podcast:episode": 653,
+            "podcast:season": 0,
             "pubDate": "Tue, 13 Dec 2022 00:06:16 +0100",
             "title": "Digitalia #653 - Mean time to disillusion",
           },
@@ -3321,9 +3321,7 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6191,
-            "itunes:episode": 652,
             "itunes:episodeType": "full",
-            "itunes:season": 0,
             "itunes:subtitle": "Apple Maps e pubblicltà. Google sposta Maps sul dominio principale.
         Elon Musk annuncia i Twitter Files. Novità modelli deep learning: Davinci003 e
         ChatGPT. Human Chess. Sport, regole e digitale...",
@@ -3331,6 +3329,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/652/",
             ],
+            "podcast:episode": 652,
+            "podcast:season": 0,
             "pubDate": "Mon, 05 Dec 2022 23:48:38 +0100",
             "title": "Digitalia #652 - Segue dibattito",
           },
@@ -3352,9 +3352,7 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6073,
-            "itunes:episode": 651,
             "itunes:episodeType": "full",
-            "itunes:season": 0,
             "itunes:subtitle": "Elon Musk si scaglia contro Apple. Stable Diffusion 2 blocca la
         generazione di immagini hot. Deepfake porno vietati negli UK. Apple, ads e
         tracciamento. La caduta degli dei della Silicon Valley...",
@@ -3362,6 +3360,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/651/",
             ],
+            "podcast:episode": 651,
+            "podcast:season": 0,
             "pubDate": "Mon, 28 Nov 2022 23:45:47 +0100",
             "title": " Digitalia #651 - Elon alle porte dell'inferno ",
           },
@@ -3383,15 +3383,15 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6374,
-            "itunes:episode": 650,
             "itunes:episodeType": "full",
-            "itunes:season": 0,
             "itunes:subtitle": "Amazon svuota il team di Alexa. Twitter va verso la sua apocalisse?
         Transumanesimo e pronatalisti. La cultura parziale della Silicon Valley...",
             "itunes:title": "Quando torneremo a comprare carta igienica",
             "link": [
               "http://digitalia.fm/650/",
             ],
+            "podcast:episode": 650,
+            "podcast:season": 0,
             "pubDate": "Mon, 21 Nov 2022 23:52:15 +0100",
             "title": "Digitalia #650 - Quando torneremo a comprare carta igienica",
           },
@@ -3413,9 +3413,7 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6415,
-            "itunes:episode": 649,
             "itunes:episodeType": "full",
-            "itunes:season": 0,
             "itunes:subtitle": "Cloudflare costretto a bloccare i siti torrent dal suo DNS. La app del
         COP27 spia i partecipanti. Il visore VR che uccide. Il crack FTX e il momento Lehman
         delle criptovalute...",
@@ -3423,6 +3421,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/649/",
             ],
+            "podcast:episode": 649,
+            "podcast:season": 0,
             "pubDate": "Tue, 15 Nov 2022 00:09:25 +0100",
             "title": "Digitalia #649 - Filetto di panda",
           },
@@ -3444,9 +3444,7 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6792,
-            "itunes:episode": 648,
             "itunes:episodeType": "full",
-            "itunes:season": 0,
             "itunes:subtitle": "Elon Musk finalizza l’acquisizione di Twitter, inizia i licenziamenti e
         trasforma la spunta blu di verifica in un’opzione a pagamento. Crisi nel settore
         tech. Windows 365 supportato da pubblicità. Riciclaggio dei dati. Algoritmi e
@@ -3455,6 +3453,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/648/",
             ],
+            "podcast:episode": 648,
+            "podcast:season": 0,
             "pubDate": "Mon, 07 Nov 2022 23:48:16 +0100",
             "title": "Digitalia #648 - A Roma si dice come dico io",
           },
@@ -3476,9 +3476,7 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 2743,
-            "itunes:episode": 647,
             "itunes:episodeType": "full",
-            "itunes:season": 0,
             "itunes:subtitle": "Speciale autunnale dedicato al mondo del Machine Learning: riflettiamo
         di intelligenza artificiale e della sua applicazione al mondo della sanità e della
         medicina con Eugenio Zuccarelli, Data Scientist di stanza a New York.",
@@ -3486,6 +3484,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/647/",
             ],
+            "podcast:episode": 647,
+            "podcast:season": 0,
             "pubDate": "Tue, 01 Nov 2022 00:30:33 +0100",
             "title": "Digitalia #647 - Speciale Machine Learning",
           },
@@ -3507,9 +3507,7 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6265,
-            "itunes:episode": 646,
             "itunes:episodeType": "full",
-            "itunes:season": 0,
             "itunes:subtitle": "Eclissi, ora legale, giornalismo e iGPT3 (forse). Musk vuole licenziare
         il 75% dei dipendenti di Twitter. La lunga e pericolosa strada verso l’identità
         digitale europea. Il flop del registro delle opposizioni...",
@@ -3517,6 +3515,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/646/",
             ],
+            "podcast:episode": 646,
+            "podcast:season": 0,
             "pubDate": "Mon, 24 Oct 2022 23:39:00 +0200",
             "title": "Digitalia #646 - La postilla di Solerio",
           },
@@ -3538,14 +3538,14 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6417,
-            "itunes:episode": 645,
             "itunes:episodeType": "full",
-            "itunes:season": 0,
             "itunes:subtitle": " Arrivano le gambe nel metaverso, mentre ci interroghiamo sul futuro del mondo del lavoro. Quanti lavori è possibile fare in smartworking? Il profumo di Elon Musk. L'AI decide il prezzo degli affitti e chi assumere... ",
             "itunes:title": "Oggi lavoro due giorni in più",
             "link": [
               "http://digitalia.fm/645/",
             ],
+            "podcast:episode": 645,
+            "podcast:season": 0,
             "pubDate": "Tue, 18 Oct 2022 19:02:40 +0200",
             "title": "Digitalia #645 - Oggi lavoro due giorni in più",
           },
@@ -3567,15 +3567,15 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6398,
-            "itunes:episode": 644,
             "itunes:episodeType": "full",
-            "itunes:season": 0,
             "itunes:subtitle": "Qualche giorno nel Metaverso. Licenziamenti a Patreon, Meta, Spotify.
         Paypal multa gli utenti che fanno “disinformazione”. Lufthansa banna gli AirTag...",
             "itunes:title": "Il Metaverso è dentro di te",
             "link": [
               "http://digitalia.fm/644/",
             ],
+            "podcast:episode": 644,
+            "podcast:season": 0,
             "pubDate": "Tue, 11 Oct 2022 07:56:56 +0200",
             "title": "Digitalia #644 - Il Metaverso è dentro di te",
           },
@@ -3597,9 +3597,7 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 6305,
-            "itunes:episode": 643,
             "itunes:episodeType": "full",
-            "itunes:season": 0,
             "itunes:subtitle": "I millenials sono i nuovi boomer. Corsivo dimenticato. Cellulari
         vietati in classe. Medici arruolati via chat. DALL-E disponibile per tutti. Bruce
         Willis, diritti di immagine e deep-fake. Le chat di Elon Musk.",
@@ -3607,6 +3605,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/643/",
             ],
+            "podcast:episode": 643,
+            "podcast:season": 0,
             "pubDate": "Mon, 03 Oct 2022 23:43:22 +0200",
             "title": "Digitalia #643 - Vado a farmi su DALL-E",
           },
@@ -3628,9 +3628,7 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             },
             "itunes:author": "info@digitalia.fm",
             "itunes:duration": 5919,
-            "itunes:episode": 642,
             "itunes:episodeType": "full",
-            "itunes:season": 0,
             "itunes:subtitle": "Concessa la cittadinanza russa a Snowden. Silicon Valley e la
         bro-culture. Cosa non va nei Ted Talk. Il pollo alla Tachipirina su TikTok. Il
         metaverso in 3 step secondo Zuckerberg...",
@@ -3638,6 +3636,8 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
             "link": [
               "http://digitalia.fm/642/",
             ],
+            "podcast:episode": 642,
+            "podcast:season": 0,
             "pubDate": "Mon, 26 Sep 2022 23:37:38 +0200",
             "title": "Digitalia #642 - Google come Maradona",
           },
@@ -3781,9 +3781,9 @@ exports[`PodcastConverter Should correctly serialize a "gitbar" with required fi
       <itunes:duration>5259</itunes:duration>
       <itunes:explicit>clean</itunes:explicit>
       <itunes:image href="https://d3wo5wojvuv7l.cloudfront.net/t_rss_itunes_square_1400/images.spreaker.com/original/4d2a55064af2b5996102c83a23f0c10f.jpg"></itunes:image>
-      <itunes:season>4</itunes:season>
-      <itunes:episode>174</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
+      <podcast:season>4</podcast:season>
+      <podcast:episode>174</podcast:episode>
     </item>
   </channel>
 </rss>
@@ -3852,6 +3852,8 @@ exports[`PodcastConverter Should correctly serialize a "gitbar" with required fi
             "link": [
               "https://www.spreaker.com/user/brainrepo/ep165-lucadelpuppo-typescript",
             ],
+            "podcast:episode": undefined,
+            "podcast:season": undefined,
             "pubDate": "Fri, 27 Oct 2023 13:09:54 +0000",
             "title": "Ep.175 - Typescript con Luca Del Puppo (Nearform)",
           },
@@ -3872,7 +3874,6 @@ exports[`PodcastConverter Should correctly serialize a "gitbar" with required fi
             },
             "itunes:author": "Brainrepo",
             "itunes:duration": 5259,
-            "itunes:episode": 174,
             "itunes:episodeType": "full",
             "itunes:explicit": "clean",
             "itunes:image": {
@@ -3880,7 +3881,6 @@ exports[`PodcastConverter Should correctly serialize a "gitbar" with required fi
                 "href": "https://d3wo5wojvuv7l.cloudfront.net/t_rss_itunes_square_1400/images.spreaker.com/original/4d2a55064af2b5996102c83a23f0c10f.jpg",
               },
             },
-            "itunes:season": 4,
             "itunes:subtitle": "Questa settimana non abbiamo ospite, anzi ne abbiamo due, DottorBlaster e
         Chumkiu, con loro parliamo del Vercel Drama. ## Supportaci su https://www.gitbar.it/support
         ## Paese dei balocchi - https://www.hetzner.com/sb -...",
@@ -3888,6 +3888,8 @@ exports[`PodcastConverter Should correctly serialize a "gitbar" with required fi
             "link": [
               "https://www.spreaker.com/user/brainrepo/ep174-the-vercel-drama",
             ],
+            "podcast:episode": 174,
+            "podcast:season": 4,
             "pubDate": "Thu, 19 Oct 2023 05:42:10 +0000",
             "title": "Ep.174 - The vercel drama",
           },
@@ -6939,6 +6941,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://reflex.livewire.io/chapters/podcast/917393e3-1b1e-5cef-ace4-edaa54e1f810/item/ff31b3ca-4da7-456a-ab82-52ffae34f7e4/chapters/https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/ff31b3ca-4da7-456a-ab82-52ffae34f7e4",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1684513486.722_pcifeedimage.png 1600w",
@@ -6966,6 +6969,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -7101,6 +7105,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://reflex.livewire.io/chapters/podcast/917393e3-1b1e-5cef-ace4-edaa54e1f810/item/a469a9fd-35e8-403a-b305-da26e7015f0a/chapters/https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/a469a9fd-35e8-403a-b305-da26e7015f0a",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://behindthesch3m3s.com/wp-content/uploads/2023/01/v4v-storm-good-quality.gif 750w",
@@ -7128,6 +7133,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -7263,6 +7269,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://reflex.livewire.io/chapters/podcast/917393e3-1b1e-5cef-ace4-edaa54e1f810/item/8a90a402-85ab-4cd8-b9f4-3a2b9cfb53b8/chapters/https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/8a90a402-85ab-4cd8-b9f4-3a2b9cfb53b8",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://behindthesch3m3s.com/wp-content/uploads/2023/01/v4v-storm-good-quality.gif 750w",
@@ -7290,6 +7297,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -7438,6 +7446,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/f25a2089-01fd-49a2-a00b-1013b7fd8ae6",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://behindthesch3m3s.com/wp-content/uploads/2023/01/v4v-storm-good-quality.gif 750w",
@@ -7465,6 +7474,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -7603,6 +7613,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/62438155-0962-4078-8c07-fbe6f192c8e3",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1684513486.722_pcifeedimage.png 1600w",
@@ -7630,6 +7641,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -7746,6 +7758,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/3341e5b2-926d-4f1a-8aee-f7e95b4f16b4",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://behindthesch3m3s.com/wp-content/uploads/2023/01/v4v-storm-good-quality.gif 750w",
@@ -7782,6 +7795,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -7921,6 +7935,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/7d04de2b-d0b9-46ff-9479-5e5c19846e6d-x",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://behindthesch3m3s.com/wp-content/uploads/2023/01/v4v-storm-good-quality.gif 750w",
@@ -7948,6 +7963,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -8077,6 +8093,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20145",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://behindthesch3m3s.com/wp-content/uploads/2023/01/v4v-storm-good-quality.gif 750w",
@@ -8122,6 +8139,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -8271,6 +8289,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20144",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://behindthesch3m3s.com/wp-content/uploads/2023/01/v4v-storm-good-quality.gif 750w",
@@ -8298,6 +8317,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -8442,6 +8462,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20143",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://behindthesch3m3s.com/wp-content/uploads/2023/01/v4v-storm-good-quality.gif 750w",
@@ -8469,6 +8490,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -8598,6 +8620,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20142",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://behindthesch3m3s.com/wp-content/uploads/2023/01/v4v-storm-good-quality.gif 750w",
@@ -8625,6 +8648,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -8754,6 +8778,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20141",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1684513486.722_pcifeedimage.png 1600w",
@@ -8781,6 +8806,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -8910,6 +8936,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20140",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1684513486.722_pcifeedimage.png 1600w",
@@ -8955,6 +8982,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -9117,6 +9145,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20139",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://behindthesch3m3s.com/wp-content/uploads/2023/01/v4v-storm-good-quality.gif 750w",
@@ -9144,6 +9173,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -9273,6 +9303,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20138",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://behindthesch3m3s.com/wp-content/uploads/2023/01/v4v-storm-good-quality.gif 750w",
@@ -9309,6 +9340,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -9449,6 +9481,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20137",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1684513486.722_pcifeedimage.png 1600w",
@@ -9476,6 +9509,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -9605,6 +9639,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20136",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1684513486.722_pcifeedimage.png 1600w",
@@ -9641,6 +9676,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -9780,6 +9816,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20135",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://behindthesch3m3s.com/wp-content/uploads/2023/01/v4v-storm-good-quality.gif 750w",
@@ -9807,6 +9844,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -9953,6 +9991,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20134",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -9980,6 +10019,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -10126,6 +10166,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20133",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1684513486.722_pcifeedimage.png 1600w",
@@ -10162,6 +10203,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -10330,6 +10372,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20132",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1684513486.722_pcifeedimage.png 1600w",
@@ -10357,6 +10400,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -10497,6 +10541,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20131",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -10533,6 +10578,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -10683,6 +10729,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20130",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -10710,6 +10757,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -10847,6 +10895,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20129",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -10892,6 +10941,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -11037,6 +11087,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20128",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -11082,6 +11133,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -11219,6 +11271,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20127",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -11246,6 +11299,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -11373,6 +11427,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20126",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -11400,6 +11455,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -11527,6 +11583,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20125",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -11554,6 +11611,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -11681,6 +11739,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20124",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -11708,6 +11767,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -11835,6 +11895,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20123",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -11871,6 +11932,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -12008,6 +12070,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20122",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -12044,6 +12107,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -12181,6 +12245,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20121",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -12208,6 +12273,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -12335,6 +12401,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20120",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -12379,6 +12446,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -12516,6 +12584,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20119",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -12543,6 +12612,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -12670,6 +12740,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20118",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -12706,6 +12777,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -12842,6 +12914,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20117",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -12869,6 +12942,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -12993,6 +13067,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20116",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -13038,6 +13113,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -13172,6 +13248,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20115",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -13209,6 +13286,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -13335,6 +13413,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20114",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -13362,6 +13441,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -13478,6 +13558,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20113",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -13505,6 +13586,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -13621,6 +13703,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20112",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -13648,6 +13731,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -13782,6 +13866,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20111",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -13809,6 +13894,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -13925,6 +14011,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20110",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -13952,6 +14039,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -14068,6 +14156,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20109",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -14104,6 +14193,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -14230,6 +14320,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20108",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -14257,6 +14348,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -14373,6 +14465,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20107",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -14400,6 +14493,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -14516,6 +14610,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20106",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -14543,6 +14638,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -14659,6 +14755,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20105",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -14686,6 +14783,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -14802,6 +14900,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20104",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -14838,6 +14937,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -14954,6 +15054,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20103",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -14981,6 +15082,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -15097,6 +15199,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20102",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1663953598.374_phoebe-01.jpg 900w",
@@ -15133,6 +15236,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -15259,6 +15363,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20101",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1654303210.889_runningwithscissorsnew.png 1440w",
@@ -15286,6 +15391,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -15402,6 +15508,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20100",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1654303210.889_runningwithscissorsnew.png 1440w",
@@ -15438,6 +15545,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -15560,6 +15668,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2099",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -15587,6 +15696,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -15691,6 +15801,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2098",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1654303210.889_runningwithscissorsnew.png 1440w",
@@ -15727,6 +15838,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -15841,6 +15953,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2097",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1654303210.889_runningwithscissorsnew.png 1440w",
@@ -15868,6 +15981,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -15972,6 +16086,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2096",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1654303210.889_runningwithscissorsnew.png 1440w",
@@ -16008,6 +16123,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -16122,6 +16238,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2095",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -16149,6 +16266,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -16253,6 +16371,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2094",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -16289,6 +16408,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -16401,6 +16521,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2093",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1654303210.889_runningwithscissorsnew.png 1440w",
@@ -16437,6 +16558,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -16541,6 +16663,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2092",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1654303210.889_runningwithscissorsnew.png 1440w",
@@ -16577,6 +16700,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -16681,6 +16805,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2091",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1654303210.889_runningwithscissorsnew.png 1440w",
@@ -16717,6 +16842,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -16821,6 +16947,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2090",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -16857,6 +16984,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -16953,6 +17081,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2089",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -16989,6 +17118,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -17093,6 +17223,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2088",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1654303210.889_runningwithscissorsnew.png 1440w",
@@ -17129,6 +17260,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -17233,6 +17365,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2087",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -17260,6 +17393,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -17356,6 +17490,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2086",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -17383,6 +17518,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -17479,6 +17615,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2085",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -17515,6 +17652,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -17619,6 +17757,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2084",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -17655,6 +17794,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -17761,6 +17901,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2083",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -17788,6 +17929,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -17884,6 +18026,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2082",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -17911,6 +18054,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -18007,6 +18151,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2081",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -18034,6 +18179,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -18130,6 +18276,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2080",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -18157,6 +18304,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -18253,6 +18401,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2079",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -18280,6 +18429,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -18376,6 +18526,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2078",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -18412,6 +18563,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -18518,6 +18670,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2077",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -18554,6 +18707,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -18660,6 +18814,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2076",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -18696,6 +18851,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -18792,6 +18948,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2075",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -18828,6 +18985,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -18924,6 +19082,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2074",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -18969,6 +19128,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -19083,6 +19243,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2073",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -19128,6 +19289,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -19224,6 +19386,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2072",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -19251,6 +19414,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -19339,6 +19503,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2071",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -19366,6 +19531,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -19454,6 +19620,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2070",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -19490,6 +19657,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -19578,6 +19746,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2069",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -19623,6 +19792,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -19711,6 +19881,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2068",
               },
             },
+            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -19738,6 +19909,7 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
+            "podcast:season": undefined,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",

@@ -75,6 +75,7 @@ const TRANSLATIONS = {
     "edit_feed.items.title": "Episodes",
     "edit_feed.items_fields.title": "Title",
     "edit_feed.items_fields.guid": "GUID",
+    "edit_feed.items_fields.author": "Author",
     "edit_feed.items_fields.image": "Episode image",
     "edit_feed.items_fields.link": "Episode page",
     "edit_feed.items_fields.description": "Episode description",
@@ -91,6 +92,8 @@ const TRANSLATIONS = {
     "edit_feed.items_fields.duration": "Duration",
     "edit_feed.items_fields.itunes_subtitle": "Subtitle",
     "edit_feed.items_fields.itunes_summary": "Summary",
+    "edit_feed.items_fields.podcast_season": "Season",
+    "edit_feed.items_fields.podcast_episode": "Episode",
     //-----
 
     "ui.forms.empty_field.message": "Click here to assign a value",
