@@ -190,13 +190,7 @@ describe("PodcastNormalizer", () => {
           {
             item: [
               {
-                link: [
-                  {
-                    "@": {
-                      href: "https://example.com",
-                    },
-                  },
-                ],
+                link: ["https://example.com"],
               },
             ],
           },
