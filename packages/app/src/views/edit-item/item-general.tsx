@@ -18,6 +18,8 @@ import { FullPageColumnLayout } from "@fourviere/ui/lib/layouts/full-page";
 import { getDuration } from "../../native/audio";
 import { ItemLink } from "../../components/form-fields/item-link";
 import Boolean from "@fourviere/ui/lib/form/fields/boolean";
+import Select from "@fourviere/ui/lib/form/fields/select";
+import episodeType from "@fourviere/core/lib/apple/episode-type";
 
 export default function ItemGeneral() {
   const currentFeed = UseCurrentFeed();
@@ -325,6 +327,24 @@ export default function ItemGeneral() {
                       setFieldValue,
                     }}
                     initValue="My episode sumary"
+                    emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                  />
+                </FormRow>
+                <FormRow
+                  name={`rss.channel.0.item[${itemIndex}]["itunes:episodeType"]`}
+                  label={t["edit_feed.items_fields.episode_type"]}
+                >
+                  <FormField
+                    id={`rss.channel.0.item[${itemIndex}]["itunes:episodeType"]`}
+                    name={`rss.channel.0.item[${itemIndex}]["itunes:episodeType"]`}
+                    as={Select as FC}
+                    fieldProps={{
+                      options: episodeType,
+                      labelProperty: "value",
+                      keyProperty: "name",
+                      lowercase: true,
+                    }}
+                    initValue="full"
                     emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                   />
                 </FormRow>

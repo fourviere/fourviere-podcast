@@ -95,6 +95,7 @@ const TRANSLATIONS = {
     "edit_feed.items_fields.podcast_season": "Season",
     "edit_feed.items_fields.podcast_episode": "Episode",
     "edit_feed.items_fields.explicit": "Explicit",
+    "edit_feed.items_fields.episode_type": "Episode type",
     //-----
 
     "ui.forms.empty_field.message": "Click here to assign a value",
