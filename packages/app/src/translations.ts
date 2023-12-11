@@ -85,7 +85,12 @@ const TRANSLATIONS = {
     "edit_feed.items_fields.presentation.title": "Presentation",
     "edit_feed.items_fields.presentation.description":
       "This area will contain the fields necessary for, once completed, having defined the presentation of the episode.",
+    "edit_feed.items_fields.itunes.title": "Itunes",
+    "edit_feed.items_fields.itunes.description":
+      "This area will contain the episode itunes specific fields.",
     "edit_feed.items_fields.duration": "Duration",
+    "edit_feed.items_fields.itunes_subtitle": "Subtitle",
+    "edit_feed.items_fields.itunes_summary": "Summary",
     //-----
 
     "ui.forms.empty_field.message": "Click here to assign a value",

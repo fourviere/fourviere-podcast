@@ -234,6 +234,43 @@ export default function ItemGeneral() {
                   />
                 </FormRow>
               </FormSection>
+
+              <FormSection
+                title={t["edit_feed.items_fields.itunes.title"]}
+                description={t["edit_feed.items_fields.itunes.description"]}
+              >
+                <FormRow
+                  name={`rss.channel.0.item[${itemIndex}]["itunes:subtitle"]`}
+                  label={t["edit_feed.items_fields.itunes_subtitle"]}
+                >
+                  <FormField
+                    id={`rss.channel.0.item[${itemIndex}]["itunes:subtitle"]`}
+                    name={`rss.channel.0.item[${itemIndex}]["itunes:subtitle"]`}
+                    as={Input}
+                    initValue="My podcast subtitle"
+                    emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                  />
+                </FormRow>
+                <FormRow
+                  name="rss.channel.0.description"
+                  label={t["edit_feed.items_fields.itunes_summary"]}
+                >
+                  <FormField
+                    id={`rss.channel.0.item[${itemIndex}]["itunes:summary"]`}
+                    name={`rss.channel.0.item[${itemIndex}]["itunes:summary"]`}
+                    as={Text as FC}
+                    fieldProps={{
+                      value:
+                        values.rss.channel[0].item?.[Number(itemIndex)][
+                          "itunes:summary"
+                        ],
+                      setFieldValue,
+                    }}
+                    initValue="My episode sumary"
+                    emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                  />
+                </FormRow>
+              </FormSection>
             </Container>
           );
         }}

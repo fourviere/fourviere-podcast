@@ -35,6 +35,7 @@ const ItunesItemSchema = Type.Object({
       }),
     })
   ),
+  "itunes:summary": Type.Optional(Type.String()),
   "itunes:explicit": Type.Optional(Type.String()),
   "itunes:episode": Type.Optional(Type.Number()),
   "itunes:season": Type.Optional(Type.Number()),
