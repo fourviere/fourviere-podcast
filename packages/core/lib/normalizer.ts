@@ -93,7 +93,7 @@ function normalizeItunesDuration(data: unknown): unknown {
 function normalizeChannelLink(data: unknown): unknown {
   let d = data;
 
-  const paths = [`rss.channel[*].link[*]`, `rss.channel[*].item[*].link[*]`];
+  const paths = [`rss.channel[*].link[*]`];
 
   paths.forEach((path) => {
     jsonpath.apply(d, path, (value) => {
@@ -124,6 +124,23 @@ function normalizeGuid(data: unknown): unknown {
   return d;
 }
 
+function normalizeSeasonEpisode(data: unknown): unknown {
+  let d = data;
+  jsonpath.apply(data, `rss.channel[*].item[*]`, (value) => {
+    const dd = {
+      ...value,
+      "podcast:season": value["itunes:season"],
+      "podcast:episode": value["itunes:episode"],
+    };
+    delete dd["itunes:season"];
+    delete dd["itunes:episode"];
+
+    console.log(value);
+    return dd;
+  });
+  return d;
+}
+
 export function normalize(data: unknown): unknown {
   data = normalizeArrays(data);
   data = normalizeChannelLink(data);
@@ -132,5 +149,6 @@ export function normalize(data: unknown): unknown {
   data = normalizeItunesDuration(data);
   data = normalizeStrings(data);
   data = normalizeGuid(data);
+  data = normalizeSeasonEpisode(data);
   return data;
 }

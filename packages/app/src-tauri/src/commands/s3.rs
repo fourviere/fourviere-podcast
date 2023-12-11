@@ -1,10 +1,12 @@
 use ::function_name::named;
-use mime_guess::from_path;
 use s3::{creds::Credentials, Bucket, Region};
 use std::{borrow::Cow, path::Path};
 use tokio::fs;
 
-use crate::{log_if_error_and_return, utils::result::Result};
+use crate::{
+    log_if_error_and_return,
+    utils::{file::get_file_info, result::Result},
+};
 
 #[derive(serde::Deserialize)]
 pub struct Payload {
@@ -21,14 +23,21 @@ pub struct Payload {
     file_name: String,
 }
 
+#[derive(serde::Serialize)]
+pub struct FileInfo {
+    pub url: String,
+    pub mime_type: String,
+    pub size: u64,
+}
+
 #[named]
 #[tauri::command]
-pub async fn s3_upload(payload: Payload) -> Result<String> {
+pub async fn s3_upload(payload: Payload) -> Result<FileInfo> {
     let upload_result = s3_upload_internal(payload, false).await;
     log_if_error_and_return!(upload_result)
 }
 
-async fn s3_upload_internal(payload: Payload, use_path_style: bool) -> Result<String> {
+async fn s3_upload_internal(payload: Payload, use_path_style: bool) -> Result<FileInfo> {
     let credentials = Credentials::new(
         Some(&payload.access_key),
         Some(&payload.secret_key),
@@ -55,9 +64,8 @@ async fn s3_upload_internal(payload: Payload, use_path_style: bool) -> Result<St
     }
 
     let file = fs::read(&payload.local_path).await?;
+    let file_info: crate::utils::file::FileInfo = get_file_info(&payload.local_path).await?;
 
-    // Guess the MIME type based on the file extension
-    let mime = from_path(&payload.local_path).first_or_octet_stream();
     let ext = Path::new(&payload.local_path)
         .extension()
         .map_or(Cow::default(), |ext| ext.to_string_lossy());
@@ -66,7 +74,7 @@ async fn s3_upload_internal(payload: Payload, use_path_style: bool) -> Result<St
     let new_file_name = format!("{}/{}.{}", &path, &payload.file_name, &ext);
 
     bucket
-        .put_object_with_content_type(new_file_name, &file, mime.as_ref())
+        .put_object_with_content_type(new_file_name, &file, &file_info.mime_type)
         .await?;
 
     let protocol = if payload.https { "https" } else { "http" };
@@ -77,10 +85,11 @@ async fn s3_upload_internal(payload: Payload, use_path_style: bool) -> Result<St
         format!("{}.{}", payload.file_name, ext)
     };
 
-    Ok(format!(
-        "{}://{}/{}",
-        protocol, payload.http_host, file_path
-    ))
+    Ok(FileInfo {
+        size: file_info.size,
+        mime_type: file_info.mime_type,
+        url: format!("{}://{}/{}", protocol, payload.http_host, file_path),
+    })
 }
 
 #[cfg(test)]
@@ -101,6 +110,15 @@ mod test {
     const ACCESS_KEY: &str = "StealThisUselessAccessKey";
     const SECRET_KEY: &str = "StealThisUselessSecretKey";
     const REGION: &str = "wonderland";
+
+    #[cfg(target_os = "windows")]
+    const FILESIZE: u64 = 9156;
+
+    #[cfg(target_os = "linux")]
+    const FILESIZE: u64 = 9063;
+
+    #[cfg(target_os = "macos")]
+    const FILESIZE: u64 = 9063;
 
     async fn s3_server(port: u16) {
         let fs = FileSystem::new(temp_dir()).unwrap();
@@ -166,7 +184,13 @@ mod test {
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
         prepare_s3_bucket(port, bucket).await;
-        assert!(s3_upload_internal(payload, true).await.is_ok());
+
+        let info_result = s3_upload_internal(payload, true).await;
+        assert!(info_result.is_ok());
+        let file_info = info_result.unwrap();
+        assert_eq!(file_info.size, FILESIZE);
+        assert_eq!(file_info.mime_type, "text/xml");
+
         handle.abort();
     }
 

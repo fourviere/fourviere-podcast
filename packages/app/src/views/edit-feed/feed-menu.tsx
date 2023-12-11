@@ -6,6 +6,7 @@ import {
   Cog8ToothIcon,
   MusicalNoteIcon,
   PencilSquareIcon,
+  QueueListIcon,
 } from "@heroicons/react/24/outline";
 
 export default function FeedMenu() {
@@ -31,6 +32,18 @@ export default function FeedMenu() {
           >
             {t["edit_feed.channel_field.itunes.title"]}
           </SideMenuItem>
+
+          <hr />
+
+          <SideMenuItem<NavLinkProps>
+            component={NavLink}
+            to="feed-items"
+            key="feed-items"
+            icon={<QueueListIcon />}
+          >
+            {t["edit_feed.items.title"]}
+          </SideMenuItem>
+
           <hr />
 
           <SideMenuItem<NavLinkProps>

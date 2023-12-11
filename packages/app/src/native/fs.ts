@@ -7,3 +7,11 @@ export async function readFile(path: string) {
     console.error(e);
   }
 }
+
+export async function readFileInfo(url: string) {
+  const response = await invoke<{
+    content_type: String;
+    content_length: String;
+  }>("read_file_info", { url });
+  return response;
+}

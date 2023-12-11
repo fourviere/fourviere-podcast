@@ -11,13 +11,14 @@ import AddField from "@fourviere/ui/lib/form/add-field";
 import Undefined from "@fourviere/ui/lib/form/fields/undefined";
 import ImageField from "@fourviere/ui/lib/form/fields/image";
 import Select from "@fourviere/ui/lib/form/fields/select";
-import useUpload from "../../hooks/useUpload";
+import useUpload, { UploadResponse } from "../../hooks/useUpload";
 import FormObserver from "../../components/form-observer";
 import { Feed } from "@fourviere/core/lib/schema/feed";
 import PODCASTCATEGORIES from "@fourviere/core/lib/podcast-namespace/categories";
 import { FC } from "react";
 import { LANGUAGE_BY_LOCALE } from "../../consts";
 import FormObjectField from "@fourviere/ui/lib/form/form-object-field";
+import { ChannelLinks } from "../../components/form-fields/channel-links";
 export default function General() {
   const currentFeed = UseCurrentFeed();
   const t = useTranslations();
@@ -38,10 +39,13 @@ export default function General() {
       {({ values, setFieldValue, setFieldError, handleSubmit }) => {
         const imageUpload = useUpload({
           feedId: currentFeed.feedId,
-          updateField: (value: string) =>
-            setFieldValue("rss.channel.0.image.url", value),
+          updateField: (value: UploadResponse) => {
+            console.log("set url", value.url);
+            setFieldValue("rss.channel.0.image.url", value.url);
+          },
           updateError: (value: string) =>
             setFieldError("rss.channel.0.image.url", value),
+          fileFamily: "image",
         });
 
         return (
@@ -128,71 +132,10 @@ export default function General() {
                   emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                 />
               </FormRow>
-              <FormRow
+              <ChannelLinks
                 name="rss.channel.0.link"
-                label={t["edit_feed.channel_field.link"]}
-              >
-                <FieldArray
-                  name="rss.channel.0.link"
-                  render={(arrayHelpers) => (
-                    <Container spaceY="sm">
-                      {values.rss.channel[0].link &&
-                      values.rss.channel[0].link.length > 0 ? (
-                        <>
-                          {values.rss.channel[0].link.map((_, index) => (
-                            <div key={index}>
-                              <FormField
-                                id={`rss.channel.0.link.${index}["@"].href`}
-                                name={`rss.channel.0.link.${index}["@"].href`}
-                                as={Input}
-                                emtpyValueButtonMessage={
-                                  t["ui.forms.empty_field.message"]
-                                }
-                                initValue="https://..."
-                                overrideReset={() => arrayHelpers.remove(index)}
-                                postSlot={
-                                  <AddField
-                                    onClick={() =>
-                                      arrayHelpers.insert(index, {
-                                        "@": {
-                                          href: "https://...",
-                                        },
-                                      })
-                                    }
-                                  ></AddField>
-                                }
-                              />
-                            </div>
-                          ))}
-                          <Container flex="row-center" spaceX="sm">
-                            <AddField
-                              onClick={() =>
-                                arrayHelpers.push({
-                                  "@": {
-                                    href: "https://...",
-                                  },
-                                })
-                              }
-                            />
-                          </Container>
-                        </>
-                      ) : (
-                        <Undefined
-                          onClick={() =>
-                            arrayHelpers.push({
-                              "@": {
-                                href: "https://...",
-                              },
-                            })
-                          }
-                        >
-                          {t["ui.forms.empty_field.message"]}
-                        </Undefined>
-                      )}
-                    </Container>
-                  )}
-                />
-              </FormRow>
+                values={values.rss.channel[0].link}
+              />
             </FormSection>
             <FormSection
               title={t["edit_feed.indexing.title"]}

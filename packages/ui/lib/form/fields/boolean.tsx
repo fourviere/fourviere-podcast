@@ -16,11 +16,11 @@ interface InputProps {
     value: any,
     shouldValidate?: boolean | undefined
   ) => Promise<unknown>;
-  mapBoolean: (value: boolean) => unknown;
-  unmapBoolean: (value: unknown) => boolean;
+  mapBoolean: (value: boolean) => any;
+  unmapBoolean: (value: any) => boolean;
 }
 
-const identity = (b) => b;
+const identity = (b: any) => b;
 const Boolean = React.forwardRef<HTMLInputElement, InputProps>(
   (
     {
@@ -37,26 +37,25 @@ const Boolean = React.forwardRef<HTMLInputElement, InputProps>(
   ) => {
     return (
       <Container wFull flex="col">
-        <label className="flex">
-          <div className="relative inline-flex  cursor-pointer">
-            <input
-              ref={ref}
-              className="sr-only peer"
-              id={name}
-              name={name}
-              type="checkbox"
-              placeholder={placeholder}
-              checked={unmapBoolean(value)}
-              onChange={(e) =>
-                setFieldValue?.(name, mapBoolean(e.currentTarget.checked))
-              }
-            />
-            <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-slate-300 dark:peer-focus:ring-slate-800 dark:bg-slate-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-slate-600"></div>
-
-            <span className="ms-3 text-xs ">
-              {label} {value}
-            </span>
-          </div>
+        <label className="flex items-center cursor-pointer">
+          <input
+            ref={ref}
+            className="sr-only peer"
+            id={name}
+            name={name}
+            type="checkbox"
+            placeholder={placeholder}
+            checked={unmapBoolean(value)}
+            onChange={(e) => {
+              console.log("onChange", e.currentTarget.checked, name);
+              setFieldValue?.(
+                name as string,
+                mapBoolean(e.currentTarget.checked)
+              );
+            }}
+          />
+          <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-slate-300 dark:peer-focus:ring-slate-800 dark:bg-slate-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-slate-600"></div>
+          <div className="pl-3 text-xs">{label}</div>
         </label>
 
         {error && typeof error === "string" && (
