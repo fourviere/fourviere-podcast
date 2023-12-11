@@ -270,6 +270,27 @@ export default function ItemGeneral() {
                     emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                   />
                 </FormRow>
+
+                <FormRow
+                  name="rss.channel.0.item[${itemIndex}]['itunes:explicit']"
+                  label={t["edit_feed.items_fields.explicit"]}
+                >
+                  <FormField
+                    id={`rss.channel.0.item[${itemIndex}]['itunes:explicit']`}
+                    name={`rss.channel.0.item[${itemIndex}]['itunes:explicit']`}
+                    fieldProps={{
+                      label: "Explicit",
+                      setFieldValue,
+                      value:
+                        values.rss.channel[0].item?.[Number(itemIndex)][
+                          "itunes:explicit"
+                        ],
+                      mapBoolean: (b: boolean) => (b ? "true" : "clean"),
+                      unmapBoolean: (b: string) => b === "true",
+                    }}
+                    as={Boolean}
+                  />
+                </FormRow>
               </FormSection>
 
               <FormSection
