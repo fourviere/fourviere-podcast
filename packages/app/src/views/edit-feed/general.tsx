@@ -18,6 +18,7 @@ import PODCASTCATEGORIES from "@fourviere/core/lib/podcast-namespace/categories"
 import { FC } from "react";
 import { LANGUAGE_BY_LOCALE } from "../../consts";
 import FormObjectField from "@fourviere/ui/lib/form/form-object-field";
+import { ChannelLinks } from "../../components/form-fields/channel-links";
 export default function General() {
   const currentFeed = UseCurrentFeed();
   const t = useTranslations();
@@ -131,7 +132,7 @@ export default function General() {
                   emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                 />
               </FormRow>
-              <FormRow
+              {/* <FormRow
                 name="rss.channel.0.link"
                 label={t["edit_feed.channel_field.link"]}
               >
@@ -195,7 +196,11 @@ export default function General() {
                     </Container>
                   )}
                 />
-              </FormRow>
+              </FormRow> */}
+              <ChannelLinks
+                name="rss.channel.0.link"
+                values={values.rss.channel[0].link}
+              />
             </FormSection>
             <FormSection
               title={t["edit_feed.indexing.title"]}

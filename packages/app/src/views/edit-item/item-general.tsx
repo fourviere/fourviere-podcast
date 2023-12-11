@@ -16,6 +16,7 @@ import useUpload, { UploadResponse } from "../../hooks/useUpload";
 import { FC } from "react";
 import { FullPageColumnLayout } from "@fourviere/ui/lib/layouts/full-page";
 import { getDuration } from "../../native/audio";
+import { ItemLink } from "../../components/form-fields/item-link";
 
 export default function ItemGeneral() {
   const currentFeed = UseCurrentFeed();
@@ -160,6 +161,7 @@ export default function ItemGeneral() {
                     emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                   />
                 </FormRow>
+
                 <FormRow
                   name="rss.channel.0.image"
                   label={t["edit_feed.items_fields.image"]}
@@ -177,6 +179,10 @@ export default function ItemGeneral() {
                     initValue="https://"
                   />
                 </FormRow>
+                <ItemLink
+                  name={`rss.channel.0.item[${itemIndex}].link`}
+                  values={values.rss.channel[0].item?.[Number(itemIndex)].link}
+                />
                 <FormRow
                   name="rss.channel.0.description"
                   label={t["edit_feed.items_fields.description"]}

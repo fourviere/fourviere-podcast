@@ -11,7 +11,7 @@ import { Feed } from "@fourviere/core/lib/schema/feed";
 import FormObjectField from "@fourviere/ui/lib/form/form-object-field";
 import Boolean from "@fourviere/ui/lib/form/fields/boolean";
 import ImageField from "@fourviere/ui/lib/form/fields/image";
-import {RssChannelItunesCategoryFields} from "../../components/form-fields/RssChannelItunesCategoryFields.tsx";
+import { Categories } from "../../components/form-fields/categories.tsx";
 import useUpload, { UploadResponse } from "../../hooks/useUpload";
 
 export default function Itunes() {
@@ -32,7 +32,7 @@ export default function Itunes() {
       }}
     >
       {({ values, handleSubmit, setFieldValue, setFieldError }) => {
-        console.log({values})
+        console.log({ values });
         const imageUpload = useUpload({
           feedId: currentFeed.feedId,
           updateField: (value: UploadResponse) =>
@@ -137,7 +137,7 @@ export default function Itunes() {
                   emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                 />
               </FormRow>
-              <RssChannelItunesCategoryFields name={`rss.channel.0.["itunes:category"]`} />
+              <Categories name={`rss.channel.0.["itunes:category"]`} />
               <FormRow
                 name={`rss.channel.0.["itunes:complete"]`}
                 label={t["edit_feed.channel_field.itunes.complete"]}

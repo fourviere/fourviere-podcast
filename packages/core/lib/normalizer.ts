@@ -93,7 +93,7 @@ function normalizeItunesDuration(data: unknown): unknown {
 function normalizeChannelLink(data: unknown): unknown {
   let d = data;
 
-  const paths = [`rss.channel[*].link[*]`, `rss.channel[*].item[*].link[*]`];
+  const paths = [`rss.channel[*].link[*]`];
 
   paths.forEach((path) => {
     jsonpath.apply(d, path, (value) => {

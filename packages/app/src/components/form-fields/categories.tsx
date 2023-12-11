@@ -1,33 +1,31 @@
 import FormRow from "@fourviere/ui/lib/form/form-row";
-import {APPLE_PODCAST_CATEGORIES} from "../../consts.tsx";
-import {Container} from "@fourviere/ui/lib/box";
-import {Field, FieldArray, useField} from "formik";
+import { APPLE_PODCAST_CATEGORIES } from "../../consts.tsx";
+import { Container } from "@fourviere/ui/lib/box";
+import { Field, FieldArray, useField } from "formik";
 import Select from "@fourviere/ui/lib/form/fields/select";
 import ResetField from "@fourviere/ui/lib/form/reset-field";
 import Undefined from "@fourviere/ui/lib/form/fields/undefined";
 import useTranslations from "../../hooks/useTranslations.tsx";
-import {Feed} from "@fourviere/core/lib/schema/feed";
+import { Feed } from "@fourviere/core/lib/schema/feed";
 
 interface Props {
-  name: string
+  name: string;
 }
 
-export const RssChannelItunesCategoryFields = ({name}: Props) => {
+export const Categories = ({ name }: Props) => {
   const t = useTranslations();
 
-  const [input] = useField<Feed["rss"]["channel"]["0"]["itunes:category"]>(name);
+  const [input] =
+    useField<Feed["rss"]["channel"]["0"]["itunes:category"]>(name);
 
   const categories = input.value;
 
-  return <><FieldArray name={name}>
-    {({remove, push}) => (
-      <FormRow
-        name="itunes_ext.categories"
-        label="itunes categories"
-      >
-        <div className="space-y-1">
-          {categories.map(
-            (category, index) => {
+  return (
+    <FieldArray name={name}>
+      {({ remove, push }) => (
+        <FormRow name="itunes_ext.categories" label="itunes categories">
+          <div className="space-y-1">
+            {categories.map((category, index) => {
               const subCategories = APPLE_PODCAST_CATEGORIES.find(
                 (e) => e.category === category["@"].text
               )?.subcategories.map((e) => ({
@@ -36,11 +34,7 @@ export const RssChannelItunesCategoryFields = ({name}: Props) => {
               }));
 
               return (
-                <Container
-                  spaceX="sm"
-                  flex="row-middle"
-                  key={index}
-                >
+                <Container spaceX="sm" flex="row-middle" key={index}>
                   <Field
                     as={Select}
                     keyProperty="category"
@@ -69,25 +63,25 @@ export const RssChannelItunesCategoryFields = ({name}: Props) => {
                   </div>
                 </Container>
               );
-            }
-          )}
+            })}
 
-          {categories.length < 2 && (
-            <Undefined
-              onClick={() =>
-                push({
-                  "itunes:category": {
-                    "@": {text: "Hobbies"},
-                  },
-                  "@": {text: "Leisure"},
-                })
-              }
-            >
-              {t["ui.forms.empty_field.message"]}
-            </Undefined>
-          )}
-        </div>
-      </FormRow>
-    )}
-  </FieldArray></>
-}
+            {categories.length < 2 && (
+              <Undefined
+                onClick={() =>
+                  push({
+                    "itunes:category": {
+                      "@": { text: "Hobbies" },
+                    },
+                    "@": { text: "Leisure" },
+                  })
+                }
+              >
+                {t["ui.forms.empty_field.message"]}
+              </Undefined>
+            )}
+          </div>
+        </FormRow>
+      )}
+    </FieldArray>
+  );
+};

@@ -75,6 +75,7 @@ const TRANSLATIONS = {
     "edit_feed.items.title": "Episodes",
     "edit_feed.items_fields.title": "Title",
     "edit_feed.items_fields.image": "Episode image",
+    "edit_feed.items_fields.link": "Episode page",
     "edit_feed.items_fields.description": "Episode description",
     "edit_feed.items_fields.enclosure_url": "Media file",
     "edit_feed.items_fields.enclosure_url.url": "File url",
