@@ -61,7 +61,6 @@ const AudioField = ({
         ) {
           helpers.setError("Not correct file type");
         }
-        console.log(onChange, "on changio");
         onChange?.(e.target.value);
         helpers.setValue({
           url: e.target.value,

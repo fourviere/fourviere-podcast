@@ -64,7 +64,6 @@ async fn s3_upload_internal(payload: Payload, use_path_style: bool) -> Result<Fi
     }
 
     let file = fs::read(&payload.local_path).await?;
-
     let file_info: crate::utils::file::FileInfo = get_file_info(&payload.local_path).await?;
 
     let ext = Path::new(&payload.local_path)

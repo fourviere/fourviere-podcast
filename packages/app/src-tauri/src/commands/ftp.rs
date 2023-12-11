@@ -1,4 +1,5 @@
 use ::function_name::named;
+use mime_guess::from_path;
 use std::{borrow::Cow, path::Path, str};
 use suppaftp::{types::FileType, AsyncFtpStream, Mode};
 use tokio_util::compat::TokioAsyncReadCompatExt;
@@ -22,6 +23,7 @@ pub struct Payload {
 
 #[derive(serde::Serialize)]
 pub struct FileInfo {
+
     pub url: String,
     pub mime_type: String,
     pub size: u64,
@@ -30,11 +32,13 @@ pub struct FileInfo {
 #[named]
 #[tauri::command]
 pub async fn ftp_upload(payload: Payload) -> Result<FileInfo> {
+
     let upload_result = ftp_upload_internal(payload).await;
     log_if_error_and_return!(upload_result)
 }
 
 async fn ftp_upload_internal(payload: Payload) -> Result<FileInfo> {
+
     let addr = format!("{}:{}", payload.host, payload.port);
 
     let mut ftp_stream = AsyncFtpStream::connect(addr).await?;

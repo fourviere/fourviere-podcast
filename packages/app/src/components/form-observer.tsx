@@ -1,22 +1,16 @@
 import { useFormikContext } from "formik";
-import { useEffect } from "react";
-import { useState } from "react";
+import {useEffect, useRef} from "react";
+import {debounce} from "../lib/util.tsx";
 
 interface Props<T> {
   updateFunction: (values: T) => void;
 }
+
 export default function FormObserver<T>({ updateFunction }: Props<T>) {
   const { values } = useFormikContext<T>();
-  const [timer, setTimer] = useState<ReturnType<typeof setTimeout>>();
-
-  //TODO: improve this pls
+  const updateFuncDebouncedRef = useRef(debounce(updateFunction, 1500));
   useEffect(() => {
-    if (timer) clearTimeout(timer);
-    const newTimer = setTimeout(() => {
-      updateFunction(values);
-    }, 1500);
-    setTimer(newTimer);
-    return clearTimeout(timer);
+    updateFuncDebouncedRef.current(values);
   }, [values]);
 
   return null;

@@ -86,7 +86,6 @@ mod test {
     async fn read_file_info_ok() {
         let info = read_file_info("https://api.spreaker.com/download/episode/57683371/ep178_diversity_ios_anna_chiara_beltrami.mp3").await;
         assert!(info.is_ok());
-
         let data = info.unwrap();
         assert_eq!(data.content_length, "78266580");
         assert_eq!(data.content_type, "audio/mpeg");

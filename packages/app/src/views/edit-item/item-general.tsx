@@ -9,7 +9,6 @@ import ImageField from "@fourviere/ui/lib/form/fields/image";
 import { FormField } from "@fourviere/ui/lib/form/form-field";
 import UseCurrentFeed from "../../hooks/useCurrentFeed";
 import useTranslations from "../../hooks/useTranslations";
-
 import FormObserver from "../../components/form-observer";
 import { Feed } from "@fourviere/core/lib/schema/feed";
 import { useParams } from "react-router-dom";
