@@ -17,6 +17,7 @@ import { FC } from "react";
 import { FullPageColumnLayout } from "@fourviere/ui/lib/layouts/full-page";
 import { getDuration } from "../../native/audio";
 import { ItemLink } from "../../components/form-fields/item-link";
+import Boolean from "@fourviere/ui/lib/form/fields/boolean";
 
 export default function ItemGeneral() {
   const currentFeed = UseCurrentFeed();
@@ -160,6 +161,37 @@ export default function ItemGeneral() {
                     initValue="My podcast title"
                     emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                   />
+                </FormRow>
+                <FormRow
+                  name="rss.channel.0.guid.#text"
+                  label={t["edit_feed.items_fields.guid"]}
+                >
+                  <Container flex="col" spaceY="md">
+                    <FormField
+                      id={`rss.channel.0.item[${itemIndex}].guid.#text`}
+                      name={`rss.channel.0.item[${itemIndex}].guid.#text`}
+                      as={Input}
+                      initValue="Unique identifier for the episode"
+                      emtpyValueButtonMessage={
+                        t["ui.forms.empty_field.message"]
+                      }
+                    />
+
+                    <FormField
+                      id={`rss.channel.0.item[${itemIndex}].guid.@.isPermaLink`}
+                      name={`rss.channel.0.item[${itemIndex}].guid.@.isPermaLink`}
+                      fieldProps={{
+                        label: "Is Permalink",
+                        setFieldValue,
+                        value:
+                          values.rss.channel[0].item?.[Number(itemIndex)]
+                            .guid?.["@"]?.isPermaLink,
+                        mapBoolean: (b: boolean) => (b ? "true" : "false"),
+                        unmapBoolean: (b: string) => b === "true",
+                      }}
+                      as={Boolean}
+                    />
+                  </Container>
                 </FormRow>
 
                 <FormRow

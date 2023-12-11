@@ -74,6 +74,7 @@ const TRANSLATIONS = {
       "This section contains the podcast media file and the title",
     "edit_feed.items.title": "Episodes",
     "edit_feed.items_fields.title": "Title",
+    "edit_feed.items_fields.guid": "GUID",
     "edit_feed.items_fields.image": "Episode image",
     "edit_feed.items_fields.link": "Episode page",
     "edit_feed.items_fields.description": "Episode description",
