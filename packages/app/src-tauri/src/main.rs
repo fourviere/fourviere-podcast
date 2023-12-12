@@ -8,7 +8,6 @@ mod utils;
 
 fn main() {
     let (level, targets, filter) = log_settings();
-
     tauri::Builder::default()
         .plugin(
             tauri_plugin_log::Builder::default()
