@@ -9,10 +9,13 @@ pub enum Error {
     #[error("Error trasfering data to the server")]
     Ftp(#[from] suppaftp::FtpError),
     #[error("Error while configuring s3 credentials")]
-    S3Credentials(#[from] ::s3::creds::error::CredentialsError),
+    S3Credentials(#[from] s3::creds::error::CredentialsError),
     #[error("Error while operationing on s3 storage")]
-    S3Operation(#[from] ::s3::error::S3Error),
-    //reqwest::Error with anyhow
+    S3Operation(#[from] s3::error::S3Error),
+    #[error("Internal tauri error")]
+    Tauri(#[from] tauri::Error),
+    #[error("Channel Closed")]
+    TokioSend,
 }
 
 impl serde::Serialize for Error {
