@@ -25,6 +25,7 @@
     "src",
     "../core/tests",
     "../core/lib",
+    "../ui/lib",
     "../ui/lib/form/form-field.tsx"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]

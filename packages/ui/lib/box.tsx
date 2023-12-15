@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import React, { PropsWithChildren } from "react";
 import tw from "tailwind-styled-components";
 
@@ -63,9 +64,10 @@ interface Props<E extends React.ElementType> {
   flex?: ContainerFlex;
   wFull?: boolean;
   scroll?: boolean;
+  sticky?: boolean;
 }
 
-export function Container<E extends React.ElementType = "div">({
+export function Container<E extends React.ElementType>({
   spaceY = "none",
   spaceX = "none",
   padding = "none",
@@ -74,17 +76,22 @@ export function Container<E extends React.ElementType = "div">({
   wFull,
   scroll,
   as,
+  sticky,
   ...props
 }: PropsWithChildren<Props<E>> & React.ComponentPropsWithoutRef<E>) {
-  const Component = as || "div";
+  const Component = as || "div" || "form";
   return (
     <Component
       {...props}
-      className={`${containerXSpaces[spaceX]} ${containerYSpaces[spaceY]} ${
-        containerPadding[padding]
-      } ${containerFlex[flex]} ${wFull ? "w-full" : ""} ${
-        scroll ? "overflow-y-scroll" : ""
-      }`}
+      className={classNames(
+        `${containerXSpaces[spaceX]}`,
+        `${containerYSpaces[spaceY]}`,
+        `${containerPadding[padding]}`,
+        `${containerFlex[flex]}`,
+        { "w-full": wFull },
+        { "overflow-y-scroll": scroll },
+        { "sticky top-0": sticky }
+      )}
     >
       {children}
     </Component>

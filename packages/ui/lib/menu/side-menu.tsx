@@ -12,7 +12,7 @@ const SideMenu: React.FC<Props> = ({ main, header, footer }) => {
     <div className="h-full flex flex-col w-[60px] lg:w-1/5  bg-slate-50  border-r border-slate-100 ">
       {header && <div className="grow-0">{header}</div>}
       {main && (
-        <div className="grow shrink overflow-y-scroll overflow-x-no space-y-2 inner-shadow px-3 py-3">
+        <div className="grow shrink overflow-y-auto overflow-x-no space-y-2 inner-shadow px-3 py-3">
           {main}
         </div>
       )}

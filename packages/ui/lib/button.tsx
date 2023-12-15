@@ -6,11 +6,13 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   isLoading?: boolean;
   size?: "sm" | "md" | "lg";
   Icon?: React.ElementType;
+  isDisable?: boolean;
 };
 
 const Button: React.FC<ButtonProps> = ({
   children,
   isLoading,
+  isDisable,
   className,
   size,
   Icon,
@@ -25,6 +27,8 @@ const Button: React.FC<ButtonProps> = ({
         { "py-2 px-3": size === "sm" },
         { "py-3 px-4": size === "md" },
         { "py-4 px-6": size === "lg" },
+        { "opacity-50 cursor-not-allowed": isLoading },
+        { "opacity-50 cursor-not-allowed": isDisable },
         className
       )}
     >

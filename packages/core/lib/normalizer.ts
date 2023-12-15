@@ -134,8 +134,6 @@ function normalizeSeasonEpisode(data: unknown): unknown {
     };
     delete dd["itunes:season"];
     delete dd["itunes:episode"];
-
-    console.log(value);
     return dd;
   });
   return d;

@@ -99,6 +99,12 @@ const TRANSLATIONS = {
     //-----
 
     "ui.forms.empty_field.message": "Click here to assign a value",
+    "ui.forms.unsaved_changes.title": "Unsaved changes",
+    "ui.forms.unsaved_changes.message":
+      "You have unsaved changes, are you sure you want to leave this page?",
+    "ui.forms.unsaved_changes.ok": "Leave",
+    "ui.forms.unsaved_changes.cancel": "Stay",
+
     "edit_feed.configuration.title": "Configuration",
     "edit_feed.configuration.remotes.title": "Remote configuration",
     "edit_feed.configuration.remotes.description":

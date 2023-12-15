@@ -9,11 +9,11 @@ import { Formik } from "formik";
 import { FormField } from "@fourviere/ui/lib/form/form-field";
 import useConfigurations from "../../hooks/useConfigurations";
 import useTranslations from "../../hooks/useTranslations";
-import FormObserver from "../../components/form-observer";
-import { AppState } from "../../store/app";
 import Select from "@fourviere/ui/lib/form/fields/select";
 import TRANSLATIONS from "../../translations";
 import Boolean from "@fourviere/ui/lib/form/fields/boolean";
+import ContainerTitle from "@fourviere/ui/lib/container-title";
+import FormBlocker from "../../components/form-blocker";
 
 interface Props {}
 
@@ -31,7 +31,7 @@ const Configurations: React.FC<Props> = () => {
           setSubmitting(false);
         }}
       >
-        {({ handleSubmit, setFieldValue, values }) => {
+        {({ handleSubmit, setFieldValue, values, dirty, isSubmitting }) => {
           return (
             <Container
               scroll
@@ -40,12 +40,15 @@ const Configurations: React.FC<Props> = () => {
               as="form"
               onSubmit={handleSubmit}
             >
-              <FormObserver<AppState>
-                updateFunction={(values) => {
-                  //console.log("update", values);
-                  update(values);
-                }}
-              />
+              <FormBlocker dirty={dirty} />
+
+              <ContainerTitle
+                isDirty={dirty}
+                isSubmitting={isSubmitting}
+                onSave={() => handleSubmit()}
+              >
+                {t["edit_feed.configuration.title"]}
+              </ContainerTitle>
 
               <FormSection
                 title={t["configurations.locale.title"]}
