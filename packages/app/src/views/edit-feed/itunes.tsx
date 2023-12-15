@@ -6,13 +6,12 @@ import { Formik } from "formik";
 import { FormField } from "@fourviere/ui/lib/form/form-field";
 import UseCurrentFeed from "../../hooks/useCurrentFeed";
 import useTranslations from "../../hooks/useTranslations";
-import FormObserver from "../../components/form-observer";
-import { Feed } from "@fourviere/core/lib/schema/feed";
 import FormObjectField from "@fourviere/ui/lib/form/form-object-field";
 import Boolean from "@fourviere/ui/lib/form/fields/boolean";
 import ImageField from "@fourviere/ui/lib/form/fields/image";
 import { Categories } from "../../components/form-fields/categories.tsx";
 import useUpload, { UploadResponse } from "../../hooks/useUpload";
+import ContainerTitle from "@fourviere/ui/lib/container-title.tsx";
 
 export default function Itunes() {
   const currentFeed = UseCurrentFeed();
@@ -31,7 +30,14 @@ export default function Itunes() {
         setSubmitting(false);
       }}
     >
-      {({ values, handleSubmit, setFieldValue, setFieldError }) => {
+      {({
+        values,
+        handleSubmit,
+        setFieldValue,
+        setFieldError,
+        dirty,
+        isSubmitting,
+      }) => {
         console.log({ values });
         const imageUpload = useUpload({
           feedId: currentFeed.feedId,
@@ -50,11 +56,13 @@ export default function Itunes() {
             as="form"
             onSubmit={handleSubmit}
           >
-            <FormObserver<Feed>
-              updateFunction={(values) => {
-                currentFeed.update(values);
-              }}
-            />
+            <ContainerTitle
+              isDirty={dirty}
+              isSubmitting={isSubmitting}
+              onSave={() => handleSubmit()}
+            >
+              {t["edit_feed.channel_field.itunes.title"]}
+            </ContainerTitle>
             <FormSection
               title={t["edit_feed.itunes_presentation.title"]}
               description={

@@ -42,7 +42,12 @@ const Text: React.FC<Props> = ({
         theme="bubble"
         className={style({ size, error })}
         value={value}
-        onChange={(e) => setFieldValue?.(name, e)}
+        onChange={(e) => {
+          console.log("o", e, value);
+          if (value !== e) {
+            setFieldValue?.(name, e);
+          }
+        }}
       />
     </>
   );
