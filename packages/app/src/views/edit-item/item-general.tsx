@@ -23,7 +23,7 @@ import FormBlocker from "../../components/form-blocker";
 
 export default function ItemGeneral() {
   const currentFeed = UseCurrentFeed();
-  let { itemIndex } = useParams<{ itemIndex: string }>();
+  const { itemIndex } = useParams<{ itemIndex: string }>();
   const t = useTranslations();
 
   if (!currentFeed) {

@@ -33,11 +33,11 @@ const Button: React.FC<ButtonProps> = ({
       )}
     >
       {isLoading ? (
-        <div className="absolute w-7 h-7 pl-3 left-0 top-0 bottom-0 flex flex-col justify-center">
-          <ArrowPathIcon className="w-4 h-4 text-slate-100 animate-spin" />
+        <div className="absolute inset-y-0 left-0 flex h-7 w-7 flex-col justify-center pl-3">
+          <ArrowPathIcon className="h-4 w-4 animate-spin text-slate-100" />
         </div>
       ) : null}
-      {Icon && <Icon className="text-slate-50 w-3" />}
+      {Icon && <Icon className="w-3 text-slate-50" />}
       {children}
     </button>
   );

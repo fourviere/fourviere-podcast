@@ -38,15 +38,15 @@ export interface Project {
 }
 export interface FeedState {
   projects: Record<string, Project>;
-  createProject: () => void;
+  createProject: () => Promise<void>;
   getProjectById: (id: string) => Project;
   updateFeed: (id: string, feed: Project["feed"]) => void;
   updateConfiguration: (
     id: string,
     configuration: Project["configuration"]
   ) => void;
-  loadFeedFromUrl: (feedUrl: string) => void;
-  loadFeedFromFileContents: (feed: string) => void;
+  loadFeedFromUrl: (feedUrl: string) => Promise<void>;
+  loadFeedFromFileContents: (feed: string) => Promise<void>;
 }
 
 const BASE_CONFIGURATION: Configuration = {
@@ -116,14 +116,20 @@ const feedStore = create<FeedState>((set, _get) => {
   };
 });
 
-loadState<FeedState>("feeds").then((state) => {
-  if (state) {
-    feedStore.setState(state);
-  }
-});
+loadState<FeedState>("feeds")
+  .then((state) => {
+    if (state) {
+      feedStore.setState(state);
+    }
+  })
+  .catch((e) => {
+    console.error("Error loading state", e);
+  });
 
-feedStore.subscribe(async (state) => {
-  persistState("feeds", state);
+feedStore.subscribe((state) => {
+  persistState("feeds", state).catch((e) => {
+    console.error("Error persisting state", e);
+  });
 });
 
 export default feedStore;

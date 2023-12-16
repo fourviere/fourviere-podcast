@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 const Backdrop = ({ onClick }: { onClick: React.MouseEventHandler }) => (
   <motion.button
-    className="fixed top-0 right-0 bottom-0 left-0 bg-slate-900 bg-opacity-90"
+    className="fixed inset-0 bg-slate-900/90"
     initial={{ opacity: 0 }}
     onClick={onClick}
     animate={{

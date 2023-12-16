@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
 import { PropsWithChildren } from "react";
 
-export default function Toast({ children }: PropsWithChildren<{}>) {
+export default function Toast({ children }: PropsWithChildren<object>) {
   return (
     <motion.div
-      className={`fixed left-0 bottom-0 z-30 m-3 space-y-1`}
+      className={`fixed bottom-0 left-0 z-30 m-3 space-y-1`}
       initial={{ translateY: 100, opacity: 0 }}
       animate={{
         translateY: 0,

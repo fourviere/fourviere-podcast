@@ -10,8 +10,8 @@ export async function readFile(path: string) {
 
 export async function readFileInfo(url: string) {
   const response = await invoke<{
-    content_type: String;
-    content_length: String;
+    content_type: string;
+    content_length: string;
   }>("read_file_info", { url });
   return response;
 }

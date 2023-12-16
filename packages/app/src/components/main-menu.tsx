@@ -9,7 +9,7 @@ import { Link, useParams } from "react-router-dom";
 import { CogIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
 
 const SideMenu: React.FC = () => {
-  let { feedId } = useParams();
+  const { feedId } = useParams();
   const { projects } = feedStore((state) => state);
 
   const Podcasts = Object.keys(projects)

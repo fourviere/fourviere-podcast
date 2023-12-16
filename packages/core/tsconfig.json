@@ -7,5 +7,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
   },
-  "files": ["lib/index.ts"]
+  "baseUrl": ".",
+  "files": ["lib/index.ts"],
+  "exclude": ["node_modules", "dist", "tsconfig.json"]
 }

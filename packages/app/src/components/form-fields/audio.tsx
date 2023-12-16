@@ -144,7 +144,7 @@ const AudioField = ({
               </FormRow>
             </Container>
 
-            <Container className="flex space-x-2 items-start justify-center mt-px"></Container>
+            <Container className="mt-px flex items-start justify-center space-x-2"></Container>
           </Container>
         </>
       )}
