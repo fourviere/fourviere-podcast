@@ -24,7 +24,7 @@ interface Props {
   error?: boolean | string;
   setFieldValue?: (
     field: string,
-    value: any,
+    value: string,
     shouldValidate?: boolean | undefined
   ) => Promise<unknown>;
 }
@@ -45,7 +45,7 @@ const Text: React.FC<Props> = ({
         onChange={(e) => {
           console.log("o", e, value);
           if (value !== e) {
-            setFieldValue?.(name, e);
+            void setFieldValue?.(name, e);
           }
         }}
       />

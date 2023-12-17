@@ -27,8 +27,8 @@ const FormBlocker = ({ dirty }: { dirty: boolean }) => {
           message={t["ui.forms.unsaved_changes.message"]}
           okButton={t["ui.forms.unsaved_changes.ok"]}
           cancelButton={t["ui.forms.unsaved_changes.cancel"]}
-          ok={blocker.proceed}
-          cancel={blocker.reset}
+          ok={blocker.proceed.bind(blocker)}
+          cancel={blocker.reset.bind(blocker)}
         />
       )}
     </>,

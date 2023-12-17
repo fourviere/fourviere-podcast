@@ -13,14 +13,16 @@ interface InputProps {
   error?: boolean | string;
   setFieldValue?: (
     field: string,
-    value: any,
+    value: unknown,
     shouldValidate?: boolean | undefined
   ) => Promise<unknown>;
-  mapBoolean: (value: boolean) => any;
-  unmapBoolean: (value: any) => boolean;
+  mapBoolean: (value: boolean) => unknown;
+  unmapBoolean: (value: unknown) => boolean;
 }
 
-const identity = (b: any) => b;
+const mapIdentity = (b: boolean) => b;
+const unmapIdentity = (b: unknown) => !!b;
+
 const Boolean = React.forwardRef<HTMLInputElement, InputProps>(
   (
     {
@@ -30,8 +32,8 @@ const Boolean = React.forwardRef<HTMLInputElement, InputProps>(
       setFieldValue,
       label,
       error,
-      mapBoolean = identity,
-      unmapBoolean = identity,
+      mapBoolean = mapIdentity,
+      unmapBoolean = unmapIdentity,
     }: InputProps,
     ref
   ) => {
@@ -48,7 +50,7 @@ const Boolean = React.forwardRef<HTMLInputElement, InputProps>(
             checked={unmapBoolean(value)}
             onChange={(e) => {
               console.log("onChange", e.currentTarget.checked, name);
-              setFieldValue?.(
+              void setFieldValue?.(
                 name as string,
                 mapBoolean(e.currentTarget.checked)
               );

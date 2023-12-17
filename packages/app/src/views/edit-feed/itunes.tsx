@@ -42,7 +42,10 @@ export default function Itunes() {
         const imageUpload = useUpload({
           feedId: currentFeed.feedId,
           updateField: (value: UploadResponse) =>
-            setFieldValue(`rss.channel.0.['itunes:image'].@.href`, value.url),
+            void setFieldValue(
+              `rss.channel.0.['itunes:image'].@.href`,
+              value.url
+            ),
           updateError: (value: string) =>
             setFieldError(`rss.channel.0.['itunes:image'].@.href`, value),
           fileFamily: "image",

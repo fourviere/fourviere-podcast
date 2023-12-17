@@ -3,7 +3,7 @@ module.exports = {
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-type-checked",
-    "plugin:tailwindcss/recommended",
+    "plugin:prettier/recommended",
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
@@ -14,6 +14,6 @@ module.exports = {
       "./packages/ui/tsconfig.json",
     ],
   },
-  plugins: ["@typescript-eslint"],
+  plugins: ["@typescript-eslint", "react", "prettier"],
   root: true,
 };

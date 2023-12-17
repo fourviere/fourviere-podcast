@@ -6,8 +6,8 @@ interface Patch {
   value?: unknown;
 }
 
-export function patch(obj: unknown, patch: Patch): any {
-  return produce(obj, (draft: unknown) => {
+export function patch<K>(obj: K, patch: Patch): K {
+  return produce(obj, (draft: K) => {
     jsonpath.apply(draft, patch.path, () => patch.value);
   });
 }

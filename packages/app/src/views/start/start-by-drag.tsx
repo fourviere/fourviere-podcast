@@ -11,7 +11,7 @@ const StartByDrag: FunctionComponent<PropsWithChildren<StartByDragProps>> = ({
   const { loadFeedFromFileContents } = feedStore((state) => state);
   const { isHover, error } = useTauriDragArea({
     onFile: (file) => {
-      onDrop(file).catch(() => {});
+      void onDrop(file);
     },
     onError: (error) => {
       console.error(error);

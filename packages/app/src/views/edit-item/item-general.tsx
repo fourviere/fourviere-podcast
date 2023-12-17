@@ -51,11 +51,12 @@ export default function ItemGeneral() {
         }) => {
           const imageUpload = useUpload({
             feedId: currentFeed.feedId,
-            updateField: (value: UploadResponse) =>
-              setFieldValue(
+            updateField: (value: UploadResponse) => {
+              void setFieldValue(
                 `rss.channel.0.item.${itemIndex}.["itunes:image"].@.href`,
                 value.url
-              ),
+              );
+            },
             updateError: (value: string) =>
               setFieldError(
                 `rss.channel.0.item.${itemIndex}.["itunes:image"].@.href`,
@@ -67,7 +68,7 @@ export default function ItemGeneral() {
           const getDurationCallback = (s: string) => {
             getDuration(s)
               .then((duration) => {
-                setFieldValue(
+                void setFieldValue(
                   `rss.channel.0.item[${itemIndex}]["itunes:duration"]`,
                   duration
                 );
@@ -78,15 +79,15 @@ export default function ItemGeneral() {
           const enclosureUpload = useUpload({
             feedId: currentFeed.feedId,
             updateField: (value: UploadResponse) => {
-              setFieldValue(
+              void setFieldValue(
                 `rss.channel.0.item[${itemIndex}].enclosure.@.url`,
                 value.url
               );
-              setFieldValue(
+              void setFieldValue(
                 `rss.channel.0.item[${itemIndex}].enclosure.@.length`,
                 value.size
               );
-              setFieldValue(
+              void setFieldValue(
                 `rss.channel.0.item[${itemIndex}].enclosure.@.type`,
                 value.mime_type
               );

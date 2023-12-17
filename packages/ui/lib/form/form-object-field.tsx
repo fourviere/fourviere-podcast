@@ -19,10 +19,10 @@ export default function FormObjectField({
   label?: string;
   cols?: 1 | 2;
 }>) {
-  const [field, _, helpers] = useField(fieldName);
+  const [field, , helpers] = useField(fieldName);
 
   function reset() {
-    helpers.setValue(undefined);
+    void helpers.setValue(undefined);
   }
 
   const colsStyle = { 1: "grid-cols-1", 2: "grid-cols-2" }[cols];
@@ -45,7 +45,7 @@ export default function FormObjectField({
               {label}
             </div>
           )}
-          <Undefined onClick={() => helpers.setValue(initValue)}>
+          <Undefined onClick={() => void helpers.setValue(initValue)}>
             {emtpyValueButtonMessage}
           </Undefined>
         </div>

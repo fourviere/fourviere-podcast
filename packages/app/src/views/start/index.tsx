@@ -36,7 +36,7 @@ const StartView: FunctionComponent<StartViewProps> = () => {
               <p>
                 <H1Link
                   onClick={() => {
-                    createProject().catch(() => {});
+                    void createProject();
                   }}
                 >
                   {t["start.create"]}

@@ -80,7 +80,7 @@ const StartByIndex: FunctionComponent<Props> = ({ done }) => {
               key={feed.id}
               src={feed.artwork}
               onClick={() => {
-                podcastSelect(feed.url).catch(() => {});
+                void podcastSelect(feed.url);
               }}
             />
           ))}

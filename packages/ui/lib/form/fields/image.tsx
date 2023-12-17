@@ -8,27 +8,25 @@ interface Props {
   name: string;
   id: string;
   helpMessage?: string;
-  onImageClick?: (oldValue: any) => any;
+  onImageClick?: (oldValue: string) => string;
 }
 
 export default React.forwardRef<HTMLInputElement, Props>(
   (
     {
-      id,
       isUploading,
       helpMessage,
-      value,
       onImageClick: _onImageClick,
       ...props
-    }: Props & FieldHookConfig<any>,
+    }: Props & FieldHookConfig<string>,
     ref
   ) => {
-    const [field, meta, helpers] = useField(props);
+    const [field, meta, helpers] = useField<string>(props);
 
     function onImageClick() {
       const url = _onImageClick?.(field.value);
       if (url) {
-        helpers.setValue(url);
+        void helpers.setValue(url);
       }
     }
 

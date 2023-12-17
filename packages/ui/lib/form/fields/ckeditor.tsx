@@ -22,7 +22,7 @@ interface Props {
   value?: string;
   setFieldValue?: (
     field: string,
-    value: any,
+    value: string,
     shouldValidate?: boolean | undefined
   ) => Promise<unknown>;
 }
@@ -45,7 +45,7 @@ const CKeditor: React.FC<Props> = ({ value, setFieldValue, name }) => {
           if (data !== editor.getData()) {
             setData(editor.getData());
           }
-          setFieldValue?.(name, editor.getData());
+          void setFieldValue?.(name, editor.getData());
         }}
       />
     </div>

@@ -15,7 +15,7 @@ import { attachConsole } from "@tauri-apps/plugin-log";
 import ItemsIndex from "./views/edit-item/items-index";
 import ItemGeneral from "./views/edit-item/item-general";
 
-attachConsole();
+void attachConsole();
 
 const router = createBrowserRouter([
   {

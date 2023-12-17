@@ -7,7 +7,6 @@
     "esModuleInterop": true,
     "declaration": true
   },
-  "baseUrl": ".",
   "include": ["lib/**/*.tsx"],
   "exclude": ["node_modules", "dist", "tsconfig.json", "postcss.config.js"]
 }
