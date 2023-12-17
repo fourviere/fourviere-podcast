@@ -74,7 +74,7 @@ function App() {
               ))}
             </Toast>
           </AnimatePresence>,
-          document.getElementById("errors")!
+          document.getElementById("errors")!,
         )}
     </>
   );

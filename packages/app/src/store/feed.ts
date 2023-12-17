@@ -38,15 +38,15 @@ export interface Project {
 }
 export interface FeedState {
   projects: Record<string, Project>;
-  createProject: () => Promise<void>;
+  createProject: () => void;
   getProjectById: (id: string) => Project;
   updateFeed: (id: string, feed: Project["feed"]) => void;
   updateConfiguration: (
     id: string,
-    configuration: Project["configuration"]
+    configuration: Project["configuration"],
   ) => void;
   loadFeedFromUrl: (feedUrl: string) => Promise<void>;
-  loadFeedFromFileContents: (feed: string) => Promise<void>;
+  loadFeedFromFileContents: (feed: string) => void;
 }
 
 const BASE_CONFIGURATION: Configuration = {
@@ -61,8 +61,8 @@ const feedStore = create<FeedState>((set, _get) => {
     getProjectById: (id) => {
       return _get().projects[id];
     },
-    createProject: async () => {
-      const feed = await parseXML(FEED_TEMPLATE);
+    createProject: () => {
+      const feed = parseXML(FEED_TEMPLATE);
       set((state: FeedState) => {
         return produce(state, (draft) => {
           const id = uuidv4();
@@ -77,7 +77,7 @@ const feedStore = create<FeedState>((set, _get) => {
     loadFeedFromUrl: async (feedUrl) => {
       const data = await fetchFeed(feedUrl);
       if (!data) return;
-      const feed = await parseXML(data);
+      const feed = parseXML(data);
       set((state: FeedState) => {
         return produce(state, (draft) => {
           const id = uuidv4();
@@ -86,8 +86,8 @@ const feedStore = create<FeedState>((set, _get) => {
       });
     },
 
-    loadFeedFromFileContents: async (fileContents) => {
-      const feed = await parseXML(fileContents);
+    loadFeedFromFileContents: (fileContents) => {
+      const feed = parseXML(fileContents);
       set((state: FeedState) => {
         return produce(state, (draft) => {
           const id = uuidv4();
@@ -105,7 +105,7 @@ const feedStore = create<FeedState>((set, _get) => {
     },
     updateConfiguration: (
       id: string,
-      configuration: Project["configuration"]
+      configuration: Project["configuration"],
     ) => {
       set((state: FeedState) => {
         return produce(state, (draft) => {

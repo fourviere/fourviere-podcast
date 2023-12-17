@@ -15,7 +15,7 @@ export function patch<K>(obj: K, patch: Patch): K {
 export function get(
   obj: unknown,
   path: string,
-  isSingle: boolean = false
+  isSingle: boolean = false,
 ): unknown {
   const f = isSingle ? jsonpath.value : jsonpath.query;
   return f.bind(jsonpath)(obj, path);

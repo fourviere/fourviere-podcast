@@ -10,9 +10,9 @@ const RSSItemSchema = Type.Object({
     "@": Type.Optional(
       Type.Object({
         isPermaLink: Type.Optional(
-          Type.Union([Type.Literal("true"), Type.Literal("false")])
+          Type.Union([Type.Literal("true"), Type.Literal("false")]),
         ),
-      })
+      }),
     ),
   }),
   pubDate: Type.String(),
@@ -34,7 +34,7 @@ const ItunesItemSchema = Type.Object({
       "@": Type.Object({
         href: Type.String(),
       }),
-    })
+    }),
   ),
   "itunes:summary": Type.Optional(Type.String()),
   "itunes:explicit": Type.Optional(Type.String()),
@@ -45,7 +45,7 @@ const ItunesItemSchema = Type.Object({
       Type.Literal("full"),
       Type.Literal("trailer"),
       Type.Literal("bonus"),
-    ])
+    ]),
   ),
   "itunes:block": Type.Optional(Type.Literal("Yes")),
 });

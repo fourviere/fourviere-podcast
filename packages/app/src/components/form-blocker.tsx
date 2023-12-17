@@ -32,7 +32,7 @@ const FormBlocker = ({ dirty }: { dirty: boolean }) => {
         />
       )}
     </>,
-    modals
+    modals,
   );
 };
 

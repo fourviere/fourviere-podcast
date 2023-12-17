@@ -54,13 +54,13 @@ export default function ItemGeneral() {
             updateField: (value: UploadResponse) => {
               void setFieldValue(
                 `rss.channel.0.item.${itemIndex}.["itunes:image"].@.href`,
-                value.url
+                value.url,
               );
             },
             updateError: (value: string) =>
               setFieldError(
                 `rss.channel.0.item.${itemIndex}.["itunes:image"].@.href`,
-                value
+                value,
               ),
             fileFamily: "image",
           });
@@ -70,7 +70,7 @@ export default function ItemGeneral() {
               .then((duration) => {
                 void setFieldValue(
                   `rss.channel.0.item[${itemIndex}]["itunes:duration"]`,
-                  duration
+                  duration,
                 );
               })
               .catch(console.error);
@@ -81,15 +81,15 @@ export default function ItemGeneral() {
             updateField: (value: UploadResponse) => {
               void setFieldValue(
                 `rss.channel.0.item[${itemIndex}].enclosure.@.url`,
-                value.url
+                value.url,
               );
               void setFieldValue(
                 `rss.channel.0.item[${itemIndex}].enclosure.@.length`,
-                value.size
+                value.size,
               );
               void setFieldValue(
                 `rss.channel.0.item[${itemIndex}].enclosure.@.type`,
-                value.mime_type
+                value.mime_type,
               );
               getDurationCallback(value.url);
             },
@@ -97,7 +97,7 @@ export default function ItemGeneral() {
             updateError: (value: string) => {
               setFieldError(
                 `rss.channel.0.item[${itemIndex}].enclosure.@.url`,
-                value
+                value,
               );
             },
             fileFamily: "audio",

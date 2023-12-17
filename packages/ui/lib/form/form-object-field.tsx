@@ -31,17 +31,17 @@ export default function FormObjectField({
     <div className="relative w-full">
       {field.value || !emtpyValueButtonMessage ? (
         <div className="flex items-center">
-          <div className={`grid ${colsStyle} gap-2 items-center w-full mr-1`}>
+          <div className={`grid ${colsStyle} mr-1 w-full items-center gap-2`}>
             {children}
           </div>
-          <div className="w-5 mt-5">
+          <div className="mt-5 w-5">
             <ResetField onClick={overrideReset ?? reset} />
           </div>
         </div>
       ) : initValue ? (
         <div>
           {label && (
-            <div className="text-xs text-slate-600 capitalize font-semibold grow mb-px ml-2">
+            <div className="mb-px ml-2 grow text-xs font-semibold capitalize text-slate-600">
               {label}
             </div>
           )}

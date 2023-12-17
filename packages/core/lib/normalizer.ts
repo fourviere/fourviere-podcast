@@ -85,7 +85,7 @@ function normalizeItunesDuration(data: unknown): unknown {
         return timeToSeconds(value);
       }
       return value as unknown;
-    }
+    },
   );
   return d;
 }
@@ -138,7 +138,7 @@ function normalizeSeasonEpisode(data: unknown): unknown {
       delete dd["itunes:season"];
       delete dd["itunes:episode"];
       return dd;
-    }
+    },
   );
   return d;
 }

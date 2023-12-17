@@ -22,7 +22,7 @@ export default function useFtpUpload({
       state.getProjectById(feedId)?.configuration?.remotes ?? {
         remote: "none",
         ftp: undefined,
-      }
+      },
   );
 
   if (remote !== "ftp" || !ftp) {

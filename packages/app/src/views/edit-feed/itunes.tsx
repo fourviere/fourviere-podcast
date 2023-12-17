@@ -44,7 +44,7 @@ export default function Itunes() {
           updateField: (value: UploadResponse) =>
             void setFieldValue(
               `rss.channel.0.['itunes:image'].@.href`,
-              value.url
+              value.url,
             ),
           updateError: (value: string) =>
             setFieldError(`rss.channel.0.['itunes:image'].@.href`, value),

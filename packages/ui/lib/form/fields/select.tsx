@@ -24,11 +24,11 @@ const Select: FC<
 
   return (
     <div className="relative w-full">
-      <ChevronUpDownIcon className="absolute right-0 w-6 h-6 m-1.5 pointer-events-none text-slate-700" />
+      <ChevronUpDownIcon className="pointer-events-none absolute right-0 m-1.5 h-6 w-6 text-slate-700" />
       <select
         className={classNames(
-          "shadow appearance-none border bg-white rounded-lg w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-sm",
-          className
+          "focus:shadow-outline w-full appearance-none rounded-lg border bg-white px-3 py-2 text-sm leading-tight shadow focus:outline-none",
+          className,
         )}
         {...props}
       >

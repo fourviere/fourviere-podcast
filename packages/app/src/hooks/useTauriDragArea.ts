@@ -46,7 +46,7 @@ const useTauriDragArea = ({ onError, onFile, fileExtensions }: Props) => {
     return () => {
       listeners.forEach((l) => {
         l.then((r) => r()).catch((e) =>
-          console.error("Error unmounting tauri listeners", e)
+          console.error("Error unmounting tauri listeners", e),
         );
       });
     };

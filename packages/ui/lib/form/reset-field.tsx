@@ -3,7 +3,7 @@ const ResetField = ({ onClick }: { onClick: () => void }) => {
   return (
     <button
       onClick={onClick}
-      className="w-5 h-5 text-rose-500 hover:text-rose-700"
+      className="h-5 w-5 text-rose-500 hover:text-rose-700"
     >
       <XCircleIcon />
     </button>

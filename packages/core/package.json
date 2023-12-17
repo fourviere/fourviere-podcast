@@ -4,7 +4,9 @@
   "description": "Core podcast engine for Fourviere",
   "scripts": {
     "test": "jest",
-    "type:check": "tsc --noEmit"
+    "type:check": "tsc --noEmit",
+    "prettier": "prettier --write lib",
+    "lint": "eslint --fix lib"
   },
   "keywords": [
     "podcast",

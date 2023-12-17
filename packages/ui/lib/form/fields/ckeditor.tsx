@@ -23,7 +23,7 @@ interface Props {
   setFieldValue?: (
     field: string,
     value: string,
-    shouldValidate?: boolean | undefined
+    shouldValidate?: boolean | undefined,
   ) => Promise<unknown>;
 }
 
@@ -33,7 +33,7 @@ const CKeditor: React.FC<Props> = ({ value, setFieldValue, name }) => {
     setData(value);
   }, [value]);
   return (
-    <div className="break-words shadow appearance-none border overflow-hidden bg-white rounded-lg w-full -p-px leading-tight">
+    <div className="-p-px w-full appearance-none overflow-hidden break-words rounded-lg border bg-white leading-tight shadow">
       <CKEditor
         config={{
           toolbar: TOOLBAR_CONFIG,

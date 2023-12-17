@@ -12,7 +12,7 @@ export default function FormRow({
         {label && (
           <label
             htmlFor={name}
-            className="text-xs text-slate-600 capitalize font-semibold grow mb-px ml-2"
+            className="mb-px ml-2 grow text-xs font-semibold capitalize text-slate-600"
           >
             {label ?? name}
           </label>

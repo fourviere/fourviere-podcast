@@ -19,7 +19,7 @@ const useFileDetails = (url: string) => {
 export default useFileDetails;
 
 async function getFileDetails(
-  url: string
+  url: string,
 ): Promise<{ mimeType: string; size: number }> {
   try {
     const response = await fetch(url, { method: "HEAD" });

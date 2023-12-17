@@ -14,6 +14,9 @@ module.exports = {
       "./packages/ui/tsconfig.json",
     ],
   },
+  rules: {
+    "prettier/prettier": "error",
+  },
   plugins: ["@typescript-eslint", "react", "prettier"],
   root: true,
 };

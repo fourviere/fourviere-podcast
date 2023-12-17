@@ -90,7 +90,7 @@ export function Container<E extends React.ElementType>({
         `${containerFlex[flex]}`,
         { "w-full": wFull },
         { "overflow-y-scroll": scroll },
-        { "sticky top-0": sticky }
+        { "sticky top-0": sticky },
       )}
     >
       {children}

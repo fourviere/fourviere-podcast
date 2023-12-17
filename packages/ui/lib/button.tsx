@@ -22,14 +22,14 @@ const Button: React.FC<ButtonProps> = ({
     <button
       {...rest}
       className={classNames(
-        `bg-slate-800 hover:bg-slate-600 rounded-lg hover:text-slate-200 font-semibold text-xs uppercase relative  text-white transition-all duration-200 ease-linear flex items-center`,
+        `relative flex items-center rounded-lg bg-slate-800 text-xs font-semibold uppercase  text-white transition-all duration-200 ease-linear hover:bg-slate-600 hover:text-slate-200`,
         { "pl-9": isLoading },
-        { "py-2 px-3": size === "sm" },
-        { "py-3 px-4": size === "md" },
-        { "py-4 px-6": size === "lg" },
-        { "opacity-50 cursor-not-allowed": isLoading },
-        { "opacity-50 cursor-not-allowed": isDisable },
-        className
+        { "px-3 py-2": size === "sm" },
+        { "px-4 py-3": size === "md" },
+        { "px-6 py-4": size === "lg" },
+        { "cursor-not-allowed opacity-50": isLoading },
+        { "cursor-not-allowed opacity-50": isDisable },
+        className,
       )}
     >
       {isLoading ? (

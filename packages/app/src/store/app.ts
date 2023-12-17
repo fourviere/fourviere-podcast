@@ -34,7 +34,7 @@ export interface AppState {
   updateConfigurations: (configurations: AppState) => void;
 
   getConfigurations: (
-    service: keyof AppState["services"]
+    service: keyof AppState["services"],
   ) => AppState["services"][keyof AppState["services"]];
 
   //Error system

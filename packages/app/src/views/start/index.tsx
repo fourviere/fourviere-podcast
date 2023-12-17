@@ -68,7 +68,7 @@ const StartView: FunctionComponent<StartViewProps> = () => {
               </Drawer>
             )}
           </AnimatePresence>,
-          document.getElementById("drawer")!
+          document.getElementById("drawer")!,
         )}
         {createPortal(
           <AnimatePresence mode="wait">
@@ -81,7 +81,7 @@ const StartView: FunctionComponent<StartViewProps> = () => {
               </Drawer>
             )}
           </AnimatePresence>,
-          document.getElementById("drawer")!
+          document.getElementById("drawer")!,
         )}
       </FullPageLayoutBackground>
     </FullPageColumnLayout>

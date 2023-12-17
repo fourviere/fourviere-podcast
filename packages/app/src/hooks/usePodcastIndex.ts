@@ -65,7 +65,7 @@ async function fetchAPI(search: string, apiKey: string, apiSecret: string) {
 
 export const usePodcastIndex = (/* arguments */) => {
   const { getConfigurations, addError, getTranslations } = appStore(
-    (state) => state
+    (state) => state,
   );
   const [feeds, setFeeds] = useState<Podcast[]>();
   const [isLoading, setIsLoading] = useState(false);

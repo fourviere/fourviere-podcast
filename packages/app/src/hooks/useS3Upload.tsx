@@ -22,7 +22,7 @@ export default function useS3Upload({
       state.getProjectById(feedId)?.configuration?.remotes ?? {
         remote: "none",
         s3: undefined,
-      }
+      },
   );
 
   if (remote !== "s3" || !s3) {

@@ -8,7 +8,7 @@ export const FullPageColumnLayout = ({
   children,
 }: PropsWithChildren<FullPageWithSideMenuProps>) => {
   return (
-    <div className="h-full w-full flex items-stretch background-logo">
+    <div className="background-logo flex h-full w-full items-stretch">
       {children}
     </div>
   );

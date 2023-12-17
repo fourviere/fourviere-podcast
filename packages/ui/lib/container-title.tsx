@@ -17,16 +17,16 @@ const ContainerTitle = ({
   children,
 }: PropsWithChildren<Props>) => {
   return (
-    <div className="sticky top-0 bg-slate-50 bg-opacity-95 p-5 text-xl flex items-center z-10 border-b border-slate-100">
-      <div className="flex-grow flex-shrink">
+    <div className="sticky top-0 z-10 flex items-center border-b border-slate-100 bg-slate-50 bg-opacity-95 p-5 text-xl">
+      <div className="flex-shrink flex-grow">
         <h1 className="leading-none">{children}</h1>
         {isDirty && (
-          <div className="mt-[3px] text-xs text-slate-400 leading-tight animate-pulse">
+          <div className="mt-[3px] animate-pulse text-xs leading-tight text-slate-400">
             This page contains unsaved changes
           </div>
         )}
         {isSubmitting && (
-          <div className="mt-[3px] text-xs text-slate-400 leading-tight animate-pulse">
+          <div className="mt-[3px] animate-pulse text-xs leading-tight text-slate-400">
             This page is saving
           </div>
         )}
@@ -37,7 +37,7 @@ const ContainerTitle = ({
         isDisable={!isDirty && !isSubmitting}
         onClick={() => isDirty && onSave()}
       >
-        <CheckIcon className="w-4 h-4 mr-1" />
+        <CheckIcon className="mr-1 h-4 w-4" />
         <span className="hidden sm:block">Save</span>
       </Button>
     </div>

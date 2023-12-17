@@ -14,7 +14,7 @@ const style = ({ error, size }: Pick<Props, "error" | "size">) =>
       "text-xl font-light": size === "xl",
       "text-2xl font-light": size === "2xl",
       "text-rose-600 border-rose-600 placeholder:text-rose-400": !!error,
-    }
+    },
   );
 
 interface Props {
@@ -25,7 +25,7 @@ interface Props {
   setFieldValue?: (
     field: string,
     value: string,
-    shouldValidate?: boolean | undefined
+    shouldValidate?: boolean | undefined,
   ) => Promise<unknown>;
 }
 

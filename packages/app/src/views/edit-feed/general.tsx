@@ -166,7 +166,7 @@ export default function General() {
                             name: key.replace("_", "-"),
                             value: value.replace("_", "-"),
                           };
-                        }
+                        },
                       ),
                       labelProperty: "value",
                       keyProperty: "name",

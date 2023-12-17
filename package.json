@@ -14,6 +14,7 @@
     "dev": "npm run build:ui & npm run tauri dev --workspaces --if-present",
     "watch": "npm run build:ui & npx concurrently \"npm run tauri dev --workspaces --if-present\" \"npm run ui:watch --workspaces --if-present\" ",
     "lint": "npm run lint --workspaces --if-present",
+    "prettier": "npm run prettier --workspaces --if-present",
     "build:ui": "npm run build -w ./packages/ui",
     "build": "npm run tauri build -w ./packages/app"
   },

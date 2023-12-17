@@ -24,7 +24,7 @@ const StartByDrag: FunctionComponent<PropsWithChildren<StartByDragProps>> = ({
     if (!content) {
       return;
     }
-    await loadFeedFromFileContents(content);
+    loadFeedFromFileContents(content);
   }
 
   return (
