@@ -14,7 +14,7 @@ const style = ({ error, size }: Pick<Props, "error" | "size">) =>
       "text-xl font-light": size === "xl",
       "text-2xl font-light": size === "2xl",
       "text-rose-600 border-rose-600 placeholder:text-rose-400": !!error,
-    }
+    },
   );
 
 interface Props {
@@ -24,8 +24,8 @@ interface Props {
   error?: boolean | string;
   setFieldValue?: (
     field: string,
-    value: any,
-    shouldValidate?: boolean | undefined
+    value: string,
+    shouldValidate?: boolean | undefined,
   ) => Promise<unknown>;
 }
 
@@ -45,7 +45,7 @@ const Text: React.FC<Props> = ({
         onChange={(e) => {
           console.log("o", e, value);
           if (value !== e) {
-            setFieldValue?.(name, e);
+            void setFieldValue?.(name, e);
           }
         }}
       />

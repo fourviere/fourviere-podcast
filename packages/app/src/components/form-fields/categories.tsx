@@ -27,7 +27,7 @@ export const Categories = ({ name }: Props) => {
           <div className="space-y-1">
             {categories.map((category, index) => {
               const subCategories = APPLE_PODCAST_CATEGORIES.find(
-                (e) => e.category === category["@"].text
+                (e) => e.category === category["@"].text,
               )?.subcategories.map((e) => ({
                 key: e,
                 value: e,

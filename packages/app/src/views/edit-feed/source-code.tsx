@@ -32,13 +32,13 @@ export default function SourceCode() {
     }
   }, [tempState]);
 
-  const setState = async () => {
+  const setState = () => {
     try {
       console.log("update state");
       if (!tempState) {
         return;
       }
-      const json = await parseXML(tempState);
+      const json = parseXML(tempState);
       feedStore.getState().updateFeed(feedId, json);
       setIsDirty(false);
     } catch (e) {
@@ -52,7 +52,9 @@ export default function SourceCode() {
       <ContainerTitle
         isDirty={isDirty}
         isSubmitting={false}
-        onSave={() => setState()}
+        onSave={() => {
+          void setState();
+        }}
       >
         {t["edit_feed.channel_field.itunes.title"]}
       </ContainerTitle>

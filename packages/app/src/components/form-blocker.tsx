@@ -16,7 +16,7 @@ const FormBlocker = ({ dirty }: { dirty: boolean }) => {
     setFormIsDirty(dirty);
   }, [dirty]);
 
-  let blocker = useBlocker(formIsDirty);
+  const blocker = useBlocker(formIsDirty);
 
   return createPortal(
     <>
@@ -27,12 +27,12 @@ const FormBlocker = ({ dirty }: { dirty: boolean }) => {
           message={t["ui.forms.unsaved_changes.message"]}
           okButton={t["ui.forms.unsaved_changes.ok"]}
           cancelButton={t["ui.forms.unsaved_changes.cancel"]}
-          ok={blocker.proceed}
-          cancel={blocker.reset}
+          ok={blocker.proceed.bind(blocker)}
+          cancel={blocker.reset.bind(blocker)}
         />
       )}
     </>,
-    modals
+    modals,
   );
 };
 

@@ -1,39 +1,42 @@
 import Undefined from "@fourviere/ui/lib/form/fields/undefined";
-import { FieldHookConfig, useField } from "formik";
+import { useField } from "formik";
 import ResetField from "./reset-field";
 
-export function FormField({
+export function FormField<A>({
   initValue,
+  id,
   as,
+  name,
   fieldProps,
   overrideReset,
   postSlot,
   emtpyValueButtonMessage,
-  ...props
 }: {
   initValue?: unknown;
-  as: React.ComponentType<any>;
+  as: A;
+  id: string;
+  name: string;
   fieldProps?: Record<string, unknown>;
   postSlot?: React.ReactNode;
   overrideReset?: () => void;
   emtpyValueButtonMessage?: string;
-} & FieldHookConfig<unknown>) {
-  const Component = as;
-  const [field, _, helpers] = useField(props);
+}) {
+  const Component = as as React.ElementType;
+  const [field, , helpers] = useField(name);
   function reset() {
-    helpers.setValue(undefined);
+    void helpers.setValue(undefined);
   }
 
   return (
     <div className="relative">
       {typeof field.value !== "undefined" || !emtpyValueButtonMessage ? (
         <div className="flex items-center space-x-1">
-          <Component {...field} {...props} {...fieldProps} />
+          <Component id={id} {...field} {...fieldProps} />
           {initValue ? <ResetField onClick={overrideReset || reset} /> : null}
           {postSlot}
         </div>
       ) : initValue ? (
-        <Undefined onClick={() => helpers.setValue(initValue)}>
+        <Undefined onClick={() => void helpers.setValue(initValue)}>
           {emtpyValueButtonMessage}
         </Undefined>
       ) : null}

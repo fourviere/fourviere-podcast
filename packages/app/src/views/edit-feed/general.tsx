@@ -45,8 +45,7 @@ export default function General() {
         const imageUpload = useUpload({
           feedId: currentFeed.feedId,
           updateField: (value: UploadResponse) => {
-            console.log("set url", value.url);
-            setFieldValue("rss.channel.0.image.url", value.url);
+            void setFieldValue("rss.channel.0.image.url", value.url);
           },
           updateError: (value: string) =>
             setFieldError("rss.channel.0.image.url", value),
@@ -167,7 +166,7 @@ export default function General() {
                             name: key.replace("_", "-"),
                             value: value.replace("_", "-"),
                           };
-                        }
+                        },
                       ),
                       labelProperty: "value",
                       keyProperty: "name",

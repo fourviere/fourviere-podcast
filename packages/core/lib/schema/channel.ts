@@ -13,8 +13,8 @@ const RSSChannelSchema = Type.Object({
           type: Type.Optional(Type.String()),
           href: Type.Optional(Type.String()),
         }),
-      })
-    )
+      }),
+    ),
   ),
   description: Type.String(),
   language: Type.Optional(Type.String()),
@@ -31,7 +31,7 @@ const RSSChannelSchema = Type.Object({
       url: Type.String(),
       title: Type.Optional(Type.String()),
       link: Type.Optional(Type.String()),
-    })
+    }),
   ),
   ttl: Type.Optional(Type.Number()),
 });
@@ -43,7 +43,7 @@ const ItunesChannelSchema = Type.Object({
       "@": Type.Object({
         href: Type.String(),
       }),
-    })
+    }),
   ),
   "itunes:category": Type.Array(
     Type.Object({
@@ -55,9 +55,9 @@ const ItunesChannelSchema = Type.Object({
           "@": Type.Object({
             text: Type.String(),
           }),
-        })
+        }),
       ),
-    })
+    }),
   ),
   // XML convert the false value as boolean
   "itunes:explicit": Type.Optional(Type.String()),
@@ -68,10 +68,10 @@ const ItunesChannelSchema = Type.Object({
     Type.Object({
       "itunes:name": Type.String(),
       "itunes:email": Type.Optional(Type.String()),
-    })
+    }),
   ),
   "itunes:type": Type.Optional(
-    Type.Union([Type.Literal("episodic"), Type.Literal("serial")])
+    Type.Union([Type.Literal("episodic"), Type.Literal("serial")]),
   ),
   "itunes:block": Type.Optional(Type.Literal("yes")),
   "itunes:complete": Type.Optional(Type.Literal("yes")),

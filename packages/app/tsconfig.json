@@ -28,5 +28,6 @@
     "../ui/lib",
     "../ui/lib/form/form-field.tsx"
   ],
+  "exclude": ["node_modules", "dist", "tsconfig.json", "postcss.config.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

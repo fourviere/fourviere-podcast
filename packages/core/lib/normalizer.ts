@@ -15,13 +15,13 @@ function normalizeArrays(data: unknown): unknown {
     `rss.channel[*].link`,
     `rss.channel[*].item[*].link`,
   ];
-  let d = data;
+  const d = data;
   for (const field of arrayFields) {
     jsonpath.apply(d, field, (value: unknown) => {
       if (!Array.isArray(value)) {
         return [value];
       }
-      return value;
+      return value as unknown;
     });
   }
   return d;
@@ -29,7 +29,7 @@ function normalizeArrays(data: unknown): unknown {
 
 function normalizeStrings(data: unknown): unknown {
   const stringFields: string[] = ["$..copyright"];
-  let d = data;
+  const d = data;
   for (const field of stringFields) {
     jsonpath.apply(d, field, (value: unknown) => {
       if (typeof value !== "string") {
@@ -42,7 +42,7 @@ function normalizeStrings(data: unknown): unknown {
 }
 
 function normalizeItunesImage(data: unknown): unknown {
-  let d = data;
+  const d = data;
   jsonpath.apply(data, `$..["itunes:image"]`, (value) => {
     if (typeof value === "string") {
       return {
@@ -51,7 +51,7 @@ function normalizeItunesImage(data: unknown): unknown {
         },
       };
     }
-    return value;
+    return value as unknown;
   });
   return d;
 }
@@ -62,13 +62,13 @@ function normalizeBoolean(data: unknown): unknown {
     `$..item[*].guid["@"].isPermaLink`,
   ];
 
-  let d = data;
+  const d = data;
   fields.forEach((field) => {
     jsonpath.apply(d, field, (value) => {
       if (typeof value === "boolean") {
         return value ? "true" : "false";
       }
-      return value;
+      return value as unknown;
     });
   });
 
@@ -76,7 +76,7 @@ function normalizeBoolean(data: unknown): unknown {
 }
 
 function normalizeItunesDuration(data: unknown): unknown {
-  let d = data;
+  const d = data;
   jsonpath.apply(
     data,
     `rss.channel[*].item[*]..["itunes:duration"]`,
@@ -84,14 +84,14 @@ function normalizeItunesDuration(data: unknown): unknown {
       if (typeof value === "string") {
         return timeToSeconds(value);
       }
-      return value;
-    }
+      return value as unknown;
+    },
   );
   return d;
 }
 
 function normalizeChannelLink(data: unknown): unknown {
-  let d = data;
+  const d = data;
 
   const paths = [`rss.channel[*].link[*]`];
 
@@ -104,7 +104,7 @@ function normalizeChannelLink(data: unknown): unknown {
           },
         };
       }
-      return value;
+      return value as unknown;
     });
   });
 
@@ -112,30 +112,34 @@ function normalizeChannelLink(data: unknown): unknown {
 }
 
 function normalizeGuid(data: unknown): unknown {
-  let d = data;
+  const d = data;
   jsonpath.apply(data, `rss.channel[*].item[*].guid`, (value) => {
     if (typeof value === "string") {
       return {
         "#text": value,
       };
     }
-    return value;
+    return value as unknown;
   });
   return d;
 }
 
 function normalizeSeasonEpisode(data: unknown): unknown {
-  let d = data;
-  jsonpath.apply(data, `rss.channel[*].item[*]`, (value) => {
-    const dd = {
-      ...value,
-      "podcast:season": value["itunes:season"],
-      "podcast:episode": value["itunes:episode"],
-    };
-    delete dd["itunes:season"];
-    delete dd["itunes:episode"];
-    return dd;
-  });
+  const d = data;
+  jsonpath.apply(
+    data,
+    `rss.channel[*].item[*]`,
+    (value: { [key: string]: unknown }) => {
+      const dd = {
+        ...(value as Record<string, unknown>),
+        "podcast:season": value["itunes:season"] ?? undefined,
+        "podcast:episode": value["itunes:episode"] ?? undefined,
+      };
+      delete dd["itunes:season" as keyof typeof dd];
+      delete dd["itunes:episode" as keyof typeof dd];
+      return dd;
+    },
+  );
   return d;
 }
 

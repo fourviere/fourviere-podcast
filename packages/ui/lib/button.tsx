@@ -22,22 +22,22 @@ const Button: React.FC<ButtonProps> = ({
     <button
       {...rest}
       className={classNames(
-        `bg-slate-800 hover:bg-slate-600 rounded-lg hover:text-slate-200 font-semibold text-xs uppercase relative  text-white transition-all duration-200 ease-linear flex items-center`,
+        `relative flex items-center rounded-lg bg-slate-800 text-xs font-semibold uppercase  text-white transition-all duration-200 ease-linear hover:bg-slate-600 hover:text-slate-200`,
         { "pl-9": isLoading },
-        { "py-2 px-3": size === "sm" },
-        { "py-3 px-4": size === "md" },
-        { "py-4 px-6": size === "lg" },
-        { "opacity-50 cursor-not-allowed": isLoading },
-        { "opacity-50 cursor-not-allowed": isDisable },
-        className
+        { "px-3 py-2": size === "sm" },
+        { "px-4 py-3": size === "md" },
+        { "px-6 py-4": size === "lg" },
+        { "cursor-not-allowed opacity-50": isLoading },
+        { "cursor-not-allowed opacity-50": isDisable },
+        className,
       )}
     >
       {isLoading ? (
-        <div className="absolute w-7 h-7 pl-3 left-0 top-0 bottom-0 flex flex-col justify-center">
-          <ArrowPathIcon className="w-4 h-4 text-slate-100 animate-spin" />
+        <div className="absolute inset-y-0 left-0 flex h-7 w-7 flex-col justify-center pl-3">
+          <ArrowPathIcon className="h-4 w-4 animate-spin text-slate-100" />
         </div>
       ) : null}
-      {Icon && <Icon className="text-slate-50 w-3" />}
+      {Icon && <Icon className="w-3 text-slate-50" />}
       {children}
     </button>
   );

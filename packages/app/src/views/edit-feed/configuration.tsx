@@ -107,7 +107,7 @@ export default function Configuration() {
                     label={t["edit_feed.configuration.s3.secret_key"]}
                   >
                     <FormField
-                      type="password"
+                      fieldProps={{ type: "password" }}
                       id="remotes.s3.secret_key"
                       name="remotes.s3.secret_key"
                       as={Input}
@@ -188,10 +188,10 @@ export default function Configuration() {
                     label={t["edit_feed.configuration.ftp.password"]}
                   >
                     <FormField
-                      type="password"
                       id="remotes.ftp.password"
                       name="remotes.ftp.password"
                       as={Input}
+                      fieldProps={{ type: "password" }}
                     />
                   </FormRow>
                   <FormRow
@@ -199,7 +199,6 @@ export default function Configuration() {
                     label={t["edit_feed.configuration.ftp.path"]}
                   >
                     <FormField
-                      type="password"
                       id="remotes.ftp.path"
                       name="remotes.ftp.path"
                       as={Input}

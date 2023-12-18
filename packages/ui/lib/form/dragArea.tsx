@@ -13,7 +13,7 @@ const BorderedBox = tw.div<{
 }>`border-dashed 
 border-2 h-full flex flex-col justify-center items-center rounded-lg transition-all duration-900 p-6
 ${(p) => (!p.$isHover && !p.$error ? "border-slate-400" : "")}
-${(p) => (!!p.$error ? "border-rose-500" : "")}
+${(p) => (p.$error ? "border-rose-500" : "")}
 ${(p) => (p.$isHover ? "border-slate-500" : "")}
 `;
 

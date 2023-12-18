@@ -6,7 +6,7 @@ export default function Undefined({
   return (
     <button
       onClick={onClick}
-      className="w-full block text-xs text-left uppercase text-slate-600 border border-dashed border-slate-500 p-2 rounded-lg"
+      className="block w-full rounded-lg border border-dashed border-slate-500 p-2 text-left text-xs uppercase text-slate-600"
     >
       {children}
     </button>

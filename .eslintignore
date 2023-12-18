@@ -1,0 +1,6 @@
+.eslintrc.cjs
+packages/**/postcss.config.js
+packages/**/tailwind.config.js
+packages/**/vite.config.ts
+packages/**/dist
+packages/app/src-tauri

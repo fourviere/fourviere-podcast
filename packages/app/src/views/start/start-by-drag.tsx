@@ -1,5 +1,4 @@
 import { FunctionComponent, PropsWithChildren } from "react";
-//import feedStore from "../../store/feed";
 import DragArea from "@fourviere/ui/lib/form/dragArea";
 import useTauriDragArea from "../../hooks/useTauriDragArea";
 import { readFile } from "../../native/fs";
@@ -12,18 +11,21 @@ const StartByDrag: FunctionComponent<PropsWithChildren<StartByDragProps>> = ({
   const { loadFeedFromFileContents } = feedStore((state) => state);
   const { isHover, error } = useTauriDragArea({
     onFile: (file) => {
-      readFile(file).then((content) => {
-        if (!content) {
-          return;
-        }
-        loadFeedFromFileContents(content);
-      });
+      void onDrop(file);
     },
     onError: (error) => {
       console.error(error);
     },
     fileExtensions: ["xml", "rss"],
   });
+
+  async function onDrop(file: string) {
+    const content = await readFile(file);
+    if (!content) {
+      return;
+    }
+    loadFeedFromFileContents(content);
+  }
 
   return (
     <DragArea isHover={isHover} error={error}>

@@ -10,12 +10,12 @@ body,
 }
 
 .side-menu-item.active {
-  @apply bg-slate-700 rounded-lg text-slate-100;
+  @apply rounded-lg bg-slate-700 text-slate-100;
 }
 .side-menu-item.active:hover {
   @apply bg-slate-800 text-slate-50;
 }
 
 .active > .items-list-item {
-  @apply bg-slate-700 rounded-lg text-slate-100;
+  @apply rounded-lg bg-slate-700 text-slate-100;
 }

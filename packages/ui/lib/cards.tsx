@@ -33,7 +33,7 @@ export function ImageLinkCard({
     <div className={`${Sizes[size]} relative`} onClick={onClick}>
       <img
         className={classNames(
-          `rounded-lg ${Sizes[size]} object-cover hover:shadow-lg cursor-pointer hover:opacity-100 hover:border-4 hover:border-solid transition-all duration-200 ease-in-out`,
+          `rounded-lg ${Sizes[size]} cursor-pointer object-cover transition-all duration-200 ease-in-out hover:border-4 hover:border-solid hover:opacity-100 hover:shadow-lg`,
           {
             "border-slate-200 hover:border-slate-200":
               theme === "light" && !active,
@@ -41,13 +41,13 @@ export function ImageLinkCard({
               theme === "dark" && !active,
             "opacity-30": faded,
             "border-4 border-solid border-slate-200": active,
-          }
+          },
         )}
         src={src}
       />
       {showError && (
-        <div className="rounded-full bg-rose-600 absolute -top-1 -right-1 p-px ">
-          <ExclamationCircleIcon className="h-5 text-white -mt-px" />
+        <div className="absolute -right-1 -top-1 rounded-full bg-rose-600 p-px ">
+          <ExclamationCircleIcon className="-mt-px h-5 text-white" />
         </div>
       )}
     </div>

@@ -10,7 +10,6 @@ import UseCurrentFeed from "../../hooks/useCurrentFeed";
 import useTranslations from "../../hooks/useTranslations";
 import { useParams } from "react-router-dom";
 import useUpload, { UploadResponse } from "../../hooks/useUpload";
-import { FC } from "react";
 import { FullPageColumnLayout } from "@fourviere/ui/lib/layouts/full-page";
 import { getDuration } from "../../native/audio";
 import { ItemLink } from "../../components/form-fields/item-link";
@@ -23,7 +22,7 @@ import FormBlocker from "../../components/form-blocker";
 
 export default function ItemGeneral() {
   const currentFeed = UseCurrentFeed();
-  let { itemIndex } = useParams<{ itemIndex: string }>();
+  const { itemIndex } = useParams<{ itemIndex: string }>();
   const t = useTranslations();
 
   if (!currentFeed) {
@@ -51,15 +50,16 @@ export default function ItemGeneral() {
         }) => {
           const imageUpload = useUpload({
             feedId: currentFeed.feedId,
-            updateField: (value: UploadResponse) =>
-              setFieldValue(
+            updateField: (value: UploadResponse) => {
+              void setFieldValue(
                 `rss.channel.0.item.${itemIndex}.["itunes:image"].@.href`,
-                value.url
-              ),
+                value.url,
+              );
+            },
             updateError: (value: string) =>
               setFieldError(
                 `rss.channel.0.item.${itemIndex}.["itunes:image"].@.href`,
-                value
+                value,
               ),
             fileFamily: "image",
           });
@@ -67,9 +67,9 @@ export default function ItemGeneral() {
           const getDurationCallback = (s: string) => {
             getDuration(s)
               .then((duration) => {
-                setFieldValue(
+                void setFieldValue(
                   `rss.channel.0.item[${itemIndex}]["itunes:duration"]`,
-                  duration
+                  duration,
                 );
               })
               .catch(console.error);
@@ -78,17 +78,17 @@ export default function ItemGeneral() {
           const enclosureUpload = useUpload({
             feedId: currentFeed.feedId,
             updateField: (value: UploadResponse) => {
-              setFieldValue(
+              void setFieldValue(
                 `rss.channel.0.item[${itemIndex}].enclosure.@.url`,
-                value.url
+                value.url,
               );
-              setFieldValue(
+              void setFieldValue(
                 `rss.channel.0.item[${itemIndex}].enclosure.@.length`,
-                value.size
+                value.size,
               );
-              setFieldValue(
+              void setFieldValue(
                 `rss.channel.0.item[${itemIndex}].enclosure.@.type`,
-                value.mime_type
+                value.mime_type,
               );
               getDurationCallback(value.url);
             },
@@ -96,7 +96,7 @@ export default function ItemGeneral() {
             updateError: (value: string) => {
               setFieldError(
                 `rss.channel.0.item[${itemIndex}].enclosure.@.url`,
-                value
+                value,
               );
             },
             fileFamily: "audio",
@@ -128,10 +128,10 @@ export default function ItemGeneral() {
                   name="rss.channel.0.item[${itemIndex}].enclosure.@.url"
                   label={t["edit_feed.items_fields.enclosure_url"]}
                 >
-                  <FormField
+                  <FormField<typeof AudioField>
                     id={`rss.channel.0.item[${itemIndex}].enclosure.@`}
                     name={`rss.channel.0.item[${itemIndex}].enclosure.@`}
-                    as={AudioField as FC}
+                    as={AudioField}
                     fieldProps={{
                       onButtonClick: enclosureUpload.openFile,
                       isUploading: enclosureUpload.isUploading,
@@ -272,7 +272,7 @@ export default function ItemGeneral() {
                   <FormField
                     id={`rss.channel.0.item[${itemIndex}].description`}
                     name={`rss.channel.0.item[${itemIndex}].description`}
-                    as={CKEditor as FC}
+                    as={CKEditor}
                     fieldProps={{
                       value:
                         values.rss.channel[0].item?.[Number(itemIndex)]
@@ -325,10 +325,10 @@ export default function ItemGeneral() {
                   name="rss.channel.0.description"
                   label={t["edit_feed.items_fields.itunes_summary"]}
                 >
-                  <FormField
+                  <FormField<typeof CKEditor>
                     id={`rss.channel.0.item[${itemIndex}]["itunes:summary"]`}
                     name={`rss.channel.0.item[${itemIndex}]["itunes:summary"]`}
-                    as={CKEditor as FC}
+                    as={CKEditor}
                     fieldProps={{
                       value:
                         values.rss.channel[0].item?.[Number(itemIndex)][
@@ -347,7 +347,7 @@ export default function ItemGeneral() {
                   <FormField
                     id={`rss.channel.0.item[${itemIndex}]["itunes:episodeType"]`}
                     name={`rss.channel.0.item[${itemIndex}]["itunes:episodeType"]`}
-                    as={Select as FC}
+                    as={Select}
                     fieldProps={{
                       options: episodeType,
                       labelProperty: "value",

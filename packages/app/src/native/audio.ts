@@ -10,6 +10,12 @@ export async function getDuration(url: string): Promise<number> {
     "-show_streams",
     url,
   ]);
+
   const res = await getDuration.execute();
-  return Math.ceil(JSON.parse(res?.stdout)?.format.duration ?? 0);
+
+  type Data = { format: { duration: number } };
+
+  const dataParsed = JSON.parse(res.stdout) as Data;
+
+  return Math.ceil(dataParsed?.format.duration ?? 0);
 }

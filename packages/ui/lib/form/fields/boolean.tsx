@@ -13,14 +13,16 @@ interface InputProps {
   error?: boolean | string;
   setFieldValue?: (
     field: string,
-    value: any,
-    shouldValidate?: boolean | undefined
+    value: unknown,
+    shouldValidate?: boolean | undefined,
   ) => Promise<unknown>;
-  mapBoolean: (value: boolean) => any;
-  unmapBoolean: (value: any) => boolean;
+  mapBoolean: (value: boolean) => unknown;
+  unmapBoolean: (value: unknown) => boolean;
 }
 
-const identity = (b: any) => b;
+const mapIdentity = (b: boolean) => b;
+const unmapIdentity = (b: unknown) => !!b;
+
 const Boolean = React.forwardRef<HTMLInputElement, InputProps>(
   (
     {
@@ -30,17 +32,17 @@ const Boolean = React.forwardRef<HTMLInputElement, InputProps>(
       setFieldValue,
       label,
       error,
-      mapBoolean = identity,
-      unmapBoolean = identity,
+      mapBoolean = mapIdentity,
+      unmapBoolean = unmapIdentity,
     }: InputProps,
-    ref
+    ref,
   ) => {
     return (
       <Container wFull flex="col">
-        <label className="flex items-center cursor-pointer">
+        <label className="flex cursor-pointer items-center">
           <input
             ref={ref}
-            className="sr-only peer"
+            className="peer sr-only"
             id={name}
             name={name}
             type="checkbox"
@@ -48,24 +50,24 @@ const Boolean = React.forwardRef<HTMLInputElement, InputProps>(
             checked={unmapBoolean(value)}
             onChange={(e) => {
               console.log("onChange", e.currentTarget.checked, name);
-              setFieldValue?.(
+              void setFieldValue?.(
                 name as string,
-                mapBoolean(e.currentTarget.checked)
+                mapBoolean(e.currentTarget.checked),
               );
             }}
           />
-          <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-slate-300 dark:peer-focus:ring-slate-800 dark:bg-slate-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-slate-600"></div>
+          <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:start-[2px] after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-slate-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-slate-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:ring-4 peer-focus:ring-slate-300 rtl:peer-checked:after:-translate-x-full dark:border-slate-600 dark:bg-slate-700 dark:peer-focus:ring-slate-800"></div>
           <div className="pl-3 text-xs">{label}</div>
         </label>
 
         {error && typeof error === "string" && (
-          <div className="text-xs bg-rose-50 text-rose-600 px-2 py-1 rounded-b mx-3 w-50%">
+          <div className="w-50% mx-3 rounded-b bg-rose-50 px-2 py-1 text-xs text-rose-600">
             {error}
           </div>
         )}
       </Container>
     );
-  }
+  },
 );
 
 export default Boolean;
