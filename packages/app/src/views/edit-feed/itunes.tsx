@@ -90,7 +90,7 @@ export default function Itunes() {
                   <ImageField
                     id="rss.channel.0.['itunes:image'].@.href"
                     name="rss.channel.0.['itunes:image'].@.href"
-                    onImageClick={imageUpload.openFile}
+                    onImageClick={() => imageUpload.openFile()}
                     isUploading={imageUpload.isUploading}
                     helpMessage={t["edit_feed.channel_field.image.help"]}
                   />

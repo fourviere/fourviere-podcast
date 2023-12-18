@@ -15,7 +15,8 @@
     "preview": "vite preview",
     "tauri": "tauri",
     "prettier": "prettier --write src",
-    "lint": "eslint --fix src"
+    "lint": "eslint --fix src",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@fourviere/core": "^1.0.0",

@@ -9,7 +9,8 @@
     "build": "tsc && postcss lib/styles.css -o dist/styles.css",
     "dev": "watch 'npm run build' lib",
     "prettier": "prettier --write lib",
-    "lint": "eslint --fix lib"
+    "lint": "eslint --fix lib",
+    "typecheck": "tsc --noEmit"
   },
   "author": "",
   "license": "ISC",

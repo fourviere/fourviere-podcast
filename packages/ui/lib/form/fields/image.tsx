@@ -8,7 +8,7 @@ interface Props {
   name: string;
   id: string;
   helpMessage?: string;
-  onImageClick?: (oldValue: string) => string;
+  onImageClick?: (oldValue?: string) => string | void;
 }
 
 export default React.forwardRef<HTMLInputElement, Props>(

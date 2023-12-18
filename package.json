@@ -14,9 +14,11 @@
     "dev": "npm run build:ui & npm run tauri dev --workspaces --if-present",
     "watch": "npm run build:ui & npx concurrently \"npm run tauri dev --workspaces --if-present\" \"npm run ui:watch --workspaces --if-present\" ",
     "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
     "prettier": "npm run prettier --workspaces --if-present",
     "build:ui": "npm run build -w ./packages/ui",
-    "build": "npm run tauri build -w ./packages/app"
+    "build": "npm run tauri build -w ./packages/app",
+    "prepare": "husky install"
   },
   "workspaces": [
     "packages/*"
@@ -31,6 +33,7 @@
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-tailwindcss": "^3.13.0",
+    "husky": "^8.0.0",
     "prettier": "3.1.1",
     "typescript": "^5.3.3"
   }

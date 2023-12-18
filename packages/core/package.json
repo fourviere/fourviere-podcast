@@ -6,7 +6,8 @@
     "test": "jest",
     "type:check": "tsc --noEmit",
     "prettier": "prettier --write lib",
-    "lint": "eslint --fix lib"
+    "lint": "eslint --fix lib",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [
     "podcast",

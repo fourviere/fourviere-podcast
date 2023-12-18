@@ -132,11 +132,11 @@ function normalizeSeasonEpisode(data: unknown): unknown {
     (value: { [key: string]: unknown }) => {
       const dd = {
         ...(value as Record<string, unknown>),
-        "podcast:season": value["itunes:season"],
-        "podcast:episode": value["itunes:episode"],
+        "podcast:season": value["itunes:season"] ?? undefined,
+        "podcast:episode": value["itunes:episode"] ?? undefined,
       };
-      delete dd["itunes:season"];
-      delete dd["itunes:episode"];
+      delete dd["itunes:season" as keyof typeof dd];
+      delete dd["itunes:episode" as keyof typeof dd];
       return dd;
     },
   );

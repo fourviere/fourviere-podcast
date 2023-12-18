@@ -27,7 +27,7 @@ interface Props {
   ) => Promise<unknown>;
 }
 
-const CKeditor: React.FC<Props> = ({ value, setFieldValue, name }) => {
+const CKeditor = ({ value, setFieldValue, name }: Props) => {
   const [data, setData] = useState(value);
   useEffect(() => {
     setData(value);
