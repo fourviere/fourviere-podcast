@@ -14,17 +14,18 @@ import { FILE_FAMILIES } from "../../hooks/useUpload";
 import useTranslations from "../../hooks/useTranslations";
 import Loader from "@fourviere/ui/lib/loader";
 
+type FieldValue = {
+  url: string;
+  length?: string;
+  type?: string;
+};
 interface Props {
   isUploading?: boolean;
-  value?: {
-    url: string;
-    length: string;
-    type: string;
-  };
+  value?: FieldValue;
   name: string;
   id: string;
   helpMessage?: string;
-  onButtonClick?: (oldValue: any) => any;
+  onButtonClick?: (oldValue: FieldValue) => FieldValue;
   onChange?: (url: string) => void;
 }
 
@@ -35,19 +36,19 @@ const AudioField = ({
   name,
   onChange,
 }: Props) => {
-  const [field, meta, helpers] = useField(name);
+  const [field, meta, helpers] = useField<FieldValue>(name);
   const t = useTranslations();
 
   function onButtonClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
     const url = _onButtonClick?.(field.value);
     if (url) {
-      helpers.setValue(url);
+      void helpers.setValue(url);
     }
   }
 
   function onInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-    helpers.setValue({
+    void helpers.setValue({
       url: e.target.value,
       length: undefined,
       type: undefined,
@@ -62,7 +63,7 @@ const AudioField = ({
           helpers.setError("Not correct file type");
         }
         onChange?.(e.target.value);
-        helpers.setValue({
+        void helpers.setValue({
           url: e.target.value,
           length: fileInfo?.content_length,
           type: fileInfo?.content_type,
@@ -74,14 +75,14 @@ const AudioField = ({
   }
 
   function onChangeLength(e: React.ChangeEvent<HTMLInputElement>) {
-    helpers.setValue({
+    void helpers.setValue({
       ...field.value,
       length: e.target.value,
     });
   }
 
   function onChangeType(e: React.ChangeEvent<HTMLInputElement>) {
-    helpers.setValue({
+    void helpers.setValue({
       ...field.value,
       type: e.target.value,
     });
@@ -144,7 +145,7 @@ const AudioField = ({
               </FormRow>
             </Container>
 
-            <Container className="flex space-x-2 items-start justify-center mt-px"></Container>
+            <Container className="mt-px flex items-start justify-center space-x-2"></Container>
           </Container>
         </>
       )}

@@ -22,7 +22,7 @@ export default function useS3Upload({
       state.getProjectById(feedId)?.configuration?.remotes ?? {
         remote: "none",
         s3: undefined,
-      }
+      },
   );
 
   if (remote !== "s3" || !s3) {
@@ -46,7 +46,7 @@ export default function useS3Upload({
       .then((e) => {
         updateField(e);
       })
-      .catch((e) => {
+      .catch((e: string) => {
         updateError(e);
       })
       .finally(() => setIsUploading(false));
@@ -62,12 +62,16 @@ export default function useS3Upload({
           extensions: FILE_FAMILIES[fileFamily].extensions,
         },
       ],
-    }).then((selected) => {
-      if (!!selected && selected?.length > 0) {
-        console.log(selected);
-        upload(selected[0], uuidv4());
-      }
-    });
+    })
+      .then((selected) => {
+        if (!!selected && selected?.length > 0) {
+          console.log(selected);
+          upload(selected[0], uuidv4());
+        }
+      })
+      .catch((e) => {
+        console.error("Error opening file", e);
+      });
   }
 
   return { openFile, isUploading };

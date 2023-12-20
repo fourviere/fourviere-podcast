@@ -22,7 +22,7 @@ export default function useFtpUpload({
       state.getProjectById(feedId)?.configuration?.remotes ?? {
         remote: "none",
         ftp: undefined,
-      }
+      },
   );
 
   if (remote !== "ftp" || !ftp) {
@@ -47,7 +47,7 @@ export default function useFtpUpload({
         console.log(e);
         updateField(e);
       })
-      .catch((e) => {
+      .catch((e: string) => {
         updateError(e);
       })
       .finally(() => setIsUploading(false));
@@ -63,12 +63,16 @@ export default function useFtpUpload({
           extensions: FILE_FAMILIES[fileFamily].extensions,
         },
       ],
-    }).then((selected) => {
-      if (!!selected && selected?.length > 0) {
-        console.log(selected);
-        upload(selected[0], uuidv4());
-      }
-    });
+    })
+      .then((selected) => {
+        if (!!selected && selected?.length > 0) {
+          console.log(selected);
+          upload(selected[0], uuidv4());
+        }
+      })
+      .catch((e) => {
+        console.log("Error selecting file", e);
+      });
   }
 
   return { openFile, isUploading };

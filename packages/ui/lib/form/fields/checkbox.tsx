@@ -20,7 +20,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, InputProps>(
       <label>
         <input
           ref={ref}
-          className="w-4 h-4 mr-2 shadow text-slate-600 bg-slate-100 border-slate-300 rounded focus:ring-slate-500 dark:focus:ring-slate-600 dark:ring-offset-slate-800 focus:ring-2"
+          className="mr-2 h-4 w-4 rounded border-slate-300 bg-slate-100 text-slate-600 shadow focus:ring-2 focus:ring-slate-500 dark:ring-offset-slate-800 dark:focus:ring-slate-600"
           id={name}
           name={name}
           type="checkbox"
@@ -32,12 +32,12 @@ const Checkbox = React.forwardRef<HTMLInputElement, InputProps>(
       </label>
 
       {error && typeof error === "string" && (
-        <div className="text-xs  bg-rose-50 text-rose-600 px-2 py-1 rounded-b mx-3 w-50%">
+        <div className="w-50%  mx-3 rounded-b bg-rose-50 px-2 py-1 text-xs text-rose-600">
           {error}
         </div>
       )}
     </Container>
-  )
+  ),
 );
 
 export default Checkbox;

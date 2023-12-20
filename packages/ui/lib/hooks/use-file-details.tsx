@@ -7,7 +7,11 @@ const useFileDetails = (url: string) => {
   } | null>(null);
 
   useEffect(() => {
-    getFileDetails(url).then(setDetails);
+    getFileDetails(url)
+      .then(setDetails)
+      .catch((e) => {
+        console.error("Problem getting file details", e);
+      });
   }, [url]);
 
   return details;
@@ -15,7 +19,7 @@ const useFileDetails = (url: string) => {
 export default useFileDetails;
 
 async function getFileDetails(
-  url: string
+  url: string,
 ): Promise<{ mimeType: string; size: number }> {
   try {
     const response = await fetch(url, { method: "HEAD" });

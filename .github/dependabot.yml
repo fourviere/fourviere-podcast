@@ -9,6 +9,9 @@ updates:
     directory: "/packages/app"
     schedule:
       interval: "daily"
+    ignore:
+      - dependency-name: "@fourviere/core"
+      - dependency-name: "@fourviere/ui"
   - package-ecosystem: "npm" 
     directory: "/packages/core"
     schedule:

@@ -2,34 +2,34 @@ import { Container } from "@fourviere/ui/lib/box";
 import FormSection from "@fourviere/ui/lib/form/form-section";
 import FormRow from "@fourviere/ui/lib/form/form-row";
 import Input from "@fourviere/ui/lib/form/fields/input";
-import Text from "@fourviere/ui/lib/form/fields/text";
 import AudioField from "../../components/form-fields/audio";
 import { Formik } from "formik";
 import ImageField from "@fourviere/ui/lib/form/fields/image";
 import { FormField } from "@fourviere/ui/lib/form/form-field";
 import UseCurrentFeed from "../../hooks/useCurrentFeed";
 import useTranslations from "../../hooks/useTranslations";
-import FormObserver from "../../components/form-observer";
-import { Feed } from "@fourviere/core/lib/schema/feed";
 import { useParams } from "react-router-dom";
 import useUpload, { UploadResponse } from "../../hooks/useUpload";
-import { FC } from "react";
 import { FullPageColumnLayout } from "@fourviere/ui/lib/layouts/full-page";
 import { getDuration } from "../../native/audio";
 import { ItemLink } from "../../components/form-fields/item-link";
 import Boolean from "@fourviere/ui/lib/form/fields/boolean";
 import Select from "@fourviere/ui/lib/form/fields/select";
 import episodeType from "@fourviere/core/lib/apple/episode-type";
+import ContainerTitle from "@fourviere/ui/lib/container-title";
+import CKEditor from "@fourviere/ui/lib/form/fields/ckeditor";
+import FormBlocker from "../../components/form-blocker";
 
 export default function ItemGeneral() {
   const currentFeed = UseCurrentFeed();
-  let { itemIndex } = useParams<{ itemIndex: string }>();
+  const { itemIndex } = useParams<{ itemIndex: string }>();
   const t = useTranslations();
 
   if (!currentFeed) {
     return null;
   }
 
+  console.log("load");
   return (
     <FullPageColumnLayout>
       <Formik
@@ -40,18 +40,26 @@ export default function ItemGeneral() {
           setSubmitting(false);
         }}
       >
-        {({ setFieldValue, setFieldError, handleSubmit, values }) => {
+        {({
+          setFieldValue,
+          setFieldError,
+          handleSubmit,
+          values,
+          dirty,
+          isSubmitting,
+        }) => {
           const imageUpload = useUpload({
             feedId: currentFeed.feedId,
-            updateField: (value: UploadResponse) =>
-              setFieldValue(
+            updateField: (value: UploadResponse) => {
+              void setFieldValue(
                 `rss.channel.0.item.${itemIndex}.["itunes:image"].@.href`,
-                value.url
-              ),
+                value.url,
+              );
+            },
             updateError: (value: string) =>
               setFieldError(
                 `rss.channel.0.item.${itemIndex}.["itunes:image"].@.href`,
-                value
+                value,
               ),
             fileFamily: "image",
           });
@@ -59,9 +67,9 @@ export default function ItemGeneral() {
           const getDurationCallback = (s: string) => {
             getDuration(s)
               .then((duration) => {
-                setFieldValue(
+                void setFieldValue(
                   `rss.channel.0.item[${itemIndex}]["itunes:duration"]`,
-                  duration
+                  duration,
                 );
               })
               .catch(console.error);
@@ -70,17 +78,17 @@ export default function ItemGeneral() {
           const enclosureUpload = useUpload({
             feedId: currentFeed.feedId,
             updateField: (value: UploadResponse) => {
-              setFieldValue(
+              void setFieldValue(
                 `rss.channel.0.item[${itemIndex}].enclosure.@.url`,
-                value.url
+                value.url,
               );
-              setFieldValue(
+              void setFieldValue(
                 `rss.channel.0.item[${itemIndex}].enclosure.@.length`,
-                value.size
+                value.size,
               );
-              setFieldValue(
+              void setFieldValue(
                 `rss.channel.0.item[${itemIndex}].enclosure.@.type`,
-                value.mime_type
+                value.mime_type,
               );
               getDurationCallback(value.url);
             },
@@ -88,7 +96,7 @@ export default function ItemGeneral() {
             updateError: (value: string) => {
               setFieldError(
                 `rss.channel.0.item[${itemIndex}].enclosure.@.url`,
-                value
+                value,
               );
             },
             fileFamily: "audio",
@@ -103,11 +111,15 @@ export default function ItemGeneral() {
               as="form"
               onSubmit={handleSubmit}
             >
-              <FormObserver<Feed>
-                updateFunction={(values) => {
-                  currentFeed.update(values);
-                }}
-              />
+              <FormBlocker dirty={dirty} />
+              <ContainerTitle
+                isDirty={dirty}
+                isSubmitting={isSubmitting}
+                onSave={() => handleSubmit()}
+              >
+                {values.rss.channel[0].item?.[Number(itemIndex)].title}
+              </ContainerTitle>
+
               <FormSection
                 title={t["edit_feed.items_fields.media.title"]}
                 description={t["edit_feed.items_fields.media.description"]}
@@ -116,10 +128,10 @@ export default function ItemGeneral() {
                   name="rss.channel.0.item[${itemIndex}].enclosure.@.url"
                   label={t["edit_feed.items_fields.enclosure_url"]}
                 >
-                  <FormField
+                  <FormField<typeof AudioField>
                     id={`rss.channel.0.item[${itemIndex}].enclosure.@`}
                     name={`rss.channel.0.item[${itemIndex}].enclosure.@`}
-                    as={AudioField as FC}
+                    as={AudioField}
                     fieldProps={{
                       onButtonClick: enclosureUpload.openFile,
                       isUploading: enclosureUpload.isUploading,
@@ -144,7 +156,6 @@ export default function ItemGeneral() {
                   />
                 </FormRow>
               </FormSection>
-
               <FormSection
                 title={t["edit_feed.items_fields.presentation.title"]}
                 description={
@@ -261,7 +272,7 @@ export default function ItemGeneral() {
                   <FormField
                     id={`rss.channel.0.item[${itemIndex}].description`}
                     name={`rss.channel.0.item[${itemIndex}].description`}
-                    as={Text as FC}
+                    as={CKEditor}
                     fieldProps={{
                       value:
                         values.rss.channel[0].item?.[Number(itemIndex)]
@@ -294,7 +305,6 @@ export default function ItemGeneral() {
                   />
                 </FormRow>
               </FormSection>
-
               <FormSection
                 title={t["edit_feed.items_fields.itunes.title"]}
                 description={t["edit_feed.items_fields.itunes.description"]}
@@ -315,10 +325,10 @@ export default function ItemGeneral() {
                   name="rss.channel.0.description"
                   label={t["edit_feed.items_fields.itunes_summary"]}
                 >
-                  <FormField
+                  <FormField<typeof CKEditor>
                     id={`rss.channel.0.item[${itemIndex}]["itunes:summary"]`}
                     name={`rss.channel.0.item[${itemIndex}]["itunes:summary"]`}
-                    as={Text as FC}
+                    as={CKEditor}
                     fieldProps={{
                       value:
                         values.rss.channel[0].item?.[Number(itemIndex)][
@@ -337,7 +347,7 @@ export default function ItemGeneral() {
                   <FormField
                     id={`rss.channel.0.item[${itemIndex}]["itunes:episodeType"]`}
                     name={`rss.channel.0.item[${itemIndex}]["itunes:episodeType"]`}
-                    as={Select as FC}
+                    as={Select}
                     fieldProps={{
                       options: episodeType,
                       labelProperty: "value",

@@ -8,9 +8,9 @@ import { FormField } from "@fourviere/ui/lib/form/form-field";
 import UseCurrentFeed from "../../hooks/useCurrentFeed";
 import useTranslations from "../../hooks/useTranslations";
 import Select from "@fourviere/ui/lib/form/fields/select";
-import FormObserver from "../../components/form-observer";
 import { FC } from "react";
-import { Configuration as ConfigurationInterface } from "../../store/feed";
+import ContainerTitle from "@fourviere/ui/lib/container-title";
+import FormBlocker from "../../components/form-blocker";
 export default function Configuration() {
   const currentFeed = UseCurrentFeed();
   const t = useTranslations();
@@ -28,23 +28,23 @@ export default function Configuration() {
         setSubmitting(false);
       }}
     >
-      {({ values, handleSubmit, setFieldValue }) => {
+      {({ values, handleSubmit, setFieldValue, dirty, isSubmitting }) => {
         return (
           <Container scroll wFull flex="col" as="form" onSubmit={handleSubmit}>
-            <FormObserver<ConfigurationInterface>
-              updateFunction={(values) => {
-                currentFeed.updateConfiguration(values);
-              }}
-            />
+            <FormBlocker dirty={dirty} />
+            <ContainerTitle
+              isDirty={dirty}
+              isSubmitting={isSubmitting}
+              onSave={() => handleSubmit()}
+            >
+              {t["edit_feed.configuration.title"]}
+            </ContainerTitle>
 
             <FormSection
               title={t["edit_feed.configuration.remotes.title"]}
               description={t["edit_feed.configuration.remotes.description"]}
             >
-              <FormRow
-                name=""
-                label={t["edit_feed.configuration.remotes.category"]}
-              >
+              <FormRow name="" label={t["edit_feed.configuration.title"]}>
                 <FormField
                   id="remotes.remote"
                   name="remotes.remote"
@@ -107,7 +107,7 @@ export default function Configuration() {
                     label={t["edit_feed.configuration.s3.secret_key"]}
                   >
                     <FormField
-                      type="password"
+                      fieldProps={{ type: "password" }}
                       id="remotes.s3.secret_key"
                       name="remotes.s3.secret_key"
                       as={Input}
@@ -188,10 +188,10 @@ export default function Configuration() {
                     label={t["edit_feed.configuration.ftp.password"]}
                   >
                     <FormField
-                      type="password"
                       id="remotes.ftp.password"
                       name="remotes.ftp.password"
                       as={Input}
+                      fieldProps={{ type: "password" }}
                     />
                   </FormRow>
                   <FormRow
@@ -199,7 +199,6 @@ export default function Configuration() {
                     label={t["edit_feed.configuration.ftp.path"]}
                   >
                     <FormField
-                      type="password"
                       id="remotes.ftp.path"
                       name="remotes.ftp.path"
                       as={Input}

@@ -1,0 +1,5 @@
+dist
+node_modules
+packages/ui/tailwind.config.js
+packages/app/tailwind.config.js
+postcss.config.js

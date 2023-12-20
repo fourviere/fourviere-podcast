@@ -34,7 +34,13 @@ const StartView: FunctionComponent<StartViewProps> = () => {
           <HalfPageBox>
             <Container spaceY="xl">
               <p>
-                <H1Link onClick={createProject}>{t["start.create"]}</H1Link>
+                <H1Link
+                  onClick={() => {
+                    void createProject();
+                  }}
+                >
+                  {t["start.create"]}
+                </H1Link>
                 <br /> <H1>{t["start.import"]}</H1>,{" "}
                 <H1>{t["start.open_file"]}</H1>,{" "}
                 <H1Link onClick={() => setStartByUrlVisible(true)}>
@@ -62,7 +68,7 @@ const StartView: FunctionComponent<StartViewProps> = () => {
               </Drawer>
             )}
           </AnimatePresence>,
-          document.getElementById("drawer")!
+          document.getElementById("drawer")!,
         )}
         {createPortal(
           <AnimatePresence mode="wait">
@@ -75,7 +81,7 @@ const StartView: FunctionComponent<StartViewProps> = () => {
               </Drawer>
             )}
           </AnimatePresence>,
-          document.getElementById("drawer")!
+          document.getElementById("drawer")!,
         )}
       </FullPageLayoutBackground>
     </FullPageColumnLayout>

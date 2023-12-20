@@ -1,17 +1,53 @@
 import { useState } from "react";
 import appStore from "../store/app";
 
-async function fetchPI(search: string, apiKey: string, apiSecret: string) {
-  var apiHeaderTime = Math.floor(Date.now() / 1000);
-  const enc = new TextEncoder();
-  var data4Hash = apiKey + apiSecret + apiHeaderTime;
-  var hash = await crypto.subtle.digest("SHA-1", enc.encode(data4Hash));
+type Podcast = {
+  id: number;
+  title: string;
+  url: string;
+  originalUrl: string;
+  link: string;
+  description: string;
+  author: string;
+  ownerName: string;
+  image: string;
+  artwork: string;
+  lastUpdateTime: number;
+  lastCrawlTime: number;
+  lastParseTime: number;
+  inPollingQueue: number;
+  priority: number;
+  lastGoodHttpStatusTime: number;
+  lastHttpStatus: number;
+  contentType: string;
+  itunesId: number;
+  generator: string;
+  language: string;
+  type: number;
+  dead: number;
+  crawlErrors: number;
+  parseErrors: number;
+  categories: Record<string, string>;
+  locked: number;
+  explicit: boolean;
+  podcastGuid: string;
+  medium: string;
+  episodeCount: number;
+  imageUrlHash: number;
+  newestItemPubdate: number;
+};
 
-  var hash4Header = Array.from(new Uint8Array(hash))
+async function fetchAPI(search: string, apiKey: string, apiSecret: string) {
+  const apiHeaderTime = Math.floor(Date.now() / 1000);
+  const enc = new TextEncoder();
+  const data4Hash = apiKey + apiSecret + apiHeaderTime;
+  const hash = await crypto.subtle.digest("SHA-1", enc.encode(data4Hash));
+
+  const hash4Header = Array.from(new Uint8Array(hash))
     .map((v) => v.toString(16).padStart(2, "0"))
     .join("");
 
-  let options = {
+  const options = {
     method: "get",
     headers: {
       "X-Auth-Date": "" + apiHeaderTime,
@@ -21,15 +57,17 @@ async function fetchPI(search: string, apiKey: string, apiSecret: string) {
     },
   };
 
-  var url = `https://api.podcastindex.org/api/1.0/search/byterm?q=${search}&fulltext`;
-  return await fetch(url, options).then((res) => res.json());
+  const url = `https://api.podcastindex.org/api/1.0/search/byterm?q=${search}&fulltext`;
+  return (await fetch(url, options).then((res) => res.json())) as Promise<{
+    feeds: Podcast[];
+  }>;
 }
 
 export const usePodcastIndex = (/* arguments */) => {
   const { getConfigurations, addError, getTranslations } = appStore(
-    (state) => state
+    (state) => state,
   );
-  const [feeds, setFeeds] = useState<any[]>();
+  const [feeds, setFeeds] = useState<Podcast[]>();
   const [isLoading, setIsLoading] = useState(false);
 
   const t = getTranslations();
@@ -45,8 +83,9 @@ export const usePodcastIndex = (/* arguments */) => {
     }
     setIsLoading(true);
     try {
-      const response = await fetchPI(query, apiKey, apiSecret);
+      const response = await fetchAPI(query, apiKey, apiSecret);
       setFeeds(response.feeds);
+      console.log(JSON.stringify(response.feeds));
     } catch (error) {
       addError(t["start.start_by_index.errors.generic"]);
     } finally {

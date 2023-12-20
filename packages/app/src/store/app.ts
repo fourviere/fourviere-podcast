@@ -34,7 +34,7 @@ export interface AppState {
   updateConfigurations: (configurations: AppState) => void;
 
   getConfigurations: (
-    service: keyof AppState["services"]
+    service: keyof AppState["services"],
   ) => AppState["services"][keyof AppState["services"]];
 
   //Error system
@@ -82,14 +82,18 @@ const appStore = create<AppState>((set, get) => {
   };
 });
 
-loadState<AppState>("app").then((state) => {
-  if (state) {
-    appStore.setState(state);
-  }
-});
+loadState<AppState>("app")
+  .then((state) => {
+    if (state) {
+      appStore.setState(state);
+    }
+  })
+  .catch((e) => {
+    console.error("Error loading state", e);
+  });
 
-appStore.subscribe(async (state) => {
-  await persistState<AppState>("app", state);
+appStore.subscribe((state) => {
+  void persistState<AppState>("app", state);
 });
 
 export default appStore;

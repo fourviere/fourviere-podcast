@@ -23,7 +23,9 @@ const useTauriDragArea = ({ onError, onFile, fileExtensions }: Props) => {
           setTimeout(() => {
             try {
               setError(false);
-            } catch {}
+            } catch {
+              console.log("Error, can't set error to false if unmounted");
+            }
           }, 3000);
         } else {
           onFile(event.payload[0]);
@@ -31,11 +33,11 @@ const useTauriDragArea = ({ onError, onFile, fileExtensions }: Props) => {
         }
       }),
 
-      listen("tauri://file-drop-hover", (_) => {
+      listen("tauri://file-drop-hover", () => {
         setIsHover(true);
       }),
 
-      listen("tauri://file-drop-cancelled", (_) => {
+      listen("tauri://file-drop-cancelled", () => {
         setIsHover(false);
         setError(false);
       }),
@@ -43,7 +45,9 @@ const useTauriDragArea = ({ onError, onFile, fileExtensions }: Props) => {
 
     return () => {
       listeners.forEach((l) => {
-        l.then((r) => r());
+        l.then((r) => r()).catch((e) =>
+          console.error("Error unmounting tauri listeners", e),
+        );
       });
     };
   }, []);

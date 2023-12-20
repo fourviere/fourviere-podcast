@@ -14,7 +14,7 @@ const style = ({ error, size }: Pick<InputProps, "error" | "size">) =>
       "text-xl font-light": size === "xl",
       "text-2xl font-light": size === "2xl",
       "text-rose-600 border-rose-600 placeholder:text-rose-400": !!error,
-    }
+    },
   );
 
 interface InputProps {
@@ -39,7 +39,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       size = "sm",
       error,
     }: InputProps,
-    ref
+    ref,
   ) => (
     <Container wFull flex="col">
       <input
@@ -54,12 +54,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       />
 
       {error && typeof error === "string" && (
-        <div className="text-xs  bg-rose-50 text-rose-600 px-2 py-1 rounded-b mx-3 w-50%">
+        <div className="w-50%  mx-3 rounded-b bg-rose-50 px-2 py-1 text-xs text-rose-600">
           {error}
         </div>
       )}
     </Container>
-  )
+  ),
 );
 
 export default Input;

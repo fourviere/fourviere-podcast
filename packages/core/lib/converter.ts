@@ -18,10 +18,10 @@ const builder = new XMLBuilder(CONFIG);
 const podcastValidator = new Ajv({ allErrors: true }).compile(FeedSchema);
 
 export function serializeToXML(feed: Feed): string {
-  return builder.build(feed);
+  return builder.build(feed) as string;
 }
 
-export async function parseXML(xmlString: string) {
+export function parseXML(xmlString: string) {
   const validation = XMLValidator.validate(xmlString, {
     allowBooleanAttributes: true,
   });

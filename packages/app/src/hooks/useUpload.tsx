@@ -37,7 +37,7 @@ export default function ({
       state.getProjectById(feedId)?.configuration?.remotes ?? {
         remote: "none",
         ftp: undefined,
-      }
+      },
   );
   const ftpHookResponse = useFtpUpload({
     feedId,

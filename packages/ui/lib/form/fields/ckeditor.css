@@ -1,0 +1,23 @@
+.ck.ck-editor__main > .ck-editor__editable {
+  border: 0px !important;
+}
+.ck-toolbar {
+  border: 0px !important;
+}
+
+.ck-focused {
+  border: 0px !important;
+  box-shadow: none !important;
+}
+
+.ck-editor__editable {
+  border: 0px !important;
+  box-shadow: none !important;
+  font-size: 13px !important;
+}
+
+.ck.ck-content:not(.ck-comment__input *) {
+  /* Note: You can use min-height and max-height instead here. */
+  max-height: 400px;
+  overflow-y: auto;
+}
