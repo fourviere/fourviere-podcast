@@ -1,14 +1,21 @@
 use ::function_name::named;
 use s3::{creds::Credentials, Bucket, Region};
+use serde::{Deserialize, Serialize};
 use std::{borrow::Cow, path::Path};
-use tokio::fs;
+use tauri::Window;
+use tokio::{fs, spawn};
+use uuid::Uuid;
 
 use crate::{
     log_if_error_and_return,
-    utils::{file::get_file_info, result::Result},
+    utils::{
+        event::{Channel, Event, EventProducer},
+        file::get_file_info,
+        result::Result,
+    },
 };
 
-#[derive(serde::Deserialize)]
+#[derive(Deserialize)]
 pub struct Payload {
     local_path: String,
     bucket_name: String,
@@ -23,11 +30,94 @@ pub struct Payload {
     file_name: String,
 }
 
-#[derive(serde::Serialize)]
+#[derive(Debug, PartialEq, Serialize)]
 pub struct FileInfo {
     pub url: String,
     pub mime_type: String,
     pub size: u64,
+}
+
+#[tauri::command]
+pub fn s3_upload_window_with_progress(window: Window, payload: Payload) -> Uuid {
+    s3_upload_with_progress(window.into(), payload, false)
+}
+
+#[named]
+fn s3_upload_with_progress(channel: Channel, payload: Payload, use_path_style: bool) -> Uuid {
+    let mut event_producer = EventProducer::new(channel);
+    let id = event_producer.id();
+
+    spawn(async move {
+        let result = s3_upload_with_progress_task(&mut event_producer, payload, use_path_style)
+            .await
+            .map(Event::S3Result);
+        log_if_error_and_return!(&result);
+        event_producer.send(result).await;
+    });
+    id
+}
+
+async fn s3_upload_with_progress_task(
+    event_producer: &mut EventProducer,
+    payload: Payload,
+    use_path_style: bool,
+) -> Result<FileInfo> {
+    event_producer.send(Ok(Event::Progress(0))).await;
+
+    let credentials = Credentials::new(
+        Some(&payload.access_key),
+        Some(&payload.secret_key),
+        None,
+        None,
+        None,
+    )?;
+
+    let mut bucket = Bucket::new(
+        &payload.bucket_name,
+        Region::Custom {
+            region: payload.region,
+            endpoint: payload.endpoint,
+        },
+        credentials,
+    )?;
+
+    // this header is required to make the uploaded file public readable.
+    bucket.add_header("x-amz-acl", "public-read");
+
+    //Useful for testing/old S3 implementation
+    if use_path_style {
+        bucket.set_path_style();
+    }
+
+    let file = fs::read(&payload.local_path).await?;
+    let file_info: crate::utils::file::FileInfo = get_file_info(&payload.local_path).await?;
+
+    let ext = Path::new(&payload.local_path)
+        .extension()
+        .map_or(Cow::default(), |ext| ext.to_string_lossy());
+
+    let path = payload.path.unwrap_or("".to_owned());
+    let new_file_name = format!("{}/{}.{}", &path, &payload.file_name, &ext);
+
+    bucket
+        .put_object_with_content_type(new_file_name, &file, &file_info.mime_type)
+        .await?;
+
+    let protocol = if payload.https { "https" } else { "http" };
+
+    let file_path = if !path.is_empty() {
+        format!("{}/{}.{}", path, payload.file_name, ext)
+    } else {
+        format!("{}.{}", payload.file_name, ext)
+    };
+
+    event_producer.send(Ok(Event::Progress(100))).await;
+
+    Ok(FileInfo {
+        size: file_info.size,
+        mime_type: file_info.mime_type,
+        url: format!("{}://{}/{}", protocol, payload.http_host, file_path),
+    })
 }
 
 #[named]
@@ -94,16 +184,17 @@ async fn s3_upload_internal(payload: Payload, use_path_style: bool) -> Result<Fi
 
 #[cfg(test)]
 mod test {
-    use std::{env::temp_dir, net::TcpListener, time::Duration};
+    use std::{net::TcpListener, time::Duration};
 
     use hyper::Server;
     use s3::{creds::Credentials, Bucket, BucketConfiguration, Region};
     use s3s::{auth::SimpleAuth, service::S3ServiceBuilder};
     use s3s_fs::FileSystem;
-    use tokio::time::sleep;
+    use tempfile::tempdir;
+    use tokio::{spawn, sync::mpsc::channel, time::sleep};
 
     use crate::{
-        commands::s3::{s3_upload_internal, Payload},
+        commands::s3::{s3_upload_internal, s3_upload_with_progress, Payload},
         test_file,
     };
 
@@ -121,7 +212,8 @@ mod test {
     const FILESIZE: u64 = 9063;
 
     async fn s3_server(port: u16) {
-        let fs = FileSystem::new(temp_dir()).unwrap();
+        let tmp_dir = tempdir().unwrap();
+        let fs = FileSystem::new(tmp_dir.path()).unwrap();
 
         // Setup S3 service
         let service = {
@@ -177,7 +269,7 @@ mod test {
             file_name: "gitbar".to_owned(),
         };
 
-        let handle = tokio::spawn(async move {
+        let handle = spawn(async move {
             s3_server(port).await;
         });
 
@@ -212,7 +304,7 @@ mod test {
             file_name: "gitbar".to_owned(),
         };
 
-        let handle = tokio::spawn(async move {
+        let handle = spawn(async move {
             s3_server(port).await;
         });
 
@@ -241,7 +333,7 @@ mod test {
             file_name: "gitbar".to_owned(),
         };
 
-        let handle = tokio::spawn(async move {
+        let handle = spawn(async move {
             s3_server(port).await;
         });
 
@@ -269,13 +361,193 @@ mod test {
             file_name: "gitbar".to_owned(),
         };
 
-        let handle = tokio::spawn(async move {
+        let handle = spawn(async move {
             s3_server(port).await;
         });
 
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
         assert!(s3_upload_internal(payload, true).await.is_err());
+        handle.abort();
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn test_s3_upload_progress_ok() {
+        let port = 3125;
+        let bucket = "test-ok";
+        let domain = "http://localhost:".to_owned() + port.to_string().as_str();
+        let payload = Payload {
+            local_path: test_file!("gitbar.xml").to_owned(),
+            bucket_name: bucket.to_owned(),
+            region: REGION.to_owned(),
+            endpoint: domain.clone(),
+            access_key: ACCESS_KEY.to_owned(),
+            secret_key: SECRET_KEY.to_owned(),
+            http_host: domain,
+            https: false,
+            path: None,
+            file_name: "gitbar".to_owned(),
+        };
+
+        let handle = spawn(async move {
+            s3_server(port).await;
+        });
+
+        // Hopefully the server is up =D
+        sleep(Duration::from_secs(2)).await;
+        prepare_s3_bucket(port, bucket).await;
+
+        let (tx, mut rx) = channel(2);
+        let original_id = s3_upload_with_progress(tx.into(), payload, true);
+        let mut at_least_one_progress = false;
+        let mut at_least_one_result = false;
+
+        while let Some((id, event)) = rx.recv().await {
+            assert_eq!(original_id, id);
+            match event {
+                Ok(event) => match event {
+                    crate::utils::event::Event::Progress(_) => at_least_one_progress = true,
+                    crate::utils::event::Event::S3Result(file_info) => {
+                        assert_eq!(file_info.size, FILESIZE);
+                        assert_eq!(file_info.mime_type, "text/xml");
+                        at_least_one_result = true;
+                    }
+                    _ => panic!("Event not allowed: {:?}", event),
+                },
+                Err(err) => panic!("{:?}", err),
+            }
+        }
+
+        assert!(at_least_one_progress);
+        assert!(at_least_one_result);
+
+        handle.abort();
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn test_s3_upload_progress_err_host() {
+        let port = 3126;
+        let bucket = "test-err-host";
+        let domain = "https://localhost:".to_owned() + port.to_string().as_str();
+        let payload = Payload {
+            local_path: test_file!("gitbar.xml").to_owned(),
+            bucket_name: bucket.to_owned(),
+            region: REGION.to_owned(),
+            endpoint: domain.clone(),
+            access_key: ACCESS_KEY.to_owned(),
+            secret_key: SECRET_KEY.to_owned(),
+            http_host: domain,
+            https: false,
+            path: None,
+            file_name: "gitbar".to_owned(),
+        };
+
+        let handle = spawn(async move {
+            s3_server(port).await;
+        });
+
+        // Hopefully the server is up =D
+        sleep(Duration::from_secs(2)).await;
+        prepare_s3_bucket(port, bucket).await;
+
+        let (tx, mut rx) = channel(2);
+        let original_id = s3_upload_with_progress(tx.into(), payload, true);
+        let mut at_least_one_error = false;
+
+        while let Some((id, event)) = rx.recv().await {
+            assert_eq!(original_id, id);
+            match event {
+                Ok(_) => (),
+                Err(_) => at_least_one_error = true,
+            }
+        }
+
+        assert!(at_least_one_error);
+
+        handle.abort();
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn test_s3_upload_progress_err_local_path() {
+        let port = 3127;
+        let bucket = "test-err-local-path";
+        let domain = "http://localhost:".to_owned() + port.to_string().as_str();
+        let payload = Payload {
+            local_path: test_file!("gitbar.rss").to_owned(),
+            bucket_name: bucket.to_owned(),
+            region: REGION.to_owned(),
+            endpoint: domain.clone(),
+            access_key: ACCESS_KEY.to_owned(),
+            secret_key: SECRET_KEY.to_owned(),
+            http_host: domain,
+            https: false,
+            path: None,
+            file_name: "gitbar".to_owned(),
+        };
+
+        let handle = spawn(async move {
+            s3_server(port).await;
+        });
+
+        // Hopefully the server is up =D
+        sleep(Duration::from_secs(2)).await;
+        prepare_s3_bucket(port, bucket).await;
+
+        let (tx, mut rx) = channel(2);
+        let original_id = s3_upload_with_progress(tx.into(), payload, true);
+        let mut at_least_one_error = false;
+
+        while let Some((id, event)) = rx.recv().await {
+            assert_eq!(original_id, id);
+            match event {
+                Ok(_) => (),
+                Err(_) => at_least_one_error = true,
+            }
+        }
+
+        assert!(at_least_one_error);
+
+        handle.abort();
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn test_s3_upload_progress_err_bucket() {
+        let port = 3128;
+        let domain = "http://localhost:".to_owned() + port.to_string().as_str();
+        let payload = Payload {
+            local_path: test_file!("gitbar.xml").to_owned(),
+            bucket_name: "not_a_bucket".to_owned(),
+            region: REGION.to_owned(),
+            endpoint: domain.clone(),
+            access_key: ACCESS_KEY.to_owned(),
+            secret_key: SECRET_KEY.to_owned(),
+            http_host: domain,
+            https: false,
+            path: None,
+            file_name: "gitbar".to_owned(),
+        };
+
+        let handle = spawn(async move {
+            s3_server(port).await;
+        });
+
+        // Hopefully the server is up =D
+        sleep(Duration::from_secs(2)).await;
+
+        let (tx, mut rx) = channel(2);
+        let original_id = s3_upload_with_progress(tx.into(), payload, true);
+        let mut at_least_one_error = false;
+
+        while let Some((id, event)) = rx.recv().await {
+            assert_eq!(original_id, id);
+            match event {
+                Ok(_) => (),
+                Err(_) => at_least_one_error = true,
+            }
+        }
+
+        assert!(at_least_one_error);
+
         handle.abort();
     }
 }

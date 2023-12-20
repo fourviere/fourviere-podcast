@@ -1,5 +1,4 @@
-use std::{collections::HashMap, sync::OnceLock};
-
+use serde::Serialize;
 use tauri::{AppHandle, Manager, Window};
 use tokio::{
     spawn,
@@ -9,22 +8,14 @@ use uuid::Uuid;
 
 use super::result::{Error, Result};
 
-static EVENT_SENDER: OnceLock<EventSender> = OnceLock::new();
-
-#[derive(Clone, serde::Serialize)]
+#[derive(Debug, PartialEq, Serialize)]
 pub enum Event {
     Progress(u8),
+    FtpResult(crate::commands::ftp::FileInfo),
+    S3Result(crate::commands::s3::FileInfo),
 }
 
-pub type Message = (Uuid, Result<Event>);
-type JoinEvent = (Uuid, Channel);
-type LeaveEvent = Uuid;
-
-enum ProducerEvent {
-    Send(Message),
-    Join(JoinEvent),
-    Leave(LeaveEvent),
-}
+type Message = (Uuid, Result<Event>);
 
 pub enum Channel {
     Global(AppHandle),
@@ -65,66 +56,31 @@ impl Channel {
     }
 }
 
-struct EventSender {
-    tx: Sender<ProducerEvent>,
-}
-
-impl EventSender {
-    fn join(&self, id: Uuid, channel: Channel) -> Option<Sender<ProducerEvent>> {
-        let tx = self.tx.clone();
-        tx.blocking_send(ProducerEvent::Join((id, channel)))
-            .ok()
-            .map(|_| tx)
-    }
-
-    fn leave(id: Uuid, tx: &Sender<ProducerEvent>) {
-        let _ = tx.blocking_send(ProducerEvent::Leave(id));
-    }
-
-    async fn run(mut rx: Receiver<ProducerEvent>) {
-        let mut producer_map: HashMap<Uuid, Channel> = HashMap::new();
-        while let Some(event) = rx.recv().await {
-            match event {
-                ProducerEvent::Send(message) => {
-                    if let Some(channel) = producer_map.get_mut(&message.0) {
-                        let _ = channel.send(message).await;
-                    }
-                }
-                ProducerEvent::Join((id, channel)) => {
-                    let _ = producer_map.insert(id, channel);
-                }
-                ProducerEvent::Leave(id) => {
-                    let _ = producer_map.remove(&id);
-                }
-            }
-        }
-    }
-
-    fn new() -> Self {
-        let (tx, rx) = mpsc::channel(100);
-        spawn(async move {
-            EventSender::run(rx).await;
-        });
-
-        EventSender { tx }
+async fn run_event_dispatcher(mut rx: Receiver<Result<Event>>, id: Uuid, mut channel: Channel) {
+    while let Some(event) = rx.recv().await {
+        let _ = channel.send((id, event)).await;
     }
 }
-
+#[derive(Clone)]
 pub struct EventProducer {
     id: Uuid,
-    tx: Sender<ProducerEvent>,
+    tx: Sender<Result<Event>>,
 }
 
 impl EventProducer {
-    pub fn new(channel: Channel) -> Option<Self> {
-        let sender = EVENT_SENDER.get_or_init(EventSender::new);
+    pub fn new(channel: Channel) -> Self {
+        let id = Uuid::now_v7();
 
-        let id = Uuid::new_v4();
-        sender.join(id, channel).map(|tx| Self { id, tx })
+        let (tx, rx) = mpsc::channel(100);
+        spawn(async move {
+            run_event_dispatcher(rx, id, channel).await;
+        });
+
+        Self { id, tx }
     }
 
     pub async fn send(&mut self, event: Result<Event>) {
-        let _ = self.tx.send(ProducerEvent::Send((self.id, event))).await;
+        let _ = self.tx.send(event).await;
     }
 
     pub fn id(&self) -> Uuid {
@@ -132,8 +88,39 @@ impl EventProducer {
     }
 }
 
-impl Drop for EventProducer {
-    fn drop(&mut self) {
-        EventSender::leave(self.id, &self.tx);
+#[cfg(test)]
+mod test {
+    use tokio::{spawn, sync::mpsc::channel};
+
+    use crate::utils::event::{Event, EventProducer};
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn test_event_ok() {
+        let (tx, mut rx) = channel(2);
+        let mut event_producer = EventProducer::new(tx.into());
+        let original_id = event_producer.id();
+
+        spawn(async move {
+            event_producer.send(Ok(Event::Progress(0))).await;
+            event_producer.send(Ok(Event::Progress(100))).await;
+        });
+
+        match rx.recv().await {
+            Some((id, message)) => {
+                assert_eq!(original_id, id);
+                assert!(message.is_ok());
+                assert_eq!(message.unwrap(), Event::Progress(0));
+            }
+            None => panic!("Tx closed"),
+        }
+
+        match rx.recv().await {
+            Some((id, message)) => {
+                assert_eq!(original_id, id);
+                assert!(message.is_ok());
+                assert_eq!(message.unwrap(), Event::Progress(100));
+            }
+            None => panic!("Tx closed"),
+        }
     }
 }

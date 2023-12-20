@@ -1,7 +1,8 @@
 use crate::utils::result::Result;
 use mime_guess::from_path;
+use serde::Serialize;
 
-#[derive(serde::Serialize)]
+#[derive(Serialize)]
 pub struct FileInfo {
     pub mime_type: String,
     pub size: u64,
