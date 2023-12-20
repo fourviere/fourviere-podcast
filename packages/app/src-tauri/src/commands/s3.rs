@@ -38,7 +38,7 @@ pub struct FileInfo {
 }
 
 #[tauri::command]
-pub fn s3_upload_window_with_progress(window: Window, payload: Payload) -> Uuid {
+pub async fn s3_upload_window_with_progress(window: Window, payload: Payload) -> Uuid {
     s3_upload_with_progress(window.into(), payload, false)
 }
 

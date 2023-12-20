@@ -33,7 +33,7 @@ pub struct FileInfo {
 }
 
 #[tauri::command]
-pub fn ftp_upload_window_with_progress(window: Window, payload: Payload) -> Uuid {
+pub async fn ftp_upload_window_with_progress(window: Window, payload: Payload) -> Uuid {
     ftp_upload_with_progress(window.into(), payload)
 }
 
