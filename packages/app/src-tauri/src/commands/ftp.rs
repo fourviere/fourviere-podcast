@@ -1,10 +1,12 @@
 use ::function_name::named;
+use get_chunk::iterator::FileIter;
 use serde::{Deserialize, Serialize};
 use std::{borrow::Cow, path::Path, str};
 use suppaftp::{types::FileType, AsyncFtpStream, Mode};
 use tauri::Window;
+use tokio::io::AsyncWriteExt;
 use tokio::spawn;
-use tokio_util::compat::TokioAsyncReadCompatExt;
+use tokio_util::compat::{FuturesAsyncWriteCompatExt, TokioAsyncReadCompatExt};
 use uuid::Uuid;
 
 use crate::log_if_error_and_return;
@@ -57,13 +59,18 @@ async fn ftp_upload_with_progress_task(
     event_producer: &mut EventProducer,
     payload: Payload,
 ) -> Result<FileInfo> {
+    // Init Phase: 15%
     event_producer.send(Ok(Event::Progress(0))).await;
 
     let addr = format!("{}:{}", payload.host, payload.port);
 
     let mut ftp_stream = AsyncFtpStream::connect(addr).await?;
 
+    event_producer.send(Ok(Event::Progress(5))).await;
+
     ftp_stream.login(&payload.user, &payload.password).await?;
+
+    event_producer.send(Ok(Event::Progress(7))).await;
 
     // As default set the FTP connection to passive mode
     ftp_stream.set_mode(Mode::Passive);
@@ -77,27 +84,45 @@ async fn ftp_upload_with_progress_task(
         ftp_stream.set_mode(Mode::ExtendedPassive);
     }
 
+    event_producer.send(Ok(Event::Progress(10))).await;
+
     if let Some(path) = &payload.path {
         ftp_stream.cwd(path).await?;
     }
 
     ftp_stream.transfer_type(FileType::Binary).await?;
 
-    let file_info: crate::utils::file::FileInfo = get_file_info(&payload.local_path).await?;
+    event_producer.send(Ok(Event::Progress(12))).await;
+
+    let file_info = get_file_info(&payload.local_path).await?;
 
     let ext = Path::new(&payload.local_path)
         .extension()
         .map_or(Cow::default(), |ext| ext.to_string_lossy());
 
-    let mut reader = tokio::fs::File::open(&payload.local_path)
-        .await
-        .map(tokio::io::BufReader::new)?
-        .compat();
+    event_producer.send(Ok(Event::Progress(15))).await;
 
-    ftp_stream
-        .put_file(&format!("{}.{}", &payload.file_name, &ext), &mut reader)
-        .await?;
+    // Trasfer phase: 80%
 
+    // Step by 8%
+    let file_iter =
+        FileIter::new(payload.local_path.as_ref())?.set_mode(get_chunk::ChunkSize::Percent(10.));
+
+    let mut writer = ftp_stream
+        .put_with_stream(format!("{}.{}", &payload.file_name, &ext))
+        .await?
+        .compat_write();
+
+    for (index, chunk) in file_iter.enumerate() {
+        writer.write_all(&chunk?).await?;
+
+        let progress = 15 + (index as u8 * 8);
+        event_producer.send(Ok(Event::Progress(progress))).await;
+    }
+
+    ftp_stream.finalize_put_stream(writer.into_inner()).await?;
+
+    // Fin phase: 5%
     ftp_stream.quit().await?;
 
     let protocol = if payload.https { "https" } else { "http" };
@@ -148,7 +173,7 @@ async fn ftp_upload_internal(payload: Payload) -> Result<FileInfo> {
 
     ftp_stream.transfer_type(FileType::Binary).await?;
 
-    let file_info: crate::utils::file::FileInfo = get_file_info(&payload.local_path).await?;
+    let file_info = get_file_info(&payload.local_path).await?;
 
     let ext = Path::new(&payload.local_path)
         .extension()

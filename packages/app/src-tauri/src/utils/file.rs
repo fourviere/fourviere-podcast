@@ -9,10 +9,7 @@ pub struct FileInfo {
 }
 
 pub async fn get_file_info(path: &String) -> Result<FileInfo> {
-    let mime = from_path(path).first_or_octet_stream();
+    let mime_type = from_path(path).first_or_octet_stream().to_string();
     let size = tokio::fs::metadata(path).await?.len();
-    Ok(FileInfo {
-        mime_type: mime.to_string(),
-        size,
-    })
+    Ok(FileInfo { mime_type, size })
 }

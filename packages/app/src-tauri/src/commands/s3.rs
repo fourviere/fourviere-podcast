@@ -1,4 +1,5 @@
 use ::function_name::named;
+use get_chunk::iterator::FileIter;
 use s3::{creds::Credentials, Bucket, Region};
 use serde::{Deserialize, Serialize};
 use std::{borrow::Cow, path::Path};
@@ -62,6 +63,7 @@ async fn s3_upload_with_progress_task(
     payload: Payload,
     use_path_style: bool,
 ) -> Result<FileInfo> {
+    // Init Phase: 15%
     event_producer.send(Ok(Event::Progress(0))).await;
 
     let credentials = Credentials::new(
@@ -89,19 +91,54 @@ async fn s3_upload_with_progress_task(
         bucket.set_path_style();
     }
 
-    let file = fs::read(&payload.local_path).await?;
-    let file_info: crate::utils::file::FileInfo = get_file_info(&payload.local_path).await?;
+    event_producer.send(Ok(Event::Progress(5))).await;
 
     let ext = Path::new(&payload.local_path)
         .extension()
         .map_or(Cow::default(), |ext| ext.to_string_lossy());
 
     let path = payload.path.unwrap_or("".to_owned());
-    let new_file_name = format!("{}/{}.{}", &path, &payload.file_name, &ext);
+    let new_file_name: String = format!("{}/{}.{}", &path, &payload.file_name, &ext);
+
+    event_producer.send(Ok(Event::Progress(7))).await;
+
+    //let file = fs::read(&payload.local_path).await?;
+    let file_info = get_file_info(&payload.local_path).await?;
+
+    event_producer.send(Ok(Event::Progress(15))).await;
+    // Initialization takes 15%
+
+    // Trasfer phase: 80%
+
+    // Step by 8%
+    let file_iter =
+        FileIter::new(payload.local_path.as_ref())?.set_mode(get_chunk::ChunkSize::Percent(10.));
+
+    let upload_response = bucket
+        .initiate_multipart_upload(&new_file_name, &file_info.mime_type)
+        .await?;
+
+    for (index, chunk) in file_iter.enumerate() {
+        bucket
+            .put_multipart_chunk(
+                chunk?,
+                &new_file_name,
+                index as u32,
+                &upload_response.upload_id,
+                &file_info.mime_type,
+            )
+            .await?;
+
+        let progress = 15 + (index as u8 * 8);
+        event_producer.send(Ok(Event::Progress(progress))).await;
+    }
 
     bucket
-        .put_object_with_content_type(new_file_name, &file, &file_info.mime_type)
+        .complete_multipart_upload(&new_file_name, &upload_response.upload_id, Vec::new())
         .await?;
+
+    // Fin phase: 5%
+    event_producer.send(Ok(Event::Progress(95))).await;
 
     let protocol = if payload.https { "https" } else { "http" };
 
@@ -154,7 +191,7 @@ async fn s3_upload_internal(payload: Payload, use_path_style: bool) -> Result<Fi
     }
 
     let file = fs::read(&payload.local_path).await?;
-    let file_info: crate::utils::file::FileInfo = get_file_info(&payload.local_path).await?;
+    let file_info = get_file_info(&payload.local_path).await?;
 
     let ext = Path::new(&payload.local_path)
         .extension()
