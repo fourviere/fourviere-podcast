@@ -59,18 +59,16 @@ async fn ftp_upload_with_progress_task(
     event_producer: &mut EventProducer,
     payload: Payload,
 ) -> Result<FileInfo> {
-    // Init Phase: 15%
+    // Init Phase
     event_producer.send(Ok(Event::Progress(0))).await;
 
     let addr = format!("{}:{}", payload.host, payload.port);
 
     let mut ftp_stream = AsyncFtpStream::connect(addr).await?;
 
-    event_producer.send(Ok(Event::Progress(5))).await;
+    event_producer.send(Ok(Event::DeltaProgress(3))).await;
 
     ftp_stream.login(&payload.user, &payload.password).await?;
-
-    event_producer.send(Ok(Event::Progress(7))).await;
 
     // As default set the FTP connection to passive mode
     ftp_stream.set_mode(Mode::Passive);
@@ -84,15 +82,13 @@ async fn ftp_upload_with_progress_task(
         ftp_stream.set_mode(Mode::ExtendedPassive);
     }
 
-    event_producer.send(Ok(Event::Progress(10))).await;
-
     if let Some(path) = &payload.path {
         ftp_stream.cwd(path).await?;
     }
 
     ftp_stream.transfer_type(FileType::Binary).await?;
 
-    event_producer.send(Ok(Event::Progress(12))).await;
+    event_producer.send(Ok(Event::DeltaProgress(2))).await;
 
     let file_info = get_file_info(&payload.local_path).await?;
 
@@ -100,9 +96,9 @@ async fn ftp_upload_with_progress_task(
         .extension()
         .map_or(Cow::default(), |ext| ext.to_string_lossy());
 
-    event_producer.send(Ok(Event::Progress(15))).await;
+    event_producer.send(Ok(Event::DeltaProgress(2))).await;
 
-    // Trasfer phase: 80%
+    // Trasfer phase: 80-88%
 
     // Step by 8%
     let file_iter =
@@ -113,16 +109,15 @@ async fn ftp_upload_with_progress_task(
         .await?
         .compat_write();
 
-    for (index, chunk) in file_iter.enumerate() {
+    for chunk in file_iter {
         writer.write_all(&chunk?).await?;
-
-        let progress = 15 + (index as u8 * 8);
-        event_producer.send(Ok(Event::Progress(progress))).await;
+        event_producer.send(Ok(Event::DeltaProgress(8))).await;
     }
 
     ftp_stream.finalize_put_stream(writer.into_inner()).await?;
 
     // Fin phase: 5%
+    event_producer.send(Ok(Event::Progress(95))).await;
     ftp_stream.quit().await?;
 
     let protocol = if payload.https { "https" } else { "http" };
@@ -132,7 +127,7 @@ async fn ftp_upload_with_progress_task(
         None => format!("{}.{}", payload.file_name, ext),
     };
 
-    event_producer.send(Ok(Event::Progress(100))).await;
+    event_producer.send(Ok(Event::DeltaProgress(5))).await;
 
     Ok(FileInfo {
         size: file_info.size,

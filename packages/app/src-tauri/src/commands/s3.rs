@@ -63,7 +63,7 @@ async fn s3_upload_with_progress_task(
     payload: Payload,
     use_path_style: bool,
 ) -> Result<FileInfo> {
-    // Init Phase: 15%
+    // Init Phase
     event_producer.send(Ok(Event::Progress(0))).await;
 
     let credentials = Credentials::new(
@@ -91,7 +91,7 @@ async fn s3_upload_with_progress_task(
         bucket.set_path_style();
     }
 
-    event_producer.send(Ok(Event::Progress(5))).await;
+    event_producer.send(Ok(Event::DeltaProgress(2))).await;
 
     let ext = Path::new(&payload.local_path)
         .extension()
@@ -100,15 +100,12 @@ async fn s3_upload_with_progress_task(
     let path = payload.path.unwrap_or("".to_owned());
     let new_file_name: String = format!("{}/{}.{}", &path, &payload.file_name, &ext);
 
-    event_producer.send(Ok(Event::Progress(7))).await;
-
     //let file = fs::read(&payload.local_path).await?;
     let file_info = get_file_info(&payload.local_path).await?;
 
-    event_producer.send(Ok(Event::Progress(15))).await;
-    // Initialization takes 15%
+    event_producer.send(Ok(Event::DeltaProgress(5))).await;
 
-    // Trasfer phase: 80%
+    // Trasfer phase: 80-88%
 
     // Step by 8%
     let file_iter =
@@ -129,8 +126,7 @@ async fn s3_upload_with_progress_task(
             )
             .await?;
 
-        let progress = 15 + (index as u8 * 8);
-        event_producer.send(Ok(Event::Progress(progress))).await;
+        event_producer.send(Ok(Event::DeltaProgress(8))).await;
     }
 
     bucket
@@ -148,7 +144,7 @@ async fn s3_upload_with_progress_task(
         format!("{}.{}", payload.file_name, ext)
     };
 
-    event_producer.send(Ok(Event::Progress(100))).await;
+    event_producer.send(Ok(Event::DeltaProgress(5))).await;
 
     Ok(FileInfo {
         size: file_info.size,
