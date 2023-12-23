@@ -264,7 +264,7 @@ mod test {
         let port = 2121;
         let payload = Payload {
             host: "localhost".to_owned(),
-            port: port,
+            port,
             user: USER.to_owned(),
             password: PASSWORD.to_owned(),
             local_path: test_file!("gitbar.xml").to_owned(),
@@ -295,7 +295,7 @@ mod test {
         let port = 2122;
         let payload = Payload {
             host: "localhosts".to_owned(),
-            port: port,
+            port,
             user: USER.to_owned(),
             password: PASSWORD.to_owned(),
             local_path: test_file!("gitbar.xml").to_owned(),
@@ -320,7 +320,7 @@ mod test {
         let port = 2123;
         let payload = Payload {
             host: "localhost".to_owned(),
-            port: port,
+            port,
             user: "NotAValidUserName".to_owned(),
             password: PASSWORD.to_owned(),
             local_path: test_file!("gitbar.xml").to_owned(),
@@ -345,7 +345,7 @@ mod test {
         let port = 2124;
         let payload = Payload {
             host: "localhost".to_owned(),
-            port: port,
+            port,
             user: USER.to_owned(),
             password: PASSWORD.to_owned(),
             local_path: test_file!("gitbar.rss").to_owned(),
@@ -370,7 +370,7 @@ mod test {
         let port = 2125;
         let payload = Payload {
             host: "localhost".to_owned(),
-            port: port,
+            port,
             user: USER.to_owned(),
             password: PASSWORD.to_owned(),
             local_path: test_file!("gitbar.xml").to_owned(),
@@ -419,7 +419,7 @@ mod test {
         let port = 2126;
         let payload = Payload {
             host: "localhosts".to_owned(),
-            port: port,
+            port,
             user: USER.to_owned(),
             password: PASSWORD.to_owned(),
             local_path: test_file!("gitbar.xml").to_owned(),
@@ -458,7 +458,7 @@ mod test {
         let port = 2127;
         let payload = Payload {
             host: "localhost".to_owned(),
-            port: port,
+            port,
             user: "NotAValidUserName".to_owned(),
             password: PASSWORD.to_owned(),
             local_path: test_file!("gitbar.xml").to_owned(),
@@ -497,7 +497,7 @@ mod test {
         let port = 2128;
         let payload = Payload {
             host: "localhost".to_owned(),
-            port: port,
+            port,
             user: USER.to_owned(),
             password: PASSWORD.to_owned(),
             local_path: test_file!("gitbar.rss").to_owned(),

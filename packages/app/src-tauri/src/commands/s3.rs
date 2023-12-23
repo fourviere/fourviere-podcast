@@ -105,7 +105,7 @@ async fn s3_upload_with_progress_task(
 
     event_producer.send(Ok(Event::DeltaProgress(5))).await;
 
-    // Trasfer phase: 80-88%
+    // Transfer phase: 80-88%
 
     // Step by 8%
     let file_iter =

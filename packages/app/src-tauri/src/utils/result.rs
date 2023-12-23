@@ -7,11 +7,11 @@ pub enum Error {
     Network(#[from] reqwest::Error),
     #[error("Error getting data at specified path")]
     Io(#[from] std::io::Error),
-    #[error("Error trasfering data to the server")]
+    #[error("Error transferring data to the server")]
     Ftp(#[from] suppaftp::FtpError),
     #[error("Error while configuring s3 credentials")]
     S3Credentials(#[from] s3::creds::error::CredentialsError),
-    #[error("Error while operationing on s3 storage")]
+    #[error("Error while working on s3 storage")]
     S3Operation(#[from] s3::error::S3Error),
     #[error("Internal tauri error")]
     Tauri(#[from] tauri::Error),
