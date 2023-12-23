@@ -4,7 +4,7 @@ use s3::{creds::Credentials, Bucket, Region};
 use serde::{Deserialize, Serialize};
 use std::{borrow::Cow, path::Path};
 use tauri::Window;
-use tokio::{fs, spawn};
+use tokio::{fs, spawn, task::JoinSet};
 use uuid::Uuid;
 
 use crate::{
@@ -115,18 +115,29 @@ async fn s3_upload_with_progress_task(
         .initiate_multipart_upload(&new_file_name, &file_info.mime_type)
         .await?;
 
-    for (index, chunk) in file_iter.enumerate() {
-        bucket
-            .put_multipart_chunk(
-                chunk?,
-                &new_file_name,
-                index as u32,
-                &upload_response.upload_id,
-                &file_info.mime_type,
-            )
-            .await?;
+    let mut set: JoinSet<Result<()>> = JoinSet::new();
 
-        event_producer.send(Ok(Event::DeltaProgress(8))).await;
+    for (index, chunk) in file_iter.enumerate() {
+        // Prepare data for the part upload task
+        let chunk = chunk?;
+        let mut event_producer = event_producer.clone();
+        let bucket = bucket.clone();
+        let new_file_name = new_file_name.clone();
+        let upload_id = upload_response.upload_id.clone();
+        let mime_type = file_info.mime_type.clone();
+
+        set.spawn(async move {
+            bucket
+                .put_multipart_chunk(chunk, &new_file_name, index as u32, &upload_id, &mime_type)
+                .await?;
+
+            event_producer.send(Ok(Event::DeltaProgress(8))).await;
+            Ok(())
+        });
+
+        while let Some(res) = set.join_next().await {
+            res??;
+        }
     }
 
     bucket

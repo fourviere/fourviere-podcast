@@ -57,7 +57,7 @@ impl Channel {
             Channel::Window(window) => window
                 .emit(&id.to_string(), &event)
                 .map_err(|err| err.into()),
-            Channel::Sender(sender) => sender.send((id, event)).await.map_err(|_| Error::TokioSend),
+            Channel::Sender(sender) => sender.send((id, event)).await.map_err(|_| Error::TokioSendClosed),
         }
     }
 }

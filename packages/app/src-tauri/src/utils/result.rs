@@ -15,8 +15,10 @@ pub enum Error {
     S3Operation(#[from] s3::error::S3Error),
     #[error("Internal tauri error")]
     Tauri(#[from] tauri::Error),
-    #[error("Channel Closed")]
-    TokioSend,
+    #[error("Tokio channel closed")]
+    TokioSendClosed,
+    #[error("Tokio task failed to execute to completion")]
+    TokioSet(#[from] tokio::task::JoinError),
 }
 
 impl Serialize for Error {
