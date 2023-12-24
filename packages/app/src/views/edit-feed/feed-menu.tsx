@@ -8,6 +8,7 @@ import {
   PencilSquareIcon,
   QueueListIcon,
 } from "@heroicons/react/24/outline";
+import FeedUpload from "./feed-upload";
 
 export default function FeedMenu() {
   const t = useTranslations();
@@ -65,6 +66,7 @@ export default function FeedMenu() {
           </SideMenuItem>
         </>
       }
+      footer={<FeedUpload />}
     />
   );
 }

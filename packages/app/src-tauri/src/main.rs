@@ -21,6 +21,7 @@ fn main() {
             commands::fs::read_text_file,
             commands::fs::read_file_info,
             commands::s3::s3_upload,
+            commands::s3::s3_xml_upload,
             commands::ftp::ftp_upload,
             commands::log::log_status,
             commands::log::set_log_status,

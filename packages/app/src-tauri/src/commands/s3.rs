@@ -1,6 +1,7 @@
 use ::function_name::named;
 use s3::{creds::Credentials, Bucket, Region};
 use std::{borrow::Cow, path::Path};
+use tauri::api::path::BaseDirectory;
 use tokio::fs;
 
 use crate::{
@@ -9,8 +10,22 @@ use crate::{
 };
 
 #[derive(serde::Deserialize)]
-pub struct Payload {
+pub struct FilePayload {
     local_path: String,
+    bucket_name: String,
+    region: String,
+    endpoint: String,
+    access_key: String,
+    secret_key: String,
+    // Future data
+    http_host: String,
+    https: bool,
+    path: Option<String>,
+    file_name: String,
+}
+#[derive(serde::Deserialize)]
+pub struct XmlPayload {
+    content: String,
     bucket_name: String,
     region: String,
     endpoint: String,
@@ -32,12 +47,40 @@ pub struct FileInfo {
 
 #[named]
 #[tauri::command]
-pub async fn s3_upload(payload: Payload) -> Result<FileInfo> {
+pub async fn s3_upload(payload: FilePayload) -> Result<FileInfo> {
     let upload_result = s3_upload_internal(payload, false).await;
     log_if_error_and_return!(upload_result)
 }
 
-async fn s3_upload_internal(payload: Payload, use_path_style: bool) -> Result<FileInfo> {
+use tauri::api::path::data_dir;
+
+#[named]
+#[tauri::command]
+pub async fn s3_xml_upload(payload: XmlPayload) -> Result<FileInfo> {
+    let app_data_path = data_dir().unwrap(); //improve error handling
+    let p = format!("{}{}{}", app_data_path.to_string_lossy(), "/feed", ".xml");
+
+    let xml = payload.content.as_bytes();
+    fs::write(p.clone(), xml).await?;
+
+    let file_payload = FilePayload {
+        local_path: p.clone(),
+        bucket_name: payload.bucket_name,
+        region: payload.region,
+        endpoint: payload.endpoint,
+        access_key: payload.access_key,
+        secret_key: payload.secret_key,
+        http_host: payload.http_host,
+        https: payload.https,
+        path: payload.path,
+        file_name: payload.file_name,
+    };
+
+    let upload_result = s3_upload_internal(file_payload, false).await;
+    log_if_error_and_return!(upload_result)
+}
+
+async fn s3_upload_internal(payload: FilePayload, use_path_style: bool) -> Result<FileInfo> {
     let credentials = Credentials::new(
         Some(&payload.access_key),
         Some(&payload.secret_key),
@@ -103,7 +146,7 @@ mod test {
     use tokio::time::sleep;
 
     use crate::{
-        commands::s3::{s3_upload_internal, Payload},
+        commands::s3::{s3_upload_internal, FilePayload},
         test_file,
     };
 
@@ -164,7 +207,7 @@ mod test {
         let port = 3121;
         let bucket = "test-ok";
         let domain = "http://localhost:".to_owned() + port.to_string().as_str();
-        let payload = Payload {
+        let payload = FilePayload {
             local_path: test_file!("gitbar.xml").to_owned(),
             bucket_name: bucket.to_owned(),
             region: REGION.to_owned(),
@@ -199,7 +242,7 @@ mod test {
         let port = 3122;
         let bucket = "test-err-host";
         let domain = "https://localhost:".to_owned() + port.to_string().as_str();
-        let payload = Payload {
+        let payload = FilePayload {
             local_path: test_file!("gitbar.xml").to_owned(),
             bucket_name: bucket.to_owned(),
             region: REGION.to_owned(),
@@ -228,7 +271,7 @@ mod test {
         let port = 3123;
         let bucket = "test-err-local-path";
         let domain = "http://localhost:".to_owned() + port.to_string().as_str();
-        let payload = Payload {
+        let payload = FilePayload {
             local_path: test_file!("gitbar.rss").to_owned(),
             bucket_name: bucket.to_owned(),
             region: REGION.to_owned(),
@@ -256,7 +299,7 @@ mod test {
     async fn test_s3_upload_err_bucket() {
         let port = 3124;
         let domain = "http://localhost:".to_owned() + port.to_string().as_str();
-        let payload = Payload {
+        let payload = FilePayload {
             local_path: test_file!("gitbar.xml").to_owned(),
             bucket_name: "not_a_bucket".to_owned(),
             region: REGION.to_owned(),
