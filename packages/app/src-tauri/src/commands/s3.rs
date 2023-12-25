@@ -1,7 +1,7 @@
 use ::function_name::named;
 use s3::{creds::Credentials, Bucket, Region};
 use std::{borrow::Cow, path::Path};
-use tauri::api::path::BaseDirectory;
+use tauri::api::path::data_dir;
 use tokio::fs;
 
 use crate::{
@@ -51,8 +51,6 @@ pub async fn s3_upload(payload: FilePayload) -> Result<FileInfo> {
     let upload_result = s3_upload_internal(payload, false).await;
     log_if_error_and_return!(upload_result)
 }
-
-use tauri::api::path::data_dir;
 
 #[named]
 #[tauri::command]
