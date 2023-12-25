@@ -23,6 +23,7 @@ fn main() {
             commands::s3::s3_upload,
             commands::s3::s3_xml_upload,
             commands::ftp::ftp_upload,
+            commands::ftp::ftp_xml_upload,
             commands::log::log_status,
             commands::log::set_log_status,
         ])

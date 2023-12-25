@@ -1,6 +1,8 @@
 use ::function_name::named;
 use std::{borrow::Cow, path::Path, str};
 use suppaftp::{types::FileType, AsyncFtpStream, Mode};
+use tauri::api::path::data_dir;
+use tokio::fs;
 use tokio_util::compat::TokioAsyncReadCompatExt;
 
 use crate::log_if_error_and_return;
@@ -8,12 +10,25 @@ use crate::utils::file::get_file_info;
 use crate::utils::result::Result;
 
 #[derive(serde::Deserialize)]
-pub struct Payload {
+pub struct FilePayload {
     host: String,
     port: u16,
     user: String,
     password: String,
     local_path: String,
+    path: Option<String>,
+    file_name: String,
+    http_host: String,
+    https: bool,
+}
+
+#[derive(serde::Deserialize)]
+pub struct XmlPayload {
+    host: String,
+    port: u16,
+    user: String,
+    password: String,
+    content: String,
     path: Option<String>,
     file_name: String,
     http_host: String,
@@ -29,12 +44,37 @@ pub struct FileInfo {
 
 #[named]
 #[tauri::command]
-pub async fn ftp_upload(payload: Payload) -> Result<FileInfo> {
+pub async fn ftp_upload(payload: FilePayload) -> Result<FileInfo> {
     let upload_result = ftp_upload_internal(payload).await;
     log_if_error_and_return!(upload_result)
 }
 
-async fn ftp_upload_internal(payload: Payload) -> Result<FileInfo> {
+#[named]
+#[tauri::command]
+pub async fn ftp_xml_upload(payload: XmlPayload) -> Result<FileInfo> {
+    let app_data_path = data_dir().unwrap(); //improve error handling
+    let p = format!("{}{}{}", app_data_path.to_string_lossy(), "/feed", ".xml");
+
+    let xml = payload.content.as_bytes();
+    fs::write(p.clone(), xml).await?;
+
+    let file_payload = FilePayload {
+        host: payload.host,
+        port: payload.port,
+        user: payload.user,
+        password: payload.password,
+        local_path: p.clone(),
+        path: payload.path,
+        file_name: payload.file_name,
+        http_host: payload.http_host,
+        https: payload.https,
+    };
+
+    let upload_result = ftp_upload_internal(file_payload).await;
+    log_if_error_and_return!(upload_result)
+}
+
+async fn ftp_upload_internal(payload: FilePayload) -> Result<FileInfo> {
     let addr = format!("{}:{}", payload.host, payload.port);
 
     let mut ftp_stream = AsyncFtpStream::connect(addr).await?;
@@ -102,7 +142,7 @@ mod test {
     use tokio::time::sleep;
 
     use crate::{
-        commands::ftp::{ftp_upload, Payload},
+        commands::ftp::{ftp_upload, FilePayload},
         test_file,
     };
 
@@ -151,7 +191,7 @@ mod test {
     #[tokio::test(flavor = "multi_thread")]
     async fn test_ftp_upload_ok() {
         let port = 2121;
-        let payload = Payload {
+        let payload = FilePayload {
             host: "localhost".to_owned(),
             port: port,
             user: USER.to_owned(),
@@ -182,7 +222,7 @@ mod test {
     #[tokio::test(flavor = "multi_thread")]
     async fn test_ftp_upload_err_host() {
         let port = 2122;
-        let payload = Payload {
+        let payload = FilePayload {
             host: "localhosts".to_owned(),
             port: port,
             user: USER.to_owned(),
@@ -207,7 +247,7 @@ mod test {
     #[tokio::test(flavor = "multi_thread")]
     async fn test_ftp_upload_err_user() {
         let port = 2123;
-        let payload = Payload {
+        let payload = FilePayload {
             host: "localhost".to_owned(),
             port: port,
             user: "NotAValidUserName".to_owned(),
@@ -232,7 +272,7 @@ mod test {
     #[tokio::test(flavor = "multi_thread")]
     async fn test_ftp_upload_err_local_path() {
         let port = 2124;
-        let payload = Payload {
+        let payload = FilePayload {
             host: "localhost".to_owned(),
             port: port,
             user: USER.to_owned(),

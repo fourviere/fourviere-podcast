@@ -1,9 +1,7 @@
 import Button from "@fourviere/ui/lib/button";
 import React from "react";
-import feedStore from "../../store/feed";
-import { serializeToXML } from "@fourviere/core/lib/converter";
 import { useParams } from "react-router-dom";
-import { invoke } from "@tauri-apps/api";
+import useFeedUpload from "../../hooks/useFeedUpload";
 
 const FeedUpload: React.FC = () => {
   const { feedId } = useParams<{ feedId: string }>();
@@ -12,36 +10,26 @@ const FeedUpload: React.FC = () => {
     return null;
   }
 
-  const project = feedStore((state) => state.getProjectById(feedId));
-  const xml = serializeToXML(project.feed);
-
-  const { s3 } = feedStore(
-    (state) =>
-      state.getProjectById(feedId)?.configuration?.remotes ?? {
-        remote: "none",
-        s3: undefined,
-      },
-  );
-
-  function upload() {
-    void invoke("s3_xml_upload", {
-      payload: {
-        content: xml,
-        file_name: "pippo",
-        ...s3,
-      },
-    })
-      .then((e) => {
-        console.log(e);
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  }
+  const { upload, isUploading } = useFeedUpload({
+    feedId,
+    updateField: (value) => {
+      console.log(value);
+    },
+    updateError: (value) => {
+      console.log(value);
+    },
+  });
 
   return (
     <div>
-      <Button size="lg" onClick={upload}>
+      <Button
+        size="lg"
+        onClick={() => {
+          upload("test.xml");
+        }}
+        disabled={isUploading}
+        isLoading={isUploading}
+      >
         Upload
       </Button>
     </div>
