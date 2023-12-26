@@ -47,6 +47,7 @@ const StartByIndex: FunctionComponent<Props> = ({ done }) => {
       } else {
         addError(t["start.start_by_url.errors.generic"]);
       }
+      console.error(e);
     } finally {
       setIsImporting(false);
     }

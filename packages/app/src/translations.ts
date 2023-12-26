@@ -127,6 +127,10 @@ const TRANSLATIONS = {
     "edit_feed.configuration.ftp.http_host": "Public base url",
     "edit_feed.configuration.ftp.https": "Https / Http",
     "edit_feed.configuration.ftp.https.info": "Check for enabling https",
+    "edit_feed.configuration.feed.title": "Feed configuration",
+    "edit_feed.configuration.feed.description":
+      "Here you can configure the feed basic settings",
+    "edit_feed.configuration.feed.filename": "Feed file name",
     "edit_feed.source-code.title": "Source code",
 
     "configurations.title": "Fourviere global configurations",

@@ -7,6 +7,7 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: "sm" | "md" | "lg";
   Icon?: React.ElementType;
   isDisable?: boolean;
+  wfull?: boolean;
 };
 
 const Button: React.FC<ButtonProps> = ({
@@ -16,19 +17,21 @@ const Button: React.FC<ButtonProps> = ({
   className,
   size,
   Icon,
+  wfull,
   ...rest
 }) => {
   return (
     <button
       {...rest}
       className={classNames(
-        `relative flex items-center rounded-lg bg-slate-800 text-xs font-semibold uppercase  text-white transition-all duration-200 ease-linear hover:bg-slate-600 hover:text-slate-200`,
+        `relative flex items-center rounded-lg bg-slate-800 text-xs font-semibold uppercase text-white transition-all duration-200 ease-linear hover:bg-slate-600 hover:text-slate-200`,
         { "pl-9": isLoading },
         { "px-3 py-2": size === "sm" },
         { "px-4 py-3": size === "md" },
         { "px-6 py-4": size === "lg" },
         { "cursor-not-allowed opacity-50": isLoading },
         { "cursor-not-allowed opacity-50": isDisable },
+        { "flex w-full justify-center": wfull },
         className,
       )}
     >

@@ -39,6 +39,17 @@ export default function Configuration() {
             >
               {t["edit_feed.configuration.title"]}
             </ContainerTitle>
+            <FormSection
+              title={t["edit_feed.configuration.feed.title"]}
+              description={t["edit_feed.configuration.feed.description"]}
+            >
+              <FormRow
+                name="feed.filename"
+                label={t["edit_feed.configuration.feed.filename"]}
+              >
+                <FormField id="feed.filename" name="feed.filename" as={Input} />
+              </FormRow>
+            </FormSection>
 
             <FormSection
               title={t["edit_feed.configuration.remotes.title"]}
@@ -171,6 +182,7 @@ export default function Configuration() {
                       id="remotes.ftp.port"
                       name="remotes.ftp.port"
                       as={Input}
+                      fieldProps={{ type: "number" }}
                     />
                   </FormRow>
                   <FormRow
