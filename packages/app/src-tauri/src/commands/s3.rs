@@ -56,7 +56,7 @@ pub async fn s3_upload(payload: FilePayload) -> Result<FileInfo> {
 #[tauri::command]
 pub async fn s3_xml_upload(payload: XmlPayload) -> Result<FileInfo> {
     let app_data_path = data_dir().unwrap(); //improve error handling
-    let p = format!("{}{}{}", app_data_path.to_string_lossy(), "/feed", ".xml");
+    let p = format!("{}{}", app_data_path.to_string_lossy(), "/feed.xml");
 
     let xml = payload.content.as_bytes();
     fs::write(p.clone(), xml).await?;
