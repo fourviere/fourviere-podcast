@@ -45,7 +45,7 @@ rss = "2.0.6"
 s3s = "0.8.0"
 s3s-fs = "0.8.0"
 tokio = { version = "1", features = ["full"] }
-unftp-sbe-fs = "0.2.3"
+unftp-sbe-fs = "0.2.4"
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem
