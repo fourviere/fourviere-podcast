@@ -5307,9 +5307,9 @@ checksum = "42ff0bf0c66b8238c6f3b578df37d0b7848e55df8577b3f74f92a69acceeb825"
 
 [[package]]
 name = "unftp-sbe-fs"
-version = "0.2.3"
+version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e773735518812692e795347490f7e111e4c52615900d3416dda74b8dcaba910f"
+checksum = "3f7165a6e8d96504e2515247fec05fac7f3add1b295d53d81f6aa3c0eee69ace"
 dependencies = [
  "async-trait",
  "cfg-if",
