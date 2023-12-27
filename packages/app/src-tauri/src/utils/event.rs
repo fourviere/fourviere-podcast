@@ -17,7 +17,7 @@ use super::result::{Error, Result};
 pub enum Event {
     DeltaProgress(u8),
     Progress(u8),
-    FtpResult(crate::commands::ftp::FileInfo),
+    FileResult(crate::commands::common::FileInfo),
     S3Result(crate::commands::s3::FileInfo),
 }
 

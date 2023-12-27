@@ -1,52 +1,73 @@
 use ::function_name::named;
 use get_chunk::iterator::FileIter;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 use std::{borrow::Cow, path::Path, str};
 use suppaftp::{types::FileType, AsyncFtpStream, Mode};
-use tauri::api::path::data_dir;
-use tauri::Window;
-use tokio::fs;
-use tokio::io::AsyncWriteExt;
-use tokio::spawn;
+use tauri::{api::path::data_dir, Window};
+use tokio::{fs, io::AsyncWriteExt, spawn};
 use tokio_util::compat::{FuturesAsyncWriteCompatExt, TokioAsyncReadCompatExt};
 use uuid::Uuid;
 
-use crate::log_if_error_and_return;
-use crate::utils::event::{Channel, Event, EventProducer};
-use crate::utils::file::get_file_info;
-use crate::utils::result::Result;
+use crate::{
+    log_if_error_and_return,
+    utils::{
+        event::{Channel, Event, EventProducer},
+        file::get_file_info,
+        result::Result,
+    },
+};
+
+use super::common::{EndPointPayloadConf, FileInfo};
 
 #[derive(Deserialize)]
-pub struct FilePayload {
+struct FtpConnection {
     host: String,
     port: u16,
     user: String,
     password: String,
+}
+
+impl FtpConnection {
+    async fn connect(&self) -> Result<AsyncFtpStream> {
+        let addr = format!("{}:{}", self.host, self.port);
+        let mut ftp_stream = AsyncFtpStream::connect(addr).await?;
+        ftp_stream.login(&self.user, &self.password).await?;
+
+        // As default set the FTP connection to passive mode
+        ftp_stream.set_mode(Mode::Passive);
+        // https://www.iana.org/assignments/ftp-commands-extensions/ftp-commands-extensions.xhtml
+        if ftp_stream
+            .feat()
+            .await
+            .is_ok_and(|opts| opts.get("EPSV").is_some())
+        {
+            ftp_stream.set_mode(Mode::ExtendedPassive);
+        }
+
+        Ok(ftp_stream)
+    }
+}
+
+#[derive(Deserialize)]
+pub struct FilePayload {
     local_path: String,
-    path: Option<String>,
-    file_name: String,
-    http_host: String,
-    https: bool,
+
+    #[serde(flatten)]
+    ftp_connection: FtpConnection,
+
+    #[serde(flatten)]
+    endpoint_config: EndPointPayloadConf,
 }
 
 #[derive(Deserialize)]
 pub struct XmlPayload {
-    host: String,
-    port: u16,
-    user: String,
-    password: String,
     content: String,
-    path: Option<String>,
-    file_name: String,
-    http_host: String,
-    https: bool,
-}
 
-#[derive(Debug, PartialEq, Serialize)]
-pub struct FileInfo {
-    pub url: String,
-    pub mime_type: String,
-    pub size: u64,
+    #[serde(flatten)]
+    ftp_connection: FtpConnection,
+
+    #[serde(flatten)]
+    endpoint_config: EndPointPayloadConf,
 }
 
 #[tauri::command]
@@ -62,7 +83,7 @@ fn ftp_upload_with_progress(channel: Channel, payload: FilePayload) -> Uuid {
     spawn(async move {
         let result = ftp_upload_with_progress_task(&mut event_producer, payload)
             .await
-            .map(Event::FtpResult);
+            .map(Event::FileResult);
         log_if_error_and_return!(&result);
         event_producer.send(result).await;
     });
@@ -77,27 +98,11 @@ async fn ftp_upload_with_progress_task(
     // Init Phase
     event_producer.send(Ok(Event::Progress(0))).await;
 
-    let addr = format!("{}:{}", payload.host, payload.port);
-
-    let mut ftp_stream = AsyncFtpStream::connect(addr).await?;
+    let mut ftp_stream = payload.ftp_connection.connect().await?;
 
     event_producer.send(Ok(Event::DeltaProgress(3))).await;
 
-    ftp_stream.login(&payload.user, &payload.password).await?;
-
-    // As default set the FTP connection to passive mode
-    ftp_stream.set_mode(Mode::Passive);
-
-    // https://www.iana.org/assignments/ftp-commands-extensions/ftp-commands-extensions.xhtml
-    if ftp_stream
-        .feat()
-        .await
-        .is_ok_and(|opts| opts.get("EPSV").is_some())
-    {
-        ftp_stream.set_mode(Mode::ExtendedPassive);
-    }
-
-    if let Some(path) = &payload.path {
+    if let Some(path) = &payload.endpoint_config.path {
         ftp_stream.cwd(path).await?;
     }
 
@@ -120,7 +125,7 @@ async fn ftp_upload_with_progress_task(
         FileIter::new(payload.local_path.as_ref())?.set_mode(get_chunk::ChunkSize::Percent(10.));
 
     let mut writer = ftp_stream
-        .put_with_stream(format!("{}.{}", &payload.file_name, &ext))
+        .put_with_stream(format!("{}.{}", &payload.endpoint_config.file_name, &ext))
         .await?
         .compat_write();
 
@@ -135,20 +140,11 @@ async fn ftp_upload_with_progress_task(
     event_producer.send(Ok(Event::Progress(95))).await;
     ftp_stream.quit().await?;
 
-    let protocol = if payload.https { "https" } else { "http" };
-
-    let file_path = match payload.path.filter(|path| !path.is_empty()) {
-        Some(path) => format!("{}/{}.{}", path, payload.file_name, ext),
-        None => format!("{}.{}", payload.file_name, ext),
-    };
+    let file_info = FileInfo::new(&payload.endpoint_config, &file_info, &ext);
 
     event_producer.send(Ok(Event::DeltaProgress(5))).await;
 
-    Ok(FileInfo {
-        size: file_info.size,
-        mime_type: file_info.mime_type,
-        url: format!("{}://{}/{}", protocol, payload.http_host, file_path),
-    })
+    Ok(file_info)
 }
 
 #[named]
@@ -168,15 +164,9 @@ pub async fn ftp_xml_upload(payload: XmlPayload) -> Result<FileInfo> {
     fs::write(p.clone(), xml).await?;
 
     let file_payload = FilePayload {
-        host: payload.host,
-        port: payload.port,
-        user: payload.user,
-        password: payload.password,
+        ftp_connection: payload.ftp_connection,
         local_path: p.clone(),
-        path: payload.path,
-        file_name: payload.file_name,
-        http_host: payload.http_host,
-        https: payload.https,
+        endpoint_config: payload.endpoint_config,
     };
 
     let upload_result = ftp_upload_internal(file_payload).await;
@@ -184,25 +174,9 @@ pub async fn ftp_xml_upload(payload: XmlPayload) -> Result<FileInfo> {
 }
 
 async fn ftp_upload_internal(payload: FilePayload) -> Result<FileInfo> {
-    let addr = format!("{}:{}", payload.host, payload.port);
+    let mut ftp_stream = payload.ftp_connection.connect().await?;
 
-    let mut ftp_stream = AsyncFtpStream::connect(addr).await?;
-
-    ftp_stream.login(&payload.user, &payload.password).await?;
-
-    // As default set the FTP connection to passive mode
-    ftp_stream.set_mode(Mode::Passive);
-
-    // https://www.iana.org/assignments/ftp-commands-extensions/ftp-commands-extensions.xhtml
-    if ftp_stream
-        .feat()
-        .await
-        .is_ok_and(|opts| opts.get("EPSV").is_some())
-    {
-        ftp_stream.set_mode(Mode::ExtendedPassive);
-    }
-
-    if let Some(path) = &payload.path {
+    if let Some(path) = &payload.endpoint_config.path {
         ftp_stream.cwd(path).await?;
     }
 
@@ -220,23 +194,15 @@ async fn ftp_upload_internal(payload: FilePayload) -> Result<FileInfo> {
         .compat();
 
     ftp_stream
-        .put_file(&format!("{}.{}", &payload.file_name, &ext), &mut reader)
+        .put_file(
+            &format!("{}.{}", &payload.endpoint_config.file_name, &ext),
+            &mut reader,
+        )
         .await?;
 
     ftp_stream.quit().await?;
 
-    let protocol = if payload.https { "https" } else { "http" };
-
-    let file_path = match payload.path.filter(|path| !path.is_empty()) {
-        Some(path) => format!("{}/{}.{}", path, payload.file_name, ext),
-        None => format!("{}.{}", payload.file_name, ext),
-    };
-
-    Ok(FileInfo {
-        size: file_info.size,
-        mime_type: file_info.mime_type,
-        url: format!("{}://{}/{}", protocol, payload.http_host, file_path),
-    })
+    Ok(FileInfo::new(&payload.endpoint_config, &file_info, &ext))
 }
 
 #[cfg(test)]
@@ -252,7 +218,10 @@ mod test {
     use tokio::{spawn, sync::mpsc::channel, time::sleep};
 
     use crate::{
-        commands::ftp::{ftp_upload, ftp_upload_with_progress, FilePayload},
+        commands::{
+            common::EndPointPayloadConf,
+            ftp::{ftp_upload, ftp_upload_with_progress, FilePayload, FtpConnection},
+        },
         test_file,
     };
 
@@ -303,15 +272,19 @@ mod test {
     async fn test_ftp_upload_ok() {
         let port = 2121;
         let payload = FilePayload {
-            host: "localhost".to_owned(),
-            port,
-            user: USER.to_owned(),
-            password: PASSWORD.to_owned(),
+            ftp_connection: FtpConnection {
+                host: "localhost".to_owned(),
+                port,
+                user: USER.to_owned(),
+                password: PASSWORD.to_owned(),
+            },
             local_path: test_file!("gitbar.xml").to_owned(),
-            path: None,
-            file_name: "gitbar".to_owned(),
-            http_host: "localhost".to_owned(),
-            https: false,
+            endpoint_config: EndPointPayloadConf {
+                path: None,
+                file_name: "gitbar".to_owned(),
+                http_host: "localhost".to_owned(),
+                https: false,
+            },
         };
 
         let handle = spawn(async move {
@@ -334,15 +307,19 @@ mod test {
     async fn test_ftp_upload_err_host() {
         let port = 2122;
         let payload = FilePayload {
-            host: "localhosts".to_owned(),
-            port,
-            user: USER.to_owned(),
-            password: PASSWORD.to_owned(),
+            ftp_connection: FtpConnection {
+                host: "localhosts".to_owned(),
+                port,
+                user: USER.to_owned(),
+                password: PASSWORD.to_owned(),
+            },
             local_path: test_file!("gitbar.xml").to_owned(),
-            path: None,
-            file_name: "gitbar".to_owned(),
-            http_host: "localhosts".to_owned(),
-            https: false,
+            endpoint_config: EndPointPayloadConf {
+                path: None,
+                file_name: "gitbar".to_owned(),
+                http_host: "localhosts".to_owned(),
+                https: false,
+            },
         };
 
         let handle = spawn(async move {
@@ -359,15 +336,19 @@ mod test {
     async fn test_ftp_upload_err_user() {
         let port = 2123;
         let payload = FilePayload {
-            host: "localhost".to_owned(),
-            port,
-            user: "NotAValidUserName".to_owned(),
-            password: PASSWORD.to_owned(),
+            ftp_connection: FtpConnection {
+                host: "localhost".to_owned(),
+                port,
+                user: "NotAValidUserName".to_owned(),
+                password: PASSWORD.to_owned(),
+            },
             local_path: test_file!("gitbar.xml").to_owned(),
-            path: None,
-            file_name: "gitbar".to_owned(),
-            http_host: "localhost".to_owned(),
-            https: false,
+            endpoint_config: EndPointPayloadConf {
+                path: None,
+                file_name: "gitbar".to_owned(),
+                http_host: "localhost".to_owned(),
+                https: false,
+            },
         };
 
         let handle = spawn(async move {
@@ -384,15 +365,19 @@ mod test {
     async fn test_ftp_upload_err_local_path() {
         let port = 2124;
         let payload = FilePayload {
-            host: "localhost".to_owned(),
-            port,
-            user: USER.to_owned(),
-            password: PASSWORD.to_owned(),
+            ftp_connection: FtpConnection {
+                host: "localhost".to_owned(),
+                port,
+                user: USER.to_owned(),
+                password: PASSWORD.to_owned(),
+            },
             local_path: test_file!("gitbar.rss").to_owned(),
-            path: None,
-            file_name: "gitbar".to_owned(),
-            http_host: "localhost".to_owned(),
-            https: false,
+            endpoint_config: EndPointPayloadConf {
+                path: None,
+                file_name: "gitbar".to_owned(),
+                http_host: "localhost".to_owned(),
+                https: false,
+            },
         };
 
         let handle = spawn(async move {
@@ -409,15 +394,19 @@ mod test {
     async fn test_ftp_upload_progress_ok() {
         let port = 2125;
         let payload = FilePayload {
-            host: "localhost".to_owned(),
-            port,
-            user: USER.to_owned(),
-            password: PASSWORD.to_owned(),
+            ftp_connection: FtpConnection {
+                host: "localhost".to_owned(),
+                port,
+                user: USER.to_owned(),
+                password: PASSWORD.to_owned(),
+            },
             local_path: test_file!("gitbar.xml").to_owned(),
-            path: None,
-            file_name: "gitbar".to_owned(),
-            http_host: "localhost".to_owned(),
-            https: false,
+            endpoint_config: EndPointPayloadConf {
+                path: None,
+                file_name: "gitbar".to_owned(),
+                http_host: "localhost".to_owned(),
+                https: false,
+            },
         };
 
         let handle = spawn(async move {
@@ -437,7 +426,7 @@ mod test {
             match event {
                 Ok(event) => match event {
                     crate::utils::event::Event::Progress(_) => at_least_one_progress = true,
-                    crate::utils::event::Event::FtpResult(file_info) => {
+                    crate::utils::event::Event::FileResult(file_info) => {
                         assert_eq!(file_info.size, FILESIZE);
                         assert_eq!(file_info.mime_type, "text/xml");
                         at_least_one_result = true;
@@ -458,15 +447,19 @@ mod test {
     async fn test_ftp_upload_progress_err_host() {
         let port = 2126;
         let payload = FilePayload {
-            host: "localhosts".to_owned(),
-            port,
-            user: USER.to_owned(),
-            password: PASSWORD.to_owned(),
+            ftp_connection: FtpConnection {
+                host: "localhosts".to_owned(),
+                port,
+                user: USER.to_owned(),
+                password: PASSWORD.to_owned(),
+            },
             local_path: test_file!("gitbar.xml").to_owned(),
-            path: None,
-            file_name: "gitbar".to_owned(),
-            http_host: "localhosts".to_owned(),
-            https: false,
+            endpoint_config: EndPointPayloadConf {
+                path: None,
+                file_name: "gitbar".to_owned(),
+                http_host: "localhosts".to_owned(),
+                https: false,
+            },
         };
 
         let handle = spawn(async move {
@@ -497,15 +490,19 @@ mod test {
     async fn test_ftp_upload_progress_err_user() {
         let port = 2127;
         let payload = FilePayload {
-            host: "localhost".to_owned(),
-            port,
-            user: "NotAValidUserName".to_owned(),
-            password: PASSWORD.to_owned(),
+            ftp_connection: FtpConnection {
+                host: "localhost".to_owned(),
+                port,
+                user: "NotAValidUserName".to_owned(),
+                password: PASSWORD.to_owned(),
+            },
             local_path: test_file!("gitbar.xml").to_owned(),
-            path: None,
-            file_name: "gitbar".to_owned(),
-            http_host: "localhost".to_owned(),
-            https: false,
+            endpoint_config: EndPointPayloadConf {
+                path: None,
+                file_name: "gitbar".to_owned(),
+                http_host: "localhost".to_owned(),
+                https: false,
+            },
         };
 
         let handle = spawn(async move {
@@ -536,15 +533,19 @@ mod test {
     async fn test_ftp_upload_progress_err_local_path() {
         let port = 2128;
         let payload = FilePayload {
-            host: "localhost".to_owned(),
-            port,
-            user: USER.to_owned(),
-            password: PASSWORD.to_owned(),
+            ftp_connection: FtpConnection {
+                host: "localhost".to_owned(),
+                port,
+                user: USER.to_owned(),
+                password: PASSWORD.to_owned(),
+            },
             local_path: test_file!("gitbar.rss").to_owned(),
-            path: None,
-            file_name: "gitbar".to_owned(),
-            http_host: "localhost".to_owned(),
-            https: false,
+            endpoint_config: EndPointPayloadConf {
+                path: None,
+                file_name: "gitbar".to_owned(),
+                http_host: "localhost".to_owned(),
+                https: false,
+            },
         };
 
         let handle = spawn(async move {
