@@ -24,6 +24,9 @@ fn main() {
             commands::s3::s3_xml_upload,
             commands::ftp::ftp_upload,
             commands::ftp::ftp_xml_upload,
+            commands::s3::s3_upload_window_with_progress,
+            commands::ftp::ftp_upload,
+            commands::ftp::ftp_upload_window_with_progress,
             commands::log::log_status,
             commands::log::set_log_status,
         ])

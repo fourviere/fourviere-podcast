@@ -1,3 +1,4 @@
+use serde::{Serialize, Serializer};
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -6,19 +7,24 @@ pub enum Error {
     Network(#[from] reqwest::Error),
     #[error("Error getting data at specified path")]
     Io(#[from] std::io::Error),
-    #[error("Error trasfering data to the server")]
+    #[error("Error transferring data to the server")]
     Ftp(#[from] suppaftp::FtpError),
     #[error("Error while configuring s3 credentials")]
-    S3Credentials(#[from] ::s3::creds::error::CredentialsError),
-    #[error("Error while operationing on s3 storage")]
-    S3Operation(#[from] ::s3::error::S3Error),
-    //reqwest::Error with anyhow
+    S3Credentials(#[from] s3::creds::error::CredentialsError),
+    #[error("Error while working on s3 storage")]
+    S3Operation(#[from] s3::error::S3Error),
+    #[error("Internal tauri error")]
+    Tauri(#[from] tauri::Error),
+    #[error("Tokio channel closed")]
+    TokioSendClosed,
+    #[error("Tokio task failed to execute to completion")]
+    TokioSet(#[from] tokio::task::JoinError),
 }
 
-impl serde::Serialize for Error {
+impl Serialize for Error {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
-        S: serde::ser::Serializer,
+        S: Serializer,
     {
         serializer.serialize_str(self.to_string().as_ref())
     }
