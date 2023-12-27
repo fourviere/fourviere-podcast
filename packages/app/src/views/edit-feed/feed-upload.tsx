@@ -3,7 +3,10 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import useFeedUpload from "../../hooks/useFeedUpload";
 import { Container } from "@fourviere/ui/lib/box";
-import { ArrowUpLeftIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowDownTrayIcon,
+  ArrowUpTrayIcon,
+} from "@heroicons/react/24/outline";
 import UseCurrentFeed from "../../hooks/useCurrentFeed";
 
 const FeedUpload: React.FC = () => {
@@ -26,17 +29,34 @@ const FeedUpload: React.FC = () => {
   });
 
   return (
-    <Container padding="lg">
+    <Container padding="lg" spaceY="sm">
       <Button
-        wfull
-        Icon={() => <ArrowUpLeftIcon className="mr-2 h-5 w-5" />}
+        wfull={true}
+        size="md"
+        Icon={ArrowUpTrayIcon}
         onClick={() => {
           upload(currentFeed?.configuration.feed.filename ?? "feed.xml");
         }}
         disabled={isUploading}
         isLoading={isUploading}
-      ></Button>
-      {currentFeed?.configuration.feed.filename ?? "feed.xml"}
+        responsiveCollapse={true}
+      >
+        publish updates
+      </Button>
+      <Button
+        wfull={true}
+        size="md"
+        theme="secondary"
+        Icon={ArrowDownTrayIcon}
+        onClick={() => {
+          upload(currentFeed?.configuration.feed.filename ?? "feed.xml");
+        }}
+        disabled={false}
+        isLoading={false}
+        responsiveCollapse={true}
+      >
+        fetch remote
+      </Button>
     </Container>
   );
 };
