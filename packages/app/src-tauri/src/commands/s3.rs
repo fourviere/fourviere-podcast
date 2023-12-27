@@ -3,8 +3,7 @@ use get_chunk::iterator::FileIter;
 use s3::{creds::Credentials, Bucket, Region};
 use serde::Deserialize;
 use std::{borrow::Cow, path::Path};
-use tauri::{api::path::data_dir, Window};
-use tempfile::tempdir;
+use tauri::Window;
 use tokio::{fs, spawn, task::JoinSet};
 use uuid::Uuid;
 
@@ -12,7 +11,7 @@ use crate::{
     log_if_error_and_return,
     utils::{
         event::{Channel, Event, EventProducer},
-        file::get_file_info,
+        file::{get_file_info, write_string_to_temp_file, TempFile},
         result::Result,
     },
 };
@@ -60,6 +59,7 @@ pub struct FilePayload {
     #[serde(flatten)]
     endpoint_config: EndPointPayloadConf,
 }
+
 #[derive(serde::Deserialize)]
 pub struct XmlPayload {
     content: String,
@@ -73,18 +73,55 @@ pub struct XmlPayload {
 
 #[tauri::command]
 pub async fn s3_upload_window_with_progress(window: Window, payload: FilePayload) -> Uuid {
-    s3_upload_with_progress(window.into(), payload, false)
+    s3_upload_with_progress(window.into(), payload, None, false)
 }
 
 #[named]
-fn s3_upload_with_progress(channel: Channel, payload: FilePayload, use_path_style: bool) -> Uuid {
+#[tauri::command]
+pub async fn s3_xml_upload_window_with_progress(
+    window: Window,
+    payload: XmlPayload,
+) -> Result<Uuid> {
+    let result = s3_xml_upload_with_progress_internal(window.into(), payload, false).await;
+    log_if_error_and_return!(result)
+}
+
+async fn s3_xml_upload_with_progress_internal(
+    channel: Channel,
+    payload: XmlPayload,
+    use_path_style: bool,
+) -> Result<Uuid> {
+    let temp_file = write_string_to_temp_file(&payload.content, "xml").await?;
+
+    let file_payload = FilePayload {
+        local_path: temp_file.path().to_owned(),
+        connection: payload.connection,
+        endpoint_config: payload.endpoint_config,
+    };
+
+    Ok(s3_upload_with_progress(
+        channel,
+        file_payload,
+        Some(temp_file),
+        use_path_style,
+    ))
+}
+
+#[named]
+fn s3_upload_with_progress(
+    channel: Channel,
+    payload: FilePayload,
+    temp_file: Option<TempFile>,
+    use_path_style: bool,
+) -> Uuid {
     let mut event_producer = EventProducer::new(channel);
     let id = event_producer.id();
 
     spawn(async move {
-        let result = s3_upload_with_progress_task(&mut event_producer, payload, use_path_style)
-            .await
-            .map(Event::FileResult);
+        let result =
+            s3_upload_with_progress_task(&mut event_producer, payload, temp_file, use_path_style)
+                .await
+                .map(Event::FileResult);
         log_if_error_and_return!(&result);
         event_producer.send(result).await;
     });
@@ -94,6 +131,7 @@ fn s3_upload_with_progress(channel: Channel, payload: FilePayload, use_path_styl
 async fn s3_upload_with_progress_task(
     event_producer: &mut EventProducer,
     payload: FilePayload,
+    _temp_file: Option<TempFile>,
     use_path_style: bool,
 ) -> Result<FileInfo> {
     // Init Phase
@@ -128,7 +166,6 @@ async fn s3_upload_with_progress_task(
         &ext
     );
 
-    //let file = fs::read(&payload.local_path).await?;
     let file_info = get_file_info(&payload.local_path).await?;
 
     event_producer.send(Ok(Event::DeltaProgress(5))).await;
@@ -189,28 +226,23 @@ pub async fn s3_upload(payload: FilePayload) -> Result<FileInfo> {
     log_if_error_and_return!(upload_result)
 }
 
+#[named]
 #[tauri::command]
 pub async fn s3_xml_upload(payload: XmlPayload) -> Result<FileInfo> {
-    s3_xml_upload_internal(payload, false).await
+    let upload_result = s3_xml_upload_internal(payload, false).await;
+    log_if_error_and_return!(upload_result)
 }
 
-#[named]
 async fn s3_xml_upload_internal(payload: XmlPayload, use_path_style: bool) -> Result<FileInfo> {
-    let temp_dir = tempdir()?;
-    let app_data_path = data_dir().unwrap_or(temp_dir.path().to_path_buf());
-    let file_path = format!("{}{}", app_data_path.to_string_lossy(), "/feed.xml");
-
-    let xml = payload.content.as_bytes();
-    fs::write(&file_path, xml).await?;
+    let temp_file = write_string_to_temp_file(&payload.content, "xml").await?;
 
     let file_payload = FilePayload {
-        local_path: file_path,
+        local_path: temp_file.path().to_owned(),
         connection: payload.connection,
         endpoint_config: payload.endpoint_config,
     };
 
-    let upload_result = s3_upload_internal(file_payload, use_path_style).await;
-    log_if_error_and_return!(upload_result)
+    s3_upload_internal(file_payload, use_path_style).await
 }
 
 async fn s3_upload_internal(payload: FilePayload, use_path_style: bool) -> Result<FileInfo> {
@@ -266,8 +298,8 @@ mod test {
         commands::{
             common::EndPointPayloadConf,
             s3::{
-                s3_upload_internal, s3_upload_with_progress, s3_xml_upload_internal, FilePayload,
-                S3Connection, XmlPayload,
+                s3_upload_internal, s3_upload_with_progress, s3_xml_upload_internal,
+                s3_xml_upload_with_progress_internal, FilePayload, S3Connection, XmlPayload,
             },
         },
         test_file,
@@ -453,8 +485,10 @@ mod test {
         let port = 3125;
         let bucket = "test-ok";
         let domain = "http://localhost:".to_owned() + port.to_string().as_str();
-        let payload = FilePayload {
-            local_path: test_file!("gitbar.xml").to_owned(),
+        let payload = XmlPayload {
+            content: std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
+                .unwrap_or_default()
+                .to_owned(),
             connection: S3Connection {
                 bucket_name: bucket.to_owned(),
                 region: REGION.to_owned(),
@@ -474,7 +508,9 @@ mod test {
         prepare_s3_bucket(port, bucket).await;
 
         let (tx, mut rx) = channel(2);
-        let original_id = s3_upload_with_progress(tx.into(), payload, true);
+        let original_id = s3_xml_upload_with_progress_internal(tx.into(), payload, true)
+            .await
+            .unwrap();
         let mut at_least_one_progress = false;
         let mut at_least_one_result = false;
 
@@ -505,8 +541,10 @@ mod test {
         let port = 3126;
         let bucket = "test-err-host";
         let domain = "https://localhost:".to_owned() + port.to_string().as_str();
-        let payload = FilePayload {
-            local_path: test_file!("gitbar.xml").to_owned(),
+        let payload = XmlPayload {
+            content: std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
+                .unwrap_or_default()
+                .to_owned(),
             connection: S3Connection {
                 bucket_name: bucket.to_owned(),
                 region: REGION.to_owned(),
@@ -526,7 +564,9 @@ mod test {
         prepare_s3_bucket(port, bucket).await;
 
         let (tx, mut rx) = channel(2);
-        let original_id = s3_upload_with_progress(tx.into(), payload, true);
+        let original_id = s3_xml_upload_with_progress_internal(tx.into(), payload, true)
+            .await
+            .unwrap();
         let mut at_least_one_error = false;
 
         while let Some((id, event)) = rx.recv().await {
@@ -568,7 +608,7 @@ mod test {
         prepare_s3_bucket(port, bucket).await;
 
         let (tx, mut rx) = channel(2);
-        let original_id = s3_upload_with_progress(tx.into(), payload, true);
+        let original_id = s3_upload_with_progress(tx.into(), payload, None, true);
         let mut at_least_one_error = false;
 
         while let Some((id, event)) = rx.recv().await {
@@ -588,8 +628,10 @@ mod test {
     async fn test_s3_upload_progress_err_bucket() {
         let port = 3128;
         let domain = "http://localhost:".to_owned() + port.to_string().as_str();
-        let payload = FilePayload {
-            local_path: test_file!("gitbar.xml").to_owned(),
+        let payload = XmlPayload {
+            content: std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
+                .unwrap_or_default()
+                .to_owned(),
             connection: S3Connection {
                 bucket_name: "not_a_bucket".to_owned(),
                 region: REGION.to_owned(),
@@ -608,7 +650,9 @@ mod test {
         sleep(Duration::from_secs(2)).await;
 
         let (tx, mut rx) = channel(2);
-        let original_id = s3_upload_with_progress(tx.into(), payload, true);
+        let original_id = s3_xml_upload_with_progress_internal(tx.into(), payload, true)
+            .await
+            .unwrap();
         let mut at_least_one_error = false;
 
         while let Some((id, event)) = rx.recv().await {
