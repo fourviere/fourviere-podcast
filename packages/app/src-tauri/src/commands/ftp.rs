@@ -4,6 +4,7 @@ use serde::Deserialize;
 use std::{borrow::Cow, path::Path, str};
 use suppaftp::{types::FileType, AsyncFtpStream, Mode};
 use tauri::{api::path::data_dir, Window};
+use tempfile::tempdir;
 use tokio::{fs, io::AsyncWriteExt, spawn};
 use tokio_util::compat::{FuturesAsyncWriteCompatExt, TokioAsyncReadCompatExt};
 use uuid::Uuid;
@@ -64,7 +65,7 @@ pub struct XmlPayload {
     content: String,
 
     #[serde(flatten)]
-    ftp_connection: FtpConnection,
+    connection: FtpConnection,
 
     #[serde(flatten)]
     endpoint_config: EndPointPayloadConf,
@@ -157,15 +158,16 @@ pub async fn ftp_upload(payload: FilePayload) -> Result<FileInfo> {
 #[named]
 #[tauri::command]
 pub async fn ftp_xml_upload(payload: XmlPayload) -> Result<FileInfo> {
-    let app_data_path = data_dir().unwrap(); //improve error handling
-    let p = format!("{}{}", app_data_path.to_string_lossy(), "/feed.xml");
+    let temp_dir = tempdir()?;
+    let app_data_path = data_dir().unwrap_or(temp_dir.path().to_path_buf());
+    let file_path = format!("{}{}", app_data_path.to_string_lossy(), "/feed.xml");
 
     let xml = payload.content.as_bytes();
-    fs::write(p.clone(), xml).await?;
+    fs::write(&file_path, xml).await?;
 
     let file_payload = FilePayload {
-        connection: payload.ftp_connection,
-        local_path: p.clone(),
+        connection: payload.connection,
+        local_path: file_path,
         endpoint_config: payload.endpoint_config,
     };
 
@@ -220,7 +222,10 @@ mod test {
     use crate::{
         commands::{
             common::EndPointPayloadConf,
-            ftp::{ftp_upload, ftp_upload_with_progress, FilePayload, FtpConnection},
+            ftp::{
+                ftp_upload, ftp_upload_with_progress, ftp_xml_upload, FilePayload, FtpConnection,
+                XmlPayload,
+            },
         },
         test_file,
     };
@@ -271,14 +276,16 @@ mod test {
     #[tokio::test(flavor = "multi_thread")]
     async fn test_ftp_upload_ok() {
         let port = 2121;
-        let payload = FilePayload {
+        let payload = XmlPayload {
             connection: FtpConnection {
                 host: "localhost".to_owned(),
                 port,
                 user: USER.to_owned(),
                 password: PASSWORD.to_owned(),
             },
-            local_path: test_file!("gitbar.xml").to_owned(),
+            content: std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
+                .unwrap_or_default()
+                .to_owned(),
             endpoint_config: EndPointPayloadConf::new(
                 "gitbar".to_owned(),
                 None,
@@ -294,7 +301,7 @@ mod test {
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
 
-        let info_result = ftp_upload(payload).await;
+        let info_result = ftp_xml_upload(payload).await;
         assert!(info_result.is_ok());
         let file_info = info_result.unwrap();
         assert_eq!(file_info.size(), &FILESIZE);
@@ -306,14 +313,16 @@ mod test {
     #[tokio::test(flavor = "multi_thread")]
     async fn test_ftp_upload_err_host() {
         let port = 2122;
-        let payload = FilePayload {
+        let payload = XmlPayload {
             connection: FtpConnection {
                 host: "localhosts".to_owned(),
                 port,
                 user: USER.to_owned(),
                 password: PASSWORD.to_owned(),
             },
-            local_path: test_file!("gitbar.xml").to_owned(),
+            content: std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
+                .unwrap_or_default()
+                .to_owned(),
             endpoint_config: EndPointPayloadConf::new(
                 "gitbar".to_owned(),
                 None,
@@ -328,21 +337,23 @@ mod test {
 
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
-        assert!(ftp_upload(payload).await.is_err());
+        assert!(ftp_xml_upload(payload).await.is_err());
         handle.abort();
     }
 
     #[tokio::test(flavor = "multi_thread")]
     async fn test_ftp_upload_err_user() {
         let port = 2123;
-        let payload = FilePayload {
+        let payload = XmlPayload {
             connection: FtpConnection {
                 host: "localhost".to_owned(),
                 port,
                 user: "NotAValidUserName".to_owned(),
                 password: PASSWORD.to_owned(),
             },
-            local_path: test_file!("gitbar.xml").to_owned(),
+            content: std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
+                .unwrap_or_default()
+                .to_owned(),
             endpoint_config: EndPointPayloadConf::new(
                 "gitbar".to_owned(),
                 None,
@@ -357,7 +368,7 @@ mod test {
 
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
-        assert!(ftp_upload(payload).await.is_err());
+        assert!(ftp_xml_upload(payload).await.is_err());
         handle.abort();
     }
 

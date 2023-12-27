@@ -4,6 +4,7 @@ use s3::{creds::Credentials, Bucket, Region};
 use serde::Deserialize;
 use std::{borrow::Cow, path::Path};
 use tauri::{api::path::data_dir, Window};
+use tempfile::tempdir;
 use tokio::{fs, spawn, task::JoinSet};
 use uuid::Uuid;
 
@@ -188,22 +189,27 @@ pub async fn s3_upload(payload: FilePayload) -> Result<FileInfo> {
     log_if_error_and_return!(upload_result)
 }
 
-#[named]
 #[tauri::command]
 pub async fn s3_xml_upload(payload: XmlPayload) -> Result<FileInfo> {
-    let app_data_path = data_dir().unwrap(); //improve error handling
-    let p = format!("{}{}", app_data_path.to_string_lossy(), "/feed.xml");
+    s3_xml_upload_internal(payload, false).await
+}
+
+#[named]
+async fn s3_xml_upload_internal(payload: XmlPayload, use_path_style: bool) -> Result<FileInfo> {
+    let temp_dir = tempdir()?;
+    let app_data_path = data_dir().unwrap_or(temp_dir.path().to_path_buf());
+    let file_path = format!("{}{}", app_data_path.to_string_lossy(), "/feed.xml");
 
     let xml = payload.content.as_bytes();
-    fs::write(p.clone(), xml).await?;
+    fs::write(&file_path, xml).await?;
 
     let file_payload = FilePayload {
-        local_path: p.clone(),
+        local_path: file_path,
         connection: payload.connection,
         endpoint_config: payload.endpoint_config,
     };
 
-    let upload_result = s3_upload_internal(file_payload, false).await;
+    let upload_result = s3_upload_internal(file_payload, use_path_style).await;
     log_if_error_and_return!(upload_result)
 }
 
@@ -259,7 +265,10 @@ mod test {
     use crate::{
         commands::{
             common::EndPointPayloadConf,
-            s3::{s3_upload_internal, s3_upload_with_progress, FilePayload, S3Connection},
+            s3::{
+                s3_upload_internal, s3_upload_with_progress, s3_xml_upload_internal, FilePayload,
+                S3Connection, XmlPayload,
+            },
         },
         test_file,
     };
@@ -322,8 +331,10 @@ mod test {
         let port = 3121;
         let bucket = "test-ok";
         let domain = "http://localhost:".to_owned() + port.to_string().as_str();
-        let payload = FilePayload {
-            local_path: test_file!("gitbar.xml").to_owned(),
+        let payload = XmlPayload {
+            content: std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
+                .unwrap_or_default()
+                .to_owned(),
             connection: S3Connection {
                 bucket_name: bucket.to_owned(),
                 region: REGION.to_owned(),
@@ -342,7 +353,7 @@ mod test {
         sleep(Duration::from_secs(2)).await;
         prepare_s3_bucket(port, bucket).await;
 
-        let info_result = s3_upload_internal(payload, true).await;
+        let info_result = s3_xml_upload_internal(payload, true).await;
         assert!(info_result.is_ok());
         let file_info = info_result.unwrap();
         assert_eq!(file_info.size(), &FILESIZE);
@@ -356,8 +367,10 @@ mod test {
         let port = 3122;
         let bucket = "test-err-host";
         let domain = "https://localhost:".to_owned() + port.to_string().as_str();
-        let payload = FilePayload {
-            local_path: test_file!("gitbar.xml").to_owned(),
+        let payload = XmlPayload {
+            content: std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
+                .unwrap_or_default()
+                .to_owned(),
             connection: S3Connection {
                 bucket_name: bucket.to_owned(),
                 region: REGION.to_owned(),
@@ -375,7 +388,7 @@ mod test {
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
         prepare_s3_bucket(port, bucket).await;
-        assert!(s3_upload_internal(payload, true).await.is_err());
+        assert!(s3_xml_upload_internal(payload, true).await.is_err());
         handle.abort();
     }
 
@@ -411,8 +424,10 @@ mod test {
     async fn test_s3_upload_err_bucket() {
         let port = 3124;
         let domain = "http://localhost:".to_owned() + port.to_string().as_str();
-        let payload = FilePayload {
-            local_path: test_file!("gitbar.xml").to_owned(),
+        let payload = XmlPayload {
+            content: std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
+                .unwrap_or_default()
+                .to_owned(),
             connection: S3Connection {
                 bucket_name: "not_a_bucket".to_owned(),
                 region: REGION.to_owned(),
@@ -429,7 +444,7 @@ mod test {
 
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
-        assert!(s3_upload_internal(payload, true).await.is_err());
+        assert!(s3_xml_upload_internal(payload, true).await.is_err());
         handle.abort();
     }
 
