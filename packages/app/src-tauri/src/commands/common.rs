@@ -1,18 +1,29 @@
+use derive_new::new;
+use getset::Getters;
 use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Getters, new)]
 pub struct EndPointPayloadConf {
-    pub file_name: String,
-    pub path: Option<String>,
-    pub http_host: String,
-    pub https: bool,
+    #[getset(get = "pub ")]
+    file_name: String,
+
+    #[getset(get = "pub ")]
+    path: Option<String>,
+
+    http_host: String,
+    https: bool,
 }
 
-#[derive(Debug, PartialEq, Serialize)]
+#[derive(Debug, Getters, PartialEq, Serialize)]
 pub struct FileInfo {
-    pub url: String,
-    pub mime_type: String,
-    pub size: u64,
+    #[getset(get = "pub ")]
+    url: String,
+
+    #[getset(get = "pub ")]
+    mime_type: String,
+
+    #[getset(get = "pub ")]
+    size: u64,
 }
 
 impl FileInfo {

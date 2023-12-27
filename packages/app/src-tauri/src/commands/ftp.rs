@@ -53,7 +53,7 @@ pub struct FilePayload {
     local_path: String,
 
     #[serde(flatten)]
-    ftp_connection: FtpConnection,
+    connection: FtpConnection,
 
     #[serde(flatten)]
     endpoint_config: EndPointPayloadConf,
@@ -98,11 +98,11 @@ async fn ftp_upload_with_progress_task(
     // Init Phase
     event_producer.send(Ok(Event::Progress(0))).await;
 
-    let mut ftp_stream = payload.ftp_connection.connect().await?;
+    let mut ftp_stream = payload.connection.connect().await?;
 
     event_producer.send(Ok(Event::DeltaProgress(3))).await;
 
-    if let Some(path) = &payload.endpoint_config.path {
+    if let Some(path) = payload.endpoint_config.path() {
         ftp_stream.cwd(path).await?;
     }
 
@@ -125,7 +125,7 @@ async fn ftp_upload_with_progress_task(
         FileIter::new(payload.local_path.as_ref())?.set_mode(get_chunk::ChunkSize::Percent(10.));
 
     let mut writer = ftp_stream
-        .put_with_stream(format!("{}.{}", &payload.endpoint_config.file_name, &ext))
+        .put_with_stream(format!("{}.{}", payload.endpoint_config.file_name(), &ext))
         .await?
         .compat_write();
 
@@ -164,7 +164,7 @@ pub async fn ftp_xml_upload(payload: XmlPayload) -> Result<FileInfo> {
     fs::write(p.clone(), xml).await?;
 
     let file_payload = FilePayload {
-        ftp_connection: payload.ftp_connection,
+        connection: payload.ftp_connection,
         local_path: p.clone(),
         endpoint_config: payload.endpoint_config,
     };
@@ -174,9 +174,9 @@ pub async fn ftp_xml_upload(payload: XmlPayload) -> Result<FileInfo> {
 }
 
 async fn ftp_upload_internal(payload: FilePayload) -> Result<FileInfo> {
-    let mut ftp_stream = payload.ftp_connection.connect().await?;
+    let mut ftp_stream = payload.connection.connect().await?;
 
-    if let Some(path) = &payload.endpoint_config.path {
+    if let Some(path) = payload.endpoint_config.path() {
         ftp_stream.cwd(path).await?;
     }
 
@@ -195,7 +195,7 @@ async fn ftp_upload_internal(payload: FilePayload) -> Result<FileInfo> {
 
     ftp_stream
         .put_file(
-            &format!("{}.{}", &payload.endpoint_config.file_name, &ext),
+            &format!("{}.{}", payload.endpoint_config.file_name(), &ext),
             &mut reader,
         )
         .await?;
@@ -272,19 +272,19 @@ mod test {
     async fn test_ftp_upload_ok() {
         let port = 2121;
         let payload = FilePayload {
-            ftp_connection: FtpConnection {
+            connection: FtpConnection {
                 host: "localhost".to_owned(),
                 port,
                 user: USER.to_owned(),
                 password: PASSWORD.to_owned(),
             },
             local_path: test_file!("gitbar.xml").to_owned(),
-            endpoint_config: EndPointPayloadConf {
-                path: None,
-                file_name: "gitbar".to_owned(),
-                http_host: "localhost".to_owned(),
-                https: false,
-            },
+            endpoint_config: EndPointPayloadConf::new(
+                "gitbar".to_owned(),
+                None,
+                "localhost".to_owned(),
+                false,
+            ),
         };
 
         let handle = spawn(async move {
@@ -297,8 +297,8 @@ mod test {
         let info_result = ftp_upload(payload).await;
         assert!(info_result.is_ok());
         let file_info = info_result.unwrap();
-        assert_eq!(file_info.size, FILESIZE);
-        assert_eq!(file_info.mime_type, "text/xml");
+        assert_eq!(file_info.size(), &FILESIZE);
+        assert_eq!(file_info.mime_type(), "text/xml");
 
         handle.abort();
     }
@@ -307,19 +307,19 @@ mod test {
     async fn test_ftp_upload_err_host() {
         let port = 2122;
         let payload = FilePayload {
-            ftp_connection: FtpConnection {
+            connection: FtpConnection {
                 host: "localhosts".to_owned(),
                 port,
                 user: USER.to_owned(),
                 password: PASSWORD.to_owned(),
             },
             local_path: test_file!("gitbar.xml").to_owned(),
-            endpoint_config: EndPointPayloadConf {
-                path: None,
-                file_name: "gitbar".to_owned(),
-                http_host: "localhosts".to_owned(),
-                https: false,
-            },
+            endpoint_config: EndPointPayloadConf::new(
+                "gitbar".to_owned(),
+                None,
+                "localhosts".to_owned(),
+                false,
+            ),
         };
 
         let handle = spawn(async move {
@@ -336,19 +336,19 @@ mod test {
     async fn test_ftp_upload_err_user() {
         let port = 2123;
         let payload = FilePayload {
-            ftp_connection: FtpConnection {
+            connection: FtpConnection {
                 host: "localhost".to_owned(),
                 port,
                 user: "NotAValidUserName".to_owned(),
                 password: PASSWORD.to_owned(),
             },
             local_path: test_file!("gitbar.xml").to_owned(),
-            endpoint_config: EndPointPayloadConf {
-                path: None,
-                file_name: "gitbar".to_owned(),
-                http_host: "localhost".to_owned(),
-                https: false,
-            },
+            endpoint_config: EndPointPayloadConf::new(
+                "gitbar".to_owned(),
+                None,
+                "localhost".to_owned(),
+                false,
+            ),
         };
 
         let handle = spawn(async move {
@@ -365,19 +365,19 @@ mod test {
     async fn test_ftp_upload_err_local_path() {
         let port = 2124;
         let payload = FilePayload {
-            ftp_connection: FtpConnection {
+            connection: FtpConnection {
                 host: "localhost".to_owned(),
                 port,
                 user: USER.to_owned(),
                 password: PASSWORD.to_owned(),
             },
             local_path: test_file!("gitbar.rss").to_owned(),
-            endpoint_config: EndPointPayloadConf {
-                path: None,
-                file_name: "gitbar".to_owned(),
-                http_host: "localhost".to_owned(),
-                https: false,
-            },
+            endpoint_config: EndPointPayloadConf::new(
+                "gitbar".to_owned(),
+                None,
+                "localhost".to_owned(),
+                false,
+            ),
         };
 
         let handle = spawn(async move {
@@ -394,19 +394,19 @@ mod test {
     async fn test_ftp_upload_progress_ok() {
         let port = 2125;
         let payload = FilePayload {
-            ftp_connection: FtpConnection {
+            connection: FtpConnection {
                 host: "localhost".to_owned(),
                 port,
                 user: USER.to_owned(),
                 password: PASSWORD.to_owned(),
             },
             local_path: test_file!("gitbar.xml").to_owned(),
-            endpoint_config: EndPointPayloadConf {
-                path: None,
-                file_name: "gitbar".to_owned(),
-                http_host: "localhost".to_owned(),
-                https: false,
-            },
+            endpoint_config: EndPointPayloadConf::new(
+                "gitbar".to_owned(),
+                None,
+                "localhost".to_owned(),
+                false,
+            ),
         };
 
         let handle = spawn(async move {
@@ -427,8 +427,8 @@ mod test {
                 Ok(event) => match event {
                     crate::utils::event::Event::Progress(_) => at_least_one_progress = true,
                     crate::utils::event::Event::FileResult(file_info) => {
-                        assert_eq!(file_info.size, FILESIZE);
-                        assert_eq!(file_info.mime_type, "text/xml");
+                        assert_eq!(file_info.size(), &FILESIZE);
+                        assert_eq!(file_info.mime_type(), "text/xml");
                         at_least_one_result = true;
                     }
                     _ => panic!("Event not allowed: {:?}", event),
@@ -447,19 +447,19 @@ mod test {
     async fn test_ftp_upload_progress_err_host() {
         let port = 2126;
         let payload = FilePayload {
-            ftp_connection: FtpConnection {
+            connection: FtpConnection {
                 host: "localhosts".to_owned(),
                 port,
                 user: USER.to_owned(),
                 password: PASSWORD.to_owned(),
             },
             local_path: test_file!("gitbar.xml").to_owned(),
-            endpoint_config: EndPointPayloadConf {
-                path: None,
-                file_name: "gitbar".to_owned(),
-                http_host: "localhosts".to_owned(),
-                https: false,
-            },
+            endpoint_config: EndPointPayloadConf::new(
+                "gitbar".to_owned(),
+                None,
+                "localhosts".to_owned(),
+                false,
+            ),
         };
 
         let handle = spawn(async move {
@@ -490,19 +490,19 @@ mod test {
     async fn test_ftp_upload_progress_err_user() {
         let port = 2127;
         let payload = FilePayload {
-            ftp_connection: FtpConnection {
+            connection: FtpConnection {
                 host: "localhost".to_owned(),
                 port,
                 user: "NotAValidUserName".to_owned(),
                 password: PASSWORD.to_owned(),
             },
             local_path: test_file!("gitbar.xml").to_owned(),
-            endpoint_config: EndPointPayloadConf {
-                path: None,
-                file_name: "gitbar".to_owned(),
-                http_host: "localhost".to_owned(),
-                https: false,
-            },
+            endpoint_config: EndPointPayloadConf::new(
+                "gitbar".to_owned(),
+                None,
+                "localhost".to_owned(),
+                false,
+            ),
         };
 
         let handle = spawn(async move {
@@ -533,19 +533,19 @@ mod test {
     async fn test_ftp_upload_progress_err_local_path() {
         let port = 2128;
         let payload = FilePayload {
-            ftp_connection: FtpConnection {
+            connection: FtpConnection {
                 host: "localhost".to_owned(),
                 port,
                 user: USER.to_owned(),
                 password: PASSWORD.to_owned(),
             },
             local_path: test_file!("gitbar.rss").to_owned(),
-            endpoint_config: EndPointPayloadConf {
-                path: None,
-                file_name: "gitbar".to_owned(),
-                http_host: "localhost".to_owned(),
-                https: false,
-            },
+            endpoint_config: EndPointPayloadConf::new(
+                "gitbar".to_owned(),
+                None,
+                "localhost".to_owned(),
+                false,
+            ),
         };
 
         let handle = spawn(async move {

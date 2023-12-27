@@ -1,10 +1,9 @@
 use ::function_name::named;
 use get_chunk::iterator::FileIter;
 use s3::{creds::Credentials, Bucket, Region};
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 use std::{borrow::Cow, path::Path};
-use tauri::api::path::data_dir;
-use tauri::Window;
+use tauri::{api::path::data_dir, Window};
 use tokio::{fs, spawn, task::JoinSet};
 use uuid::Uuid;
 
@@ -17,40 +16,58 @@ use crate::{
     },
 };
 
+use super::common::{EndPointPayloadConf, FileInfo};
+
 #[derive(Deserialize)]
-pub struct FilePayload {
-    local_path: String,
+struct S3Connection {
     bucket_name: String,
     region: String,
     endpoint: String,
     access_key: String,
     secret_key: String,
-    // Future data
-    http_host: String,
-    https: bool,
-    path: Option<String>,
-    file_name: String,
+}
+
+impl S3Connection {
+    fn bucket(&self) -> Result<Bucket> {
+        let credentials = Credentials::new(
+            Some(&self.access_key),
+            Some(&self.secret_key),
+            None,
+            None,
+            None,
+        )?;
+
+        Bucket::new(
+            &self.bucket_name,
+            Region::Custom {
+                region: self.region.clone(),
+                endpoint: self.endpoint.clone(),
+            },
+            credentials,
+        )
+        .map_err(|err| err.into())
+    }
+}
+
+#[derive(Deserialize)]
+pub struct FilePayload {
+    local_path: String,
+
+    #[serde(flatten)]
+    connection: S3Connection,
+
+    #[serde(flatten)]
+    endpoint_config: EndPointPayloadConf,
 }
 #[derive(serde::Deserialize)]
 pub struct XmlPayload {
     content: String,
-    bucket_name: String,
-    region: String,
-    endpoint: String,
-    access_key: String,
-    secret_key: String,
-    // Future data
-    http_host: String,
-    https: bool,
-    path: Option<String>,
-    file_name: String,
-}
 
-#[derive(Debug, PartialEq, Serialize)]
-pub struct FileInfo {
-    pub url: String,
-    pub mime_type: String,
-    pub size: u64,
+    #[serde(flatten)]
+    connection: S3Connection,
+
+    #[serde(flatten)]
+    endpoint_config: EndPointPayloadConf,
 }
 
 #[tauri::command]
@@ -66,7 +83,7 @@ fn s3_upload_with_progress(channel: Channel, payload: FilePayload, use_path_styl
     spawn(async move {
         let result = s3_upload_with_progress_task(&mut event_producer, payload, use_path_style)
             .await
-            .map(Event::S3Result);
+            .map(Event::FileResult);
         log_if_error_and_return!(&result);
         event_producer.send(result).await;
     });
@@ -81,22 +98,7 @@ async fn s3_upload_with_progress_task(
     // Init Phase
     event_producer.send(Ok(Event::Progress(0))).await;
 
-    let credentials = Credentials::new(
-        Some(&payload.access_key),
-        Some(&payload.secret_key),
-        None,
-        None,
-        None,
-    )?;
-
-    let mut bucket = Bucket::new(
-        &payload.bucket_name,
-        Region::Custom {
-            region: payload.region,
-            endpoint: payload.endpoint,
-        },
-        credentials,
-    )?;
+    let mut bucket = payload.connection.bucket()?;
 
     // this header is required to make the uploaded file public readable.
     bucket.add_header("x-amz-acl", "public-read");
@@ -112,8 +114,18 @@ async fn s3_upload_with_progress_task(
         .extension()
         .map_or(Cow::default(), |ext| ext.to_string_lossy());
 
-    let path = payload.path.unwrap_or("".to_owned());
-    let new_file_name: String = format!("{}/{}.{}", &path, &payload.file_name, &ext);
+    let path = payload
+        .endpoint_config
+        .path()
+        .as_ref()
+        .unwrap_or(&"".to_owned())
+        .to_owned();
+    let new_file_name: String = format!(
+        "{}/{}.{}",
+        &path,
+        &payload.endpoint_config.file_name(),
+        &ext
+    );
 
     //let file = fs::read(&payload.local_path).await?;
     let file_info = get_file_info(&payload.local_path).await?;
@@ -162,21 +174,11 @@ async fn s3_upload_with_progress_task(
     // Fin phase: 5%
     event_producer.send(Ok(Event::Progress(95))).await;
 
-    let protocol = if payload.https { "https" } else { "http" };
-
-    let file_path = if !path.is_empty() {
-        format!("{}/{}.{}", path, payload.file_name, ext)
-    } else {
-        format!("{}.{}", payload.file_name, ext)
-    };
+    let file_info = FileInfo::new(&payload.endpoint_config, &file_info, &ext);
 
     event_producer.send(Ok(Event::DeltaProgress(5))).await;
 
-    Ok(FileInfo {
-        size: file_info.size,
-        mime_type: file_info.mime_type,
-        url: format!("{}://{}/{}", protocol, payload.http_host, file_path),
-    })
+    Ok(file_info)
 }
 
 #[named]
@@ -197,15 +199,8 @@ pub async fn s3_xml_upload(payload: XmlPayload) -> Result<FileInfo> {
 
     let file_payload = FilePayload {
         local_path: p.clone(),
-        bucket_name: payload.bucket_name,
-        region: payload.region,
-        endpoint: payload.endpoint,
-        access_key: payload.access_key,
-        secret_key: payload.secret_key,
-        http_host: payload.http_host,
-        https: payload.https,
-        path: payload.path,
-        file_name: payload.file_name,
+        connection: payload.connection,
+        endpoint_config: payload.endpoint_config,
     };
 
     let upload_result = s3_upload_internal(file_payload, false).await;
@@ -213,22 +208,7 @@ pub async fn s3_xml_upload(payload: XmlPayload) -> Result<FileInfo> {
 }
 
 async fn s3_upload_internal(payload: FilePayload, use_path_style: bool) -> Result<FileInfo> {
-    let credentials = Credentials::new(
-        Some(&payload.access_key),
-        Some(&payload.secret_key),
-        None,
-        None,
-        None,
-    )?;
-
-    let mut bucket = Bucket::new(
-        &payload.bucket_name,
-        Region::Custom {
-            region: payload.region,
-            endpoint: payload.endpoint,
-        },
-        credentials,
-    )?;
+    let mut bucket = payload.connection.bucket()?;
 
     // this header is required to make the uploaded file public readable.
     bucket.add_header("x-amz-acl", "public-read");
@@ -245,26 +225,24 @@ async fn s3_upload_internal(payload: FilePayload, use_path_style: bool) -> Resul
         .extension()
         .map_or(Cow::default(), |ext| ext.to_string_lossy());
 
-    let path = payload.path.unwrap_or("".to_owned());
-    let new_file_name = format!("{}/{}.{}", &path, &payload.file_name, &ext);
+    let path = payload
+        .endpoint_config
+        .path()
+        .as_ref()
+        .unwrap_or(&"".to_owned())
+        .to_owned();
+    let new_file_name = format!(
+        "{}/{}.{}",
+        &path,
+        &payload.endpoint_config.file_name(),
+        &ext
+    );
 
     bucket
         .put_object_with_content_type(new_file_name, &file, &file_info.mime_type)
         .await?;
 
-    let protocol = if payload.https { "https" } else { "http" };
-
-    let file_path = if !path.is_empty() {
-        format!("{}/{}.{}", path, payload.file_name, ext)
-    } else {
-        format!("{}.{}", payload.file_name, ext)
-    };
-
-    Ok(FileInfo {
-        size: file_info.size,
-        mime_type: file_info.mime_type,
-        url: format!("{}://{}/{}", protocol, payload.http_host, file_path),
-    })
+    Ok(FileInfo::new(&payload.endpoint_config, &file_info, &ext))
 }
 
 #[cfg(test)]
@@ -279,7 +257,10 @@ mod test {
     use tokio::{spawn, sync::mpsc::channel, time::sleep};
 
     use crate::{
-        commands::s3::{s3_upload_internal, s3_upload_with_progress, FilePayload},
+        commands::{
+            common::EndPointPayloadConf,
+            s3::{s3_upload_internal, s3_upload_with_progress, FilePayload, S3Connection},
+        },
         test_file,
     };
 
@@ -343,15 +324,14 @@ mod test {
         let domain = "http://localhost:".to_owned() + port.to_string().as_str();
         let payload = FilePayload {
             local_path: test_file!("gitbar.xml").to_owned(),
-            bucket_name: bucket.to_owned(),
-            region: REGION.to_owned(),
-            endpoint: domain.clone(),
-            access_key: ACCESS_KEY.to_owned(),
-            secret_key: SECRET_KEY.to_owned(),
-            http_host: domain,
-            https: false,
-            path: None,
-            file_name: "gitbar".to_owned(),
+            connection: S3Connection {
+                bucket_name: bucket.to_owned(),
+                region: REGION.to_owned(),
+                endpoint: domain.clone(),
+                access_key: ACCESS_KEY.to_owned(),
+                secret_key: SECRET_KEY.to_owned(),
+            },
+            endpoint_config: EndPointPayloadConf::new("gitbar".to_owned(), None, domain, false),
         };
 
         let handle = spawn(async move {
@@ -365,8 +345,8 @@ mod test {
         let info_result = s3_upload_internal(payload, true).await;
         assert!(info_result.is_ok());
         let file_info = info_result.unwrap();
-        assert_eq!(file_info.size, FILESIZE);
-        assert_eq!(file_info.mime_type, "text/xml");
+        assert_eq!(file_info.size(), &FILESIZE);
+        assert_eq!(file_info.mime_type(), "text/xml");
 
         handle.abort();
     }
@@ -378,15 +358,14 @@ mod test {
         let domain = "https://localhost:".to_owned() + port.to_string().as_str();
         let payload = FilePayload {
             local_path: test_file!("gitbar.xml").to_owned(),
-            bucket_name: bucket.to_owned(),
-            region: REGION.to_owned(),
-            endpoint: domain.clone(),
-            access_key: ACCESS_KEY.to_owned(),
-            secret_key: SECRET_KEY.to_owned(),
-            http_host: domain,
-            https: false,
-            path: None,
-            file_name: "gitbar".to_owned(),
+            connection: S3Connection {
+                bucket_name: bucket.to_owned(),
+                region: REGION.to_owned(),
+                endpoint: domain.clone(),
+                access_key: ACCESS_KEY.to_owned(),
+                secret_key: SECRET_KEY.to_owned(),
+            },
+            endpoint_config: EndPointPayloadConf::new("gitbar".to_owned(), None, domain, false),
         };
 
         let handle = spawn(async move {
@@ -407,15 +386,14 @@ mod test {
         let domain = "http://localhost:".to_owned() + port.to_string().as_str();
         let payload = FilePayload {
             local_path: test_file!("gitbar.rss").to_owned(),
-            bucket_name: bucket.to_owned(),
-            region: REGION.to_owned(),
-            endpoint: domain.clone(),
-            access_key: ACCESS_KEY.to_owned(),
-            secret_key: SECRET_KEY.to_owned(),
-            http_host: domain,
-            https: false,
-            path: None,
-            file_name: "gitbar".to_owned(),
+            connection: S3Connection {
+                bucket_name: bucket.to_owned(),
+                region: REGION.to_owned(),
+                endpoint: domain.clone(),
+                access_key: ACCESS_KEY.to_owned(),
+                secret_key: SECRET_KEY.to_owned(),
+            },
+            endpoint_config: EndPointPayloadConf::new("gitbar".to_owned(), None, domain, false),
         };
 
         let handle = spawn(async move {
@@ -435,15 +413,14 @@ mod test {
         let domain = "http://localhost:".to_owned() + port.to_string().as_str();
         let payload = FilePayload {
             local_path: test_file!("gitbar.xml").to_owned(),
-            bucket_name: "not_a_bucket".to_owned(),
-            region: REGION.to_owned(),
-            endpoint: domain.clone(),
-            access_key: ACCESS_KEY.to_owned(),
-            secret_key: SECRET_KEY.to_owned(),
-            http_host: domain,
-            https: false,
-            path: None,
-            file_name: "gitbar".to_owned(),
+            connection: S3Connection {
+                bucket_name: "not_a_bucket".to_owned(),
+                region: REGION.to_owned(),
+                endpoint: domain.clone(),
+                access_key: ACCESS_KEY.to_owned(),
+                secret_key: SECRET_KEY.to_owned(),
+            },
+            endpoint_config: EndPointPayloadConf::new("gitbar".to_owned(), None, domain, false),
         };
 
         let handle = spawn(async move {
@@ -463,15 +440,14 @@ mod test {
         let domain = "http://localhost:".to_owned() + port.to_string().as_str();
         let payload = FilePayload {
             local_path: test_file!("gitbar.xml").to_owned(),
-            bucket_name: bucket.to_owned(),
-            region: REGION.to_owned(),
-            endpoint: domain.clone(),
-            access_key: ACCESS_KEY.to_owned(),
-            secret_key: SECRET_KEY.to_owned(),
-            http_host: domain,
-            https: false,
-            path: None,
-            file_name: "gitbar".to_owned(),
+            connection: S3Connection {
+                bucket_name: bucket.to_owned(),
+                region: REGION.to_owned(),
+                endpoint: domain.clone(),
+                access_key: ACCESS_KEY.to_owned(),
+                secret_key: SECRET_KEY.to_owned(),
+            },
+            endpoint_config: EndPointPayloadConf::new("gitbar".to_owned(), None, domain, false),
         };
 
         let handle = spawn(async move {
@@ -492,9 +468,9 @@ mod test {
             match event {
                 Ok(event) => match event {
                     crate::utils::event::Event::Progress(_) => at_least_one_progress = true,
-                    crate::utils::event::Event::S3Result(file_info) => {
-                        assert_eq!(file_info.size, FILESIZE);
-                        assert_eq!(file_info.mime_type, "text/xml");
+                    crate::utils::event::Event::FileResult(file_info) => {
+                        assert_eq!(file_info.size(), &FILESIZE);
+                        assert_eq!(file_info.mime_type(), "text/xml");
                         at_least_one_result = true;
                     }
                     _ => panic!("Event not allowed: {:?}", event),
@@ -516,15 +492,14 @@ mod test {
         let domain = "https://localhost:".to_owned() + port.to_string().as_str();
         let payload = FilePayload {
             local_path: test_file!("gitbar.xml").to_owned(),
-            bucket_name: bucket.to_owned(),
-            region: REGION.to_owned(),
-            endpoint: domain.clone(),
-            access_key: ACCESS_KEY.to_owned(),
-            secret_key: SECRET_KEY.to_owned(),
-            http_host: domain,
-            https: false,
-            path: None,
-            file_name: "gitbar".to_owned(),
+            connection: S3Connection {
+                bucket_name: bucket.to_owned(),
+                region: REGION.to_owned(),
+                endpoint: domain.clone(),
+                access_key: ACCESS_KEY.to_owned(),
+                secret_key: SECRET_KEY.to_owned(),
+            },
+            endpoint_config: EndPointPayloadConf::new("gitbar".to_owned(), None, domain, false),
         };
 
         let handle = spawn(async move {
@@ -559,15 +534,14 @@ mod test {
         let domain = "http://localhost:".to_owned() + port.to_string().as_str();
         let payload = FilePayload {
             local_path: test_file!("gitbar.rss").to_owned(),
-            bucket_name: bucket.to_owned(),
-            region: REGION.to_owned(),
-            endpoint: domain.clone(),
-            access_key: ACCESS_KEY.to_owned(),
-            secret_key: SECRET_KEY.to_owned(),
-            http_host: domain,
-            https: false,
-            path: None,
-            file_name: "gitbar".to_owned(),
+            connection: S3Connection {
+                bucket_name: bucket.to_owned(),
+                region: REGION.to_owned(),
+                endpoint: domain.clone(),
+                access_key: ACCESS_KEY.to_owned(),
+                secret_key: SECRET_KEY.to_owned(),
+            },
+            endpoint_config: EndPointPayloadConf::new("gitbar".to_owned(), None, domain, false),
         };
 
         let handle = spawn(async move {
@@ -601,15 +575,14 @@ mod test {
         let domain = "http://localhost:".to_owned() + port.to_string().as_str();
         let payload = FilePayload {
             local_path: test_file!("gitbar.xml").to_owned(),
-            bucket_name: "not_a_bucket".to_owned(),
-            region: REGION.to_owned(),
-            endpoint: domain.clone(),
-            access_key: ACCESS_KEY.to_owned(),
-            secret_key: SECRET_KEY.to_owned(),
-            http_host: domain,
-            https: false,
-            path: None,
-            file_name: "gitbar".to_owned(),
+            connection: S3Connection {
+                bucket_name: "not_a_bucket".to_owned(),
+                region: REGION.to_owned(),
+                endpoint: domain.clone(),
+                access_key: ACCESS_KEY.to_owned(),
+                secret_key: SECRET_KEY.to_owned(),
+            },
+            endpoint_config: EndPointPayloadConf::new("gitbar".to_owned(), None, domain, false),
         };
 
         let handle = spawn(async move {

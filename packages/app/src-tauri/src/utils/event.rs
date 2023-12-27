@@ -18,7 +18,6 @@ pub enum Event {
     DeltaProgress(u8),
     Progress(u8),
     FileResult(crate::commands::common::FileInfo),
-    S3Result(crate::commands::s3::FileInfo),
 }
 
 type Message = (Uuid, Result<Event>);
