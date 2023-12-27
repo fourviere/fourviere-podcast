@@ -45,7 +45,7 @@ const FeedUpload: React.FC = () => {
       </Button>
       <Button
         wfull={true}
-        size="md"
+        size="sm"
         theme="secondary"
         Icon={ArrowDownTrayIcon}
         onClick={() => {
