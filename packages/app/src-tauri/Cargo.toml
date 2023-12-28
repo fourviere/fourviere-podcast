@@ -18,7 +18,7 @@ sevenz-rust = "0.5.4"
 sha2 = "0.10.8"
 tauri-build = { version = "1.5", features = [] }
 tar = "0.4.40"
-tempfile = "3.8.1"
+tempfile = "3.9.0"
 zip-extract = "0.1.2"
 
 [dependencies]
