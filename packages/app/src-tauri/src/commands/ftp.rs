@@ -72,15 +72,20 @@ pub struct XmlPayload {
 
 #[named]
 #[tauri::command]
-pub async fn ftp_xml_upload_window_with_progress(
-    window: Window,
-    payload: XmlPayload,
-) -> Result<Uuid> {
-    let result = ftp_xml_upload_with_progress(window.into(), payload).await;
+pub async fn ftp_xml_upload_window_progress(window: Window, payload: XmlPayload) -> Result<Uuid> {
+    let result = ftp_xml_upload_with_progress_internal(window.into(), payload).await;
     log_if_error_and_return!(result)
 }
 
-async fn ftp_xml_upload_with_progress(channel: Channel, payload: XmlPayload) -> Result<Uuid> {
+#[tauri::command]
+pub async fn ftp_upload_window_progress(window: Window, payload: FilePayload) -> Uuid {
+    ftp_upload_progress_internal(window.into(), payload, None)
+}
+
+async fn ftp_xml_upload_with_progress_internal(
+    channel: Channel,
+    payload: XmlPayload,
+) -> Result<Uuid> {
     let temp_file = write_string_to_temp_file(&payload.content, "xml").await?;
 
     let file_payload = FilePayload {
@@ -89,20 +94,15 @@ async fn ftp_xml_upload_with_progress(channel: Channel, payload: XmlPayload) -> 
         endpoint_config: payload.endpoint_config,
     };
 
-    Ok(ftp_upload_with_progress(
+    Ok(ftp_upload_progress_internal(
         channel,
         file_payload,
         Some(temp_file),
     ))
 }
 
-#[tauri::command]
-pub async fn ftp_upload_window_with_progress(window: Window, payload: FilePayload) -> Uuid {
-    ftp_upload_with_progress(window.into(), payload, None)
-}
-
 #[named]
-fn ftp_upload_with_progress(
+fn ftp_upload_progress_internal(
     channel: Channel,
     payload: FilePayload,
     temp_file: Option<TempFile>,
@@ -111,7 +111,7 @@ fn ftp_upload_with_progress(
     let id = event_producer.id();
 
     spawn(async move {
-        let result = ftp_upload_with_progress_task(&mut event_producer, payload, temp_file)
+        let result = ftp_upload_progress_task(&mut event_producer, payload, temp_file)
             .await
             .map(Event::FileResult);
         log_if_error_and_return!(&result);
@@ -121,7 +121,7 @@ fn ftp_upload_with_progress(
     id
 }
 
-async fn ftp_upload_with_progress_task(
+async fn ftp_upload_progress_task(
     event_producer: &mut EventProducer,
     payload: FilePayload,
     _temp_file: Option<TempFile>,
@@ -180,13 +180,6 @@ async fn ftp_upload_with_progress_task(
 
 #[named]
 #[tauri::command]
-pub async fn ftp_upload(payload: FilePayload) -> Result<FileInfo> {
-    let upload_result = ftp_upload_internal(payload).await;
-    log_if_error_and_return!(upload_result)
-}
-
-#[named]
-#[tauri::command]
 pub async fn ftp_xml_upload(payload: XmlPayload) -> Result<FileInfo> {
     let temp_file =
         log_if_error_and_return!(write_string_to_temp_file(&payload.content, "xml").await)?;
@@ -198,6 +191,13 @@ pub async fn ftp_xml_upload(payload: XmlPayload) -> Result<FileInfo> {
     };
 
     let upload_result = ftp_upload_internal(file_payload).await;
+    log_if_error_and_return!(upload_result)
+}
+
+#[named]
+#[tauri::command]
+pub async fn ftp_upload(payload: FilePayload) -> Result<FileInfo> {
+    let upload_result = ftp_upload_internal(payload).await;
     log_if_error_and_return!(upload_result)
 }
 
@@ -249,8 +249,8 @@ mod test {
         commands::{
             common::EndPointPayloadConf,
             ftp::{
-                ftp_upload, ftp_upload_with_progress, ftp_xml_upload, ftp_xml_upload_with_progress,
-                FilePayload, FtpConnection, XmlPayload,
+                ftp_upload, ftp_upload_progress_internal, ftp_xml_upload,
+                ftp_xml_upload_with_progress_internal, FilePayload, FtpConnection, XmlPayload,
             },
         },
         test_file,
@@ -456,7 +456,7 @@ mod test {
         sleep(Duration::from_secs(2)).await;
 
         let (tx, mut rx) = channel(2);
-        let original_id = ftp_xml_upload_with_progress(tx.into(), payload)
+        let original_id = ftp_xml_upload_with_progress_internal(tx.into(), payload)
             .await
             .unwrap();
         let mut at_least_one_progress = false;
@@ -513,7 +513,7 @@ mod test {
         sleep(Duration::from_secs(2)).await;
 
         let (tx, mut rx) = channel(2);
-        let original_id = ftp_xml_upload_with_progress(tx.into(), payload)
+        let original_id = ftp_xml_upload_with_progress_internal(tx.into(), payload)
             .await
             .unwrap();
         let mut at_least_one_error = false;
@@ -560,7 +560,7 @@ mod test {
         sleep(Duration::from_secs(2)).await;
 
         let (tx, mut rx) = channel(2);
-        let original_id = ftp_xml_upload_with_progress(tx.into(), payload)
+        let original_id = ftp_xml_upload_with_progress_internal(tx.into(), payload)
             .await
             .unwrap();
         let mut at_least_one_error = false;
@@ -605,7 +605,7 @@ mod test {
         sleep(Duration::from_secs(2)).await;
 
         let (tx, mut rx) = channel(2);
-        let original_id = ftp_upload_with_progress(tx.into(), payload, None);
+        let original_id = ftp_upload_progress_internal(tx.into(), payload, None);
         let mut at_least_one_error = false;
 
         while let Some((id, event)) = rx.recv().await {

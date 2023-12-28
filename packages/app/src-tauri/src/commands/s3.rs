@@ -71,22 +71,19 @@ pub struct XmlPayload {
     endpoint_config: EndPointPayloadConf,
 }
 
-#[tauri::command]
-pub async fn s3_upload_window_with_progress(window: Window, payload: FilePayload) -> Uuid {
-    s3_upload_with_progress(window.into(), payload, None, false)
-}
-
 #[named]
 #[tauri::command]
-pub async fn s3_xml_upload_window_with_progress(
-    window: Window,
-    payload: XmlPayload,
-) -> Result<Uuid> {
-    let result = s3_xml_upload_with_progress_internal(window.into(), payload, false).await;
+pub async fn s3_xml_upload_window_progress(window: Window, payload: XmlPayload) -> Result<Uuid> {
+    let result = s3_xml_upload_progress_internal(window.into(), payload, false).await;
     log_if_error_and_return!(result)
 }
 
-async fn s3_xml_upload_with_progress_internal(
+#[tauri::command]
+pub async fn s3_upload_window_progress(window: Window, payload: FilePayload) -> Uuid {
+    s3_upload_progress_internal(window.into(), payload, None, false)
+}
+
+async fn s3_xml_upload_progress_internal(
     channel: Channel,
     payload: XmlPayload,
     use_path_style: bool,
@@ -99,7 +96,7 @@ async fn s3_xml_upload_with_progress_internal(
         endpoint_config: payload.endpoint_config,
     };
 
-    Ok(s3_upload_with_progress(
+    Ok(s3_upload_progress_internal(
         channel,
         file_payload,
         Some(temp_file),
@@ -108,7 +105,7 @@ async fn s3_xml_upload_with_progress_internal(
 }
 
 #[named]
-fn s3_upload_with_progress(
+fn s3_upload_progress_internal(
     channel: Channel,
     payload: FilePayload,
     temp_file: Option<TempFile>,
@@ -119,7 +116,7 @@ fn s3_upload_with_progress(
 
     spawn(async move {
         let result =
-            s3_upload_with_progress_task(&mut event_producer, payload, temp_file, use_path_style)
+            s3_upload_progress_task(&mut event_producer, payload, temp_file, use_path_style)
                 .await
                 .map(Event::FileResult);
         log_if_error_and_return!(&result);
@@ -128,7 +125,7 @@ fn s3_upload_with_progress(
     id
 }
 
-async fn s3_upload_with_progress_task(
+async fn s3_upload_progress_task(
     event_producer: &mut EventProducer,
     payload: FilePayload,
     _temp_file: Option<TempFile>,
@@ -221,15 +218,15 @@ async fn s3_upload_with_progress_task(
 
 #[named]
 #[tauri::command]
-pub async fn s3_upload(payload: FilePayload) -> Result<FileInfo> {
-    let upload_result = s3_upload_internal(payload, false).await;
+pub async fn s3_xml_upload(payload: XmlPayload) -> Result<FileInfo> {
+    let upload_result = s3_xml_upload_internal(payload, false).await;
     log_if_error_and_return!(upload_result)
 }
 
 #[named]
 #[tauri::command]
-pub async fn s3_xml_upload(payload: XmlPayload) -> Result<FileInfo> {
-    let upload_result = s3_xml_upload_internal(payload, false).await;
+pub async fn s3_upload(payload: FilePayload) -> Result<FileInfo> {
+    let upload_result = s3_upload_internal(payload, false).await;
     log_if_error_and_return!(upload_result)
 }
 
@@ -298,8 +295,8 @@ mod test {
         commands::{
             common::EndPointPayloadConf,
             s3::{
-                s3_upload_internal, s3_upload_with_progress, s3_xml_upload_internal,
-                s3_xml_upload_with_progress_internal, FilePayload, S3Connection, XmlPayload,
+                s3_upload_internal, s3_upload_progress_internal, s3_xml_upload_internal,
+                s3_xml_upload_progress_internal, FilePayload, S3Connection, XmlPayload,
             },
         },
         test_file,
@@ -508,7 +505,7 @@ mod test {
         prepare_s3_bucket(port, bucket).await;
 
         let (tx, mut rx) = channel(2);
-        let original_id = s3_xml_upload_with_progress_internal(tx.into(), payload, true)
+        let original_id = s3_xml_upload_progress_internal(tx.into(), payload, true)
             .await
             .unwrap();
         let mut at_least_one_progress = false;
@@ -564,7 +561,7 @@ mod test {
         prepare_s3_bucket(port, bucket).await;
 
         let (tx, mut rx) = channel(2);
-        let original_id = s3_xml_upload_with_progress_internal(tx.into(), payload, true)
+        let original_id = s3_xml_upload_progress_internal(tx.into(), payload, true)
             .await
             .unwrap();
         let mut at_least_one_error = false;
@@ -608,7 +605,7 @@ mod test {
         prepare_s3_bucket(port, bucket).await;
 
         let (tx, mut rx) = channel(2);
-        let original_id = s3_upload_with_progress(tx.into(), payload, None, true);
+        let original_id = s3_upload_progress_internal(tx.into(), payload, None, true);
         let mut at_least_one_error = false;
 
         while let Some((id, event)) = rx.recv().await {
@@ -650,7 +647,7 @@ mod test {
         sleep(Duration::from_secs(2)).await;
 
         let (tx, mut rx) = channel(2);
-        let original_id = s3_xml_upload_with_progress_internal(tx.into(), payload, true)
+        let original_id = s3_xml_upload_progress_internal(tx.into(), payload, true)
             .await
             .unwrap();
         let mut at_least_one_error = false;
