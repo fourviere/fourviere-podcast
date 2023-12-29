@@ -1,3 +1,4 @@
+import { serializeToXML } from "@fourviere/core/lib/converter";
 import feedStore from "../store/feed";
 import useFtpFeedUpload from "./useFtpFeedUpload";
 import useS3FeedUpload from "./useS3FeedUpload";
@@ -44,10 +45,15 @@ export default function ({
     return s3HookResponse;
   }
 
+  const project = feedStore((state) => state.getProjectById(feedId));
   return {
     upload: () => {
-      console.log(updateError);
-      updateError("No remote selected");
+      const xml = serializeToXML(project.feed);
+      const urlBlob = window.URL.createObjectURL(
+        new Blob([xml], { type: "application/rss+xml" }),
+      );
+      console.log("dsadsa");
+      window.open(urlBlob, "_tauri");
     },
     isUploading: false,
   };

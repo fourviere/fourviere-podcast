@@ -47,7 +47,12 @@ export default function Configuration() {
                 name="feed.filename"
                 label={t["edit_feed.configuration.feed.filename"]}
               >
-                <FormField id="feed.filename" name="feed.filename" as={Input} />
+                <FormField
+                  id="feed.filename"
+                  name="feed.filename"
+                  as={Input}
+                  fieldProps={{ placeholder: "filename.xml" }}
+                />
               </FormRow>
             </FormSection>
 

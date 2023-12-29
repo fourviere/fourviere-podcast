@@ -3,16 +3,18 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import useFeedUpload from "../../hooks/useFeedUpload";
 import { Container } from "@fourviere/ui/lib/box";
-import {
-  ArrowDownTrayIcon,
-  ArrowUpTrayIcon,
-} from "@heroicons/react/24/outline";
+import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 import UseCurrentFeed from "../../hooks/useCurrentFeed";
 
 const FeedUpload: React.FC = () => {
   const { feedId } = useParams<{ feedId: string }>();
   //get filename from feed state
   const currentFeed = UseCurrentFeed();
+  const { remote } = currentFeed?.configuration?.remotes ?? {
+    remote: "none",
+    ftp: undefined,
+    s3: undefined,
+  };
 
   if (!feedId) {
     return null;
@@ -35,27 +37,15 @@ const FeedUpload: React.FC = () => {
         size="md"
         Icon={ArrowUpTrayIcon}
         onClick={() => {
-          upload(currentFeed?.configuration.feed.filename ?? "feed.xml");
+          if (remote !== "none") {
+            upload(currentFeed?.configuration.feed.filename ?? "feed.xml");
+          }
         }}
         disabled={isUploading}
         isLoading={isUploading}
         responsiveCollapse={true}
       >
         publish updates
-      </Button>
-      <Button
-        wfull={true}
-        size="sm"
-        theme="secondary"
-        Icon={ArrowDownTrayIcon}
-        onClick={() => {
-          upload(currentFeed?.configuration.feed.filename ?? "feed.xml");
-        }}
-        disabled={false}
-        isLoading={false}
-        responsiveCollapse={true}
-      >
-        fetch remote
       </Button>
     </Container>
   );
