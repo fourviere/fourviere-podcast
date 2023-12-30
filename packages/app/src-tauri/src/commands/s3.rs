@@ -173,7 +173,7 @@ async fn s3_upload_progress_task(
     // Transfer phase: 80-88%
 
     // Each part must be at least 5 MB in size, except the last part.
-    // https://docs.aws.amazon.com/AmazonS3/latest/API/API_UploadPart.html#API_UploadPart_RequestSyntax
+    // https://docs.aws.amazon.com/AmazonS3/latest/userguide/qfacts.html
     let min_chunck_size = SIUnit::new(5., SISize::Megabyte);
 
     let mut file_stream = FileStream::new(payload.local_path.as_ref())
