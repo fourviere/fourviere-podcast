@@ -1,5 +1,8 @@
 use ::function_name::named;
-use get_chunk::iterator::FileIter;
+use get_chunk::{
+    data_size_format::si::{SISize, SIUnit},
+    stream::{FileStream, StreamExt},
+};
 use s3::{creds::Credentials, serde_types::Part, Bucket, Region};
 use serde::Deserialize;
 use std::{borrow::Cow, path::Path};
@@ -169,48 +172,73 @@ async fn s3_upload_progress_task(
 
     // Transfer phase: 80-88%
 
-    // Step by 8%
-    let file_iter =
-        FileIter::new(payload.local_path.as_ref())?.set_mode(get_chunk::ChunkSize::Percent(10.));
-
-    let upload_response = bucket
-        .initiate_multipart_upload(&new_file_name, &file_info.mime_type)
-        .await?;
-
-    let mut set: JoinSet<Result<Part>> = JoinSet::new();
-    let mut parts_result = Vec::new();
-
-    // Part number of part being uploaded. This is a positive integer between 1 and 10,000.
+    // Each part must be at least 5 MB in size, except the last part.
     // https://docs.aws.amazon.com/AmazonS3/latest/API/API_UploadPart.html#API_UploadPart_RequestSyntax
-    for (index, chunk) in file_iter
-        .enumerate()
-        .map(|(index, chunk)| (index + 1, chunk))
-    {
-        // Prepare data for the part upload task
-        let chunk = chunk?;
-        let mut event_producer = event_producer.clone();
-        let bucket = bucket.clone();
-        let new_file_name = new_file_name.clone();
-        let upload_id = upload_response.upload_id.clone();
-        let mime_type = file_info.mime_type.clone();
+    let min_chunck_size = SIUnit::new(5., SISize::Megabyte);
 
-        set.spawn(async move {
-            let res = bucket
-                .put_multipart_chunk(chunk, &new_file_name, index as u32, &upload_id, &mime_type)
-                .await?;
+    let mut file_stream = FileStream::new(payload.local_path.as_ref())
+        .await?
+        .set_mode(get_chunk::ChunkSize::Bytes(min_chunck_size.into()));
 
-            event_producer.send(Ok(Event::DeltaProgress(8))).await;
-            Ok(res)
-        });
+    let chunk_number = <SIUnit as Into<f64>>::into(
+        SIUnit::auto(file_stream.get_file_size()) / min_chunck_size.into(),
+    )
+    .floor() as u16;
+
+    // File <= 5MB
+    if chunk_number < 2 {
+        let file = fs::read(&payload.local_path).await?;
+        bucket
+            .put_object_with_content_type(new_file_name, &file, &file_info.mime_type)
+            .await?;
+
+        event_producer.send(Ok(Event::DeltaProgress(80))).await;
+    } else {
+        let mut set: JoinSet<Result<Part>> = JoinSet::new();
+        let mut parts_result: Vec<Part> = Vec::new();
+        let delta_progress = 80 / (1 + chunk_number) as u8;
+
+        // Part number of part being uploaded. This is a positive integer between 1 and 10,000.
+        // https://docs.aws.amazon.com/AmazonS3/latest/API/API_UploadPart.html#API_UploadPart_RequestSyntax
+        let mut index = 1;
+
+        let upload_response = bucket
+            .initiate_multipart_upload(&new_file_name, &file_info.mime_type)
+            .await?;
+
+        while let Ok(Some(chunk)) = file_stream.try_next().await {
+            // Prepare data for the part upload task
+            let mut event_producer = event_producer.clone();
+            let bucket = bucket.clone();
+            let new_file_name = new_file_name.clone();
+            let upload_id = upload_response.upload_id.clone();
+            let mime_type = file_info.mime_type.clone();
+
+            set.spawn(async move {
+                let res = bucket
+                    .put_multipart_chunk(chunk, &new_file_name, index, &upload_id, &mime_type)
+                    .await?;
+
+                event_producer
+                    .send(Ok(Event::DeltaProgress(delta_progress)))
+                    .await;
+                Ok(res)
+            });
+            index += 1;
+        }
 
         while let Some(res) = set.join_next().await {
             parts_result.push(res??);
         }
-    }
 
-    bucket
-        .complete_multipart_upload(&new_file_name, &upload_response.upload_id, parts_result)
-        .await?;
+        // The parts list must be specified in order by part number
+        // https://docs.aws.amazon.com/AmazonS3/latest/API/API_CompleteMultipartUpload.html#API_CompleteMultipartUpload_RequestSyntax
+        parts_result.sort_by(|a, b| a.part_number.cmp(&b.part_number));
+
+        bucket
+            .complete_multipart_upload(&new_file_name, &upload_response.upload_id, parts_result)
+            .await?;
+    }
 
     // Fin phase: 5%
     event_producer.send(Ok(Event::Progress(95))).await;
