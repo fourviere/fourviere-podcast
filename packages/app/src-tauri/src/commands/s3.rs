@@ -1,6 +1,6 @@
 use ::function_name::named;
 use get_chunk::iterator::FileIter;
-use s3::{creds::Credentials, Bucket, Region};
+use s3::{creds::Credentials, serde_types::Part, Bucket, Region};
 use serde::Deserialize;
 use std::{borrow::Cow, path::Path};
 use tauri::Window;
@@ -177,9 +177,15 @@ async fn s3_upload_progress_task(
         .initiate_multipart_upload(&new_file_name, &file_info.mime_type)
         .await?;
 
-    let mut set: JoinSet<Result<()>> = JoinSet::new();
+    let mut set: JoinSet<Result<Part>> = JoinSet::new();
+    let mut parts_result = Vec::new();
 
-    for (index, chunk) in file_iter.enumerate() {
+    // Part number of part being uploaded. This is a positive integer between 1 and 10,000.
+    // https://docs.aws.amazon.com/AmazonS3/latest/API/API_UploadPart.html#API_UploadPart_RequestSyntax
+    for (index, chunk) in file_iter
+        .enumerate()
+        .map(|(index, chunk)| (index + 1, chunk))
+    {
         // Prepare data for the part upload task
         let chunk = chunk?;
         let mut event_producer = event_producer.clone();
@@ -189,21 +195,21 @@ async fn s3_upload_progress_task(
         let mime_type = file_info.mime_type.clone();
 
         set.spawn(async move {
-            bucket
+            let res = bucket
                 .put_multipart_chunk(chunk, &new_file_name, index as u32, &upload_id, &mime_type)
                 .await?;
 
             event_producer.send(Ok(Event::DeltaProgress(8))).await;
-            Ok(())
+            Ok(res)
         });
 
         while let Some(res) = set.join_next().await {
-            res??;
+            parts_result.push(res??);
         }
     }
 
     bucket
-        .complete_multipart_upload(&new_file_name, &upload_response.upload_id, Vec::new())
+        .complete_multipart_upload(&new_file_name, &upload_response.upload_id, parts_result)
         .await?;
 
     // Fin phase: 5%
