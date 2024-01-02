@@ -17,9 +17,10 @@ const X86_64_UNKNOWN_LINUX_GNU_MD5: &'static str =
 
 // WINDOWS SECTION
 const X86_64_PC_WINDOWS_MSVC_ARCHIVE: &'static str =
-    "https://github.com/GyanD/codexffmpeg/releases/download/6.1/ffmpeg-6.1-essentials_build.7z";
+    "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.7z";
 const X86_64_PC_WINDOWS_MSVC_SHA256: &'static str =
     "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.7z.sha256";
+const X86_64_PC_WINDOWS_MSVC_VERSION: &str = "https://www.gyan.dev/ffmpeg/builds/release-version";
 
 // APPLE SILICON SECTON
 const AARCH64_APPLE_DARWIN_FFMPEG_ARCHIVE: &'static str =
@@ -120,12 +121,13 @@ fn download_x86_64_unknown_linux_gnu() -> Result<()> {
 fn download_x86_64_pc_windows_msvc() -> Result<()> {
     let target_triple = std::env::var("TARGET")?;
 
-    let tmp_dir = tempdir()?;
-    let windows_binaries_path: std::path::PathBuf =
-        tmp_dir.path().join("ffmpeg-6.1-essentials_build/bin");
-
+    let version = reqwest::blocking::get(X86_64_PC_WINDOWS_MSVC_VERSION)?.text()?;
     let sha256 = reqwest::blocking::get(X86_64_PC_WINDOWS_MSVC_SHA256)?.text()?;
     let raw_data = reqwest::blocking::get(X86_64_PC_WINDOWS_MSVC_ARCHIVE)?.bytes()?;
+
+    let tmp_dir = tempdir()?;
+    let windows_binaries_path: std::path::PathBuf =
+        tmp_dir.path().join(format!("ffmpeg-{version}-essentials_build/bin"));
 
     let mut hasher = Sha256::new();
     hasher.update(&raw_data);
