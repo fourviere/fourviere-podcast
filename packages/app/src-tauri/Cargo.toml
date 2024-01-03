@@ -22,7 +22,7 @@ tempfile = "3.9.0"
 zip-extract = "0.1.2"
 
 [dependencies]
-anyhow = "1.0.77"
+anyhow = "1.0.79"
 function_name = "0.3.0"
 log = "0.4.20"
 mime_guess = "2.0.4"
