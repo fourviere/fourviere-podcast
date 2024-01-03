@@ -4,16 +4,20 @@ use serde::Deserialize;
 use std::{borrow::Cow, path::Path, str};
 use suppaftp::{types::FileType, AsyncFtpStream, Mode};
 use tauri::Window;
-use tokio::{io::AsyncWriteExt, spawn};
-use tokio_util::compat::{FuturesAsyncWriteCompatExt, TokioAsyncReadCompatExt};
+use tokio::{io::AsyncWriteExt, select, spawn};
+use tokio_util::{
+    compat::{FuturesAsyncWriteCompatExt, TokioAsyncReadCompatExt},
+    sync::CancellationToken,
+};
 use uuid::Uuid;
 
 use crate::{
+    commands::common::get_cancellation_token,
     log_if_error_and_return,
     utils::{
         event::{Channel, Event, EventProducer},
         file::{get_file_info, write_string_to_temp_file, TempFile},
-        result::Result,
+        result::{Error, Result},
     },
 };
 
@@ -109,9 +113,10 @@ fn ftp_upload_progress_internal(
 ) -> Uuid {
     let mut event_producer = EventProducer::new(channel);
     let id = event_producer.id();
+    let canc_token = get_cancellation_token(id);
 
     spawn(async move {
-        let result = ftp_upload_progress_task(&mut event_producer, payload, temp_file)
+        let result = ftp_upload_progress_task(&mut event_producer, canc_token, payload, temp_file)
             .await
             .map(Event::FileResult);
         log_if_error_and_return!(&result);
@@ -123,6 +128,7 @@ fn ftp_upload_progress_internal(
 
 async fn ftp_upload_progress_task(
     event_producer: &mut EventProducer,
+    canc_token: CancellationToken,
     payload: FilePayload,
     _temp_file: Option<TempFile>,
 ) -> Result<FileInfo> {
@@ -161,8 +167,18 @@ async fn ftp_upload_progress_task(
         .compat_write();
 
     for chunk in file_iter {
-        writer.write_all(&chunk?).await?;
-        event_producer.send(Ok(Event::DeltaProgress(8))).await;
+        let chunk = chunk?;
+        select! {
+            res = writer.write_all(&chunk) => {
+                res?;
+                event_producer.send(Ok(Event::DeltaProgress(8))).await;
+            },
+            _ = canc_token.cancelled() => {
+                let _ = ftp_stream.abort(writer.into_inner()).await;
+                let _ = ftp_stream.quit().await;
+                return Err(Error::Aborted)
+            }
+        }
     }
 
     ftp_stream.finalize_put_stream(writer.into_inner()).await?;

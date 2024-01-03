@@ -7,15 +7,17 @@ use s3::{creds::Credentials, serde_types::Part, Bucket, Region};
 use serde::Deserialize;
 use std::{borrow::Cow, path::Path};
 use tauri::Window;
-use tokio::{fs, spawn, task::JoinSet};
+use tokio::{fs, select, spawn, task::JoinSet};
+use tokio_util::sync::CancellationToken;
 use uuid::Uuid;
 
 use crate::{
+    commands::common::get_cancellation_token,
     log_if_error_and_return,
     utils::{
         event::{Channel, Event, EventProducer},
         file::{get_file_info, write_string_to_temp_file, TempFile},
-        result::Result,
+        result::{Error, Result},
     },
 };
 
@@ -116,12 +118,18 @@ fn s3_upload_progress_internal(
 ) -> Uuid {
     let mut event_producer = EventProducer::new(channel);
     let id = event_producer.id();
+    let canc_token = get_cancellation_token(id);
 
     spawn(async move {
-        let result =
-            s3_upload_progress_task(&mut event_producer, payload, temp_file, use_path_style)
-                .await
-                .map(Event::FileResult);
+        let result = s3_upload_progress_task(
+            &mut event_producer,
+            canc_token,
+            payload,
+            temp_file,
+            use_path_style,
+        )
+        .await
+        .map(Event::FileResult);
         log_if_error_and_return!(&result);
         event_producer.send(result).await;
     });
@@ -130,6 +138,7 @@ fn s3_upload_progress_internal(
 
 async fn s3_upload_progress_task(
     event_producer: &mut EventProducer,
+    canc_token: CancellationToken,
     payload: FilePayload,
     _temp_file: Option<TempFile>,
     use_path_style: bool,
@@ -206,25 +215,40 @@ async fn s3_upload_progress_task(
             .initiate_multipart_upload(&new_file_name, &file_info.mime_type)
             .await?;
 
-        while let Ok(Some(chunk)) = file_stream.try_next().await {
-            // Prepare data for the part upload task
-            let mut event_producer = event_producer.clone();
-            let bucket = bucket.clone();
-            let new_file_name = new_file_name.clone();
-            let upload_id = upload_response.upload_id.clone();
-            let mime_type = file_info.mime_type.clone();
+        loop {
+            select! {
+                chunk = file_stream.try_next() => {
+                    match chunk {
+                        Err(error) => return Err(error.into()),
+                        Ok(None) => break,
+                        Ok(Some(chunk)) => {
+                            // Prepare data for the part upload task
+                            let mut event_producer = event_producer.clone();
+                            let bucket = bucket.clone();
+                            let new_file_name = new_file_name.clone();
+                            let upload_id = upload_response.upload_id.clone();
+                            let mime_type = file_info.mime_type.clone();
 
-            set.spawn(async move {
-                let res = bucket
-                    .put_multipart_chunk(chunk, &new_file_name, index, &upload_id, &mime_type)
-                    .await?;
+                            set.spawn(async move {
+                                let res = bucket
+                                    .put_multipart_chunk(chunk, &new_file_name, index, &upload_id, &mime_type)
+                                    .await?;
 
-                event_producer
-                    .send(Ok(Event::DeltaProgress(delta_progress)))
-                    .await;
-                Ok(res)
-            });
-            index += 1;
+                                event_producer
+                                    .send(Ok(Event::DeltaProgress(delta_progress)))
+                                    .await;
+                                Ok(res)
+                            });
+                        index += 1;
+                        }
+                    };
+                },
+                _ = canc_token.cancelled() => {
+                    let _ = bucket.abort_upload(&upload_response.key, &upload_response.upload_id).await;
+                    set.shutdown().await;
+                    return Err(Error::Aborted)
+                }
+            }
         }
 
         while let Some(res) = set.join_next().await {

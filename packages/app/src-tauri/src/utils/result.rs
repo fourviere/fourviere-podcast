@@ -17,8 +17,10 @@ pub enum Error {
     Tauri(#[from] tauri::Error),
     #[error("Tokio channel closed")]
     TokioSendClosed,
-    #[error("Tokio task failed to execute to completion")]
+    #[error("Task failed to execute to completion")]
     TokioSet(#[from] tokio::task::JoinError),
+    #[error("Task aborted before completion")]
+    Aborted,
 }
 
 impl Serialize for Error {

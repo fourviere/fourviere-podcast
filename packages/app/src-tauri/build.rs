@@ -17,9 +17,9 @@ const X86_64_UNKNOWN_LINUX_GNU_MD5: &str =
 const X86_64_UNKNOWN_LINUX_GNU_VERSION: &str = "https://johnvansickle.com/ffmpeg";
 
 // WINDOWS SECTION
-const X86_64_PC_WINDOWS_MSVC_ARCHIVE: &'static str =
+const X86_64_PC_WINDOWS_MSVC_ARCHIVE: &str =
     "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.7z";
-const X86_64_PC_WINDOWS_MSVC_SHA256: &'static str =
+const X86_64_PC_WINDOWS_MSVC_SHA256: &str =
     "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.7z.sha256";
 const X86_64_PC_WINDOWS_MSVC_VERSION: &str = "https://www.gyan.dev/ffmpeg/builds/release-version";
 
