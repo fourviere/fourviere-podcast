@@ -28,6 +28,7 @@ fn main() {
             commands::ftp::ftp_upload_window_progress,
             commands::ftp::ftp_xml_upload,
             commands::ftp::ftp_xml_upload_window_progress,
+            commands::common::abort_progress_task,
             commands::log::log_status,
             commands::log::set_log_status,
         ])

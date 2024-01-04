@@ -23,6 +23,7 @@ zip-extract = "0.1.2"
 
 [dependencies]
 anyhow = "1.0.79"
+cached = "0.46.1"
 derive-new = "0.6.0"
 function_name = "0.3.0"
 get_chunk = { version = "1.0.0", features = ["size_format", "stream"] }
@@ -38,7 +39,7 @@ tauri = { version = "1.5", features = [ "shell-sidecar", "dialog-all", "path-all
 tauri-plugin-log = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 tempfile = "3.8.1"
 thiserror = "1.0.52"
-tokio = { version = "1", features = ["fs"] }
+tokio = { version = "1", features = ["fs", "macros"] }
 tokio-util = {version = "0.7.10", features = ["compat"] }
 uuid = {version = "1.6.1", features = ["v7", "fast-rng", "serde",] }
 
