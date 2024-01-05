@@ -33,12 +33,12 @@ const ContainerTitle = ({
       </div>
 
       <Button
-        className="p-3"
-        isDisable={!isDirty && !isSubmitting}
+        size="md"
+        isDisabled={!isDirty && !isSubmitting}
         onClick={() => isDirty && onSave()}
+        Icon={CheckIcon}
       >
-        <CheckIcon className="mr-1 h-4 w-4" />
-        <span className="hidden sm:block">Save</span>
+        Save
       </Button>
     </div>
   );

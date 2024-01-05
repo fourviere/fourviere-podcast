@@ -17,6 +17,8 @@ import { ChannelLinks } from "../../components/form-fields/channel-links";
 import ContainerTitle from "@fourviere/ui/lib/container-title";
 import CKEditor from "@fourviere/ui/lib/form/fields/ckeditor";
 import FormBlocker from "../../components/form-blocker";
+import Img from "../../components/form-fields/image";
+
 export default function General() {
   const currentFeed = UseCurrentFeed();
   const t = useTranslations();
@@ -87,6 +89,12 @@ export default function General() {
                     fieldProps={{ size: "lg" }}
                     initValue="My podcast title"
                     emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                  />
+                </FormRow>
+                <FormRow name="rss.channel.0.image.url" label={"test image"}>
+                  <Img
+                    feedId={currentFeed.feedId}
+                    name="rss.channel.0.image.url"
                   />
                 </FormRow>
                 <FormRow

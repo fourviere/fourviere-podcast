@@ -8,6 +8,9 @@ import { FEED_TEMPLATE } from "@fourviere/core/lib/const";
 import { fetchFeed } from "../native/network";
 
 export interface Configuration {
+  feed: {
+    filename: string;
+  };
   remotes: {
     remote: "s3" | "ftp" | "none";
     s3?: {
@@ -50,6 +53,9 @@ export interface FeedState {
 }
 
 const BASE_CONFIGURATION: Configuration = {
+  feed: {
+    filename: "feed.xml",
+  },
   remotes: {
     remote: "none",
   },
@@ -80,8 +86,16 @@ const feedStore = create<FeedState>((set, _get) => {
       const feed = parseXML(data);
       set((state: FeedState) => {
         return produce(state, (draft) => {
+          //extract filename from url
+          const filename = feedUrl.split("/").pop() || "feed.xml";
+
           const id = uuidv4();
-          draft.projects[id] = { feed, configuration: BASE_CONFIGURATION };
+          const configuration = {
+            ...BASE_CONFIGURATION,
+            feed: { ...BASE_CONFIGURATION.feed, filename },
+          };
+          draft.projects[id] = { feed, configuration };
+          draft.projects[id].configuration.feed.filename = filename;
         });
       });
     },

@@ -1,19 +1,7 @@
+import { serializeToXML } from "@fourviere/core/lib/converter";
 import feedStore from "../store/feed";
-import useFtpUpload from "./useFtpUpload";
-import useS3Upload from "./useS3Upload";
-
-export const FILE_FAMILIES = {
-  image: {
-    title: "Image",
-    mime: ["image/png", "image/jpeg", "image/jpg"],
-    extensions: ["png", "jpeg", "jpg"],
-  },
-  audio: {
-    title: "Audio",
-    mime: ["audio/mpeg", "audio/ogg"],
-    extensions: ["mp3", "ogg"],
-  },
-};
+import useFtpFeedUpload from "./useFtpFeedUpload";
+import useS3FeedUpload from "./useS3FeedUpload";
 
 export type UploadResponse = {
   url: string;
@@ -25,12 +13,10 @@ export default function ({
   feedId,
   updateField,
   updateError,
-  fileFamily,
 }: {
   feedId: string;
   updateField: (value: UploadResponse) => void;
   updateError: (value: string) => void;
-  fileFamily: keyof typeof FILE_FAMILIES;
 }) {
   const { remote } = feedStore(
     (state) =>
@@ -39,18 +25,16 @@ export default function ({
         ftp: undefined,
       },
   );
-
-  const ftpHookResponse = useFtpUpload({
+  const ftpHookResponse = useFtpFeedUpload({
     feedId,
     updateField,
     updateError,
-    fileFamily,
   });
-  const s3HookResponse = useS3Upload({
+
+  const s3HookResponse = useS3FeedUpload({
     feedId,
     updateField,
     updateError,
-    fileFamily,
   });
 
   if (remote === "ftp") {
@@ -61,10 +45,15 @@ export default function ({
     return s3HookResponse;
   }
 
+  const project = feedStore((state) => state.getProjectById(feedId));
   return {
-    openFile: () => {
-      console.log(updateError);
-      updateError("No remote selected");
+    upload: () => {
+      const xml = serializeToXML(project.feed);
+      const urlBlob = window.URL.createObjectURL(
+        new Blob([xml], { type: "application/rss+xml" }),
+      );
+      console.log("dsadsa");
+      window.open(urlBlob, "_tauri");
     },
     isUploading: false,
   };

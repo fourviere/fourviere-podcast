@@ -1,6 +1,7 @@
 use crate::{log_if_error_and_return, utils::result::Result};
 use ::function_name::named;
 use reqwest::header;
+use serde::Serialize;
 use tokio::fs::read_to_string;
 
 #[named]
@@ -14,7 +15,7 @@ async fn read_text_file_internal(path: &str) -> Result<String> {
     read_to_string(path).await.map_err(|err| err.into())
 }
 
-#[derive(serde::Serialize)]
+#[derive(Serialize)]
 pub struct FileInfo {
     content_type: String,
     content_length: String,

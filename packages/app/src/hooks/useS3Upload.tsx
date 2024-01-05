@@ -4,6 +4,25 @@ import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
 import feedStore from "../store/feed";
 import { FILE_FAMILIES, UploadResponse } from "./useUpload";
+import { listen } from "@tauri-apps/api/event";
+
+type Payload =
+  | {
+      Ok:
+        | {
+            Progress: number;
+          }
+        | {
+            FileResult: {
+              url: string;
+              mime_type: string;
+              size: string;
+            };
+          };
+    }
+  | {
+      Err: string;
+    };
 
 export default function useS3Upload({
   feedId,
@@ -16,7 +35,7 @@ export default function useS3Upload({
   updateError: (value: string) => void;
   fileFamily: keyof typeof FILE_FAMILIES;
 }) {
-  const [isUploading, setIsUploading] = useState(false);
+  const [inProgress, setInProgress] = useState<false | number>(false);
   const { remote, s3 } = feedStore(
     (state) =>
       state.getProjectById(feedId)?.configuration?.remotes ?? {
@@ -34,22 +53,47 @@ export default function useS3Upload({
     };
   }
 
-  function upload(local_path: string, fileName: string) {
-    setIsUploading(true);
-    invoke<UploadResponse>("s3_upload", {
+  async function upload(local_path: string, fileName: string) {
+    const id = await invoke<string>("s3_upload_window_progress", {
       payload: {
         local_path,
         file_name: fileName,
         ...s3,
       },
-    })
-      .then((e) => {
-        updateField(e);
-      })
-      .catch((e: string) => {
-        updateError(e);
-      })
-      .finally(() => setIsUploading(false));
+    });
+
+    await listen(id, function ({ payload }: { payload: Payload }) {
+      if ("Ok" in payload && "Progress" in payload.Ok) {
+        setInProgress(payload.Ok.Progress);
+        console.log(payload.Ok.Progress);
+      }
+
+      if ("Ok" in payload && "FileResult" in payload.Ok) {
+        //setInProgress(false);
+        console.log(payload.Ok.FileResult);
+      }
+
+      if ("Err" in payload) {
+        setInProgress(false);
+        console.error(payload.Err);
+      }
+    });
+
+    // setIsUploading(true);
+    // invoke<UploadResponse>("s3_upload", {
+    //   payload: {
+    //     local_path,
+    //     file_name: fileName,
+    //     ...s3,
+    //   },
+    // })
+    //   .then((e) => {
+    //     updateField(e);
+    //   })
+    //   .catch((e: string) => {
+    //     updateError(e);
+    //   })
+    //   .finally(() => setIsUploading(false));
   }
 
   function openFile() {
@@ -66,6 +110,7 @@ export default function useS3Upload({
       .then((selected) => {
         if (!!selected && selected?.length > 0) {
           console.log(selected);
+
           upload(selected[0], uuidv4());
         }
       })
@@ -74,5 +119,5 @@ export default function useS3Upload({
       });
   }
 
-  return { openFile, isUploading };
+  return { openFile, inProgress };
 }
