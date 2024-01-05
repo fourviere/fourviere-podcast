@@ -33,7 +33,7 @@ body,
 }
 
 .button.secondary {
-  @apply border border-slate-200  text-slate-800 hover:bg-slate-200 hover:text-slate-800;
+  @apply border border-slate-200 bg-white  text-slate-800 hover:bg-slate-200 hover:text-slate-800;
 }
 .button.secondary svg {
   @apply text-slate-800  hover:text-slate-900;

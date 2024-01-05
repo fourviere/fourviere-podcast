@@ -194,6 +194,8 @@ async fn s3_upload_progress_task(
     )
     .floor() as u16;
 
+    println!("Chunks: {}", chunk_number);
+
     // File <= 5MB
     if chunk_number < 2 {
         let file = fs::read(&payload.local_path).await?;
@@ -228,8 +230,10 @@ async fn s3_upload_progress_task(
                             let new_file_name = new_file_name.clone();
                             let upload_id = upload_response.upload_id.clone();
                             let mime_type = file_info.mime_type.clone();
+                            println!("part {}", index);
 
                             set.spawn(async move {
+                                println!("in progress");
                                 let res = bucket
                                     .put_multipart_chunk(chunk, &new_file_name, index, &upload_id, &mime_type)
                                     .await?;
@@ -255,6 +259,7 @@ async fn s3_upload_progress_task(
             parts_result.push(res??);
         }
 
+        println!("partz: {}", parts_result.len());
         // The parts list must be specified in order by part number
         // https://docs.aws.amazon.com/AmazonS3/latest/API/API_CompleteMultipartUpload.html#API_CompleteMultipartUpload_RequestSyntax
         parts_result.sort_by(|a, b| a.part_number.cmp(&b.part_number));

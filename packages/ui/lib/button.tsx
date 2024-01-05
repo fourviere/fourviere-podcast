@@ -41,9 +41,11 @@ const Button: React.FC<ButtonProps> = ({
 
         {Icon && !isLoading && <Icon className="h-4 text-slate-50" />}
 
-        <span className={classNames({ collapsable: responsiveCollapse })}>
-          {children}
-        </span>
+        {children && (
+          <span className={classNames({ collapsable: responsiveCollapse })}>
+            {children}
+          </span>
+        )}
       </div>
     </button>
   );

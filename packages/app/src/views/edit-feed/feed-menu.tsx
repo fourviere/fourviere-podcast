@@ -66,7 +66,7 @@ export default function FeedMenu() {
           </SideMenuItem>
         </>
       }
-      footer={<FeedUpload />}
+      // footer={<FeedUpload />}
     />
   );
 }
