@@ -184,17 +184,14 @@ async fn s3_upload_progress_task(
     // Each part must be at least 5 MB in size, except the last part.
     // https://docs.aws.amazon.com/AmazonS3/latest/userguide/qfacts.html
     let min_chunck_size = SIUnit::new(5., SISize::Megabyte);
-
-    let mut file_stream = FileStream::new(payload.local_path.as_ref())
-        .await?
-        .set_mode(get_chunk::ChunkSize::Bytes(min_chunck_size.into()));
+    let mut file_stream = FileStream::new(payload.local_path.as_ref()).await?;
 
     let chunk_number = <SIUnit as Into<f64>>::into(
         SIUnit::auto(file_stream.get_file_size()) / min_chunck_size.into(),
     )
     .floor() as u16;
 
-    println!("Chunks: {}", chunk_number);
+    file_stream = file_stream.set_mode(get_chunk::ChunkSize::Percent(100. / chunk_number as f64));
 
     // File <= 5MB
     if chunk_number < 2 {
@@ -230,10 +227,8 @@ async fn s3_upload_progress_task(
                             let new_file_name = new_file_name.clone();
                             let upload_id = upload_response.upload_id.clone();
                             let mime_type = file_info.mime_type.clone();
-                            println!("part {}", index);
 
                             set.spawn(async move {
-                                println!("in progress");
                                 let res = bucket
                                     .put_multipart_chunk(chunk, &new_file_name, index, &upload_id, &mime_type)
                                     .await?;
@@ -259,7 +254,6 @@ async fn s3_upload_progress_task(
             parts_result.push(res??);
         }
 
-        println!("partz: {}", parts_result.len());
         // The parts list must be specified in order by part number
         // https://docs.aws.amazon.com/AmazonS3/latest/API/API_CompleteMultipartUpload.html#API_CompleteMultipartUpload_RequestSyntax
         parts_result.sort_by(|a, b| a.part_number.cmp(&b.part_number));
