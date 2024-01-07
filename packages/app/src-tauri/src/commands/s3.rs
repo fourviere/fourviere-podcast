@@ -184,14 +184,14 @@ async fn s3_upload_progress_task(
     // Each part must be at least 5 MB in size, except the last part.
     // https://docs.aws.amazon.com/AmazonS3/latest/userguide/qfacts.html
     let min_chunck_size = SIUnit::new(5., SISize::Megabyte);
-    let mut file_stream = FileStream::new(payload.local_path.as_ref()).await?;
+    let mut file_stream = FileStream::new(payload.local_path.as_ref())
+        .await?
+        .set_mode(get_chunk::ChunkSize::Bytes(min_chunck_size.into()));
 
     let chunk_number = <SIUnit as Into<f64>>::into(
         SIUnit::auto(file_stream.get_file_size()) / min_chunck_size.into(),
     )
     .floor() as u16;
-
-    file_stream = file_stream.set_mode(get_chunk::ChunkSize::Percent(100. / chunk_number as f64));
 
     // File <= 5MB
     if chunk_number < 2 {
