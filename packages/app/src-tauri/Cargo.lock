@@ -1880,10 +1880,11 @@ dependencies = [
 
 [[package]]
 name = "get_chunk"
-version = "1.1.0"
+version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1ea5f2bd0fe5b9df3e1a71119432e31f40a7cf4cb6773d68b54e68f6d63c072a"
+checksum = "e26eb813d07764a86c400be030435fbd59aef0cb3454a662d3e3837b1b75c702"
 dependencies = [
+ "async-trait",
  "strum",
  "strum_macros",
  "sysinfo",
