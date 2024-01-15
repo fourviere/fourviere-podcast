@@ -4561,9 +4561,9 @@ checksum = "81cdd64d312baedb58e21336b31bc043b77e01cc99033ce76ef539f78e965ebc"
 
 [[package]]
 name = "suppaftp"
-version = "5.2.2"
+version = "5.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "653aa9a6ebc0446a2d5c2be5b698b48a3192c7a098d0ed9a7c232e3a6340f091"
+checksum = "8ca75beb78218d35c14633b468a48f53e90207ee979f71bb486ba7dff06d0436"
 dependencies = [
  "async-native-tls",
  "async-std",
