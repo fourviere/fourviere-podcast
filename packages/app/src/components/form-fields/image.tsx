@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { Container } from "@fourviere/ui/lib/box";
 import Button from "@fourviere/ui/lib/button";
 import { Note } from "@fourviere/ui/lib/typography";
@@ -11,7 +11,6 @@ import Input from "@fourviere/ui/lib/form/fields/input";
 import { useField } from "formik";
 import useUpload from "../../hooks/useUpload";
 
-type Status = "blank" | "uploading" | "idle";
 interface ImageProps {
   name: string;
   feedId: string;
@@ -68,12 +67,18 @@ const IdleImage = ({ name, feedId, onPickerClick }) => {
   );
 };
 
-const ProgressImage = ({ progress }: { progress: number | false }) => {
+const ProgressImage = ({
+  progress,
+  abort,
+}: {
+  progress: number | false;
+  abort: () => void;
+}) => {
   return (
     progress && (
       <Container flex="row-middle" spaceX="sm">
         <Progress progress={progress} />
-        <Button theme="secondary" size="sm" Icon={XCircleIcon}>
+        <Button theme="secondary" size="sm" Icon={XCircleIcon} onClick={abort}>
           Abort
         </Button>
       </Container>
@@ -82,30 +87,31 @@ const ProgressImage = ({ progress }: { progress: number | false }) => {
 };
 
 const Image = ({ name, feedId }: ImageProps) => {
-  const [status] = useState<Status>("idle");
-
   const imageUpload = useUpload({
     feedId,
-    updateField: (value: UploadResponse) => {
-      void setFieldValue("rss.channel.0.image.url", value.url);
-    },
-    updateError: (value: string) =>
-      setFieldError("rss.channel.0.image.url", value),
+    // updateField: (value: UploadResponse) => {
+    //   void setFieldValue("rss.channel.0.image.url", value.url);
+    // },
+    updateError: () => {},
+    // setFieldError("rss.channel.0.image.url", value),
     fileFamily: "audio",
   });
 
   return (
     <>
-      {status === "idle" && (
+      {!imageUpload.inProgress && (
         <IdleImage
           name={name}
           feedId={feedId}
           onPickerClick={imageUpload.openFile}
         />
       )}
-      {JSON.stringify(imageUpload)}
+
       {imageUpload.inProgress && (
-        <ProgressImage progress={imageUpload.inProgress} />
+        <ProgressImage
+          progress={imageUpload.inProgress}
+          abort={imageUpload.abort}
+        />
       )}
     </>
   );

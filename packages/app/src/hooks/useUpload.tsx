@@ -23,12 +23,12 @@ export type UploadResponse = {
 
 export default function ({
   feedId,
-  updateField,
+  // updateField,
   updateError,
   fileFamily,
 }: {
   feedId: string;
-  updateField: (value: UploadResponse) => void;
+  // updateField: (value: UploadResponse) => void;
   updateError: (value: string) => void;
   fileFamily: keyof typeof FILE_FAMILIES;
 }) {
@@ -42,13 +42,13 @@ export default function ({
 
   const ftpHookResponse = useFtpUpload({
     feedId,
-    updateField,
+    // updateField,
     updateError,
     fileFamily,
   });
   const s3HookResponse = useS3Upload({
     feedId,
-    updateField,
+    // updateField,
     updateError,
     fileFamily,
   });
@@ -66,6 +66,7 @@ export default function ({
       console.log(updateError);
       updateError("No remote selected");
     },
-    isUploading: false,
+    abort: () => {},
+    inProgress: false as false | number,
   };
 }

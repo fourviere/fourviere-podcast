@@ -1,9 +1,9 @@
 import { invoke } from "@tauri-apps/api";
 import { open } from "@tauri-apps/api/dialog";
 import { v4 as uuidv4 } from "uuid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import feedStore from "../store/feed";
-import { FILE_FAMILIES, UploadResponse } from "./useUpload";
+import { FILE_FAMILIES } from "./useUpload";
 import { listen } from "@tauri-apps/api/event";
 
 type Payload =
@@ -26,16 +26,26 @@ type Payload =
 
 export default function useS3Upload({
   feedId,
-  updateField,
+  // updateField,
   updateError,
   fileFamily,
 }: {
   feedId: string;
-  updateField: (value: UploadResponse) => void;
+  // updateField: (value: UploadResponse) => void;
   updateError: (value: string) => void;
   fileFamily: keyof typeof FILE_FAMILIES;
 }) {
   const [inProgress, setInProgress] = useState<false | number>(false);
+  const [processId, setProcessId] = useState<string | undefined>(undefined);
+  const [unlisten, setUnlisten] = useState<() => void>(() => {});
+
+  // useEffect(() => {
+  //   return () => {
+  //     console.log("unlisten", unlisten);
+  //     unlisten?.();
+  //   };
+  // }, []);
+
   const { remote, s3 } = feedStore(
     (state) =>
       state.getProjectById(feedId)?.configuration?.remotes ?? {
@@ -54,6 +64,7 @@ export default function useS3Upload({
   }
 
   async function upload(local_path: string, fileName: string) {
+    console.log("uploading", local_path, fileName);
     const id = await invoke<string>("s3_upload_window_progress", {
       payload: {
         local_path,
@@ -61,43 +72,42 @@ export default function useS3Upload({
         ...s3,
       },
     });
+    console.log("process id", id);
+    setProcessId(id);
 
-    await listen(id, function ({ payload }: { payload: Payload }) {
-      if ("Ok" in payload && "Progress" in payload.Ok) {
-        setInProgress(payload.Ok.Progress);
-        console.log(payload.Ok.Progress);
-      }
+    // set fake progress because the rust side fires event too quickly
+    // before we can listen them in the react side
+    setInProgress(7);
 
-      if ("Ok" in payload && "FileResult" in payload.Ok) {
-        //setInProgress(false);
-        console.log(payload.Ok.FileResult);
-      }
+    const unlisten = await listen(
+      id,
+      function ({ payload }: { payload: Payload }) {
+        console.log("payload raw", payload);
+        if ("Ok" in payload && "Progress" in payload.Ok) {
+          setInProgress(payload.Ok.Progress);
+          console.log(payload.Ok.Progress);
+        }
 
-      if ("Err" in payload) {
-        setInProgress(false);
-        console.error(payload.Err);
-      }
-    });
+        if ("Ok" in payload && "FileResult" in payload.Ok) {
+          setInProgress(false);
+          console.log(payload.Ok.FileResult);
+          unlisten();
+        }
 
-    // setIsUploading(true);
-    // invoke<UploadResponse>("s3_upload", {
-    //   payload: {
-    //     local_path,
-    //     file_name: fileName,
-    //     ...s3,
-    //   },
-    // })
-    //   .then((e) => {
-    //     updateField(e);
-    //   })
-    //   .catch((e: string) => {
-    //     updateError(e);
-    //   })
-    //   .finally(() => setIsUploading(false));
+        if ("Err" in payload) {
+          setInProgress(false);
+          console.error(payload.Err);
+          unlisten();
+        }
+      },
+    );
+
+    // console.log("set unlisten", unlisten);
+    // setUnlisten(unlisten);
   }
 
-  function openFile() {
-    open({
+  async function openFile() {
+    const selected = await open({
       title: "Select a file to upload",
       multiple: true,
       filters: [
@@ -106,18 +116,21 @@ export default function useS3Upload({
           extensions: FILE_FAMILIES[fileFamily].extensions,
         },
       ],
-    })
-      .then((selected) => {
-        if (!!selected && selected?.length > 0) {
-          console.log(selected);
+    });
 
-          upload(selected[0], uuidv4());
-        }
-      })
-      .catch((e) => {
-        console.error("Error opening file", e);
-      });
+    if (!!selected && selected?.length > 0) {
+      await upload(selected[0], uuidv4());
+    }
   }
 
-  return { openFile, inProgress };
+  async function abort() {
+    console.log("aborting", processId);
+    if (typeof processId !== "undefined") {
+      const res = await invoke("abort_progress_task", { uuid: processId });
+      console.log(res);
+    }
+  }
+
+  // console.log("un", unlisten);
+  return { openFile, abort, inProgress };
 }

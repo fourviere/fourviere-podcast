@@ -10,6 +10,7 @@ use crate::utils::result::Result;
 #[tauri::command]
 pub async fn abort_progress_task(uuid: Uuid) -> Result<()> {
     get_cancellation_token(uuid).cancel();
+    println!("Aborted task {}", uuid);
     Ok(())
 }
 

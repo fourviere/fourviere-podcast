@@ -157,6 +157,7 @@ async fn s3_upload_progress_task(
     }
 
     event_producer.send(Ok(Event::DeltaProgress(2))).await;
+    println!("2");
 
     let ext = Path::new(&payload.local_path)
         .extension()
@@ -178,12 +179,13 @@ async fn s3_upload_progress_task(
     let file_info = get_file_info(&payload.local_path).await?;
 
     event_producer.send(Ok(Event::DeltaProgress(5))).await;
+    println!("5");
 
     // Transfer phase: 80-88%
 
     // Each part must be at least 5 MB in size, except the last part.
     // https://docs.aws.amazon.com/AmazonS3/latest/userguide/qfacts.html
-    let min_chunck_size = SIUnit::new(5., SISize::Megabyte);
+    let min_chunck_size = SIUnit::new(6., SISize::Megabyte);
     let mut file_stream = FileStream::new(payload.local_path.as_ref())
         .await?
         .set_mode(get_chunk::ChunkSize::Bytes(min_chunck_size.into()));
@@ -227,26 +229,34 @@ async fn s3_upload_progress_task(
                             let new_file_name = new_file_name.clone();
                             let upload_id = upload_response.upload_id.clone();
                             let mime_type = file_info.mime_type.clone();
+                            let canc_token = canc_token.clone();
 
                             set.spawn(async move {
-                                let res = bucket
-                                    .put_multipart_chunk(chunk, &new_file_name, index, &upload_id, &mime_type)
-                                    .await?;
-
-                                event_producer
-                                    .send(Ok(Event::DeltaProgress(delta_progress)))
-                                    .await;
-                                Ok(res)
+                                select! {
+                                    _ = canc_token.cancelled() => {
+                                        println!("Aborting upload");
+                                        let _ = bucket.abort_upload(&new_file_name, &upload_id).await;
+                                        return Err(Error::Aborted)
+                                    },
+                                    res = bucket
+                                    .put_multipart_chunk(chunk, &new_file_name, index, &upload_id, &mime_type) => {
+                                        event_producer.send(Ok(Event::DeltaProgress(delta_progress))).await;
+                                        res.map_err(|err| err.into())
+                                    }
+                                }
                             });
                         index += 1;
                         }
                     };
                 },
-                _ = canc_token.cancelled() => {
-                    let _ = bucket.abort_upload(&upload_response.key, &upload_response.upload_id).await;
-                    set.shutdown().await;
-                    return Err(Error::Aborted)
-                }
+
+                // TODO: remove dead code
+                // _ = canc_token.cancelled() => {
+                //     println!("Aborting upload");
+                //     let _ = bucket.abort_upload(&upload_response.key, &upload_response.upload_id).await;
+                //     set.shutdown().await;
+                //     return Err(Error::Aborted)
+                // }
             }
         }
 

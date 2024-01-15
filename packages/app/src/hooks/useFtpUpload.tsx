@@ -7,16 +7,16 @@ import { FILE_FAMILIES, UploadResponse } from "./useUpload";
 
 export default function useFtpUpload({
   feedId,
-  updateField,
+  // updateField,
   updateError,
   fileFamily,
 }: {
   feedId: string;
-  updateField: (value: UploadResponse) => void;
+  // updateField: (value: UploadResponse) => void;
   updateError: (value: string) => void;
   fileFamily: keyof typeof FILE_FAMILIES;
 }) {
-  const [isUploading, setIsUploading] = useState(false);
+  const [inProgress, setInProgress] = useState<false | number>(false);
   const { remote, ftp } = feedStore(
     (state) =>
       state.getProjectById(feedId)?.configuration?.remotes ?? {
@@ -35,7 +35,7 @@ export default function useFtpUpload({
   }
 
   function upload(local_path: string, fileName: string) {
-    setIsUploading(true);
+    setInProgress(1);
     invoke<UploadResponse>("ftp_upload", {
       payload: {
         local_path,
@@ -45,12 +45,12 @@ export default function useFtpUpload({
     })
       .then((e) => {
         console.log(e);
-        updateField(e);
+        // updateField(e);
       })
       .catch((e: string) => {
         updateError(e);
       })
-      .finally(() => setIsUploading(false));
+      .finally(() => setInProgress(false));
   }
 
   function openFile() {
@@ -75,5 +75,5 @@ export default function useFtpUpload({
       });
   }
 
-  return { openFile, isUploading };
+  return { openFile, inProgress, abort: () => {} };
 }
