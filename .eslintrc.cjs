@@ -16,6 +16,7 @@ module.exports = {
   },
   rules: {
     "prettier/prettier": "error",
+    "@typescript-eslint/no-floating-promises": "off",
   },
   plugins: ["@typescript-eslint", "react", "prettier"],
   root: true,

@@ -92,12 +92,20 @@ export default function General() {
                   />
                 </FormRow>
                 <FormRow name="rss.channel.0.image.url" label={"test image"}>
-                  <Img
-                    feedId={currentFeed.feedId}
+                  <FormField
+                    id="rss.channel.0.image.url"
                     name="rss.channel.0.image.url"
+                    as={Img}
+                    fieldProps={{
+                      feedId: currentFeed.feedId,
+                      name: "rss.channel.0.image.url",
+                    }}
+                    emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                    initValue="https://"
                   />
                 </FormRow>
-                <FormRow
+
+                {/* <FormRow
                   name="rss.channel.0.image"
                   label={t["edit_feed.channel_field.image"]}
                 >
@@ -113,7 +121,7 @@ export default function General() {
                     emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                     initValue="https://"
                   />
-                </FormRow>
+                </FormRow> */}
                 <FormRow
                   name="rss.channel.0.description"
                   label={t["edit_feed.channel_field.show_description"]}

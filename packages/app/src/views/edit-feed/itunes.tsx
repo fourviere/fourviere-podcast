@@ -8,10 +8,10 @@ import UseCurrentFeed from "../../hooks/useCurrentFeed";
 import useTranslations from "../../hooks/useTranslations";
 import FormObjectField from "@fourviere/ui/lib/form/form-object-field";
 import Boolean from "@fourviere/ui/lib/form/fields/boolean";
-import ImageField from "@fourviere/ui/lib/form/fields/image";
 import { Categories } from "../../components/form-fields/categories.tsx";
 import useUpload, { UploadResponse } from "../../hooks/useUpload";
 import ContainerTitle from "@fourviere/ui/lib/container-title.tsx";
+import Img from "../../components/form-fields/image";
 
 export default function Itunes() {
   const currentFeed = UseCurrentFeed();
@@ -83,7 +83,23 @@ export default function Itunes() {
                 }}
                 label={t["edit_feed.channel_field.itunes.image"]}
               >
-                <FormRow
+                {/* <FormRow
+                  name="rss.channel.0.['itunes:image'].@.href"
+                  label={"test image"}
+                >
+                  <FormField
+                    id="rss.channel.0.['itunes:image'].@.href"
+                    name="rss.channel.0.['itunes:image'].@.href"
+                    as={Img}
+                    fieldProps={{
+                      feedId: currentFeed.feedId,
+                      name: "rss.channel.0.['itunes:image'].@.href",
+                    }}
+                    emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                    initValue="https://"
+                  />
+                </FormRow> */}
+                {/* <FormRow
                   name="rss.channel.0.['itunes:image'].@.href"
                   label={t["edit_feed.channel_field.itunes.image"]}
                 >
@@ -94,7 +110,7 @@ export default function Itunes() {
                     isUploading={imageUpload.isUploading}
                     helpMessage={t["edit_feed.channel_field.image.help"]}
                   />
-                </FormRow>
+                </FormRow> */}
               </FormObjectField>
             </FormSection>
             <FormSection

@@ -4,7 +4,7 @@ import FormRow from "@fourviere/ui/lib/form/form-row";
 import Input from "@fourviere/ui/lib/form/fields/input";
 import AudioField from "../../components/form-fields/audio";
 import { Formik } from "formik";
-import ImageField from "@fourviere/ui/lib/form/fields/image";
+import Img from "../../components/form-fields/image";
 import { FormField } from "@fourviere/ui/lib/form/form-field";
 import UseCurrentFeed from "../../hooks/useCurrentFeed";
 import useTranslations from "../../hooks/useTranslations";
@@ -244,7 +244,7 @@ export default function ItemGeneral() {
                     emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                   />
                 </FormRow>
-                <FormRow
+                {/* <FormRow
                   name="rss.channel.0.image"
                   label={t["edit_feed.items_fields.image"]}
                 >
@@ -256,6 +256,19 @@ export default function ItemGeneral() {
                       onImageClick: imageUpload.openFile,
                       isUploading: imageUpload.isUploading,
                       helpMessage: t["edit_feed.channel_field.image.help"],
+                    }}
+                    emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                    initValue="https://"
+                  />
+                </FormRow> */}
+                <FormRow name="rss.channel.0.image.url" label={"test image"}>
+                  <FormField
+                    id={`rss.channel.0.item.${itemIndex}.["itunes:image"].@.href`}
+                    name={`rss.channel.0.item.${itemIndex}.["itunes:image"].@.href`}
+                    as={Img}
+                    fieldProps={{
+                      feedId: currentFeed.feedId,
+                      name: `rss.channel.0.item.${itemIndex}.["itunes:image"].@.href`,
                     }}
                     emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                     initValue="https://"
