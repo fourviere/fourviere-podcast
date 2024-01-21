@@ -15,3 +15,16 @@ export async function readFileInfo(url: string) {
   }>("read_file_info", { url });
   return response;
 }
+
+export const FILE_FAMILIES = {
+  image: {
+    title: "Image",
+    mime: ["image/png", "image/jpeg", "image/jpg"],
+    extensions: ["png", "jpeg", "jpg"],
+  },
+  audio: {
+    title: "Audio",
+    mime: ["audio/mpeg", "audio/ogg"],
+    extensions: ["mp3", "ogg"],
+  },
+};

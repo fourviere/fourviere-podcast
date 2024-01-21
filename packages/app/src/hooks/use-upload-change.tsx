@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import uploadsStore from "../../../store/uploads";
-import { deepEquals } from "../../../utils/object";
-import { Upload } from "../../../store/uploads/types";
+import uploadsStore from "../store/uploads";
+import { deepEquals } from "../utils/object";
+import { Upload } from "../store/uploads/types";
 
 interface Props {
   id: string;

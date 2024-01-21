@@ -4,7 +4,6 @@ import Button from "@fourviere/ui/lib/button";
 import { Note } from "@fourviere/ui/lib/typography";
 import { FolderOpenIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
-import ImageComponent from "@fourviere/ui/lib/image";
 import Input from "@fourviere/ui/lib/form/fields/input";
 import { useField } from "formik";
 import uploadsStore from "../../../store/uploads";
@@ -14,23 +13,34 @@ import { generateId } from "../../../store/uploads/utils";
 import useUploadChange from "../../../hooks/use-upload-change";
 import useSelectFile from "../../../hooks/use-select-file";
 import UseRemoteConf from "../../../hooks/use-remote-conf";
+import AudioPlayer from "react-h5-audio-player";
+import "./audio.css";
+import { readFileInfo } from "../../../native/fs";
 
-const FORMAT = "image";
+const FORMAT = "audio" as const;
 
-interface ImageProps {
+interface AudioProps {
   name: string;
   feedId: string;
 }
 
-const Image = ({ name, feedId }: ImageProps) => {
+const Audio = ({ name, feedId }: AudioProps) => {
   const id = generateId(feedId, name);
-  const [field, meta, helpers] = useField<string>(name);
+  const [field, meta, helpers] = useField<{
+    url: string;
+    type: string;
+    length: number;
+  }>(name);
   const { hasRemote, remote } = UseRemoteConf({ feedId });
 
   useUploadChange({
     onChange: (changedValue) => {
       if (changedValue.value && "url" in changedValue.value) {
-        helpers.setValue(changedValue.value.url);
+        helpers.setValue({
+          url: changedValue.value.url,
+          type: changedValue.value.mime_type,
+          length: changedValue.value.size,
+        });
       }
     },
     id,
@@ -44,9 +54,32 @@ const Image = ({ name, feedId }: ImageProps) => {
 
   const status = uploads[id];
 
+  // Manually set the value of the field to the changed value
   const onChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      helpers.setValue(e.target.value).catch(() => {});
+      console.log("onChange", e.target.value);
+      void helpers.setValue({
+        url: e.target.value,
+        length: 0,
+        type: "invalid",
+      });
+
+      readFileInfo(e.target.value)
+        .then((fileInfo) => {
+          if (!fileInfo) {
+            helpers.setError("Not correct file type");
+            return;
+          }
+
+          void helpers.setValue({
+            url: e.target.value,
+            length: Number(fileInfo?.content_length),
+            type: fileInfo?.content_type,
+          });
+        })
+        .catch(() => {
+          helpers.setError("Not correct file type");
+        });
     },
     [helpers],
   );
@@ -86,18 +119,12 @@ const Image = ({ name, feedId }: ImageProps) => {
       )}
 
       {!status?.progress && (
-        <Container flex="row-middle" spaceX="md" wFull>
-          {field.value && (
-            <ImageComponent
-              src={field.value}
-              style={{ width: "95px", height: "95px" }}
-            />
-          )}
-
+        <Container flex="col" spaceY="md" wFull>
+          {field.value && <AudioPlayer src={field?.value?.url} />}
           <Container flex="col" spaceY="sm" wFull>
-            <Container flex="row-middle" spaceX="sm">
+            <Container flex="row-middle" spaceX="sm" wFull>
               <Input
-                value={field.value}
+                value={field.value?.url}
                 onChange={onChange}
                 error={status?.error || meta.error}
               />
@@ -133,4 +160,4 @@ const Image = ({ name, feedId }: ImageProps) => {
   );
 };
 
-export default Image;
+export default Audio;

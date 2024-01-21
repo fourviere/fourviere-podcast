@@ -1,5 +1,5 @@
 import { open } from "@tauri-apps/api/dialog";
-import { FILE_FAMILIES } from "../../../hooks/useUpload";
+import { FILE_FAMILIES } from "../native/fs";
 
 interface Props {
   onceSelected: (selected: string) => void | Promise<void>;

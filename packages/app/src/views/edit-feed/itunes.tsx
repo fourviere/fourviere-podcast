@@ -9,9 +9,8 @@ import useTranslations from "../../hooks/useTranslations";
 import FormObjectField from "@fourviere/ui/lib/form/form-object-field";
 import Boolean from "@fourviere/ui/lib/form/fields/boolean";
 import { Categories } from "../../components/form-fields/categories.tsx";
-import useUpload, { UploadResponse } from "../../hooks/useUpload";
 import ContainerTitle from "@fourviere/ui/lib/container-title.tsx";
-import Img from "../../components/form-fields/image";
+import Img from "../../components/form-fields/image/index.tsx";
 
 export default function Itunes() {
   const currentFeed = UseCurrentFeed();
@@ -30,26 +29,7 @@ export default function Itunes() {
         setSubmitting(false);
       }}
     >
-      {({
-        values,
-        handleSubmit,
-        setFieldValue,
-        setFieldError,
-        dirty,
-        isSubmitting,
-      }) => {
-        console.log({ values });
-        const imageUpload = useUpload({
-          feedId: currentFeed.feedId,
-          updateField: (value: UploadResponse) =>
-            void setFieldValue(
-              `rss.channel.0.['itunes:image'].@.href`,
-              value.url,
-            ),
-          updateError: (value: string) =>
-            setFieldError(`rss.channel.0.['itunes:image'].@.href`, value),
-          fileFamily: "image",
-        });
+      {({ values, handleSubmit, setFieldValue, dirty, isSubmitting }) => {
         return (
           <Container
             scroll
@@ -83,7 +63,7 @@ export default function Itunes() {
                 }}
                 label={t["edit_feed.channel_field.itunes.image"]}
               >
-                {/* <FormRow
+                <FormRow
                   name="rss.channel.0.['itunes:image'].@.href"
                   label={"test image"}
                 >
@@ -98,19 +78,7 @@ export default function Itunes() {
                     emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                     initValue="https://"
                   />
-                </FormRow> */}
-                {/* <FormRow
-                  name="rss.channel.0.['itunes:image'].@.href"
-                  label={t["edit_feed.channel_field.itunes.image"]}
-                >
-                  <ImageField
-                    id="rss.channel.0.['itunes:image'].@.href"
-                    name="rss.channel.0.['itunes:image'].@.href"
-                    onImageClick={() => imageUpload.openFile()}
-                    isUploading={imageUpload.isUploading}
-                    helpMessage={t["edit_feed.channel_field.image.help"]}
-                  />
-                </FormRow> */}
+                </FormRow>
               </FormObjectField>
             </FormSection>
             <FormSection

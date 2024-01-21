@@ -1,4 +1,4 @@
-import feedStore from "../../../store/feed";
+import feedStore from "../store/feed";
 
 type Props = {
   feedId: string;
