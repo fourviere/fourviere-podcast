@@ -41,7 +41,6 @@ const CKeditor = ({ value, setFieldValue, name }: Props) => {
         editor={ClassicEditor}
         data={data}
         onChange={(_, editor) => {
-          console.log("o", editor.getData(), data);
           if (data !== editor.getData()) {
             setData(editor.getData());
           }

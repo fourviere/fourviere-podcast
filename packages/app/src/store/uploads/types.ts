@@ -1,4 +1,4 @@
-import { Configuration } from "../feed";
+import { Configuration } from "../feed/types";
 
 export interface Upload {
   id: string;

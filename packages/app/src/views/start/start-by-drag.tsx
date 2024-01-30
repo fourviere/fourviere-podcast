@@ -2,7 +2,7 @@ import { FunctionComponent, PropsWithChildren } from "react";
 import DragArea from "@fourviere/ui/lib/form/dragArea";
 import useTauriDragArea from "../../hooks/useTauriDragArea";
 import { readFile } from "../../native/fs";
-import feedStore from "../../store/feed";
+import feedStore from "../../store/feed/index";
 
 interface StartByDragProps {}
 const StartByDrag: FunctionComponent<PropsWithChildren<StartByDragProps>> = ({

@@ -33,10 +33,7 @@ const uploadsStore = create<UploadsStore>((set) => ({
     const eventStreamId = await invoke<string>(command, { payload });
 
     const unlisten = await listen<UploadEvent>(eventStreamId, function (event) {
-      console.log("payload raw", event);
-
       if (isProgressEvent(event)) {
-        console.log("progress", event.payload.Ok.Progress);
         set((state) => {
           return produce(state, (draft) => {
             draft.uploads[id].progress = event.payload.Ok.Progress;
@@ -45,7 +42,6 @@ const uploadsStore = create<UploadsStore>((set) => ({
       }
 
       if (isFileResultEvent(event)) {
-        console.log("file result", event.payload.Ok.FileResult);
         set((state) => {
           return produce(state, (draft) => {
             draft.uploads[id].progress = false;
@@ -105,10 +101,8 @@ const uploadsStore = create<UploadsStore>((set) => ({
 
     upload.unlisten?.();
 
-    console.log("abort upload", uploadId);
     set((state) => {
       return produce(state, (draft) => {
-        console.log("draft", draft);
         delete draft.uploads[uploadId];
       });
     });
@@ -116,7 +110,6 @@ const uploadsStore = create<UploadsStore>((set) => ({
   removeUpload: (uploadId) => {
     set((state) => {
       return produce(state, (draft) => {
-        console.log("draft", draft);
         delete draft.uploads[uploadId];
       });
     });

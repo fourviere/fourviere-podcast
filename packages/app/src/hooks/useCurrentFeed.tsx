@@ -1,6 +1,7 @@
 import { Feed } from "@fourviere/core/lib/schema/feed";
-import feedStore, { Configuration } from "../store/feed";
+import feedStore from "../store/feed/index";
 import { useParams } from "react-router-dom";
+import { Configuration } from "../store/feed/types";
 
 export default function UseCurrentFeed() {
   const { feedId } = useParams<{ feedId: string }>();

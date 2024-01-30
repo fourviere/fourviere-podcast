@@ -49,7 +49,6 @@ const Boolean = React.forwardRef<HTMLInputElement, InputProps>(
             placeholder={placeholder}
             checked={unmapBoolean(value)}
             onChange={(e) => {
-              console.log("onChange", e.currentTarget.checked, name);
               void setFieldValue?.(
                 name as string,
                 mapBoolean(e.currentTarget.checked),

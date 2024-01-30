@@ -1,5 +1,5 @@
 import { FunctionComponent, useState } from "react";
-import feedStore from "../../store/feed";
+import feedStore from "../../store/feed/index";
 import { Container } from "@fourviere/ui/lib/box";
 import { Title } from "@fourviere/ui/lib/typography";
 import Button from "@fourviere/ui/lib/button";

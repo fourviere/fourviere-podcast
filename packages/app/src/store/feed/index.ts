@@ -1,44 +1,27 @@
 import { create } from "zustand";
 import { produce } from "immer";
 import { v4 as uuidv4 } from "uuid";
-import { Feed } from "@fourviere/core/lib/schema/feed";
-import { loadState, persistState } from "./persister";
+import { loadState, persistState } from "../persister";
 import { parseXML } from "@fourviere/core/lib/converter";
 import { FEED_TEMPLATE } from "@fourviere/core/lib/const";
-import { fetchFeed } from "../native/network";
+import { fetchFeed } from "../../native/network";
+import { Configuration, Project } from "./types";
 
-export interface Configuration {
+const DEFAULT_FEED_FILENAME = "feed.xml";
+
+const BASE_CONFIGURATION: Configuration = {
   feed: {
-    filename: string;
-  };
+    filename: DEFAULT_FEED_FILENAME,
+  },
   remotes: {
-    remote: "s3" | "ftp" | "none";
-    s3?: {
-      endpoint: string;
-      region: string;
-      bucket_name: string;
-      access_key: string;
-      secret_key: string;
-      http_host: string;
-      https: boolean;
-      path: string;
-    };
-    ftp?: {
-      host: string;
-      port: number;
-      user: string;
-      password: string;
-      path: string | null;
-      http_host: string;
-      https: boolean;
-    };
-  };
-}
+    remote: "none",
+  },
+  meta: {
+    lastFeedUpdate: new Date(),
+    feedIsDirty: false,
+  },
+};
 
-export interface Project {
-  feed: Feed;
-  configuration: Configuration;
-}
 export interface FeedState {
   projects: Record<string, Project>;
   createProject: () => void;
@@ -50,23 +33,16 @@ export interface FeedState {
   ) => void;
   loadFeedFromUrl: (feedUrl: string) => Promise<void>;
   loadFeedFromFileContents: (feed: string) => void;
+  uploadFeed: (id: string) => Promise<void>;
 }
 
-const BASE_CONFIGURATION: Configuration = {
-  feed: {
-    filename: "feed.xml",
-  },
-  remotes: {
-    remote: "none",
-  },
-};
-
-const feedStore = create<FeedState>((set, _get) => {
+const feedStore = create<FeedState>((set, get) => {
   return {
     projects: {},
     getProjectById: (id) => {
-      return _get().projects[id];
+      return get().projects[id];
     },
+
     createProject: () => {
       const feed = parseXML(FEED_TEMPLATE);
       set((state: FeedState) => {
@@ -87,7 +63,7 @@ const feedStore = create<FeedState>((set, _get) => {
       set((state: FeedState) => {
         return produce(state, (draft) => {
           //extract filename from url
-          const filename = feedUrl.split("/").pop() || "feed.xml";
+          const filename = feedUrl.split("/").pop() || DEFAULT_FEED_FILENAME;
 
           const id = uuidv4();
           const configuration = {
@@ -114,9 +90,14 @@ const feedStore = create<FeedState>((set, _get) => {
       set((state: FeedState) => {
         return produce(state, (draft) => {
           draft.projects[id].feed = feed;
+          // draft.projects[id].feed.rss.channel[0].lastBuildDate =
+          //   new Date().toUTCString();
+          draft.projects[id].configuration.meta.lastFeedUpdate = new Date();
+          draft.projects[id].configuration.meta.feedIsDirty = true;
         });
       });
     },
+
     updateConfiguration: (
       id: string,
       configuration: Project["configuration"],

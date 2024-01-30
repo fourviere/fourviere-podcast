@@ -1,4 +1,4 @@
-import feedStore from "../store/feed";
+import feedStore from "../store/feed/index";
 
 type Props = {
   feedId: string;
@@ -16,5 +16,9 @@ export default function UseRemoteConf({ feedId }: Props) {
   return {
     hasRemote: state.remote !== "none",
     remote: state,
+    currentRemote:
+      state?.remote !== "none" && state?.[state.remote]
+        ? state?.[state.remote]
+        : undefined,
   };
 }

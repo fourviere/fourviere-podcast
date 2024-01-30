@@ -28,7 +28,6 @@ export default function ItemGeneral() {
     return null;
   }
 
-  console.log("load");
   return (
     <FullPageColumnLayout>
       <Formik

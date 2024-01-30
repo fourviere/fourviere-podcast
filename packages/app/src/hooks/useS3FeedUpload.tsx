@@ -45,7 +45,6 @@ export default function useS3FeedUpload({
 
   function upload(fileName: string) {
     setIsUploading(true);
-    console.log("s3_xml_upload", fileName);
     invoke<UploadResponse>("s3_xml_upload", {
       payload: {
         content: xml,

@@ -57,7 +57,6 @@ const Audio = ({ name, feedId }: AudioProps) => {
   // Manually set the value of the field to the changed value
   const onChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      console.log("onChange", e.target.value);
       void helpers.setValue({
         url: e.target.value,
         length: 0,

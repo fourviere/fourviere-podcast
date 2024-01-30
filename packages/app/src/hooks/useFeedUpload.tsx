@@ -52,7 +52,7 @@ export default function ({
       const urlBlob = window.URL.createObjectURL(
         new Blob([xml], { type: "application/rss+xml" }),
       );
-      console.log("dsadsa");
+
       window.open(urlBlob, "_tauri");
     },
     isUploading: false,
