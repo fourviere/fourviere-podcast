@@ -6,16 +6,16 @@ use get_chunk::{
 use s3::{creds::Credentials, serde_types::Part, Bucket, Region};
 use serde::Deserialize;
 use std::{borrow::Cow, path::Path};
-use tauri::Window;
+use tauri::AppHandle;
+use tauri_plugin_channel::Channel;
 use tokio::{fs, select, spawn, task::JoinSet};
 use tokio_util::sync::CancellationToken;
-use uuid::Uuid;
 
 use crate::{
-    commands::common::get_cancellation_token,
+    commands::common::build_channel,
     log_if_error_and_return,
     utils::{
-        event::{Channel, Event, EventProducer},
+        event::{CommandReceiver, Event, EventProducer},
         file::{get_file_info, write_string_to_temp_file, TempFile},
         result::{Error, Result},
     },
@@ -78,21 +78,25 @@ pub struct XmlPayload {
 
 #[named]
 #[tauri::command]
-pub async fn s3_xml_upload_window_progress(window: Window, payload: XmlPayload) -> Result<Uuid> {
-    let result = s3_xml_upload_progress_internal(window.into(), payload, false).await;
-    log_if_error_and_return!(result)
+pub async fn s3_xml_upload_progress(app_handle: AppHandle, payload: XmlPayload) -> Result<Channel> {
+    let (producer, receiver, channel) = build_channel(app_handle);
+    let result = s3_xml_upload_progress_internal(producer, receiver, payload, false).await;
+    log_if_error_and_return!(result).map(|_| channel)
 }
 
 #[tauri::command]
-pub async fn s3_upload_window_progress(window: Window, payload: FilePayload) -> Uuid {
-    s3_upload_progress_internal(window.into(), payload, None, false)
+pub async fn s3_upload_progress(app_handle: AppHandle, payload: FilePayload) -> Channel {
+    let (producer, canc_token, channel) = build_channel(app_handle);
+    s3_upload_progress_internal(producer, canc_token, payload, None, false);
+    channel
 }
 
 async fn s3_xml_upload_progress_internal(
-    channel: Channel,
+    producer: EventProducer,
+    receiver: CommandReceiver,
     payload: XmlPayload,
     use_path_style: bool,
-) -> Result<Uuid> {
+) -> Result<()> {
     let temp_file = write_string_to_temp_file(&payload.content, "xml").await?;
 
     let file_payload = FilePayload {
@@ -100,51 +104,45 @@ async fn s3_xml_upload_progress_internal(
         connection: payload.connection,
         endpoint_config: payload.endpoint_config,
     };
-
-    Ok(s3_upload_progress_internal(
-        channel,
+    s3_upload_progress_internal(
+        producer,
+        receiver,
         file_payload,
         Some(temp_file),
         use_path_style,
-    ))
+    );
+    Ok(())
 }
 
 #[named]
 fn s3_upload_progress_internal(
-    channel: Channel,
+    mut producer: EventProducer,
+    receiver: CommandReceiver,
     payload: FilePayload,
     temp_file: Option<TempFile>,
     use_path_style: bool,
-) -> Uuid {
-    let mut event_producer = EventProducer::new(channel);
-    let id = event_producer.id();
-    let canc_token = get_cancellation_token(id);
-
+) {
     spawn(async move {
-        let result = s3_upload_progress_task(
-            &mut event_producer,
-            canc_token,
-            payload,
-            temp_file,
-            use_path_style,
-        )
-        .await
-        .map(Event::FileResult);
+        let result =
+            s3_upload_progress_task(&mut producer, receiver, payload, temp_file, use_path_style)
+                .await
+                .map(Event::FileResult);
         log_if_error_and_return!(&result);
-        event_producer.send(result).await;
+        producer.send(result).await;
     });
-    id
 }
 
 async fn s3_upload_progress_task(
-    event_producer: &mut EventProducer,
-    canc_token: CancellationToken,
+    producer: &mut EventProducer,
+    receiver: CommandReceiver,
     payload: FilePayload,
     _temp_file: Option<TempFile>,
     use_path_style: bool,
 ) -> Result<FileInfo> {
+    let _ = receiver.started().await;
+    
     // Init Phase
-    event_producer.send(Ok(Event::Progress(0))).await;
+    producer.send(Ok(Event::Progress(0))).await;
 
     let mut bucket = payload.connection.bucket()?;
 
@@ -156,8 +154,7 @@ async fn s3_upload_progress_task(
         bucket.set_path_style();
     }
 
-    event_producer.send(Ok(Event::DeltaProgress(2))).await;
-    println!("2");
+    producer.send(Ok(Event::DeltaProgress(2))).await;
 
     let ext = Path::new(&payload.local_path)
         .extension()
@@ -178,8 +175,7 @@ async fn s3_upload_progress_task(
 
     let file_info = get_file_info(&payload.local_path).await?;
 
-    event_producer.send(Ok(Event::DeltaProgress(5))).await;
-    println!("5");
+    producer.send(Ok(Event::DeltaProgress(5))).await;
 
     // Transfer phase: 80-88%
 
@@ -202,7 +198,7 @@ async fn s3_upload_progress_task(
             .put_object_with_content_type(new_file_name, &file, &file_info.mime_type)
             .await?;
 
-        event_producer.send(Ok(Event::DeltaProgress(80))).await;
+        producer.send(Ok(Event::DeltaProgress(80))).await;
     } else {
         let mut set: JoinSet<Result<Part>> = JoinSet::new();
         let mut parts_result: Vec<Part> = Vec::new();
@@ -216,48 +212,31 @@ async fn s3_upload_progress_task(
             .initiate_multipart_upload(&new_file_name, &file_info.mime_type)
             .await?;
 
-        loop {
-            select! {
-                chunk = file_stream.try_next() => {
-                    match chunk {
-                        Err(error) => return Err(error.into()),
-                        Ok(None) => break,
-                        Ok(Some(chunk)) => {
-                            // Prepare data for the part upload task
-                            let mut event_producer = event_producer.clone();
-                            let bucket = bucket.clone();
-                            let new_file_name = new_file_name.clone();
-                            let upload_id = upload_response.upload_id.clone();
-                            let mime_type = file_info.mime_type.clone();
-                            let canc_token = canc_token.clone();
+        let canc_token: CancellationToken = receiver.into();
 
-                            set.spawn(async move {
-                                select! {
-                                    _ = canc_token.cancelled() => {
-                                        println!("Aborting upload");
-                                        let _ = bucket.abort_upload(&new_file_name, &upload_id).await;
-                                        return Err(Error::Aborted)
-                                    },
-                                    res = bucket
-                                    .put_multipart_chunk(chunk, &new_file_name, index, &upload_id, &mime_type) => {
-                                        event_producer.send(Ok(Event::DeltaProgress(delta_progress))).await;
-                                        res.map_err(|err| err.into())
-                                    }
-                                }
-                            });
-                        index += 1;
-                        }
-                    };
-                },
+        while let Ok(Some(chunk)) = file_stream.try_next().await {
+            // Prepare data for the part upload task
+            let mut event_producer = producer.clone();
+            let bucket = bucket.clone();
+            let new_file_name = new_file_name.clone();
+            let upload_id = upload_response.upload_id.clone();
+            let mime_type = file_info.mime_type.clone();
+            let canc_token = canc_token.clone();
 
-                // TODO: remove dead code
-                // _ = canc_token.cancelled() => {
-                //     println!("Aborting upload");
-                //     let _ = bucket.abort_upload(&upload_response.key, &upload_response.upload_id).await;
-                //     set.shutdown().await;
-                //     return Err(Error::Aborted)
-                // }
-            }
+            set.spawn(async move {
+                select! {
+                    _ = canc_token.cancelled() => {
+                        let _ = bucket.abort_upload(&new_file_name, &upload_id).await;
+                        Err(Error::Aborted)
+                    },
+                    res = bucket
+                    .put_multipart_chunk(chunk, &new_file_name, index, &upload_id, &mime_type) => {
+                        event_producer.send(Ok(Event::DeltaProgress(delta_progress))).await;
+                        res.map_err(|err| err.into())
+                    }
+                }
+            });
+            index += 1;
         }
 
         while let Some(res) = set.join_next().await {
@@ -274,11 +253,11 @@ async fn s3_upload_progress_task(
     }
 
     // Fin phase: 5%
-    event_producer.send(Ok(Event::Progress(95))).await;
+    producer.send(Ok(Event::Progress(95))).await;
 
     let file_info = FileInfo::new(&payload.endpoint_config, &file_info, &ext);
 
-    event_producer.send(Ok(Event::DeltaProgress(5))).await;
+    producer.send(Ok(Event::DeltaProgress(5))).await;
 
     Ok(file_info)
 }
@@ -356,7 +335,11 @@ mod test {
     use s3s::{auth::SimpleAuth, service::S3ServiceBuilder};
     use s3s_fs::FileSystem;
     use tempfile::tempdir;
-    use tokio::{spawn, sync::mpsc::channel, time::sleep};
+    use tokio::{
+        spawn,
+        sync::mpsc::{channel, Receiver, Sender},
+        time::sleep,
+    };
 
     use crate::{
         commands::{
@@ -367,6 +350,7 @@ mod test {
             },
         },
         test_file,
+        utils::event::{Command, CommandReceiver, EventProducer, Message},
     };
 
     const ACCESS_KEY: &str = "StealThisUselessAccessKey";
@@ -420,6 +404,20 @@ mod test {
             }
         }) || bucket.is_ok();
         assert!(bucket.is_ok() || test_error);
+    }
+
+    fn build_channel() -> (
+        EventProducer,
+        CommandReceiver,
+        Receiver<Message>,
+        Sender<Command>,
+    ) {
+        let (tx_event, rx_event) = channel(2);
+        let (tx_command, rx_command) = channel(2);
+        let producer = EventProducer::new(tx_event);
+        let canc_token = CommandReceiver::new(rx_command);
+
+        (producer, canc_token, rx_event, tx_command)
     }
 
     #[tokio::test(flavor = "multi_thread")]
@@ -571,15 +569,15 @@ mod test {
         sleep(Duration::from_secs(2)).await;
         prepare_s3_bucket(port, bucket).await;
 
-        let (tx, mut rx) = channel(2);
-        let original_id = s3_xml_upload_progress_internal(tx.into(), payload, true)
+        let (producer, canc_token, mut rx_event, tx_command) = build_channel();
+        let _ = tx_command.send(Command::Start).await;
+        s3_xml_upload_progress_internal(producer, canc_token, payload, true)
             .await
             .unwrap();
         let mut at_least_one_progress = false;
         let mut at_least_one_result = false;
 
-        while let Some((id, event)) = rx.recv().await {
-            assert_eq!(original_id, id);
+        while let Some(event) = rx_event.recv().await {
             match event {
                 Ok(event) => match event {
                     crate::utils::event::Event::Progress(_) => at_least_one_progress = true,
@@ -627,14 +625,14 @@ mod test {
         sleep(Duration::from_secs(2)).await;
         prepare_s3_bucket(port, bucket).await;
 
-        let (tx, mut rx) = channel(2);
-        let original_id = s3_xml_upload_progress_internal(tx.into(), payload, true)
+        let (producer, canc_token, mut rx_event, tx_command) = build_channel();
+        let _ = tx_command.send(Command::Start).await;
+        s3_xml_upload_progress_internal(producer, canc_token, payload, true)
             .await
             .unwrap();
         let mut at_least_one_error = false;
 
-        while let Some((id, event)) = rx.recv().await {
-            assert_eq!(original_id, id);
+        while let Some(event) = rx_event.recv().await {
             match event {
                 Ok(_) => (),
                 Err(_) => at_least_one_error = true,
@@ -671,12 +669,12 @@ mod test {
         sleep(Duration::from_secs(2)).await;
         prepare_s3_bucket(port, bucket).await;
 
-        let (tx, mut rx) = channel(2);
-        let original_id = s3_upload_progress_internal(tx.into(), payload, None, true);
+        let (producer, canc_token, mut rx_event, tx_command) = build_channel();
+        let _ = tx_command.send(Command::Start).await;
+        s3_upload_progress_internal(producer, canc_token, payload, None, true);
         let mut at_least_one_error = false;
 
-        while let Some((id, event)) = rx.recv().await {
-            assert_eq!(original_id, id);
+        while let Some(event) = rx_event.recv().await {
             match event {
                 Ok(_) => (),
                 Err(_) => at_least_one_error = true,
@@ -713,14 +711,14 @@ mod test {
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
 
-        let (tx, mut rx) = channel(2);
-        let original_id = s3_xml_upload_progress_internal(tx.into(), payload, true)
+        let (producer, canc_token, mut rx_event, tx_command) = build_channel();
+        let _ = tx_command.send(Command::Start).await;
+        s3_xml_upload_progress_internal(producer, canc_token, payload, true)
             .await
             .unwrap();
         let mut at_least_one_error = false;
 
-        while let Some((id, event)) = rx.recv().await {
-            assert_eq!(original_id, id);
+        while let Some(event) = rx_event.recv().await {
             match event {
                 Ok(_) => (),
                 Err(_) => at_least_one_error = true,
@@ -730,5 +728,24 @@ mod test {
         assert!(at_least_one_error);
 
         handle.abort();
+    }
+
+    /// Can be used as local server for E2E test using use_path_style = true
+    #[ignore]
+    #[tokio::test(flavor = "multi_thread")]
+    async fn test_s3_e2e() {
+        let port = 3125;
+        let bucket = "test-ok";
+        let _handle = spawn(async move {
+            s3_server(port).await;
+        });
+
+        // Hopefully the server is up =D
+        sleep(Duration::from_secs(2)).await;
+        prepare_s3_bucket(port, bucket).await;
+
+        loop {
+            sleep(Duration::from_secs(10)).await;
+        }
     }
 }

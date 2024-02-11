@@ -3,13 +3,12 @@ use std::sync::{
     Arc,
 };
 
-use serde::Serialize;
-use tauri::{AppHandle, Manager, Window};
+use serde::{Deserialize, Serialize};
 use tokio::{
     spawn,
-    sync::mpsc::{self, Receiver, Sender},
+    sync::mpsc::{self},
 };
-use uuid::Uuid;
+use tokio_util::sync::CancellationToken;
 
 use super::result::{Error, Result};
 
@@ -20,76 +19,69 @@ pub enum Event {
     FileResult(crate::commands::common::FileInfo),
 }
 
-type Message = (Uuid, Result<Event>);
+pub type Message = Result<Event>;
 
-pub enum Channel {
-    Global(AppHandle),
-    Window(Window),
-    Sender(Sender<Message>),
+pub enum Sender<T> {
+    Tokio(tokio::sync::mpsc::Sender<T>),
+    Channel(tauri_plugin_channel::Sender),
 }
 
-impl From<AppHandle> for Channel {
-    fn from(value: AppHandle) -> Self {
-        Channel::Global(value)
+impl<T> From<tokio::sync::mpsc::Sender<T>> for Sender<T> {
+    fn from(value: tokio::sync::mpsc::Sender<T>) -> Self {
+        Self::Tokio(value)
     }
 }
 
-impl From<Window> for Channel {
-    fn from(value: Window) -> Self {
-        Channel::Window(value)
+impl<T> From<tauri_plugin_channel::Sender> for Sender<T> {
+    fn from(value: tauri_plugin_channel::Sender) -> Self {
+        Self::Channel(value)
     }
 }
 
-impl From<Sender<Message>> for Channel {
-    fn from(value: Sender<Message>) -> Self {
-        Channel::Sender(value)
-    }
-}
-
-impl Channel {
-    async fn send(&mut self, message: Message) -> Result<()> {
-        let (id, event) = message;
+impl<T: Send + Serialize + 'static> Sender<T> {
+    async fn send(&mut self, message: T) -> Result<()> {
         match self {
-            Channel::Global(app) => app
-                .emit_all(&id.to_string(), &event)
-                .map_err(|err| err.into()),
-            Channel::Window(window) => window
-                .emit(&id.to_string(), &event)
-                .map_err(|err| err.into()),
-            Channel::Sender(sender) => sender
-                .send((id, event))
+            Sender::Tokio(sender) => sender
+                .send(message)
                 .await
                 .map_err(|_| Error::TokioSendClosed),
+            Sender::Channel(sender) => {
+                sender.emit(message).await;
+                Ok(())
+            }
         }
     }
 }
 
-async fn run_event_dispatcher(mut rx: Receiver<Result<Event>>, id: Uuid, mut channel: Channel) {
+async fn run_event_dispatcher(
+    mut rx: tokio::sync::mpsc::Receiver<Message>,
+    mut sender: Sender<Message>,
+) {
     while let Some(event) = rx.recv().await {
-        let _ = channel.send((id, event)).await;
+        let _ = sender.send(event).await;
     }
 }
+
 #[derive(Clone)]
 pub struct EventProducer {
-    id: Uuid,
-    tx: Sender<Result<Event>>,
+    tx: tokio::sync::mpsc::Sender<Result<Event>>,
     progress: Arc<AtomicU8>,
 }
 
 impl EventProducer {
-    pub fn new(channel: Channel) -> Self {
-        let id = Uuid::now_v7();
+    pub fn new<T: Into<Sender<Message>>>(sender: T) -> Self {
         let progress = Arc::new(AtomicU8::new(0));
 
         let (tx, rx) = mpsc::channel(100);
+        let sender: Sender<Message> = sender.into();
         spawn(async move {
-            run_event_dispatcher(rx, id, channel).await;
+            run_event_dispatcher(rx, sender).await;
         });
 
-        Self { id, tx, progress }
+        Self { tx, progress }
     }
 
-    pub async fn send(&mut self, mut event: Result<Event>) {
+    pub async fn send(&mut self, mut event: Message) {
         event = match event {
             Ok(Event::DeltaProgress(delta)) => {
                 let progress = delta + self.progress.fetch_add(delta, Ordering::Relaxed);
@@ -105,9 +97,82 @@ impl EventProducer {
 
         let _ = self.tx.send(event).await;
     }
+}
 
-    pub fn id(&self) -> Uuid {
-        self.id
+#[derive(Debug, PartialEq, Deserialize)]
+pub enum Command {
+    Start,
+    Abort,
+}
+
+pub enum Receiver<T> {
+    Tokio(tokio::sync::mpsc::Receiver<T>),
+    Channel(tauri_plugin_channel::Receiver),
+}
+
+impl<T> From<tokio::sync::mpsc::Receiver<T>> for Receiver<T> {
+    fn from(value: tokio::sync::mpsc::Receiver<T>) -> Self {
+        Self::Tokio(value)
+    }
+}
+
+impl<T> From<tauri_plugin_channel::Receiver> for Receiver<T> {
+    fn from(value: tauri_plugin_channel::Receiver) -> Self {
+        Self::Channel(value)
+    }
+}
+
+async fn run_abort_listener(
+    mut rx: Receiver<Command>,
+    canc_token: CancellationToken,
+    start_token: CancellationToken,
+) {
+    let data = match &mut rx {
+        Receiver::Tokio(rec) => rec.recv().await,
+        Receiver::Channel(rec) => rec.once().await,
+    };
+
+    match data {
+        Some(Command::Abort) => canc_token.cancel(),
+        Some(Command::Start) => start_token.cancel(),
+        None => (),
+    }
+}
+
+pub struct CommandReceiver {
+    start_token: CancellationToken,
+    canc_token: CancellationToken,
+}
+
+impl CommandReceiver {
+    pub fn new<T: Into<Receiver<Command>>>(rx: T) -> Self {
+        let canc_token_listener = CancellationToken::new();
+        let canc_token = canc_token_listener.clone();
+        let start_token_listener = CancellationToken::new();
+        let start_token = start_token_listener.clone();
+        let rx: Receiver<Command> = rx.into();
+        spawn(async move {
+            run_abort_listener(rx, canc_token_listener, start_token_listener).await;
+        });
+
+        CommandReceiver {
+            canc_token,
+            start_token,
+        }
+    }
+
+    pub async fn cancelled(&self) {
+        self.canc_token.cancelled().await
+    }
+
+    pub async fn started(&self) {
+        self.start_token.cancelled().await
+    }
+}
+
+impl From<CommandReceiver> for tokio_util::sync::CancellationToken {
+    fn from(value: CommandReceiver) -> Self {
+        value.canc_token
     }
 }
 
@@ -115,13 +180,12 @@ impl EventProducer {
 mod test {
     use tokio::{spawn, sync::mpsc::channel};
 
-    use crate::utils::event::{Event, EventProducer};
+    use crate::utils::event::{Command, CommandReceiver, Event, EventProducer, Message};
 
     #[tokio::test(flavor = "multi_thread")]
     async fn test_event_ok() {
-        let (tx, mut rx) = channel(2);
-        let mut event_producer = EventProducer::new(tx.into());
-        let original_id = event_producer.id();
+        let (tx, mut rx) = channel::<Message>(2);
+        let mut event_producer = EventProducer::new(tx);
 
         spawn(async move {
             event_producer.send(Ok(Event::Progress(0))).await;
@@ -131,8 +195,7 @@ mod test {
         });
 
         match rx.recv().await {
-            Some((id, message)) => {
-                assert_eq!(original_id, id);
+            Some(message) => {
                 assert!(message.is_ok());
                 assert_eq!(message.unwrap(), Event::Progress(0));
             }
@@ -140,8 +203,7 @@ mod test {
         }
 
         match rx.recv().await {
-            Some((id, message)) => {
-                assert_eq!(original_id, id);
+            Some(message) => {
                 assert!(message.is_ok());
                 assert_eq!(message.unwrap(), Event::Progress(5));
             }
@@ -149,8 +211,7 @@ mod test {
         }
 
         match rx.recv().await {
-            Some((id, message)) => {
-                assert_eq!(original_id, id);
+            Some(message) => {
                 assert!(message.is_ok());
                 assert_eq!(message.unwrap(), Event::Progress(7));
             }
@@ -158,12 +219,21 @@ mod test {
         }
 
         match rx.recv().await {
-            Some((id, message)) => {
-                assert_eq!(original_id, id);
+            Some(message) => {
                 assert!(message.is_ok());
                 assert_eq!(message.unwrap(), Event::Progress(5));
             }
             None => panic!("Tx closed"),
         }
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn test_canc_token_ok() {
+        let (tx, rx) = channel(2);
+        let canc_token = CommandReceiver::new(rx);
+        spawn(async move {
+            let _ = tx.send(Command::Abort).await;
+        });
+        canc_token.cancelled().await;
     }
 }

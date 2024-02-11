@@ -13,7 +13,7 @@ export function getTauriUploadCommandByRemote(
   switch (startUploadCommand.remote.remote) {
     case "s3":
       return {
-        command: "s3_upload_window_progress",
+        command: "s3_upload_progress",
         payload: {
           local_path: startUploadCommand.localPath,
           file_name: startUploadCommand.fileName,
@@ -22,7 +22,7 @@ export function getTauriUploadCommandByRemote(
       };
     case "ftp":
       return {
-        command: "ftp_upload_window_progress",
+        command: "ftp_upload_progress",
         payload: {
           local_path: startUploadCommand.localPath,
           file_name: startUploadCommand.fileName,
@@ -42,36 +42,33 @@ export function generateId(feedId: string, field: string) {
 }
 
 export function isProgressEvent(
-  event: Event<UploadEvent>,
-): event is Event<ProgressEvent> {
+  event: UploadEvent,
+): event is ProgressEvent {
   return (
     event &&
-    event.payload &&
-    "Ok" in event.payload &&
-    "Progress" in event.payload.Ok &&
-    event.payload.Ok.Progress !== undefined
+    "Ok" in event &&
+    "Progress" in event.Ok &&
+    event.Ok.Progress !== undefined
   );
 }
 
 export function isFileResultEvent(
-  event: Event<UploadEvent>,
-): event is Event<FileResultEvent> {
+  event: UploadEvent,
+): event is FileResultEvent {
   return (
     event &&
-    event.payload &&
-    "Ok" in event.payload &&
-    "FileResult" in event.payload.Ok &&
-    event.payload.Ok.FileResult !== undefined
+    "Ok" in event &&
+    "FileResult" in event.Ok &&
+    event.Ok.FileResult !== undefined
   );
 }
 
 export function isErrorEvent(
-  event: Event<UploadEvent>,
-): event is Event<ErrorEvent> {
+  event: UploadEvent,
+): event is ErrorEvent {
   return (
     event &&
-    event.payload &&
-    "Err" in event.payload &&
-    event.payload.Err !== undefined
+    "Err" in event &&
+    event.Err !== undefined
   );
 }
