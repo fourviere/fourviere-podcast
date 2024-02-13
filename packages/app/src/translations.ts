@@ -133,6 +133,24 @@ const TRANSLATIONS = {
     "edit_feed.configuration.feed.filename": "Feed file name",
     "edit_feed.source-code.title": "Source code",
 
+    "edit_feed.feed-uploader.button_label": "Update remote feed",
+    "edit_feed.feed-uploader.save_title": "Save your feed",
+    "edit_feed.feed-uploader.remote_feed_not_valid":
+      "The remote feed you are trying to patch is not valid",
+    "edit_feed.feed-uploader.ask_overwrite.title": "Overwrite",
+    "edit_feed.feed-uploader.ask_overwrite":
+      "You are overwriting the remote feed that seem more recent, are you sure? This operation cannot be reverted",
+    "edit_feed.feed-uploader.ask_overwrite_not_valid":
+      "The feed URL point to a non valid feed, do you want to overwrite it?",
+    "edit_feed.feed-uploader.ask_overwrite_not_valid_skip_overwrite":
+      "The feed is not valid and you chose not to overwrite it",
+    "edit_feed.feed-uploader.ask_overwrite_not_last_skip_overwrite":
+      "The remote feed is not the last version, and you chosed not to overwrite it",
+    "edit_feed.feed-uploader.error_persisting_feed":
+      "An error occurred while persisting the feed",
+    "edit_feed.feed-uploader.error_uploading_feed":
+      "An error occurred while uploading the feed",
+
     "configurations.title": "Fourviere global configurations",
 
     "configurations.locale.title": "Locale",

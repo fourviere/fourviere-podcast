@@ -7,17 +7,23 @@ import { fetchFeed } from "../native/network";
 import { parseXML, serializeToXML } from "@fourviere/core/lib/converter";
 import UseCurrentFeed from "../hooks/useCurrentFeed";
 import UseRemoteConf from "../hooks/use-remote-conf";
+import { useState } from "react";
+import { ArrowUpCircleIcon } from "@heroicons/react/24/outline";
+import appStore from "../store/app";
 
 export default function FeedUploader() {
+  const [loading, setLoading] = useState<boolean>(false);
   const currentFeed = UseCurrentFeed()!;
   const { feed, configuration } = currentFeed;
   const { hasRemote, currentRemote, remote } = UseRemoteConf({
     feedId: currentFeed.feedId!,
   });
+  const { getTranslations, addError } = appStore((state) => state);
+  const t = getTranslations();
 
   async function localPersist(xmlData: string) {
     const selected = await save({
-      title: "Save your feed",
+      title: t["edit_feed.feed-uploader.save_title"],
       filters: [{ name: "XML", extensions: ["xml"] }],
       defaultPath: await documentDir(),
     });
@@ -31,11 +37,8 @@ export default function FeedUploader() {
           },
         });
       } catch (e) {
-        // notify user
-        console.error(e);
+        addError(t["edit_feed.feed-uploader.error_persisting_feed"]);
       }
-
-      //notify user
     }
   }
 
@@ -46,8 +49,7 @@ export default function FeedUploader() {
 
     const feed = parseXML(data!);
     if (!feed.rss.channel[0].lastBuildDate) {
-      //notify user
-      console.error("no last build date in the remote feed");
+      addError(t["edit_feed.feed-uploader.remote_feed_not_valid"]);
       return;
     }
 
@@ -57,23 +59,17 @@ export default function FeedUploader() {
   }
 
   async function askForOverwrite() {
-    return await confirm(
-      "You are overwriting the remote feed that seem more recent, are you sure? This operation cannot be reverted",
-      {
-        title: "Overwrite",
-        type: "warning",
-      },
-    );
+    return await confirm(t["edit_feed.feed-uploader.ask_overwrite"], {
+      title: t["edit_feed.feed-uploader.ask_overwrite.title"],
+      type: "warning",
+    });
   }
 
   async function feedNotValidFromURL() {
-    return await confirm(
-      "The feed URL point to a non valid feed, do you want to overwrite it?",
-      {
-        title: "Overwrite",
-        type: "warning",
-      },
-    );
+    return await confirm(t["edit_feed.feed-uploader.ask_overwrite_not_valid"], {
+      title: t["edit_feed.feed-uploader.ask_overwrite.title"],
+      type: "warning",
+    });
   }
 
   async function fileUpload() {
@@ -99,6 +95,9 @@ export default function FeedUploader() {
       } catch (e) {
         const confirmed = await feedNotValidFromURL();
         if (!confirmed) {
+          addError(
+            t["edit_feed.feed-uploader.ask_overwrite_not_valid_skip_overwrite"],
+          );
           return;
         }
         isLocalFeedLatest = true;
@@ -107,11 +106,15 @@ export default function FeedUploader() {
       if (!isLocalFeedLatest) {
         const confirmed = await askForOverwrite();
         if (!confirmed) {
+          addError(
+            t["edit_feed.feed-uploader.ask_overwrite_not_last_skip_overwrite"],
+          );
           return;
         }
       }
 
       try {
+        setLoading(true);
         const res = await invoke(`${remote.remote}_xml_upload`, {
           payload: {
             content: xml,
@@ -122,15 +125,23 @@ export default function FeedUploader() {
         console.log(res);
       } catch (e) {
         //notify user
-        console.error(e);
+        addError(t["edit_feed.feed-uploader.error_uploading_feed"]);
+      } finally {
+        setLoading(false);
       }
     }
   }
 
   return (
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    <Button wfull size="md" onClick={() => fileUpload()}>
-      Force Update
+    <Button
+      wfull
+      size="md"
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      onClick={() => fileUpload()}
+      isLoading={loading}
+      Icon={ArrowUpCircleIcon}
+    >
+      {t["edit_feed.feed-uploader.button_label"]}
     </Button>
   );
 }

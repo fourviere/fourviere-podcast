@@ -93,7 +93,7 @@ async fn s3_xml_upload_progress_internal(
     payload: XmlPayload,
     use_path_style: bool,
 ) -> Result<Uuid> {
-    let temp_file = write_string_to_temp_file(&payload.content, "xml").await?;
+    let temp_file = write_string_to_temp_file(&payload.content).await?;
 
     let file_payload = FilePayload {
         local_path: temp_file.path().to_owned(),
@@ -298,7 +298,7 @@ pub async fn s3_upload(payload: FilePayload) -> Result<FileInfo> {
 }
 
 async fn s3_xml_upload_internal(payload: XmlPayload, use_path_style: bool) -> Result<FileInfo> {
-    let temp_file = write_string_to_temp_file(&payload.content, "xml").await?;
+    let temp_file = write_string_to_temp_file(&payload.content).await?;
 
     let file_payload = FilePayload {
         local_path: temp_file.path().to_owned(),

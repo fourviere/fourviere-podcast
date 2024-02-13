@@ -24,9 +24,9 @@ pub async fn get_file_info(path: &str) -> Result<FileInfo> {
     Ok(FileInfo { mime_type, size })
 }
 
-pub async fn write_string_to_temp_file(data: &str, ext: &str) -> Result<TempFile> {
+pub async fn write_string_to_temp_file(data: &str) -> Result<TempFile> {
     let tmp_dir = tempdir()?;
-    let file_path = tmp_dir.path().join(format!("temp.{ext}"));
+    let file_path = tmp_dir.path().join(format!("temp"));
     let path_string = file_path.to_string_lossy().into_owned();
 
     tokio::fs::write(file_path, data).await?;
@@ -74,7 +74,7 @@ mod test {
     async fn test_write_temp_ok() {
         let data =
             std::str::from_utf8(include_bytes!(test_file!("gitbar.xml"))).unwrap_or_default();
-        let tmp_file = write_string_to_temp_file(data, "xml").await.unwrap();
+        let tmp_file = write_string_to_temp_file(data).await.unwrap();
 
         let size = tokio::fs::metadata(tmp_file.path()).await.unwrap().len();
         assert_eq!(size, FILESIZE);
