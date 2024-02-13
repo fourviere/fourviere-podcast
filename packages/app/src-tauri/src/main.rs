@@ -20,6 +20,7 @@ fn main() {
             commands::network::fetch_feed,
             commands::fs::read_text_file,
             commands::fs::read_file_info,
+            commands::fs::persist_file,
             commands::s3::s3_upload,
             commands::s3::s3_upload_window_progress,
             commands::s3::s3_xml_upload,

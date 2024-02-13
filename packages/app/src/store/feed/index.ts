@@ -33,7 +33,6 @@ export interface FeedState {
   ) => void;
   loadFeedFromUrl: (feedUrl: string) => Promise<void>;
   loadFeedFromFileContents: (feed: string) => void;
-  uploadFeed: (id: string) => Promise<void>;
 }
 
 const feedStore = create<FeedState>((set, get) => {

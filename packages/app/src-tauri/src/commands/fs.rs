@@ -1,7 +1,10 @@
-use crate::{log_if_error_and_return, utils::result::Result};
+use crate::{
+    log_if_error_and_return,
+    utils::{file::write_string_to_file, result::Result},
+};
 use ::function_name::named;
 use reqwest::header;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use tokio::fs::read_to_string;
 
 #[named]
@@ -59,6 +62,20 @@ async fn read_file_info_internal(url: &str) -> Result<FileInfo> {
         });
 
     resp.map_err(|err| err.into())
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct PersistFilePayload {
+    pub path: String,
+    pub data: String,
+}
+#[named]
+#[tauri::command]
+pub async fn persist_file(payload: PersistFilePayload) -> Result<String> {
+    //rust write file
+    let res: std::prelude::v1::Result<String, crate::utils::result::Error> =
+        write_string_to_file(payload.data.as_str(), payload.path.as_str()).await;
+    log_if_error_and_return!(res)
 }
 
 #[cfg(test)]
