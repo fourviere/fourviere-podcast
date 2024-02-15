@@ -90,7 +90,7 @@ async fn ftp_xml_upload_with_progress_internal(
     channel: Channel,
     payload: XmlPayload,
 ) -> Result<Uuid> {
-    let temp_file = write_string_to_temp_file(&payload.content).await?;
+    let temp_file = write_string_to_temp_file(&payload.content, "xml").await?;
 
     let file_payload = FilePayload {
         connection: payload.connection,
@@ -197,7 +197,8 @@ async fn ftp_upload_progress_task(
 #[named]
 #[tauri::command]
 pub async fn ftp_xml_upload(payload: XmlPayload) -> Result<FileInfo> {
-    let temp_file = log_if_error_and_return!(write_string_to_temp_file(&payload.content).await)?;
+    let temp_file =
+        log_if_error_and_return!(write_string_to_temp_file(&payload.content, "xml").await)?;
 
     let file_payload = FilePayload {
         connection: payload.connection,

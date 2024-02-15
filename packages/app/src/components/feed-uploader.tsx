@@ -43,9 +43,9 @@ export default function FeedUploader() {
   }
 
   async function isLocalLatest(url: string, localLastUpdate: Date) {
+    setLoading(true);
     const data = await fetchFeed(url);
-
-    console.log(data);
+    setLoading(false);
 
     const feed = parseXML(data!);
     if (!feed.rss.channel[0].lastBuildDate) {
@@ -122,7 +122,7 @@ export default function FeedUploader() {
             ...configuration.remotes.s3,
           },
         });
-        console.log(res);
+        console.log("res:", res);
       } catch (e) {
         //notify user
         addError(t["edit_feed.feed-uploader.error_uploading_feed"]);

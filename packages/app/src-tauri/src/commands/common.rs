@@ -60,7 +60,16 @@ impl FileInfo {
             .as_ref()
             .filter(|path| !path.is_empty())
         {
-            Some(path) => format!("{}/{}.{}", path, endpoint_config.file_name, ext),
+            Some(path) => format!(
+                "{}/{}{}",
+                path,
+                endpoint_config.file_name,
+                if ext.len() >= 3 {
+                    format!(".{}", ext)
+                } else {
+                    "".to_owned()
+                }
+            ),
             None => format!("{}.{}", endpoint_config.file_name, ext),
         };
 

@@ -93,7 +93,10 @@ async fn s3_xml_upload_progress_internal(
     payload: XmlPayload,
     use_path_style: bool,
 ) -> Result<Uuid> {
-    let temp_file = write_string_to_temp_file(&payload.content).await?;
+    let ext = Path::new(&payload.endpoint_config.file_name())
+        .extension()
+        .map_or("".to_string(), |ext| format!(".{}", ext.to_string_lossy()));
+    let temp_file = write_string_to_temp_file(&payload.content, &ext).await?;
 
     let file_payload = FilePayload {
         local_path: temp_file.path().to_owned(),
@@ -293,12 +296,16 @@ pub async fn s3_xml_upload(payload: XmlPayload) -> Result<FileInfo> {
 #[named]
 #[tauri::command]
 pub async fn s3_upload(payload: FilePayload) -> Result<FileInfo> {
-    let upload_result = s3_upload_internal(payload, false).await;
+    let upload_result = s3_upload_internal(payload, false, true).await;
     log_if_error_and_return!(upload_result)
 }
 
 async fn s3_xml_upload_internal(payload: XmlPayload, use_path_style: bool) -> Result<FileInfo> {
-    let temp_file = write_string_to_temp_file(&payload.content).await?;
+    let ext = Path::new(&payload.endpoint_config.file_name())
+        .extension()
+        .map_or("".to_string(), |ext| format!(".{}", ext.to_string_lossy()));
+
+    let temp_file = write_string_to_temp_file(&payload.content, &ext).await?;
 
     let file_payload = FilePayload {
         local_path: temp_file.path().to_owned(),
@@ -306,10 +313,14 @@ async fn s3_xml_upload_internal(payload: XmlPayload, use_path_style: bool) -> Re
         endpoint_config: payload.endpoint_config,
     };
 
-    s3_upload_internal(file_payload, use_path_style).await
+    s3_upload_internal(file_payload, use_path_style, false).await
 }
 
-async fn s3_upload_internal(payload: FilePayload, use_path_style: bool) -> Result<FileInfo> {
+async fn s3_upload_internal(
+    payload: FilePayload,
+    use_path_style: bool,
+    concat_extension: bool,
+) -> Result<FileInfo> {
     let mut bucket = payload.connection.bucket()?;
 
     // this header is required to make the uploaded file public readable.
@@ -333,18 +344,26 @@ async fn s3_upload_internal(payload: FilePayload, use_path_style: bool) -> Resul
         .as_ref()
         .unwrap_or(&"".to_owned())
         .to_owned();
-    let new_file_name = format!(
-        "{}/{}.{}",
-        &path,
-        &payload.endpoint_config.file_name(),
-        &ext
-    );
 
-    bucket
-        .put_object_with_content_type(new_file_name, &file, &file_info.mime_type)
+    let filename = match concat_extension {
+        true => format!(
+            "{}/{}.{}",
+            &path,
+            &payload.endpoint_config.file_name(),
+            &ext
+        ),
+        false => format!("{}/{}", &path, &payload.endpoint_config.file_name()),
+    };
+
+    let res = bucket
+        .put_object_with_content_type(filename, &file, &file_info.mime_type)
         .await?;
 
-    Ok(FileInfo::new(&payload.endpoint_config, &file_info, &ext))
+    Ok(FileInfo::new(
+        &payload.endpoint_config,
+        &file_info,
+        if concat_extension { &ext } else { "" },
+    ))
 }
 
 #[cfg(test)]
@@ -512,7 +531,7 @@ mod test {
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
         prepare_s3_bucket(port, bucket).await;
-        assert!(s3_upload_internal(payload, true).await.is_err());
+        assert!(s3_upload_internal(payload, true, true).await.is_err());
         handle.abort();
     }
 
