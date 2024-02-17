@@ -32,6 +32,7 @@ export interface FeedState {
     configuration: Project["configuration"],
   ) => void;
   loadFeedFromUrl: (feedUrl: string) => Promise<void>;
+  patchFeedFromUrl: (feedUrl: string, id: string) => Promise<void>;
   loadFeedFromFileContents: (feed: string) => void;
 }
 
@@ -71,6 +72,17 @@ const feedStore = create<FeedState>((set, get) => {
           };
           draft.projects[id] = { feed, configuration };
           draft.projects[id].configuration.feed.filename = filename;
+        });
+      });
+    },
+
+    patchFeedFromUrl: async (feedUrl, id) => {
+      const data = await fetchFeed(feedUrl);
+      if (!data) return;
+      const feed = parseXML(data);
+      set((state: FeedState) => {
+        return produce(state, (draft) => {
+          draft.projects[id].feed = feed;
         });
       });
     },

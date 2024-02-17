@@ -9,6 +9,7 @@ import {
   QueueListIcon,
 } from "@heroicons/react/24/outline";
 import FeedUploader from "../../components/feed-uploader";
+import FeedSync from "../../components/feed-sync";
 
 export default function FeedMenu() {
   const t = useTranslations();
@@ -68,6 +69,7 @@ export default function FeedMenu() {
       }
       footer={
         <>
+          <FeedSync />
           <FeedUploader />
         </>
       }

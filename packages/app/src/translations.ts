@@ -151,6 +151,8 @@ const TRANSLATIONS = {
     "edit_feed.feed-uploader.error_uploading_feed":
       "An error occurred while uploading the feed",
 
+    "edit_feed.feed-sync.button_label": "Overwrite feed from remote",
+
     "configurations.title": "Fourviere global configurations",
 
     "configurations.locale.title": "Locale",
