@@ -1,6 +1,6 @@
 import SideMenu, { SideMenuItem } from "@fourviere/ui/lib/menu/side-menu";
 import { NavLink, NavLinkProps } from "react-router-dom";
-import useTranslations from "../../hooks/useTranslations";
+import useTranslations from "../../hooks/use-translations";
 import {
   CodeBracketSquareIcon,
   Cog8ToothIcon,

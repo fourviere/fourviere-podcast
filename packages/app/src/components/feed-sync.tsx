@@ -1,7 +1,7 @@
 import Button from "@fourviere/ui/lib/button";
 
 import { confirm } from "@tauri-apps/api/dialog";
-import UseCurrentFeed from "../hooks/useCurrentFeed";
+import UseCurrentFeed from "../hooks/use-current-feed";
 import UseRemoteConf from "../hooks/use-remote-conf";
 import { useState } from "react";
 import { ArrowUpCircleIcon } from "@heroicons/react/24/outline";

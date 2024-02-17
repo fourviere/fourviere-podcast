@@ -16,6 +16,11 @@ const ContainerTitle = ({
   onSave,
   children,
 }: PropsWithChildren<Props>) => {
+  function onSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    e.preventDefault();
+    isDirty && onSave();
+  }
+
   return (
     <div className="sticky top-0 z-10 flex items-center border-b border-slate-100 bg-slate-50 bg-opacity-95 p-5 text-xl">
       <div className="flex-shrink flex-grow">
@@ -35,7 +40,7 @@ const ContainerTitle = ({
       <Button
         size="md"
         isDisabled={!isDirty && !isSubmitting}
-        onClick={() => isDirty && onSave()}
+        onClick={onSubmit}
         Icon={CheckIcon}
       >
         Save

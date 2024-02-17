@@ -62,7 +62,6 @@ const feedStore = create<FeedState>((set, get) => {
       const feed = parseXML(data);
       set((state: FeedState) => {
         return produce(state, (draft) => {
-          //extract filename from url
           const filename = feedUrl.split("/").pop() || DEFAULT_FEED_FILENAME;
 
           const id = uuidv4();
@@ -72,17 +71,6 @@ const feedStore = create<FeedState>((set, get) => {
           };
           draft.projects[id] = { feed, configuration };
           draft.projects[id].configuration.feed.filename = filename;
-        });
-      });
-    },
-
-    patchFeedFromUrl: async (feedUrl, id) => {
-      const data = await fetchFeed(feedUrl);
-      if (!data) return;
-      const feed = parseXML(data);
-      set((state: FeedState) => {
-        return produce(state, (draft) => {
-          draft.projects[id].feed = feed;
         });
       });
     },
@@ -98,13 +86,27 @@ const feedStore = create<FeedState>((set, get) => {
     },
 
     updateFeed: (id: string, feed: Project["feed"]) => {
+      console.log("updateFeed", id);
       set((state: FeedState) => {
         return produce(state, (draft) => {
           draft.projects[id].feed = feed;
-          // draft.projects[id].feed.rss.channel[0].lastBuildDate =
-          //   new Date().toUTCString();
+          draft.projects[id].feed.rss.channel[0].lastBuildDate =
+            new Date().toUTCString();
           draft.projects[id].configuration.meta.lastFeedUpdate = new Date();
           draft.projects[id].configuration.meta.feedIsDirty = true;
+        });
+      });
+    },
+
+    patchFeedFromUrl: async (feedUrl, id) => {
+      const data = await fetchFeed(feedUrl);
+      if (!data) return;
+      const feed = parseXML(data);
+      set((state: FeedState) => {
+        return produce(state, (draft) => {
+          draft.projects[id].feed = feed;
+          draft.projects[id].configuration.meta.lastFeedUpdate = new Date();
+          draft.projects[id].configuration.meta.feedIsDirty = false;
         });
       });
     },

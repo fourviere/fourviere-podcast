@@ -1,6 +1,6 @@
 import { FunctionComponent, PropsWithChildren } from "react";
 import DragArea from "@fourviere/ui/lib/form/dragArea";
-import useTauriDragArea from "../../hooks/useTauriDragArea";
+import useTauriDragArea from "../../hooks/use-tauri-drag-area";
 import { readFile } from "../../native/fs";
 import feedStore from "../../store/feed/index";
 

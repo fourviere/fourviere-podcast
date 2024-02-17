@@ -20,7 +20,7 @@ void attachConsole();
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <StartView />,
+    Component: StartView,
   },
   {
     path: "/configurations",
@@ -55,6 +55,10 @@ const router = createBrowserRouter([
       {
         path: "feed-config",
         Component: FeedConfiguration,
+      },
+      {
+        path: "*",
+        Component: StartView,
       },
     ],
   },

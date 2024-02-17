@@ -7,7 +7,7 @@ import Input from "@fourviere/ui/lib/form/fields/input";
 import appStore from "../../store/app";
 import { useFormik } from "formik";
 import { ImageLinkCard, ImageLinkCardContainer } from "@fourviere/ui/lib/cards";
-import { usePodcastIndex } from "../../hooks/usePodcastIndex";
+import { usePodcastIndex } from "../../hooks/use-podcast-index";
 import {
   InvalidPodcastFeedError,
   InvalidXMLError,

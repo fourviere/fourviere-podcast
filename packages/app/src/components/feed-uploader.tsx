@@ -5,7 +5,7 @@ import { documentDir } from "@tauri-apps/api/path";
 import { invoke } from "@tauri-apps/api/tauri";
 import { fetchFeed } from "../native/network";
 import { parseXML, serializeToXML } from "@fourviere/core/lib/converter";
-import UseCurrentFeed from "../hooks/useCurrentFeed";
+import UseCurrentFeed from "../hooks/use-current-feed";
 import UseRemoteConf from "../hooks/use-remote-conf";
 import { useState } from "react";
 import { ArrowUpCircleIcon } from "@heroicons/react/24/outline";

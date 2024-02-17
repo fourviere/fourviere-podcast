@@ -2,7 +2,7 @@ import Alert from "@fourviere/ui/lib/dialogs/alert";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { useState, useEffect } from "react";
 import { useBlocker } from "react-router-dom";
-import useTranslations from "../hooks/useTranslations";
+import useTranslations from "../hooks/use-translations";
 import { createPortal } from "react-dom";
 
 const modals = document.getElementById("modals") as HTMLElement;

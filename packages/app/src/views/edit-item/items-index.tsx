@@ -2,7 +2,7 @@ import { FullPageColumnLayout } from "@fourviere/ui/lib/layouts/full-page";
 import React from "react";
 
 import { NavLink } from "react-router-dom";
-import UseCurrentFeed from "../../hooks/useCurrentFeed";
+import UseCurrentFeed from "../../hooks/use-current-feed";
 
 import CardGrid, { Card } from "@fourviere/ui/lib/lists/card-grid";
 

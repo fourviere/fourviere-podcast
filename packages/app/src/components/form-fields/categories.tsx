@@ -5,7 +5,7 @@ import { Field, FieldArray, useField } from "formik";
 import Select from "@fourviere/ui/lib/form/fields/select";
 import ResetField from "@fourviere/ui/lib/form/reset-field";
 import Undefined from "@fourviere/ui/lib/form/fields/undefined";
-import useTranslations from "../../hooks/useTranslations.tsx";
+import useTranslations from "../../hooks/use-translations.tsx";
 import { Feed } from "@fourviere/core/lib/schema/feed";
 
 interface Props {
