@@ -7,6 +7,8 @@ import { useState } from "react";
 import { ArrowUpCircleIcon } from "@heroicons/react/24/outline";
 import appStore from "../store/app";
 import feedStore from "../store/feed";
+import useSelectFile from "../hooks/use-select-file";
+import { readFile } from "../native/fs";
 
 export default function FeedSync() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -17,7 +19,9 @@ export default function FeedSync() {
   });
   const { getTranslations, addError } = appStore((state) => state);
   const t = getTranslations();
-  const { patchFeedFromUrl } = feedStore((state) => state);
+  const { patchFeedFromUrl, patchFeedFromFileContents } = feedStore(
+    (state) => state,
+  );
 
   async function askForOverwrite() {
     return await confirm(t["edit_feed.feed-uploader.ask_overwrite"], {
@@ -28,7 +32,21 @@ export default function FeedSync() {
 
   async function filePatch() {
     if (!hasRemote) {
-      alert("No remote configuration found");
+      const { openFile } = useSelectFile({
+        onceSelected: async (selected) => {
+          console.log(selected);
+          const content = await readFile(selected);
+          if (!content) {
+            return;
+          }
+          if (await askForOverwrite()) {
+            patchFeedFromFileContents(content, currentFeed.feedId!);
+          }
+        },
+        format: "feed",
+      });
+
+      openFile();
     } else {
       try {
         const { https, http_host, path } = currentRemote!;
@@ -39,7 +57,6 @@ export default function FeedSync() {
         if (await askForOverwrite()) {
           setLoading(true);
           await patchFeedFromUrl(feedUrl, currentFeed.feedId!);
-          console.log("Feed updated", currentFeed.feedId);
           setLoading(false);
         }
       } catch (e) {

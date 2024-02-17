@@ -34,6 +34,7 @@ export interface FeedState {
   loadFeedFromUrl: (feedUrl: string) => Promise<void>;
   patchFeedFromUrl: (feedUrl: string, id: string) => Promise<void>;
   loadFeedFromFileContents: (feed: string) => void;
+  patchFeedFromFileContents: (feed: string, id: string) => void;
 }
 
 const feedStore = create<FeedState>((set, get) => {
@@ -102,6 +103,17 @@ const feedStore = create<FeedState>((set, get) => {
       const data = await fetchFeed(feedUrl);
       if (!data) return;
       const feed = parseXML(data);
+      set((state: FeedState) => {
+        return produce(state, (draft) => {
+          draft.projects[id].feed = feed;
+          draft.projects[id].configuration.meta.lastFeedUpdate = new Date();
+          draft.projects[id].configuration.meta.feedIsDirty = false;
+        });
+      });
+    },
+
+    patchFeedFromFileContents: (fileContents, id) => {
+      const feed = parseXML(fileContents);
       set((state: FeedState) => {
         return produce(state, (draft) => {
           draft.projects[id].feed = feed;

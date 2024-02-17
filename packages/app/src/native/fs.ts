@@ -27,4 +27,9 @@ export const FILE_FAMILIES = {
     mime: ["audio/mpeg", "audio/ogg"],
     extensions: ["mp3", "ogg"],
   },
+  feed: {
+    title: "Feed",
+    mime: ["application/rss+xml", "application/atom+xml"],
+    extensions: ["xml", "feed"],
+  },
 };
