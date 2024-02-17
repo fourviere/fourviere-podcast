@@ -24,8 +24,8 @@ export default function FeedSync() {
   );
 
   async function askForOverwrite() {
-    return await confirm(t["edit_feed.feed-uploader.ask_overwrite"], {
-      title: t["edit_feed.feed-uploader.ask_overwrite.title"],
+    return await confirm(t["edit_feed.feed-sync.ask_overwrite"], {
+      title: t["edit_feed.feed-sync.ask_overwrite.title"],
       type: "warning",
     });
   }
@@ -60,7 +60,7 @@ export default function FeedSync() {
           setLoading(false);
         }
       } catch (e) {
-        addError(t["edit_feed.feed-uploader.remote_feed_not_valid"]);
+        addError(t["edit_feed.feed-sync.error_fetching_feed"]);
         setLoading(false);
       }
     }
