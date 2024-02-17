@@ -11,6 +11,8 @@ import Select from "@fourviere/ui/lib/form/fields/select";
 import { FC } from "react";
 import ContainerTitle from "@fourviere/ui/lib/container-title";
 import FormBlocker from "../../components/form-blocker";
+import FeedSync from "../../components/feed-sync";
+import FeedDeleter from "../../components/feed-deleter";
 export default function Configuration() {
   const currentFeed = UseCurrentFeed();
   const t = useTranslations();
@@ -252,6 +254,19 @@ export default function Configuration() {
                   </FormRow>
                 </>
               )}
+            </FormSection>
+            <FormSection
+              title={t["edit_feed.configuration.feed.actions"]}
+              description={
+                t["edit_feed.configuration.feed.actions.description"]
+              }
+            >
+              <FormRow name="feed.actions">
+                <Container wFull spaceX="sm" spaceY="sm">
+                  <FeedSync />
+                  <FeedDeleter />
+                </Container>
+              </FormRow>
             </FormSection>
           </Container>
         );

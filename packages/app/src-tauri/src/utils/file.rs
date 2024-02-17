@@ -37,11 +37,9 @@ pub async fn write_string_to_temp_file(data: &str, ext: &str) -> Result<TempFile
 }
 
 pub async fn write_string_to_file(data: &str, path: &str) -> Result<String> {
-    let file_path = format!("{path}");
+    tokio::fs::write(&path, data).await?;
 
-    tokio::fs::write(&file_path, data).await?;
-
-    Ok(file_path)
+    Ok(path.to_owned())
 }
 
 #[cfg(test)]

@@ -4,7 +4,7 @@ import { confirm } from "@tauri-apps/api/dialog";
 import UseCurrentFeed from "../hooks/use-current-feed";
 import UseRemoteConf from "../hooks/use-remote-conf";
 import { useState } from "react";
-import { ArrowUpCircleIcon } from "@heroicons/react/24/outline";
+import { ArrowDownOnSquareIcon } from "@heroicons/react/24/outline";
 import appStore from "../store/app";
 import feedStore from "../store/feed";
 import useSelectFile from "../hooks/use-select-file";
@@ -68,12 +68,12 @@ export default function FeedSync() {
 
   return (
     <Button
-      wfull
-      size="md"
+      size="lg"
+      theme="secondary"
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
       onClick={() => filePatch()}
       isLoading={loading}
-      Icon={ArrowUpCircleIcon}
+      Icon={ArrowDownOnSquareIcon}
     >
       {t["edit_feed.feed-sync.button_label"]}
     </Button>

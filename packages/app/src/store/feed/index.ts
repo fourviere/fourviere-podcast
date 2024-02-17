@@ -25,6 +25,7 @@ const BASE_CONFIGURATION: Configuration = {
 export interface FeedState {
   projects: Record<string, Project>;
   createProject: () => void;
+  deleteProject: (id: string) => void;
   getProjectById: (id: string) => Project;
   updateFeed: (id: string, feed: Project["feed"]) => void;
   updateConfiguration: (
@@ -53,6 +54,14 @@ const feedStore = create<FeedState>((set, get) => {
             feed,
             configuration: BASE_CONFIGURATION,
           };
+        });
+      });
+    },
+
+    deleteProject: (id: string) => {
+      set((state: FeedState) => {
+        return produce(state, (draft) => {
+          delete draft.projects[id];
         });
       });
     },

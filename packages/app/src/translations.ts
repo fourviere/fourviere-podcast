@@ -131,6 +131,12 @@ const TRANSLATIONS = {
     "edit_feed.configuration.feed.description":
       "Here you can configure the feed basic settings",
     "edit_feed.configuration.feed.filename": "Feed file name",
+    "edit_feed.configuration.feed.actions": "Actions",
+    "edit_feed.configuration.feed.actions.description":
+      "Here some advanced actions for the feed",
+    "edit_feed.configuration.feed.actions.overwrite_from_remote":
+      "Overwrite the feed with the version hosted remotely",
+
     "edit_feed.source-code.title": "Source code",
 
     "edit_feed.feed-uploader.button_label": "Update remote feed",
@@ -158,6 +164,10 @@ const TRANSLATIONS = {
     "edit_feed.feed-sync.error_fetching_feed":
       "Error during fetching remote feed",
 
+    "edit_feed.feed-deleter.button_label": "Delete this feed",
+    "edit_feed.feed-deleter.ask_delete.title": "Delete",
+    "edit_feed.feed-deleter.ask_delete":
+      "You are about to delete this feed, are you sure? This operation cannot be reverted",
     "configurations.title": "Fourviere global configurations",
 
     "configurations.locale.title": "Locale",
