@@ -38,7 +38,7 @@ export interface FeedState {
   loadFeedFromFileContents: (feed: string) => void;
   patchFeedFromFileContents: (feed: string, id: string) => void;
   addEpisodeToProject: (feed: string) => void;
-  removeEpisodeFromProject: (feec: string, episodeGUID: string) => void;
+  deleteEpisodeFromProject: (feec: string, episodeGUID: string) => void;
 }
 
 const feedStore = create<FeedState>((set, get) => {
@@ -146,7 +146,7 @@ const feedStore = create<FeedState>((set, get) => {
       });
     },
 
-    removeEpisodeFromProject: (id: string, episodeGUID: string) => {
+    deleteEpisodeFromProject: (id: string, episodeGUID: string) => {
       set((state: FeedState) => {
         return produce(state, (draft) => {
           draft.projects[id].feed.rss.channel[0].item = draft.projects[

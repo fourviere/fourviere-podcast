@@ -28,7 +28,9 @@ export default function ItemGeneral() {
   const currentFeed = UseCurrentFeed();
   const { itemGUID } = useParams<{ itemGUID: string }>(); //todo: fix using guid
   const t = useTranslations();
-  const { removeEpisodeFromProject } = feedStore((state) => state);
+  const { deleteEpisodeFromProject: removeEpisodeFromProject } = feedStore(
+    (state) => state,
+  );
   const navigate = useNavigate();
 
   async function askForDelete() {
