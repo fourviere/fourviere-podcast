@@ -4,9 +4,9 @@ use serde::Deserialize;
 use std::{borrow::Cow, path::Path, str};
 use suppaftp::{types::FileType, AsyncFtpStream, Mode};
 use tauri::Window;
-use tokio::{io::AsyncWriteExt, select, spawn};
+use tokio::{io::AsyncWriteExt, select, spawn, sync::mpsc::channel};
 use tokio_util::{
-    compat::{FuturesAsyncWriteCompatExt, TokioAsyncReadCompatExt},
+    compat::FuturesAsyncWriteCompatExt,
     sync::CancellationToken,
 };
 use uuid::Uuid;
@@ -218,35 +218,18 @@ pub async fn ftp_upload(payload: FilePayload) -> Result<FileInfo> {
 }
 
 async fn ftp_upload_internal(payload: FilePayload) -> Result<FileInfo> {
-    let mut ftp_stream = payload.connection.connect().await?;
 
-    if let Some(path) = payload.endpoint_config.path() {
-        ftp_stream.cwd(path).await?;
+    let (tx, mut rx) = channel(20);
+    let _ = ftp_upload_progress_internal(tx.into(), payload, None);
+    while let Some(data) = rx.recv().await {
+        match data {
+            (_, Ok(Event::Progress(_))) => (),
+            (_, Ok(Event::DeltaProgress(_))) => (),
+            (_, Ok(Event::FileResult(res))) => return Ok(res),
+            (_, Err(err)) => return Err(err),
+        }
     }
-
-    ftp_stream.transfer_type(FileType::Binary).await?;
-
-    let file_info = get_file_info(&payload.local_path).await?;
-
-    let ext = Path::new(&payload.local_path)
-        .extension()
-        .map_or(Cow::default(), |ext| ext.to_string_lossy());
-
-    let mut reader = tokio::fs::File::open(&payload.local_path)
-        .await
-        .map(tokio::io::BufReader::new)?
-        .compat();
-
-    ftp_stream
-        .put_file(
-            &format!("{}.{}", payload.endpoint_config.file_name(), &ext),
-            &mut reader,
-        )
-        .await?;
-
-    ftp_stream.quit().await?;
-
-    Ok(FileInfo::new(&payload.endpoint_config, &file_info, &ext))
+    Err(Error::Aborted)
 }
 
 #[cfg(test)]
