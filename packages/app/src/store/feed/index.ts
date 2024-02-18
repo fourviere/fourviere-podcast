@@ -146,13 +146,11 @@ const feedStore = create<FeedState>((set, get) => {
     deleteEpisodeFromProject: (id: string, episodeGUID: string) => {
       set((state: FeedState) => {
         return produce(state, (draft) => {
-          console.log("deleteEpisodeFromProject", id, episodeGUID);
           draft.projects[id].feed.rss.channel[0].item = draft.projects[
             id
           ].feed.rss.channel[0].item?.filter(
             (item) => item.guid["#text"] !== episodeGUID,
           );
-          console.log("finish deleting");
         });
       });
     },
