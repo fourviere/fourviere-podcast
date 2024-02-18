@@ -6,6 +6,7 @@ import { parseXML } from "@fourviere/core/lib/converter";
 import { FEED_TEMPLATE } from "@fourviere/core/lib/const";
 import { fetchFeed } from "../../native/network";
 import { Configuration, Project } from "./types";
+import { Item } from "@fourviere/core/lib/schema/item";
 
 const DEFAULT_FEED_FILENAME = "feed.xml";
 
@@ -36,6 +37,8 @@ export interface FeedState {
   patchFeedFromUrl: (feedUrl: string, id: string) => Promise<void>;
   loadFeedFromFileContents: (feed: string) => void;
   patchFeedFromFileContents: (feed: string, id: string) => void;
+  addEpisodeToProject: (feed: string) => void;
+  removeEpisodeFromProject: (feec: string, episodeGUID: string) => void;
 }
 
 const feedStore = create<FeedState>((set, get) => {
@@ -139,6 +142,41 @@ const feedStore = create<FeedState>((set, get) => {
       set((state: FeedState) => {
         return produce(state, (draft) => {
           draft.projects[id].configuration = configuration;
+        });
+      });
+    },
+
+    removeEpisodeFromProject: (id: string, episodeGUID: string) => {
+      set((state: FeedState) => {
+        return produce(state, (draft) => {
+          draft.projects[id].feed.rss.channel[0].item = draft.projects[
+            id
+          ].feed.rss.channel[0].item?.filter(
+            (item) => item.guid["#text"] !== episodeGUID,
+          );
+        });
+      });
+    },
+
+    addEpisodeToProject: (id: string) => {
+      set((state: FeedState) => {
+        return produce(state, (draft) => {
+          const episode = {
+            title: "New episode",
+            guid: {
+              "#text": uuidv4(),
+              "@": { isPermaLink: "false" },
+            },
+            enclosure: {
+              "@": {
+                url: "",
+                length: "0",
+                type: "audio/mpeg",
+              },
+            },
+            "itunes:duration": 0,
+          } as Item;
+          draft.projects[id].feed.rss.channel[0].item?.unshift(episode);
         });
       });
     },

@@ -7,7 +7,8 @@ type Props = {
   isDirty?: boolean;
   isSubmitting?: boolean;
   isDirtyMessage?: string;
-  onSave: () => void;
+  onSave?: () => void;
+  postSlot?: React.ReactNode;
 };
 
 const ContainerTitle = ({
@@ -15,10 +16,11 @@ const ContainerTitle = ({
   isSubmitting,
   onSave,
   children,
+  postSlot,
 }: PropsWithChildren<Props>) => {
   function onSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
-    isDirty && onSave();
+    isDirty && onSave?.();
   }
 
   return (
@@ -37,14 +39,18 @@ const ContainerTitle = ({
         )}
       </div>
 
-      <Button
-        size="md"
-        isDisabled={!isDirty && !isSubmitting}
-        onClick={onSubmit}
-        Icon={CheckIcon}
-      >
-        Save
-      </Button>
+      {!!onSave && (
+        <Button
+          size="md"
+          isDisabled={!isDirty && !isSubmitting}
+          onClick={onSubmit}
+          Icon={CheckIcon}
+        >
+          Save
+        </Button>
+      )}
+
+      {postSlot}
     </div>
   );
 };

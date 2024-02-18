@@ -69,6 +69,10 @@ const TRANSLATIONS = {
     "edit_feed.channel_field.itunes.complete.description":
       "If you will never publish another episode to your show, use this tag.",
     //-----
+    "edit_feed.items.add_episode": "Add episode",
+    "edit_feed.items.delete_episode":
+      "You are about to delete this episode, are you sure? This operation cannot be reverted",
+    "edit_feed.items.delete_episode.title": "Delete episode",
     "edit_feed.items_fields.media.title": "Media",
     "edit_feed.items_fields.media.description":
       "This section contains the podcast media file and the title",
@@ -96,6 +100,8 @@ const TRANSLATIONS = {
     "edit_feed.items_fields.podcast_episode": "Episode",
     "edit_feed.items_fields.explicit": "Explicit",
     "edit_feed.items_fields.episode_type": "Episode type",
+
+    "edit_feed.audio.duration.error": "Error getting enclosure duration",
     //-----
 
     "ui.forms.empty_field.message": "Click here to assign a value",

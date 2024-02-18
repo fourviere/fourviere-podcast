@@ -4,7 +4,7 @@ import UseCurrentFeed from "../hooks/use-current-feed";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import appStore from "../store/app";
 import feedStore from "../store/feed";
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function FeedDeleter() {
   const currentFeed = UseCurrentFeed()!;
@@ -12,6 +12,7 @@ export default function FeedDeleter() {
   const { getTranslations } = appStore((state) => state);
   const t = getTranslations();
   const { deleteProject } = feedStore((state) => state);
+  const navigate = useNavigate();
 
   async function askForDelete() {
     return await confirm(t["edit_feed.feed-deleter.ask_delete"], {
@@ -23,7 +24,7 @@ export default function FeedDeleter() {
   async function remove() {
     const del = await askForDelete();
     if (del) {
-      redirect("/");
+      navigate("/");
       deleteProject(currentFeed.feedId!);
     }
   }

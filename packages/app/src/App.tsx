@@ -1,7 +1,11 @@
 import { createPortal } from "react-dom";
 import StartView from "./views/start";
 import appStore from "./store/app";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  useLocation,
+} from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Toast from "@fourviere/ui/lib/modals/toast";
 import { ErrorBox } from "@fourviere/ui/lib/box";
@@ -43,7 +47,7 @@ const router = createBrowserRouter([
         children: [
           { path: "", Component: ItemsIndex },
           {
-            path: ":itemIndex",
+            path: ":itemGUID",
             Component: ItemGeneral,
           },
         ],
@@ -58,7 +62,11 @@ const router = createBrowserRouter([
       },
       {
         path: "*",
-        Component: StartView,
+        Component: () => {
+          const location = useLocation();
+          console.log("location", location);
+          return <div>NOt found</div>;
+        },
       },
     ],
   },
