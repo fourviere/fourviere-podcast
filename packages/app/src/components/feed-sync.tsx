@@ -40,7 +40,7 @@ export default function FeedSync() {
             return;
           }
           if (await askForOverwrite()) {
-            patchFeedFromFileContents(content, currentFeed.feedId!);
+            patchFeedFromFileContents(currentFeed.feedId!, content);
           }
         },
         format: "feed",
@@ -56,7 +56,7 @@ export default function FeedSync() {
 
         if (await askForOverwrite()) {
           setLoading(true);
-          await patchFeedFromUrl(feedUrl, currentFeed.feedId!);
+          await patchFeedFromUrl(currentFeed.feedId!, feedUrl);
           setLoading(false);
         }
       } catch (e) {

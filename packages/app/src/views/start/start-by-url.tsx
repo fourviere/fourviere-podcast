@@ -19,7 +19,7 @@ interface Props {
 }
 
 const StartByURL: FunctionComponent<Props> = ({ done }) => {
-  const { loadFeedFromUrl } = feedStore((state) => state);
+  const { initProjectFromUrl } = feedStore((state) => state);
   const { getTranslations, addError } = appStore((state) => state);
   const [isLoading, setIsLoading] = useState(false);
   const t = getTranslations();
@@ -35,7 +35,7 @@ const StartByURL: FunctionComponent<Props> = ({ done }) => {
       }
       setIsLoading(true);
       try {
-        await loadFeedFromUrl(data.url);
+        await initProjectFromUrl(data.url);
         done();
       } catch (e) {
         if (e instanceof InvalidXMLError) {

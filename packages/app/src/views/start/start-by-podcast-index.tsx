@@ -18,7 +18,7 @@ interface Props {
 }
 
 const StartByIndex: FunctionComponent<Props> = ({ done }) => {
-  const { loadFeedFromUrl } = feedStore((state) => state);
+  const { initProjectFromUrl } = feedStore((state) => state);
   const { getTranslations, addError } = appStore((state) => state);
   const { search, isLoading, feeds, resetFeeds } = usePodcastIndex();
   const [isImporting, setIsImporting] = useState(false);
@@ -36,7 +36,7 @@ const StartByIndex: FunctionComponent<Props> = ({ done }) => {
   async function podcastSelect(feedUrl: string) {
     try {
       setIsImporting(true);
-      await loadFeedFromUrl(feedUrl);
+      await initProjectFromUrl(feedUrl);
       resetFeeds();
       done();
     } catch (e) {

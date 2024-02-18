@@ -1,3 +1,7 @@
+import { Configuration } from "../../app/src/store/feed/types";
+import { Item } from "./schema/item";
+import { v4 as uuidv4 } from "uuid";
+
 export const FEED_TEMPLATE = `
 <rss xmlns:podcast="https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0">
     <channel>
@@ -127,3 +131,35 @@ export const FEED_TEMPLATE = `
     </channel>
 </rss>
 `;
+export const EPISODE_TEMPLATE = () =>
+  ({
+    title: "New episode",
+    guid: {
+      "#text": uuidv4(),
+      "@": { isPermaLink: "false" },
+    },
+    enclosure: {
+      "@": {
+        url: "",
+        length: "0",
+        type: "audio/mpeg",
+      },
+    },
+    pubDate: new Date().toUTCString(),
+    "itunes:duration": 0,
+  }) as Item;
+
+export const DEFAULT_FEED_FILENAME = "feed.xml";
+
+export const PROJECT_BASE_CONFIGURATION: Configuration = {
+  feed: {
+    filename: DEFAULT_FEED_FILENAME,
+  },
+  remotes: {
+    remote: "none",
+  },
+  meta: {
+    lastFeedUpdate: new Date(),
+    feedIsDirty: false,
+  },
+};

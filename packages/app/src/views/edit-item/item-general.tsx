@@ -21,16 +21,14 @@ import Duration from "../../components/form-fields/audio/duration";
 import feedStore from "../../store/feed";
 import Button from "@fourviere/ui/lib/button";
 import { TrashIcon } from "@heroicons/react/24/outline";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { confirm } from "@tauri-apps/api/dialog";
 
 export default function ItemGeneral() {
   const currentFeed = UseCurrentFeed();
   const { itemGUID } = useParams<{ itemGUID: string }>(); //todo: fix using guid
   const t = useTranslations();
-  const { deleteEpisodeFromProject: removeEpisodeFromProject } = feedStore(
-    (state) => state,
-  );
+  const { deleteEpisodeFromProject } = feedStore((state) => state);
   const navigate = useNavigate();
 
   async function askForDelete() {
@@ -45,6 +43,7 @@ export default function ItemGeneral() {
   );
 
   if (!currentFeed) {
+    navigate(`/`);
     return null;
   }
 
@@ -67,20 +66,15 @@ export default function ItemGeneral() {
           const [skipExitProtection, setSkipExitProtection] =
             useState<boolean>(false);
 
-          const remove = useCallback(() => {
+          const remove = () => {
             askForDelete().then((del) => {
               if (itemGUID && del) {
                 setSkipExitProtection(true);
-                removeEpisodeFromProject(currentFeed.feedId!, itemGUID);
+                deleteEpisodeFromProject(currentFeed.feedId!, itemGUID);
+                navigate(`/feed/${currentFeed.feedId}/feed-items`);
               }
             });
-          }, [
-            currentFeed,
-            itemIndex,
-            removeEpisodeFromProject,
-            navigate,
-            itemGUID,
-          ]);
+          };
 
           return (
             <Container

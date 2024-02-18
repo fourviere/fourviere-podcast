@@ -8,7 +8,7 @@ interface StartByDragProps {}
 const StartByDrag: FunctionComponent<PropsWithChildren<StartByDragProps>> = ({
   children,
 }) => {
-  const { loadFeedFromFileContents } = feedStore((state) => state);
+  const { initProjectFromFileContents } = feedStore((state) => state);
   const { isHover, error } = useTauriDragArea({
     onFile: (file) => {
       void onDrop(file);
@@ -24,7 +24,7 @@ const StartByDrag: FunctionComponent<PropsWithChildren<StartByDragProps>> = ({
     if (!content) {
       return;
     }
-    loadFeedFromFileContents(content);
+    initProjectFromFileContents(content);
   }
 
   return (
