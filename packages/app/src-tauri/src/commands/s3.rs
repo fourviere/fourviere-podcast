@@ -7,7 +7,7 @@ use s3::{creds::Credentials, serde_types::Part, Bucket, Region};
 use serde::Deserialize;
 use std::{borrow::Cow, path::Path};
 use tauri::Window;
-use tokio::{fs, select, spawn, task::JoinSet};
+use tokio::{fs, select, spawn, sync::mpsc::channel, task::JoinSet};
 use tokio_util::sync::CancellationToken;
 use uuid::Uuid;
 
@@ -321,49 +321,28 @@ async fn s3_upload_internal(
     use_path_style: bool,
     concat_extension: bool,
 ) -> Result<FileInfo> {
-    let mut bucket = payload.connection.bucket()?;
-
-    // this header is required to make the uploaded file public readable.
-    bucket.add_header("x-amz-acl", "public-read");
-
-    //Useful for testing/old S3 implementation
-    if use_path_style {
-        bucket.set_path_style();
-    }
-
-    let file = fs::read(&payload.local_path).await?;
     let file_info = get_file_info(&payload.local_path).await?;
-
     let ext = Path::new(&payload.local_path)
         .extension()
         .map_or(Cow::default(), |ext| ext.to_string_lossy());
-
-    let path = payload
-        .endpoint_config
-        .path()
-        .as_ref()
-        .unwrap_or(&"".to_owned())
-        .to_owned();
-
-    let filename = match concat_extension {
-        true => format!(
-            "{}/{}.{}",
-            &path,
-            &payload.endpoint_config.file_name(),
-            &ext
-        ),
-        false => format!("{}/{}", &path, &payload.endpoint_config.file_name()),
-    };
-
-    let res = bucket
-        .put_object_with_content_type(filename, &file, &file_info.mime_type)
-        .await?;
-
-    Ok(FileInfo::new(
+    let res = Ok(FileInfo::new(
         &payload.endpoint_config,
         &file_info,
         if concat_extension { &ext } else { "" },
-    ))
+    ));
+
+    let (tx, mut rx) = channel(20);
+    let _ = s3_upload_progress_internal(tx.into(), payload, None, use_path_style);
+    while let Some(data) = rx.recv().await {
+        match data {
+            (_, Ok(Event::Progress(_))) => (),
+            (_, Ok(Event::DeltaProgress(_))) => (),
+            (_, Ok(Event::FileResult(_))) => (), // return Ok(res),
+            (_, Err(err)) => return Err(err),
+        }
+    }
+
+    res
 }
 
 #[cfg(test)]
