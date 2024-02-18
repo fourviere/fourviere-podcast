@@ -160,6 +160,9 @@ const feedStore = create<FeedState>((set, get) => {
     addEpisodeToProject: (id: string) => {
       set((state: FeedState) => {
         return produce(state, (draft) => {
+          if (!draft.projects[id].feed.rss.channel[0].item) {
+            draft.projects[id].feed.rss.channel[0].item = [];
+          }
           draft.projects[id].feed.rss.channel[0].item?.unshift(
             EPISODE_TEMPLATE(),
           );
