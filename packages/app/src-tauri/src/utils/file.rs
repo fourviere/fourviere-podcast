@@ -20,7 +20,7 @@ pub struct TempFile {
     path: String,
 }
 
-pub fn get_payload_info(data: &[u8], ext: &str) -> Result<FileInfo> {
+pub fn get_payload_info(data: &str, ext: &str) -> Result<FileInfo> {
     let mime_type = from_ext(ext).first_or_octet_stream().to_string();
     let size = data.len().try_into().unwrap_or_default();
     Ok(FileInfo { mime_type, size })
@@ -44,9 +44,8 @@ pub async fn write_to_temp_file(data: impl AsRef<[u8]>, filename: &str) -> Resul
     })
 }
 
-pub async fn write_string_to_file(data: &str, path: &str) -> Result<String> {
+pub async fn write_to_file(data: impl AsRef<[u8]>, path: &str) -> Result<String> {
     tokio::fs::write(&path, data).await?;
-
     Ok(path.to_owned())
 }
 

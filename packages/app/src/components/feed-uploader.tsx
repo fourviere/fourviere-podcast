@@ -115,9 +115,9 @@ export default function FeedUploader() {
 
       try {
         setLoading(true);
-        const res = await invoke(`${remote.remote}_xml_upload`, {
-          payload: {
-            content: xml,
+        const res = await invoke(`${remote.remote}_upload`, {
+          uploadableConf: {
+            payload: xml,
             file_name: configuration.feed.filename,
             ...configuration.remotes.s3,
           },

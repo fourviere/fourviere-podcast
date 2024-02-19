@@ -58,7 +58,7 @@ pub struct UploadableConf {
 }
 
 #[tauri::command]
-pub async fn ftp_upload_window_progress(window: Window, uploadable: UploadableConf) -> Uuid {
+pub async fn ftp_upload_progress(window: Window, uploadable: UploadableConf) -> Uuid {
     ftp_upload_progress_internal(window.into(), uploadable)
 }
 
@@ -91,9 +91,10 @@ async fn ftp_upload_progress_task(
 
     event_producer.send(Ok(Event::DeltaProgress(3))).await;
 
-    if let Some(path) = uploadable_conf.uploadable.remote_config().path() {
-        ftp_stream.cwd(path).await?;
-    }
+    //TODO: maybe unnecessary
+    // if let Some(path) = uploadable_conf.uploadable.remote_config().path() {
+    //     ftp_stream.cwd(path).await?;
+    // }
 
     ftp_stream.transfer_type(FileType::Binary).await?;
 
@@ -107,7 +108,7 @@ async fn ftp_upload_progress_task(
         .into_string()
         .map_err(|_| Error::LocalPathConversion)?;
 
-    let new_file_name = uploadable_conf.uploadable.remote_file_name();
+    let remote_file_path = uploadable_conf.uploadable.remote_file_path();
 
     event_producer.send(Ok(Event::DeltaProgress(2))).await;
 
@@ -117,7 +118,7 @@ async fn ftp_upload_progress_task(
     let file_iter = FileIter::new(local_path)?.set_mode(get_chunk::ChunkSize::Percent(10.));
 
     let mut writer = ftp_stream
-        .put_with_stream(new_file_name)
+        .put_with_stream(remote_file_path)
         .await?
         .compat_write();
 
@@ -245,7 +246,9 @@ mod test {
             },
             uploadable: Uploadable::new(
                 None,
-                Some(include_bytes!(test_file!("gitbar.xml")).to_vec()),
+                std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
+                    .ok()
+                    .map(|val| val.to_owned()),
                 RemoteUploadableConf::new("gitbar".to_owned(), None, "localhost".to_owned(), false),
             ),
         };
@@ -278,7 +281,9 @@ mod test {
             },
             uploadable: Uploadable::new(
                 None,
-                Some(include_bytes!(test_file!("gitbar.xml")).to_vec()),
+                std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
+                    .ok()
+                    .map(|val| val.to_owned()),
                 RemoteUploadableConf::new(
                     "gitbar".to_owned(),
                     None,
@@ -310,7 +315,9 @@ mod test {
             },
             uploadable: Uploadable::new(
                 None,
-                Some(include_bytes!(test_file!("gitbar.xml")).to_vec()),
+                std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
+                    .ok()
+                    .map(|val| val.to_owned()),
                 RemoteUploadableConf::new("gitbar".to_owned(), None, "localhost".to_owned(), false),
             ),
         };
@@ -417,7 +424,9 @@ mod test {
             },
             uploadable: Uploadable::new(
                 None,
-                Some(include_bytes!(test_file!("gitbar.xml")).to_vec()),
+                std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
+                    .ok()
+                    .map(|val| val.to_owned()),
                 RemoteUploadableConf::new(
                     "gitbar".to_owned(),
                     None,
@@ -463,7 +472,9 @@ mod test {
             },
             uploadable: Uploadable::new(
                 None,
-                Some(include_bytes!(test_file!("gitbar.xml")).to_vec()),
+                std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
+                    .ok()
+                    .map(|val| val.to_owned()),
                 RemoteUploadableConf::new("gitbar".to_owned(), None, "localhost".to_owned(), false),
             ),
         };

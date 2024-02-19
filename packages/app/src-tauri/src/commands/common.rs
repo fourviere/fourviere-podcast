@@ -1,4 +1,7 @@
-use std::path::PathBuf;
+use std::{
+    ffi::OsStr,
+    path::{Path, PathBuf},
+};
 
 use cached::proc_macro::cached;
 use derive_new::new;
@@ -26,11 +29,9 @@ pub fn get_cancellation_token(_uuid: Uuid) -> CancellationToken {
 
 #[derive(Deserialize, Getters, new)]
 pub struct Uploadable {
-    #[serde(default)]
     local_path: Option<PathBuf>,
 
-    #[serde(default)]
-    payload: Option<Vec<u8>>,
+    payload: Option<String>,
 
     #[serde(skip)]
     #[new(default)]
@@ -42,15 +43,29 @@ pub struct Uploadable {
 }
 
 impl Uploadable {
-    fn ext(&self) -> Option<String> {
-        //TODO implement ext ovverride logic
-        Some("".to_string())
+    fn ext(&self) -> Option<&str> {
+        if let Some(path) = &self.local_path {
+            // Try to extract file extension from local_path and remote filename
+            // In case both local_path and remote filename have a valid ext, remote filename wins
+            Self::extract_from_filename(&self.remote_config.file_name).or(path.extension().and_then(OsStr::to_str))
+        } else {
+            Self::extract_from_filename(&self.remote_config.file_name)
+        }
     }
 
-    pub fn remote_file_name(&self) -> String {
-        let file_name = match self.ext() {
-            Some(ext) => format!("{}.{}", self.remote_config.file_name(), ext),
-            None => self.remote_config.file_name().to_owned(),
+    fn extract_from_filename(filename: &str) -> Option<&str> {
+        Path::new(filename).extension().and_then(OsStr::to_str)
+    }
+
+    pub fn remote_file_path(&self) -> String {
+
+        let ext = Self::extract_from_filename(&self.remote_config.file_name).or(self.ext());
+        let file_name = match Self::extract_from_filename(&self.remote_config.file_name) {
+            Some(_) =>  self.remote_config.file_name().to_owned(),
+            None => match ext {
+                Some(ext) => format!("{}.{}", self.remote_config.file_name(), ext),
+                None => self.remote_config.file_name().to_owned(),
+            },
         };
 
         match self.remote_config.path() {
@@ -69,7 +84,7 @@ impl Uploadable {
         }
 
         if let Some(data) = &self.payload {
-            let file = write_to_temp_file(data, &self.remote_file_name()).await?;
+            let file = write_to_temp_file(data, &self.remote_file_path()).await?;
             let path = Ok(file.path().into());
             self.temp_file = Some(file);
             return path;
@@ -99,16 +114,7 @@ impl Uploadable {
             "http"
         };
 
-        let file_path = match self
-            .remote_config
-            .path
-            .as_ref()
-            .filter(|path| !path.is_empty())
-        {
-            Some(path) => format!("{}/{}", path, self.remote_config.file_name,),
-            None => format!("{}.{}", self.remote_config.file_name, "exxt"),
-        };
-
+        let file_path = self.remote_file_path();
         Ok(RemoteFileInfo {
             url: format!(
                 "{}://{}/{}",
@@ -126,6 +132,7 @@ pub struct RemoteUploadableConf {
     file_name: String,
 
     #[getset(get = "pub ")]
+    #[serde(default)]
     path: Option<String>,
 
     http_host: String,

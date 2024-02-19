@@ -61,7 +61,7 @@ pub struct UploadableConf {
 }
 
 #[tauri::command]
-pub async fn s3_upload_window_progress(window: Window, uploadable_conf: UploadableConf) -> Uuid {
+pub async fn s3_upload_progress(window: Window, uploadable_conf: UploadableConf) -> Uuid {
     s3_upload_progress_internal(window.into(), uploadable_conf, false)
 }
 
@@ -114,7 +114,7 @@ async fn s3_upload_progress_task(
 
     let local_path = uploadable_conf.uploadable.local_path().await?;
 
-    let new_file_name = uploadable_conf.uploadable.remote_file_name();
+    let remote_file_path = uploadable_conf.uploadable.remote_file_path();
 
     let file_info = uploadable_conf.uploadable.local_file_info()?;
 
@@ -139,7 +139,7 @@ async fn s3_upload_progress_task(
     if chunk_number < 2 {
         let file = fs::read(local_path).await?;
         bucket
-            .put_object_with_content_type(new_file_name, &file, &file_info.mime_type)
+            .put_object_with_content_type(remote_file_path, &file, &file_info.mime_type)
             .await?;
 
         event_producer.send(Ok(Event::DeltaProgress(80))).await;
@@ -153,7 +153,7 @@ async fn s3_upload_progress_task(
         let mut index = 1;
 
         let upload_response = bucket
-            .initiate_multipart_upload(&new_file_name, &file_info.mime_type)
+            .initiate_multipart_upload(&remote_file_path, &file_info.mime_type)
             .await?;
 
         loop {
@@ -166,7 +166,7 @@ async fn s3_upload_progress_task(
                             // Prepare data for the part upload task
                             let mut event_producer = event_producer.clone();
                             let bucket = bucket.clone();
-                            let new_file_name = new_file_name.clone();
+                            let new_file_name = remote_file_path.clone();
                             let upload_id = upload_response.upload_id.clone();
                             let mime_type = file_info.mime_type.clone();
                             let canc_token = canc_token.clone();
@@ -209,7 +209,7 @@ async fn s3_upload_progress_task(
         parts_result.sort_by(|a, b| a.part_number.cmp(&b.part_number));
 
         bucket
-            .complete_multipart_upload(&new_file_name, &upload_response.upload_id, parts_result)
+            .complete_multipart_upload(&remote_file_path, &upload_response.upload_id, parts_result)
             .await?;
     }
 
@@ -335,7 +335,9 @@ mod test {
             },
             uploadable: Uploadable::new(
                 None,
-                Some(include_bytes!(test_file!("gitbar.xml")).to_vec()),
+                std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
+                    .ok()
+                    .map(|val| val.to_owned()),
                 RemoteUploadableConf::new("gitbar".to_owned(), None, domain, false),
             ),
         };
@@ -372,7 +374,9 @@ mod test {
             },
             uploadable: Uploadable::new(
                 None,
-                Some(include_bytes!(test_file!("gitbar.xml")).to_vec()),
+                std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
+                    .ok()
+                    .map(|val| val.to_owned()),
                 RemoteUploadableConf::new("gitbar".to_owned(), None, domain, false),
             ),
         };
@@ -433,7 +437,9 @@ mod test {
             },
             uploadable: Uploadable::new(
                 None,
-                Some(include_bytes!(test_file!("gitbar.xml")).to_vec()),
+                std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
+                    .ok()
+                    .map(|val| val.to_owned()),
                 RemoteUploadableConf::new("gitbar".to_owned(), None, domain, false),
             ),
         };
@@ -518,7 +524,9 @@ mod test {
             },
             uploadable: Uploadable::new(
                 None,
-                Some(include_bytes!(test_file!("gitbar.xml")).to_vec()),
+                std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
+                    .ok()
+                    .map(|val| val.to_owned()),
                 RemoteUploadableConf::new("gitbar".to_owned(), None, domain, false),
             ),
         };
@@ -608,7 +616,9 @@ mod test {
             },
             uploadable: Uploadable::new(
                 None,
-                Some(include_bytes!(test_file!("gitbar.xml")).to_vec()),
+                std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
+                    .ok()
+                    .map(|val| val.to_owned()),
                 RemoteUploadableConf::new("gitbar".to_owned(), None, domain, false),
             ),
         };
