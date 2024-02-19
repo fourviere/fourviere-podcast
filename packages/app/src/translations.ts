@@ -188,6 +188,9 @@ const TRANSLATIONS = {
       "Check to enable the podcast index import feature when creating a new feed",
     "configurations.podcast_index.api_key": "Api key",
     "configurations.podcast_index.api_secret": "Api secret",
+
+    "modals.confirmation.ok": "Ok, continue",
+    "modals.confirmation.cancel": "Cancel",
   },
 } as const;
 

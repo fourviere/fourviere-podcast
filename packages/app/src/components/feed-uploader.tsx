@@ -1,6 +1,5 @@
 import Button from "@fourviere/ui/lib/button";
-
-import { confirm, save } from "@tauri-apps/api/dialog";
+import { save } from "@tauri-apps/api/dialog";
 import { documentDir } from "@tauri-apps/api/path";
 import { invoke } from "@tauri-apps/api/tauri";
 import { fetchFeed } from "../native/network";
@@ -10,6 +9,7 @@ import UseRemoteConf from "../hooks/use-remote-conf";
 import { useState } from "react";
 import { ArrowUpCircleIcon } from "@heroicons/react/24/outline";
 import appStore from "../store/app";
+import useConfirmationModal from "../hooks/use-confirmation-modal";
 
 export default function FeedUploader() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -20,6 +20,8 @@ export default function FeedUploader() {
   });
   const { getTranslations, addError } = appStore((state) => state);
   const t = getTranslations();
+  const { askForConfirmation, renderConfirmationModal } =
+    useConfirmationModal();
 
   async function localPersist(xmlData: string) {
     const selected = await save({
@@ -58,20 +60,6 @@ export default function FeedUploader() {
     return remoteLastUpdate.getTime() < localLastUpdate.getTime();
   }
 
-  async function askForOverwrite() {
-    return await confirm(t["edit_feed.feed-uploader.ask_overwrite"], {
-      title: t["edit_feed.feed-uploader.ask_overwrite.title"],
-      type: "warning",
-    });
-  }
-
-  async function feedNotValidFromURL() {
-    return await confirm(t["edit_feed.feed-uploader.ask_overwrite_not_valid"], {
-      title: t["edit_feed.feed-uploader.ask_overwrite.title"],
-      type: "warning",
-    });
-  }
-
   async function fileUpload() {
     const xml = serializeToXML(feed);
 
@@ -93,7 +81,10 @@ export default function FeedUploader() {
           configuration.meta.lastFeedUpdate,
         );
       } catch (e) {
-        const confirmed = await feedNotValidFromURL();
+        const confirmed = await askForConfirmation({
+          title: t["edit_feed.feed-uploader.ask_overwrite.title"],
+          message: t["edit_feed.feed-uploader.ask_overwrite_not_valid"],
+        });
         if (!confirmed) {
           addError(
             t["edit_feed.feed-uploader.ask_overwrite_not_valid_skip_overwrite"],
@@ -104,7 +95,10 @@ export default function FeedUploader() {
       }
 
       if (!isLocalFeedLatest) {
-        const confirmed = await askForOverwrite();
+        const confirmed = await askForConfirmation({
+          title: t["edit_feed.feed-uploader.ask_overwrite.title"],
+          message: t["edit_feed.feed-uploader.ask_overwrite"],
+        });
         if (!confirmed) {
           addError(
             t["edit_feed.feed-uploader.ask_overwrite_not_last_skip_overwrite"],
@@ -115,14 +109,13 @@ export default function FeedUploader() {
 
       try {
         setLoading(true);
-        const res = await invoke(`${remote.remote}_upload`, {
+        await invoke(`${remote.remote}_upload`, {
           uploadableConf: {
             payload: xml,
             file_name: configuration.feed.filename,
             ...configuration.remotes.s3,
           },
         });
-        console.log("res:", res);
       } catch (e) {
         //notify user
         addError(t["edit_feed.feed-uploader.error_uploading_feed"]);
@@ -133,15 +126,18 @@ export default function FeedUploader() {
   }
 
   return (
-    <Button
-      wfull
-      size="md"
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      onClick={() => fileUpload()}
-      isLoading={loading}
-      Icon={ArrowUpCircleIcon}
-    >
-      {t["edit_feed.feed-uploader.button_label"]}
-    </Button>
+    <>
+      {renderConfirmationModal()}
+      <Button
+        wfull
+        size="md"
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        onClick={fileUpload}
+        isLoading={loading}
+        Icon={ArrowUpCircleIcon}
+      >
+        {t["edit_feed.feed-uploader.button_label"]}
+      </Button>
+    </>
   );
 }

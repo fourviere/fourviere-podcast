@@ -1,6 +1,4 @@
 import Button from "@fourviere/ui/lib/button";
-
-import { confirm } from "@tauri-apps/api/dialog";
 import UseCurrentFeed from "../hooks/use-current-feed";
 import UseRemoteConf from "../hooks/use-remote-conf";
 import { useState } from "react";
@@ -9,6 +7,7 @@ import appStore from "../store/app";
 import feedStore from "../store/feed";
 import useSelectFile from "../hooks/use-select-file";
 import { readFile } from "../native/fs";
+import useConfirmationModal from "../hooks/use-confirmation-modal";
 
 export default function FeedSync() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -22,24 +21,23 @@ export default function FeedSync() {
   const { patchFeedFromUrl, patchFeedFromFileContents } = feedStore(
     (state) => state,
   );
-
-  async function askForOverwrite() {
-    return await confirm(t["edit_feed.feed-sync.ask_overwrite"], {
-      title: t["edit_feed.feed-sync.ask_overwrite.title"],
-      type: "warning",
-    });
-  }
+  const { askForConfirmation, renderConfirmationModal } =
+    useConfirmationModal();
 
   async function filePatch() {
     if (!hasRemote) {
       const { openFile } = useSelectFile({
         onceSelected: async (selected) => {
-          console.log(selected);
           const content = await readFile(selected);
           if (!content) {
             return;
           }
-          if (await askForOverwrite()) {
+          if (
+            await askForConfirmation({
+              title: t["edit_feed.feed-sync.ask_overwrite.title"],
+              message: t["edit_feed.feed-sync.ask_overwrite"],
+            })
+          ) {
             patchFeedFromFileContents(currentFeed.feedId!, content);
           }
         },
@@ -54,7 +52,12 @@ export default function FeedSync() {
           configuration.feed.filename
         }`;
 
-        if (await askForOverwrite()) {
+        if (
+          await askForConfirmation({
+            title: t["edit_feed.feed-sync.ask_overwrite.title"],
+            message: t["edit_feed.feed-sync.ask_overwrite"],
+          })
+        ) {
           setLoading(true);
           await patchFeedFromUrl(currentFeed.feedId!, feedUrl);
           setLoading(false);
@@ -67,15 +70,18 @@ export default function FeedSync() {
   }
 
   return (
-    <Button
-      size="lg"
-      theme="secondary"
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      onClick={() => filePatch()}
-      isLoading={loading}
-      Icon={ArrowDownOnSquareIcon}
-    >
-      {t["edit_feed.feed-sync.button_label"]}
-    </Button>
+    <>
+      {renderConfirmationModal()}
+      <Button
+        size="lg"
+        theme="secondary"
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        onClick={() => filePatch()}
+        isLoading={loading}
+        Icon={ArrowDownOnSquareIcon}
+      >
+        {t["edit_feed.feed-sync.button_label"]}
+      </Button>
+    </>
   );
 }
