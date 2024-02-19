@@ -1,14 +1,11 @@
 use ::function_name::named;
 use get_chunk::iterator::FileIter;
 use serde::Deserialize;
-use std::{borrow::Cow, path::Path, str};
+use std::str;
 use suppaftp::{types::FileType, AsyncFtpStream, Mode};
 use tauri::Window;
 use tokio::{io::AsyncWriteExt, select, spawn, sync::mpsc::channel};
-use tokio_util::{
-    compat::FuturesAsyncWriteCompatExt,
-    sync::CancellationToken,
-};
+use tokio_util::{compat::FuturesAsyncWriteCompatExt, sync::CancellationToken};
 use uuid::Uuid;
 
 use crate::{
@@ -16,12 +13,11 @@ use crate::{
     log_if_error_and_return,
     utils::{
         event::{Channel, Event, EventProducer},
-        file::{get_file_info, write_string_to_temp_file, TempFile},
         result::{Error, Result},
     },
 };
 
-use super::common::{EndPointPayloadConf, FileInfo};
+use super::common::{RemoteFileInfo, Uploadable};
 
 #[derive(Deserialize)]
 struct FtpConnection {
@@ -53,70 +49,27 @@ impl FtpConnection {
 }
 
 #[derive(Deserialize)]
-pub struct FilePayload {
-    local_path: String,
-
+pub struct UploadableConf {
     #[serde(flatten)]
     connection: FtpConnection,
 
     #[serde(flatten)]
-    endpoint_config: EndPointPayloadConf,
-}
-
-#[derive(Deserialize)]
-pub struct XmlPayload {
-    content: String,
-
-    #[serde(flatten)]
-    connection: FtpConnection,
-
-    #[serde(flatten)]
-    endpoint_config: EndPointPayloadConf,
-}
-
-#[named]
-#[tauri::command]
-pub async fn ftp_xml_upload_window_progress(window: Window, payload: XmlPayload) -> Result<Uuid> {
-    let result = ftp_xml_upload_with_progress_internal(window.into(), payload).await;
-    log_if_error_and_return!(result)
+    uploadable: Uploadable,
 }
 
 #[tauri::command]
-pub async fn ftp_upload_window_progress(window: Window, payload: FilePayload) -> Uuid {
-    ftp_upload_progress_internal(window.into(), payload, None)
-}
-
-async fn ftp_xml_upload_with_progress_internal(
-    channel: Channel,
-    payload: XmlPayload,
-) -> Result<Uuid> {
-    let temp_file = write_string_to_temp_file(&payload.content, "xml").await?;
-
-    let file_payload = FilePayload {
-        connection: payload.connection,
-        local_path: temp_file.path().to_owned(),
-        endpoint_config: payload.endpoint_config,
-    };
-
-    Ok(ftp_upload_progress_internal(
-        channel,
-        file_payload,
-        Some(temp_file),
-    ))
+pub async fn ftp_upload_window_progress(window: Window, uploadable: UploadableConf) -> Uuid {
+    ftp_upload_progress_internal(window.into(), uploadable)
 }
 
 #[named]
-fn ftp_upload_progress_internal(
-    channel: Channel,
-    payload: FilePayload,
-    temp_file: Option<TempFile>,
-) -> Uuid {
+fn ftp_upload_progress_internal(channel: Channel, uploadable: UploadableConf) -> Uuid {
     let mut event_producer = EventProducer::new(channel);
     let id = event_producer.id();
     let canc_token = get_cancellation_token(id);
 
     spawn(async move {
-        let result = ftp_upload_progress_task(&mut event_producer, canc_token, payload, temp_file)
+        let result = ftp_upload_progress_task(&mut event_producer, canc_token, uploadable)
             .await
             .map(Event::FileResult);
         log_if_error_and_return!(&result);
@@ -129,17 +82,16 @@ fn ftp_upload_progress_internal(
 async fn ftp_upload_progress_task(
     event_producer: &mut EventProducer,
     canc_token: CancellationToken,
-    payload: FilePayload,
-    _temp_file: Option<TempFile>,
-) -> Result<FileInfo> {
+    mut uploadable_conf: UploadableConf,
+) -> Result<RemoteFileInfo> {
     // Init Phase
     event_producer.send(Ok(Event::Progress(0))).await;
 
-    let mut ftp_stream = payload.connection.connect().await?;
+    let mut ftp_stream = uploadable_conf.connection.connect().await?;
 
     event_producer.send(Ok(Event::DeltaProgress(3))).await;
 
-    if let Some(path) = payload.endpoint_config.path() {
+    if let Some(path) = uploadable_conf.uploadable.remote_config().path() {
         ftp_stream.cwd(path).await?;
     }
 
@@ -147,22 +99,25 @@ async fn ftp_upload_progress_task(
 
     event_producer.send(Ok(Event::DeltaProgress(2))).await;
 
-    let file_info = get_file_info(&payload.local_path).await?;
+    let local_path = uploadable_conf
+        .uploadable
+        .local_path()
+        .await?
+        .into_os_string()
+        .into_string()
+        .map_err(|_| Error::LocalPathConversion)?;
 
-    let ext = Path::new(&payload.local_path)
-        .extension()
-        .map_or(Cow::default(), |ext| ext.to_string_lossy());
+    let new_file_name = uploadable_conf.uploadable.remote_file_name();
 
     event_producer.send(Ok(Event::DeltaProgress(2))).await;
 
     // Trasfer phase: 80-88%
 
     // Step by 8%
-    let file_iter =
-        FileIter::new(payload.local_path.as_ref())?.set_mode(get_chunk::ChunkSize::Percent(10.));
+    let file_iter = FileIter::new(local_path)?.set_mode(get_chunk::ChunkSize::Percent(10.));
 
     let mut writer = ftp_stream
-        .put_with_stream(format!("{}.{}", payload.endpoint_config.file_name(), &ext))
+        .put_with_stream(new_file_name)
         .await?
         .compat_write();
 
@@ -187,7 +142,7 @@ async fn ftp_upload_progress_task(
     event_producer.send(Ok(Event::Progress(95))).await;
     ftp_stream.quit().await?;
 
-    let file_info = FileInfo::new(&payload.endpoint_config, &file_info, &ext);
+    let file_info = uploadable_conf.uploadable.remote_file_info()?;
 
     event_producer.send(Ok(Event::DeltaProgress(5))).await;
 
@@ -196,31 +151,14 @@ async fn ftp_upload_progress_task(
 
 #[named]
 #[tauri::command]
-pub async fn ftp_xml_upload(payload: XmlPayload) -> Result<FileInfo> {
-    let temp_file =
-        log_if_error_and_return!(write_string_to_temp_file(&payload.content, "xml").await)?;
-
-    let file_payload = FilePayload {
-        connection: payload.connection,
-        local_path: temp_file.path().to_owned(),
-        endpoint_config: payload.endpoint_config,
-    };
-
-    let upload_result = ftp_upload_internal(file_payload).await;
+pub async fn ftp_upload(uploadable_conf: UploadableConf) -> Result<RemoteFileInfo> {
+    let upload_result = ftp_upload_internal(uploadable_conf).await;
     log_if_error_and_return!(upload_result)
 }
 
-#[named]
-#[tauri::command]
-pub async fn ftp_upload(payload: FilePayload) -> Result<FileInfo> {
-    let upload_result = ftp_upload_internal(payload).await;
-    log_if_error_and_return!(upload_result)
-}
-
-async fn ftp_upload_internal(payload: FilePayload) -> Result<FileInfo> {
-
+async fn ftp_upload_internal(uploadable_conf: UploadableConf) -> Result<RemoteFileInfo> {
     let (tx, mut rx) = channel(20);
-    let _ = ftp_upload_progress_internal(tx.into(), payload, None);
+    let _ = ftp_upload_progress_internal(tx.into(), uploadable_conf);
     while let Some(data) = rx.recv().await {
         match data {
             (_, Ok(Event::Progress(_))) => (),
@@ -246,11 +184,8 @@ mod test {
 
     use crate::{
         commands::{
-            common::EndPointPayloadConf,
-            ftp::{
-                ftp_upload, ftp_upload_progress_internal, ftp_xml_upload,
-                ftp_xml_upload_with_progress_internal, FilePayload, FtpConnection, XmlPayload,
-            },
+            common::{RemoteUploadableConf, Uploadable},
+            ftp::{ftp_upload, ftp_upload_progress_internal, FtpConnection, UploadableConf},
         },
         test_file,
     };
@@ -301,21 +236,17 @@ mod test {
     #[tokio::test(flavor = "multi_thread")]
     async fn test_ftp_upload_ok() {
         let port = 2121;
-        let payload = XmlPayload {
+        let uploadable_conf = UploadableConf {
             connection: FtpConnection {
                 host: "localhost".to_owned(),
                 port,
                 user: USER.to_owned(),
                 password: PASSWORD.to_owned(),
             },
-            content: std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
-                .unwrap_or_default()
-                .to_owned(),
-            endpoint_config: EndPointPayloadConf::new(
-                "gitbar".to_owned(),
+            uploadable: Uploadable::new(
                 None,
-                "localhost".to_owned(),
-                false,
+                Some(include_bytes!(test_file!("gitbar.xml")).to_vec()),
+                RemoteUploadableConf::new("gitbar".to_owned(), None, "localhost".to_owned(), false),
             ),
         };
 
@@ -326,11 +257,11 @@ mod test {
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
 
-        let info_result = ftp_xml_upload(payload).await;
+        let info_result = ftp_upload(uploadable_conf).await;
         assert!(info_result.is_ok());
         let file_info = info_result.unwrap();
         assert_eq!(file_info.size(), &FILESIZE);
-        assert_eq!(file_info.mime_type(), "text/xml");
+        assert_eq!(file_info.mime_type(), "application/octet-stream");
 
         handle.abort();
     }
@@ -338,21 +269,22 @@ mod test {
     #[tokio::test(flavor = "multi_thread")]
     async fn test_ftp_upload_err_host() {
         let port = 2122;
-        let payload = XmlPayload {
+        let uploadable_conf = UploadableConf {
             connection: FtpConnection {
                 host: "localhosts".to_owned(),
                 port,
                 user: USER.to_owned(),
                 password: PASSWORD.to_owned(),
             },
-            content: std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
-                .unwrap_or_default()
-                .to_owned(),
-            endpoint_config: EndPointPayloadConf::new(
-                "gitbar".to_owned(),
+            uploadable: Uploadable::new(
                 None,
-                "localhosts".to_owned(),
-                false,
+                Some(include_bytes!(test_file!("gitbar.xml")).to_vec()),
+                RemoteUploadableConf::new(
+                    "gitbar".to_owned(),
+                    None,
+                    "localhosts".to_owned(),
+                    false,
+                ),
             ),
         };
 
@@ -362,28 +294,24 @@ mod test {
 
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
-        assert!(ftp_xml_upload(payload).await.is_err());
+        assert!(ftp_upload(uploadable_conf).await.is_err());
         handle.abort();
     }
 
     #[tokio::test(flavor = "multi_thread")]
     async fn test_ftp_upload_err_user() {
         let port = 2123;
-        let payload = XmlPayload {
+        let uploadable_conf = UploadableConf {
             connection: FtpConnection {
                 host: "localhost".to_owned(),
                 port,
                 user: "NotAValidUserName".to_owned(),
                 password: PASSWORD.to_owned(),
             },
-            content: std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
-                .unwrap_or_default()
-                .to_owned(),
-            endpoint_config: EndPointPayloadConf::new(
-                "gitbar".to_owned(),
+            uploadable: Uploadable::new(
                 None,
-                "localhost".to_owned(),
-                false,
+                Some(include_bytes!(test_file!("gitbar.xml")).to_vec()),
+                RemoteUploadableConf::new("gitbar".to_owned(), None, "localhost".to_owned(), false),
             ),
         };
 
@@ -393,26 +321,24 @@ mod test {
 
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
-        assert!(ftp_xml_upload(payload).await.is_err());
+        assert!(ftp_upload(uploadable_conf).await.is_err());
         handle.abort();
     }
 
     #[tokio::test(flavor = "multi_thread")]
     async fn test_ftp_upload_err_local_path() {
         let port = 2124;
-        let payload = FilePayload {
+        let uploadable_conf = UploadableConf {
             connection: FtpConnection {
                 host: "localhost".to_owned(),
                 port,
                 user: USER.to_owned(),
                 password: PASSWORD.to_owned(),
             },
-            local_path: test_file!("gitbar.rss").to_owned(),
-            endpoint_config: EndPointPayloadConf::new(
-                "gitbar".to_owned(),
+            uploadable: Uploadable::new(
+                Some(test_file!("gitbar.rss").into()),
                 None,
-                "localhost".to_owned(),
-                false,
+                RemoteUploadableConf::new("gitbar".to_owned(), None, "localhost".to_owned(), false),
             ),
         };
 
@@ -422,28 +348,24 @@ mod test {
 
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
-        assert!(ftp_upload(payload).await.is_err());
+        assert!(ftp_upload(uploadable_conf).await.is_err());
         handle.abort();
     }
 
     #[tokio::test(flavor = "multi_thread")]
     async fn test_ftp_xml_upload_progress_ok() {
         let port = 2125;
-        let payload = XmlPayload {
+        let uploadable_conf = UploadableConf {
             connection: FtpConnection {
                 host: "localhost".to_owned(),
                 port,
                 user: USER.to_owned(),
                 password: PASSWORD.to_owned(),
             },
-            content: std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
-                .unwrap_or_default()
-                .to_owned(),
-            endpoint_config: EndPointPayloadConf::new(
-                "gitbar".to_owned(),
+            uploadable: Uploadable::new(
+                Some(test_file!("gitbar.xml").into()),
                 None,
-                "localhost".to_owned(),
-                false,
+                RemoteUploadableConf::new("gitbar".to_owned(), None, "localhost".to_owned(), false),
             ),
         };
 
@@ -455,9 +377,8 @@ mod test {
         sleep(Duration::from_secs(2)).await;
 
         let (tx, mut rx) = channel(2);
-        let original_id = ftp_xml_upload_with_progress_internal(tx.into(), payload)
-            .await
-            .unwrap();
+        let original_id = ftp_upload_progress_internal(tx.into(), uploadable_conf);
+
         let mut at_least_one_progress = false;
         let mut at_least_one_result = false;
 
@@ -486,21 +407,23 @@ mod test {
     #[tokio::test(flavor = "multi_thread")]
     async fn test_ftp_upload_progress_err_host() {
         let port = 2126;
-        let payload = XmlPayload {
+
+        let uploadable_conf = UploadableConf {
             connection: FtpConnection {
                 host: "localhosts".to_owned(),
                 port,
                 user: USER.to_owned(),
                 password: PASSWORD.to_owned(),
             },
-            content: std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
-                .unwrap_or_default()
-                .to_owned(),
-            endpoint_config: EndPointPayloadConf::new(
-                "gitbar".to_owned(),
+            uploadable: Uploadable::new(
                 None,
-                "localhosts".to_owned(),
-                false,
+                Some(include_bytes!(test_file!("gitbar.xml")).to_vec()),
+                RemoteUploadableConf::new(
+                    "gitbar".to_owned(),
+                    None,
+                    "localhosts".to_owned(),
+                    false,
+                ),
             ),
         };
 
@@ -512,9 +435,7 @@ mod test {
         sleep(Duration::from_secs(2)).await;
 
         let (tx, mut rx) = channel(2);
-        let original_id = ftp_xml_upload_with_progress_internal(tx.into(), payload)
-            .await
-            .unwrap();
+        let original_id = ftp_upload_progress_internal(tx.into(), uploadable_conf);
         let mut at_least_one_error = false;
 
         while let Some((id, event)) = rx.recv().await {
@@ -533,21 +454,17 @@ mod test {
     #[tokio::test(flavor = "multi_thread")]
     async fn test_ftp_upload_progress_err_user() {
         let port = 2127;
-        let payload = XmlPayload {
+        let uploadable_conf = UploadableConf {
             connection: FtpConnection {
                 host: "localhost".to_owned(),
                 port,
                 user: "NotAValidUserName".to_owned(),
                 password: PASSWORD.to_owned(),
             },
-            content: std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
-                .unwrap_or_default()
-                .to_owned(),
-            endpoint_config: EndPointPayloadConf::new(
-                "gitbar".to_owned(),
+            uploadable: Uploadable::new(
                 None,
-                "localhost".to_owned(),
-                false,
+                Some(include_bytes!(test_file!("gitbar.xml")).to_vec()),
+                RemoteUploadableConf::new("gitbar".to_owned(), None, "localhost".to_owned(), false),
             ),
         };
 
@@ -559,9 +476,8 @@ mod test {
         sleep(Duration::from_secs(2)).await;
 
         let (tx, mut rx) = channel(2);
-        let original_id = ftp_xml_upload_with_progress_internal(tx.into(), payload)
-            .await
-            .unwrap();
+        let original_id = ftp_upload_progress_internal(tx.into(), uploadable_conf);
+
         let mut at_least_one_error = false;
 
         while let Some((id, event)) = rx.recv().await {
@@ -580,19 +496,18 @@ mod test {
     #[tokio::test(flavor = "multi_thread")]
     async fn test_ftp_upload_progress_err_local_path() {
         let port = 2128;
-        let payload = FilePayload {
+
+        let uploadable_conf = UploadableConf {
             connection: FtpConnection {
                 host: "localhost".to_owned(),
                 port,
                 user: USER.to_owned(),
                 password: PASSWORD.to_owned(),
             },
-            local_path: test_file!("gitbar.rss").to_owned(),
-            endpoint_config: EndPointPayloadConf::new(
-                "gitbar".to_owned(),
+            uploadable: Uploadable::new(
+                Some(test_file!("gitbar.rss").into()),
                 None,
-                "localhost".to_owned(),
-                false,
+                RemoteUploadableConf::new("gitbar".to_owned(), None, "localhost".to_owned(), false),
             ),
         };
 
@@ -604,7 +519,7 @@ mod test {
         sleep(Duration::from_secs(2)).await;
 
         let (tx, mut rx) = channel(2);
-        let original_id = ftp_upload_progress_internal(tx.into(), payload, None);
+        let original_id = ftp_upload_progress_internal(tx.into(), uploadable_conf);
         let mut at_least_one_error = false;
 
         while let Some((id, event)) = rx.recv().await {

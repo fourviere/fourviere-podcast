@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use cached::proc_macro::cached;
 use derive_new::new;
 use getset::Getters;
@@ -5,7 +7,10 @@ use serde::{Deserialize, Serialize};
 use tokio_util::sync::CancellationToken;
 use uuid::Uuid;
 
-use crate::utils::result::Result;
+use crate::utils::{
+    file::{get_file_info, get_payload_info, write_to_temp_file, TempFile},
+    result::{Error, Result},
+};
 
 #[tauri::command]
 pub async fn abort_progress_task(uuid: Uuid) -> Result<()> {
@@ -20,7 +25,103 @@ pub fn get_cancellation_token(_uuid: Uuid) -> CancellationToken {
 }
 
 #[derive(Deserialize, Getters, new)]
-pub struct EndPointPayloadConf {
+pub struct Uploadable {
+    #[serde(default)]
+    local_path: Option<PathBuf>,
+
+    #[serde(default)]
+    payload: Option<Vec<u8>>,
+
+    #[serde(skip)]
+    #[new(default)]
+    temp_file: Option<TempFile>,
+
+    #[serde(flatten)]
+    #[getset(get = "pub ")]
+    remote_config: RemoteUploadableConf,
+}
+
+impl Uploadable {
+    fn ext(&self) -> Option<String> {
+        //TODO implement ext ovverride logic
+        Some("".to_string())
+    }
+
+    pub fn remote_file_name(&self) -> String {
+        let file_name = match self.ext() {
+            Some(ext) => format!("{}.{}", self.remote_config.file_name(), ext),
+            None => self.remote_config.file_name().to_owned(),
+        };
+
+        match self.remote_config.path() {
+            Some(path) => format!("{path}/{file_name}"),
+            None => file_name,
+        }
+    }
+
+    pub async fn local_path(&mut self) -> Result<PathBuf> {
+        if let Some(path) = &self.local_path {
+            return Ok(path.clone());
+        }
+
+        if let Some(file) = &self.temp_file {
+            return Ok(file.path().into());
+        }
+
+        if let Some(data) = &self.payload {
+            let file = write_to_temp_file(data, &self.remote_file_name()).await?;
+            let path = Ok(file.path().into());
+            self.temp_file = Some(file);
+            return path;
+        }
+
+        Err(Error::Aborted)
+    }
+
+    pub fn local_file_info(&self) -> Result<crate::utils::file::FileInfo> {
+        if let Some(path) = &self.local_path {
+            return get_file_info(path);
+        }
+
+        if let Some(data) = &self.payload {
+            return get_payload_info(data, &self.ext().unwrap_or_default());
+        }
+
+        Err(Error::Aborted)
+    }
+
+    pub fn remote_file_info(&self) -> Result<RemoteFileInfo> {
+        let local = self.local_file_info()?;
+
+        let protocol = if self.remote_config.https {
+            "https"
+        } else {
+            "http"
+        };
+
+        let file_path = match self
+            .remote_config
+            .path
+            .as_ref()
+            .filter(|path| !path.is_empty())
+        {
+            Some(path) => format!("{}/{}", path, self.remote_config.file_name,),
+            None => format!("{}.{}", self.remote_config.file_name, "exxt"),
+        };
+
+        Ok(RemoteFileInfo {
+            url: format!(
+                "{}://{}/{}",
+                protocol, self.remote_config.http_host, file_path
+            ),
+            mime_type: local.mime_type,
+            size: local.size,
+        })
+    }
+}
+
+#[derive(Deserialize, Getters, new)]
+pub struct RemoteUploadableConf {
     #[getset(get = "pub ")]
     file_name: String,
 
@@ -32,7 +133,7 @@ pub struct EndPointPayloadConf {
 }
 
 #[derive(Debug, Getters, PartialEq, Serialize)]
-pub struct FileInfo {
+pub struct RemoteFileInfo {
     #[getset(get = "pub ")]
     url: String,
 
@@ -41,44 +142,6 @@ pub struct FileInfo {
 
     #[getset(get = "pub ")]
     size: u64,
-}
-
-impl FileInfo {
-    pub fn new(
-        endpoint_config: &EndPointPayloadConf,
-        file_info: &crate::utils::file::FileInfo,
-        ext: &str,
-    ) -> Self {
-        let protocol = if endpoint_config.https {
-            "https"
-        } else {
-            "http"
-        };
-
-        let file_path = match endpoint_config
-            .path
-            .as_ref()
-            .filter(|path| !path.is_empty())
-        {
-            Some(path) => format!(
-                "{}/{}{}",
-                path,
-                endpoint_config.file_name,
-                if ext.len() >= 3 {
-                    format!(".{}", ext)
-                } else {
-                    "".to_owned()
-                }
-            ),
-            None => format!("{}.{}", endpoint_config.file_name, ext),
-        };
-
-        FileInfo {
-            size: file_info.size,
-            mime_type: file_info.mime_type.clone(),
-            url: format!("{}://{}/{}", protocol, endpoint_config.http_host, file_path),
-        }
-    }
 }
 
 #[cfg(test)]

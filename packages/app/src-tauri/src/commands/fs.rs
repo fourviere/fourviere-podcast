@@ -73,8 +73,7 @@ pub struct PersistFilePayload {
 #[tauri::command]
 pub async fn persist_file(payload: PersistFilePayload) -> Result<String> {
     //rust write file
-    let res: std::prelude::v1::Result<String, crate::utils::result::Error> =
-        write_string_to_file(payload.data.as_str(), payload.path.as_str()).await;
+    let res = write_string_to_file(&payload.data, &payload.path).await;
     log_if_error_and_return!(res)
 }
 
