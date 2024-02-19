@@ -6,9 +6,9 @@ import AudioField from "../../components/form-fields/audio";
 import { Formik } from "formik";
 import Img from "../../components/form-fields/image";
 import { FormField } from "@fourviere/ui/lib/form/form-field";
-import UseCurrentFeed from "../../hooks/useCurrentFeed";
-import useTranslations from "../../hooks/useTranslations";
-import { useParams } from "react-router-dom";
+import UseCurrentFeed from "../../hooks/use-current-feed";
+import useTranslations from "../../hooks/use-translations";
+import { useNavigate, useParams } from "react-router-dom";
 import { FullPageColumnLayout } from "@fourviere/ui/lib/layouts/full-page";
 import { ItemLink } from "../../components/form-fields/item-link";
 import Boolean from "@fourviere/ui/lib/form/fields/boolean";
@@ -18,13 +18,37 @@ import ContainerTitle from "@fourviere/ui/lib/container-title";
 import CKEditor from "@fourviere/ui/lib/form/fields/ckeditor";
 import FormBlocker from "../../components/form-blocker";
 import Duration from "../../components/form-fields/audio/duration";
+import feedStore from "../../store/feed";
+import Button from "@fourviere/ui/lib/button";
+import { TrashIcon } from "@heroicons/react/24/outline";
+import { useState } from "react";
+import { confirm } from "@tauri-apps/api/dialog";
 
 export default function ItemGeneral() {
   const currentFeed = UseCurrentFeed();
-  const { itemIndex } = useParams<{ itemIndex: string }>();
+  const { itemGUID } = useParams<{ itemGUID: string }>(); //todo: fix using guid
   const t = useTranslations();
+  const { deleteEpisodeFromProject } = feedStore((state) => state);
+  const navigate = useNavigate();
+
+  async function askForDelete() {
+    return await confirm(t["edit_feed.items.delete_episode"], {
+      title: t["edit_feed.items.delete_episode.title"],
+      type: "warning",
+    });
+  }
+
+  const itemIndex = currentFeed?.feed.rss.channel[0].item?.findIndex(
+    (item) => item.guid["#text"] === itemGUID,
+  );
 
   if (!currentFeed) {
+    navigate(`/`);
+    return null;
+  }
+
+  if (itemIndex === -1) {
+    navigate(`/feed/${currentFeed.feedId}/feed-items`);
     return null;
   }
 
@@ -39,6 +63,19 @@ export default function ItemGeneral() {
         }}
       >
         {({ setFieldValue, handleSubmit, values, dirty, isSubmitting }) => {
+          const [skipExitProtection, setSkipExitProtection] =
+            useState<boolean>(false);
+
+          const remove = () => {
+            askForDelete().then((del) => {
+              if (itemGUID && del) {
+                setSkipExitProtection(true);
+                deleteEpisodeFromProject(currentFeed.feedId!, itemGUID);
+                navigate(`/feed/${currentFeed.feedId}/feed-items`);
+              }
+            });
+          };
+
           return (
             <Container
               scroll
@@ -48,7 +85,7 @@ export default function ItemGeneral() {
               as="form"
               onSubmit={handleSubmit}
             >
-              <FormBlocker dirty={dirty} />
+              {!skipExitProtection && <FormBlocker dirty={dirty} />}
               <ContainerTitle
                 isDirty={dirty}
                 isSubmitting={isSubmitting}
@@ -293,6 +330,25 @@ export default function ItemGeneral() {
                     initValue="full"
                     emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                   />
+                </FormRow>
+              </FormSection>
+              <FormSection
+                title={t["edit_feed.configuration.feed.actions"]}
+                description={
+                  t["edit_feed.configuration.feed.actions.description"]
+                }
+              >
+                <FormRow name="feed.actions">
+                  <Container wFull spaceX="sm" spaceY="sm">
+                    <Button
+                      size="lg"
+                      theme="warning"
+                      Icon={TrashIcon}
+                      onClick={() => remove()}
+                    >
+                      {t["edit_feed.items.delete_episode.title"]}
+                    </Button>
+                  </Container>
                 </FormRow>
               </FormSection>
             </Container>

@@ -8,7 +8,7 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   Icon?: React.ElementType;
   isDisabled?: boolean;
   wfull?: boolean;
-  theme?: "primary" | "secondary" | "tertiary";
+  theme?: "primary" | "secondary" | "tertiary" | "warning";
   responsiveCollapse?: boolean;
 };
 

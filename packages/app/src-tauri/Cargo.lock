@@ -4384,18 +4384,18 @@ dependencies = [
 
 [[package]]
 name = "serde"
-version = "1.0.195"
+version = "1.0.196"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "63261df402c67811e9ac6def069e4786148c4563f4b50fd4bf30aa370d626b02"
+checksum = "870026e60fa08c69f064aa766c10f10b1d62db9ccd4d0abb206472bee0ce3b32"
 dependencies = [
  "serde_derive",
 ]
 
 [[package]]
 name = "serde_derive"
-version = "1.0.195"
+version = "1.0.196"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "46fe8f8603d81ba86327b23a2e9cdf49e1255fb94a4c5f297f6ee0547178ea2c"
+checksum = "33c85360c95e7d137454dc81d9a4ed2b8efd8fbe19cee57357b32b9771fccb67"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -4404,9 +4404,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.111"
+version = "1.0.113"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "176e46fa42316f18edd598015a5166857fc835ec732f5215eac6b7bdbf0a84f4"
+checksum = "69801b70b1c3dac963ecb03a364ba0ceda9cf60c71cfe475e99864759c8b8a79"
 dependencies = [
  "itoa 1.0.10",
  "ryu",
@@ -5152,7 +5152,7 @@ dependencies = [
 [[package]]
 name = "tauri-plugin-log"
 version = "0.0.0"
-source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#c5e8cd31ec86ba7ddcd524f1377a5bf09229fb9e"
+source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#01211ff0759d578e0e9ac8c98c31fdf09077eb34"
 dependencies = [
  "byte-unit",
  "fern",
@@ -6543,15 +6543,14 @@ dependencies = [
  "hmac",
  "pbkdf2",
  "sha1",
- "time",
  "zstd",
 ]
 
 [[package]]
 name = "zip-extract"
-version = "0.1.2"
+version = "0.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bb654964c003959ed64cbd0d7b329bcdcbd9690facd50c8617748d3622543972"
+checksum = "e109e5a291403b4c1e514d39f8a22d3f98d257e691a52bb1f16051bb1ffed63e"
 dependencies = [
  "log",
  "thiserror",

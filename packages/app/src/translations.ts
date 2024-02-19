@@ -69,6 +69,10 @@ const TRANSLATIONS = {
     "edit_feed.channel_field.itunes.complete.description":
       "If you will never publish another episode to your show, use this tag.",
     //-----
+    "edit_feed.items.add_episode": "Add episode",
+    "edit_feed.items.delete_episode":
+      "You are about to delete this episode, are you sure? This operation cannot be reverted",
+    "edit_feed.items.delete_episode.title": "Delete episode",
     "edit_feed.items_fields.media.title": "Media",
     "edit_feed.items_fields.media.description":
       "This section contains the podcast media file and the title",
@@ -96,6 +100,8 @@ const TRANSLATIONS = {
     "edit_feed.items_fields.podcast_episode": "Episode",
     "edit_feed.items_fields.explicit": "Explicit",
     "edit_feed.items_fields.episode_type": "Episode type",
+
+    "edit_feed.audio.duration.error": "Error getting enclosure duration",
     //-----
 
     "ui.forms.empty_field.message": "Click here to assign a value",
@@ -131,6 +137,12 @@ const TRANSLATIONS = {
     "edit_feed.configuration.feed.description":
       "Here you can configure the feed basic settings",
     "edit_feed.configuration.feed.filename": "Feed file name",
+    "edit_feed.configuration.feed.actions": "Actions",
+    "edit_feed.configuration.feed.actions.description":
+      "Here some advanced actions for the feed",
+    "edit_feed.configuration.feed.actions.overwrite_from_remote":
+      "Overwrite the feed with the version hosted remotely",
+
     "edit_feed.source-code.title": "Source code",
 
     "edit_feed.feed-uploader.button_label": "Update remote feed",
@@ -151,6 +163,17 @@ const TRANSLATIONS = {
     "edit_feed.feed-uploader.error_uploading_feed":
       "An error occurred while uploading the feed",
 
+    "edit_feed.feed-sync.button_label": "Overwrite feed from remote",
+    "edit_feed.feed-sync.ask_overwrite.title": "Overwrite",
+    "edit_feed.feed-sync.ask_overwrite":
+      "You are overwriting the local feed with the remote one, are you sure? This operation cannot be reverted",
+    "edit_feed.feed-sync.error_fetching_feed":
+      "Error during fetching remote feed",
+
+    "edit_feed.feed-deleter.button_label": "Delete this feed",
+    "edit_feed.feed-deleter.ask_delete.title": "Delete",
+    "edit_feed.feed-deleter.ask_delete":
+      "You are about to delete this feed, are you sure? This operation cannot be reverted",
     "configurations.title": "Fourviere global configurations",
 
     "configurations.locale.title": "Locale",
