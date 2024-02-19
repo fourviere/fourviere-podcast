@@ -47,7 +47,8 @@ impl Uploadable {
         if let Some(path) = &self.local_path {
             // Try to extract file extension from local_path and remote filename
             // In case both local_path and remote filename have a valid ext, remote filename wins
-            Self::extract_from_filename(&self.remote_config.file_name).or(path.extension().and_then(OsStr::to_str))
+            Self::extract_from_filename(&self.remote_config.file_name)
+                .or(path.extension().and_then(OsStr::to_str))
         } else {
             Self::extract_from_filename(&self.remote_config.file_name)
         }
@@ -58,11 +59,9 @@ impl Uploadable {
     }
 
     pub fn remote_file_path(&self) -> String {
-
-        let ext = Self::extract_from_filename(&self.remote_config.file_name).or(self.ext());
         let file_name = match Self::extract_from_filename(&self.remote_config.file_name) {
-            Some(_) =>  self.remote_config.file_name().to_owned(),
-            None => match ext {
+            Some(_) => self.remote_config.file_name().to_owned(),
+            None => match self.ext() {
                 Some(ext) => format!("{}.{}", self.remote_config.file_name(), ext),
                 None => self.remote_config.file_name().to_owned(),
             },
@@ -99,7 +98,7 @@ impl Uploadable {
         }
 
         if let Some(data) = &self.payload {
-            return get_payload_info(data, &self.ext().unwrap_or_default());
+            return get_payload_info(data, self.ext().unwrap_or_default());
         }
 
         Err(Error::Aborted)
