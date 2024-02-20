@@ -91,10 +91,9 @@ async fn ftp_upload_progress_task(
 
     event_producer.send(Ok(Event::DeltaProgress(3))).await;
 
-    //TODO: maybe unnecessary
-    // if let Some(path) = uploadable_conf.uploadable.remote_config().path() {
-    //     ftp_stream.cwd(path).await?;
-    // }
+    if let Some(path) = uploadable_conf.uploadable.remote_config().path() {
+        ftp_stream.cwd(path).await?;
+    }
 
     ftp_stream.transfer_type(FileType::Binary).await?;
 
@@ -108,7 +107,7 @@ async fn ftp_upload_progress_task(
         .into_string()
         .map_err(|_| Error::LocalPathConversion)?;
 
-    let remote_file_path = uploadable_conf.uploadable.remote_file_path();
+    let filename = uploadable_conf.uploadable.remote_filename();
 
     event_producer.send(Ok(Event::DeltaProgress(2))).await;
 
@@ -117,10 +116,7 @@ async fn ftp_upload_progress_task(
     // Step by 8%
     let file_iter = FileIter::new(local_path)?.set_mode(get_chunk::ChunkSize::Percent(10.));
 
-    let mut writer = ftp_stream
-        .put_with_stream(remote_file_path)
-        .await?
-        .compat_write();
+    let mut writer = ftp_stream.put_with_stream(filename).await?.compat_write();
 
     for chunk in file_iter {
         let chunk = chunk?;

@@ -59,17 +59,21 @@ impl Uploadable {
     }
 
     pub fn remote_file_path(&self) -> String {
-        let file_name = match Self::extract_from_filename(&self.remote_config.file_name) {
+        let file_name = self.remote_filename();
+
+        match self.remote_config.path() {
+            Some(path) => format!("{path}/{file_name}"),
+            None => file_name,
+        }
+    }
+
+    pub fn remote_filename(&self) -> String {
+        match Self::extract_from_filename(&self.remote_config.file_name) {
             Some(_) => self.remote_config.file_name().to_owned(),
             None => match self.ext() {
                 Some(ext) => format!("{}.{}", self.remote_config.file_name(), ext),
                 None => self.remote_config.file_name().to_owned(),
             },
-        };
-
-        match self.remote_config.path() {
-            Some(path) => format!("{path}/{file_name}"),
-            None => file_name,
         }
     }
 
