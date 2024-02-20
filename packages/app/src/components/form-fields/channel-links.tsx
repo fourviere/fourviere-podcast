@@ -4,7 +4,7 @@ import Undefined from "@fourviere/ui/lib/form/fields/undefined";
 import { FormField } from "@fourviere/ui/lib/form/form-field";
 import FormRow from "@fourviere/ui/lib/form/form-row";
 import { FieldArray } from "formik";
-import useTranslations from "../../hooks/useTranslations";
+import useTranslations from "../../hooks/use-translations";
 import Input from "@fourviere/ui/lib/form/fields/input";
 
 const BASE_URL = "https://...";

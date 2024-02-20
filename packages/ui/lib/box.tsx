@@ -65,6 +65,7 @@ interface Props<E extends React.ElementType> {
   wFull?: boolean;
   scroll?: boolean;
   sticky?: boolean;
+  background?: "dark" | "light";
 }
 
 export function Container<E extends React.ElementType>({
@@ -91,6 +92,8 @@ export function Container<E extends React.ElementType>({
         { "w-full": wFull },
         { "overflow-y-scroll": scroll },
         { "sticky top-0": sticky },
+        { "bg-slate-50": props.background === "light" },
+        { "bg-slate-900": props.background === "dark" },
       )}
     >
       {children}

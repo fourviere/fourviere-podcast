@@ -17,5 +17,5 @@ export async function getDuration(url: string): Promise<number> {
 
   const dataParsed = JSON.parse(res.stdout) as Data;
 
-  return Math.ceil(dataParsed?.format.duration ?? 0);
+  return Math.floor(dataParsed?.format.duration ?? 0);
 }

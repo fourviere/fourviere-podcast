@@ -1,5 +1,5 @@
 import { FunctionComponent, useState } from "react";
-import feedStore from "../../store/feed";
+import feedStore from "../../store/feed/index";
 import { Container } from "@fourviere/ui/lib/box";
 import { Title } from "@fourviere/ui/lib/typography";
 import Button from "@fourviere/ui/lib/button";
@@ -19,7 +19,7 @@ interface Props {
 }
 
 const StartByURL: FunctionComponent<Props> = ({ done }) => {
-  const { loadFeedFromUrl } = feedStore((state) => state);
+  const { initProjectFromUrl } = feedStore((state) => state);
   const { getTranslations, addError } = appStore((state) => state);
   const [isLoading, setIsLoading] = useState(false);
   const t = getTranslations();
@@ -35,7 +35,7 @@ const StartByURL: FunctionComponent<Props> = ({ done }) => {
       }
       setIsLoading(true);
       try {
-        await loadFeedFromUrl(data.url);
+        await initProjectFromUrl(data.url);
         done();
       } catch (e) {
         if (e instanceof InvalidXMLError) {
@@ -45,6 +45,7 @@ const StartByURL: FunctionComponent<Props> = ({ done }) => {
         } else {
           addError(t["start.start_by_url.errors.generic"]);
         }
+        console.error(e);
       } finally {
         setIsLoading(false);
       }

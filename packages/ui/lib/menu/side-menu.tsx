@@ -16,7 +16,9 @@ const SideMenu: React.FC<Props> = ({ main, header, footer }) => {
           {main}
         </div>
       )}
-      {footer && <div className="grow-0">{footer}</div>}
+      {footer && (
+        <div className="flex grow-0 flex-col space-y-2 p-3">{footer}</div>
+      )}
     </div>
   );
 };

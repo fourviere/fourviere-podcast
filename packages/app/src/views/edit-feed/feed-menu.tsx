@@ -1,6 +1,6 @@
 import SideMenu, { SideMenuItem } from "@fourviere/ui/lib/menu/side-menu";
 import { NavLink, NavLinkProps } from "react-router-dom";
-import useTranslations from "../../hooks/useTranslations";
+import useTranslations from "../../hooks/use-translations";
 import {
   CodeBracketSquareIcon,
   Cog8ToothIcon,
@@ -8,6 +8,7 @@ import {
   PencilSquareIcon,
   QueueListIcon,
 } from "@heroicons/react/24/outline";
+import FeedUploader from "../../components/feed-uploader";
 
 export default function FeedMenu() {
   const t = useTranslations();
@@ -63,6 +64,11 @@ export default function FeedMenu() {
           >
             {t["edit_feed.configuration.title"]}
           </SideMenuItem>
+        </>
+      }
+      footer={
+        <>
+          <FeedUploader />
         </>
       }
     />

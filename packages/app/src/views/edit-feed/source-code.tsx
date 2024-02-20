@@ -1,12 +1,12 @@
 import { Editor } from "@monaco-editor/react";
 import { useParams } from "react-router-dom";
-import feedStore from "../../store/feed";
+import feedStore from "../../store/feed/index";
 import { parseXML, serializeToXML } from "@fourviere/core/lib/converter";
 import appStore from "../../store/app";
 import { useEffect, useState } from "react";
 import { Container } from "@fourviere/ui/lib/box";
 import ContainerTitle from "@fourviere/ui/lib/container-title";
-import useTranslations from "../../hooks/useTranslations";
+import useTranslations from "../../hooks/use-translations";
 
 export default function SourceCode() {
   const { feedId } = useParams<{ feedId: string }>();
@@ -27,14 +27,12 @@ export default function SourceCode() {
 
   useEffect(() => {
     if (tempState !== xml && tempState !== undefined) {
-      console.log("set dirty", tempState, xml);
       setIsDirty(true);
     }
   }, [tempState]);
 
   const setState = () => {
     try {
-      console.log("update state");
       if (!tempState) {
         return;
       }

@@ -5,12 +5,14 @@ import Input from "@fourviere/ui/lib/form/fields/input";
 import Boolean from "@fourviere/ui/lib/form/fields/boolean";
 import { Formik } from "formik";
 import { FormField } from "@fourviere/ui/lib/form/form-field";
-import UseCurrentFeed from "../../hooks/useCurrentFeed";
-import useTranslations from "../../hooks/useTranslations";
+import UseCurrentFeed from "../../hooks/use-current-feed";
+import useTranslations from "../../hooks/use-translations";
 import Select from "@fourviere/ui/lib/form/fields/select";
 import { FC } from "react";
 import ContainerTitle from "@fourviere/ui/lib/container-title";
 import FormBlocker from "../../components/form-blocker";
+import FeedSync from "../../components/feed-sync";
+import FeedDeleter from "../../components/feed-deleter";
 export default function Configuration() {
   const currentFeed = UseCurrentFeed();
   const t = useTranslations();
@@ -39,6 +41,22 @@ export default function Configuration() {
             >
               {t["edit_feed.configuration.title"]}
             </ContainerTitle>
+            <FormSection
+              title={t["edit_feed.configuration.feed.title"]}
+              description={t["edit_feed.configuration.feed.description"]}
+            >
+              <FormRow
+                name="feed.filename"
+                label={t["edit_feed.configuration.feed.filename"]}
+              >
+                <FormField
+                  id="feed.filename"
+                  name="feed.filename"
+                  as={Input}
+                  fieldProps={{ placeholder: "filename.xml" }}
+                />
+              </FormRow>
+            </FormSection>
 
             <FormSection
               title={t["edit_feed.configuration.remotes.title"]}
@@ -171,6 +189,7 @@ export default function Configuration() {
                       id="remotes.ftp.port"
                       name="remotes.ftp.port"
                       as={Input}
+                      fieldProps={{ type: "number" }}
                     />
                   </FormRow>
                   <FormRow
@@ -235,6 +254,19 @@ export default function Configuration() {
                   </FormRow>
                 </>
               )}
+            </FormSection>
+            <FormSection
+              title={t["edit_feed.configuration.feed.actions"]}
+              description={
+                t["edit_feed.configuration.feed.actions.description"]
+              }
+            >
+              <FormRow name="feed.actions">
+                <Container wFull spaceX="sm" spaceY="sm">
+                  <FeedSync />
+                  <FeedDeleter />
+                </Container>
+              </FormRow>
             </FormSection>
           </Container>
         );

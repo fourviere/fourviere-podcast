@@ -6,7 +6,7 @@ import {
   FullPageLayoutBackground,
 } from "@fourviere/ui/lib/layouts/full-page";
 import appStore from "../../store/app";
-import feedStore from "../../store/feed";
+import feedStore from "../../store/feed/index";
 import StartByURL from "./start-by-url";
 import StartByDrag from "./start-by-drag";
 import { AnimatePresence } from "framer-motion";

@@ -1,5 +1,5 @@
 import { FunctionComponent, useState } from "react";
-import feedStore from "../../store/feed";
+import feedStore from "../../store/feed/index";
 import { Container } from "@fourviere/ui/lib/box";
 import { H1, Title } from "@fourviere/ui/lib/typography";
 import Button from "@fourviere/ui/lib/button";
@@ -7,7 +7,7 @@ import Input from "@fourviere/ui/lib/form/fields/input";
 import appStore from "../../store/app";
 import { useFormik } from "formik";
 import { ImageLinkCard, ImageLinkCardContainer } from "@fourviere/ui/lib/cards";
-import { usePodcastIndex } from "../../hooks/usePodcastIndex";
+import { usePodcastIndex } from "../../hooks/use-podcast-index";
 import {
   InvalidPodcastFeedError,
   InvalidXMLError,
@@ -18,7 +18,7 @@ interface Props {
 }
 
 const StartByIndex: FunctionComponent<Props> = ({ done }) => {
-  const { loadFeedFromUrl } = feedStore((state) => state);
+  const { initProjectFromUrl } = feedStore((state) => state);
   const { getTranslations, addError } = appStore((state) => state);
   const { search, isLoading, feeds, resetFeeds } = usePodcastIndex();
   const [isImporting, setIsImporting] = useState(false);
@@ -36,7 +36,7 @@ const StartByIndex: FunctionComponent<Props> = ({ done }) => {
   async function podcastSelect(feedUrl: string) {
     try {
       setIsImporting(true);
-      await loadFeedFromUrl(feedUrl);
+      await initProjectFromUrl(feedUrl);
       resetFeeds();
       done();
     } catch (e) {
@@ -47,6 +47,7 @@ const StartByIndex: FunctionComponent<Props> = ({ done }) => {
       } else {
         addError(t["start.start_by_url.errors.generic"]);
       }
+      console.error(e);
     } finally {
       setIsImporting(false);
     }

@@ -4,11 +4,9 @@ import FormRow from "@fourviere/ui/lib/form/form-row";
 import Input from "@fourviere/ui/lib/form/fields/input";
 import { Formik } from "formik";
 import { FormField } from "@fourviere/ui/lib/form/form-field";
-import UseCurrentFeed from "../../hooks/useCurrentFeed";
-import useTranslations from "../../hooks/useTranslations";
-import ImageField from "@fourviere/ui/lib/form/fields/image";
+import UseCurrentFeed from "../../hooks/use-current-feed";
+import useTranslations from "../../hooks/use-translations";
 import Select from "@fourviere/ui/lib/form/fields/select";
-import useUpload, { UploadResponse } from "../../hooks/useUpload";
 import PODCASTCATEGORIES from "@fourviere/core/lib/podcast-namespace/categories";
 import { FC } from "react";
 import { LANGUAGE_BY_LOCALE } from "../../consts";
@@ -17,6 +15,8 @@ import { ChannelLinks } from "../../components/form-fields/channel-links";
 import ContainerTitle from "@fourviere/ui/lib/container-title";
 import CKEditor from "@fourviere/ui/lib/form/fields/ckeditor";
 import FormBlocker from "../../components/form-blocker";
+import Img from "../../components/form-fields/image";
+
 export default function General() {
   const currentFeed = UseCurrentFeed();
   const t = useTranslations();
@@ -34,24 +34,7 @@ export default function General() {
         setSubmitting(false);
       }}
     >
-      {({
-        values,
-        setFieldValue,
-        setFieldError,
-        handleSubmit,
-        dirty,
-        isSubmitting,
-      }) => {
-        const imageUpload = useUpload({
-          feedId: currentFeed.feedId,
-          updateField: (value: UploadResponse) => {
-            void setFieldValue("rss.channel.0.image.url", value.url);
-          },
-          updateError: (value: string) =>
-            setFieldError("rss.channel.0.image.url", value),
-          fileFamily: "image",
-        });
-
+      {({ values, setFieldValue, handleSubmit, dirty, isSubmitting }) => {
         return (
           <Container
             scroll
@@ -89,23 +72,20 @@ export default function General() {
                     emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                   />
                 </FormRow>
-                <FormRow
-                  name="rss.channel.0.image"
-                  label={t["edit_feed.channel_field.image"]}
-                >
+                <FormRow name="rss.channel.0.image.url" label={"test image"}>
                   <FormField
                     id="rss.channel.0.image.url"
                     name="rss.channel.0.image.url"
-                    as={ImageField}
+                    as={Img}
                     fieldProps={{
-                      onImageClick: imageUpload.openFile,
-                      isUploading: imageUpload.isUploading,
-                      helpMessage: t["edit_feed.channel_field.image.help"],
+                      feedId: currentFeed.feedId,
+                      name: "rss.channel.0.image.url",
                     }}
                     emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                     initValue="https://"
                   />
                 </FormRow>
+
                 <FormRow
                   name="rss.channel.0.description"
                   label={t["edit_feed.channel_field.show_description"]}
@@ -116,7 +96,7 @@ export default function General() {
                     as={CKEditor as FC}
                     fieldProps={{
                       value: values.rss.channel[0].description,
-                      setFieldValue,
+                      setFieldValue, //TODO: remove this move into the component
                     }}
                     initValue="My podcast description"
                     emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}

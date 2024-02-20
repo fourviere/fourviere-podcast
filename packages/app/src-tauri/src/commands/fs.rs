@@ -1,6 +1,12 @@
-use crate::{log_if_error_and_return, utils::result::Result};
+use std::path::Path;
+
+use crate::{
+    log_if_error_and_return,
+    utils::{file::write_to_file, result::Result},
+};
 use ::function_name::named;
 use reqwest::header;
+use serde::{Deserialize, Serialize};
 use tokio::fs::read_to_string;
 
 #[named]
@@ -10,11 +16,11 @@ pub async fn read_text_file(path: &str) -> Result<String> {
     log_if_error_and_return!(read_result)
 }
 
-async fn read_text_file_internal(path: &str) -> Result<String> {
+async fn read_text_file_internal(path: impl AsRef<Path>) -> Result<String> {
     read_to_string(path).await.map_err(|err| err.into())
 }
 
-#[derive(serde::Serialize)]
+#[derive(Serialize)]
 pub struct FileInfo {
     content_type: String,
     content_length: String,
@@ -58,6 +64,20 @@ async fn read_file_info_internal(url: &str) -> Result<FileInfo> {
         });
 
     resp.map_err(|err| err.into())
+}
+
+#[derive(Deserialize)]
+pub struct PersistFilePayload {
+    path: String,
+    data: String,
+}
+
+#[named]
+#[tauri::command]
+pub async fn persist_file(payload: PersistFilePayload) -> Result<String> {
+    //rust write file
+    let res = write_to_file(&payload.data, &payload.path).await;
+    log_if_error_and_return!(res)
 }
 
 #[cfg(test)]

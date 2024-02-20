@@ -2,19 +2,25 @@ import {
   writeTextFile,
   BaseDirectory,
   createDir,
+  exists,
   readTextFile,
 } from "@tauri-apps/api/fs";
 import { appDataDir } from "@tauri-apps/api/path";
 
 export async function persistState<T>(store: string, state: T) {
   try {
-    await createDir(await appDataDir());
+    const dirExists = await exists(await appDataDir());
+
+    if (!dirExists) {
+      await createDir(await appDataDir());
+    }
+
+    await writeTextFile(`${store}.json`, JSON.stringify(state), {
+      dir: BaseDirectory.AppData,
+    });
   } catch (e) {
     console.log("createDir error", e);
   }
-  await writeTextFile(`${store}.json`, JSON.stringify(state), {
-    dir: BaseDirectory.AppData,
-  });
 }
 
 export async function loadState<T>(store: string) {

@@ -75,8 +75,6 @@ export const usePodcastIndex = (/* arguments */) => {
   async function search(query: string) {
     const { apiSecret, apiKey, enabled } = getConfigurations("podcastIndex");
 
-    console.log(apiSecret, apiKey, enabled);
-
     if (!enabled || !apiSecret || !apiKey) {
       addError(t["start.start_by_index.errors.podcast_index_misconfigured"]);
       return;
@@ -85,7 +83,6 @@ export const usePodcastIndex = (/* arguments */) => {
     try {
       const response = await fetchAPI(query, apiKey, apiSecret);
       setFeeds(response.feeds);
-      console.log(JSON.stringify(response.feeds));
     } catch (error) {
       addError(t["start.start_by_index.errors.generic"]);
     } finally {
