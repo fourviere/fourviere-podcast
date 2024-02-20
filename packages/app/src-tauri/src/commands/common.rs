@@ -62,6 +62,7 @@ impl Uploadable {
         let file_name = self.remote_filename();
 
         match self.remote_config.path() {
+            Some(ref s) if s.is_empty() => file_name, 
             Some(path) => format!("{path}/{file_name}"),
             None => file_name,
         }
@@ -87,7 +88,7 @@ impl Uploadable {
         }
 
         if let Some(data) = &self.payload {
-            let file = write_to_temp_file(data, &self.remote_file_path()).await?;
+            let file = write_to_temp_file(data, &self.remote_filename()).await?; 
             let path = Ok(file.path().into());
             self.temp_file = Some(file);
             return path;
