@@ -5,9 +5,8 @@ use get_chunk::{
 };
 use s3::{creds::Credentials, serde_types::Part, Bucket, Region};
 use serde::Deserialize;
-use std::{borrow::Cow, path::Path};
 use tauri::Window;
-use tokio::{fs, select, spawn, task::JoinSet};
+use tokio::{fs, select, spawn, sync::mpsc::channel, task::JoinSet};
 use tokio_util::sync::CancellationToken;
 use uuid::Uuid;
 
@@ -16,12 +15,11 @@ use crate::{
     log_if_error_and_return,
     utils::{
         event::{Channel, Event, EventProducer},
-        file::{get_file_info, write_string_to_temp_file, TempFile},
         result::{Error, Result},
     },
 };
 
-use super::common::{EndPointPayloadConf, FileInfo};
+use super::common::{RemoteFileInfo, Uploadable};
 
 #[derive(Deserialize)]
 struct S3Connection {
@@ -53,70 +51,24 @@ impl S3Connection {
         .map_err(|err| err.into())
     }
 }
-
 #[derive(Deserialize)]
-pub struct FilePayload {
-    local_path: String,
-
+pub struct UploadableConf {
     #[serde(flatten)]
     connection: S3Connection,
 
     #[serde(flatten)]
-    endpoint_config: EndPointPayloadConf,
-}
-
-#[derive(serde::Deserialize)]
-pub struct XmlPayload {
-    content: String,
-
-    #[serde(flatten)]
-    connection: S3Connection,
-
-    #[serde(flatten)]
-    endpoint_config: EndPointPayloadConf,
-}
-
-#[named]
-#[tauri::command]
-pub async fn s3_xml_upload_window_progress(window: Window, payload: XmlPayload) -> Result<Uuid> {
-    let result = s3_xml_upload_progress_internal(window.into(), payload, false).await;
-    log_if_error_and_return!(result)
+    uploadable: Uploadable,
 }
 
 #[tauri::command]
-pub async fn s3_upload_window_progress(window: Window, payload: FilePayload) -> Uuid {
-    s3_upload_progress_internal(window.into(), payload, None, false)
-}
-
-async fn s3_xml_upload_progress_internal(
-    channel: Channel,
-    payload: XmlPayload,
-    use_path_style: bool,
-) -> Result<Uuid> {
-    let ext = Path::new(&payload.endpoint_config.file_name())
-        .extension()
-        .map_or("".to_string(), |ext| format!(".{}", ext.to_string_lossy()));
-    let temp_file = write_string_to_temp_file(&payload.content, &ext).await?;
-
-    let file_payload = FilePayload {
-        local_path: temp_file.path().to_owned(),
-        connection: payload.connection,
-        endpoint_config: payload.endpoint_config,
-    };
-
-    Ok(s3_upload_progress_internal(
-        channel,
-        file_payload,
-        Some(temp_file),
-        use_path_style,
-    ))
+pub async fn s3_upload_progress(window: Window, uploadable_conf: UploadableConf) -> Uuid {
+    s3_upload_progress_internal(window.into(), uploadable_conf, false)
 }
 
 #[named]
 fn s3_upload_progress_internal(
     channel: Channel,
-    payload: FilePayload,
-    temp_file: Option<TempFile>,
+    uploadable_conf: UploadableConf,
     use_path_style: bool,
 ) -> Uuid {
     let mut event_producer = EventProducer::new(channel);
@@ -127,8 +79,7 @@ fn s3_upload_progress_internal(
         let result = s3_upload_progress_task(
             &mut event_producer,
             canc_token,
-            payload,
-            temp_file,
+            uploadable_conf,
             use_path_style,
         )
         .await
@@ -142,14 +93,13 @@ fn s3_upload_progress_internal(
 async fn s3_upload_progress_task(
     event_producer: &mut EventProducer,
     canc_token: CancellationToken,
-    payload: FilePayload,
-    _temp_file: Option<TempFile>,
+    mut uploadable_conf: UploadableConf,
     use_path_style: bool,
-) -> Result<FileInfo> {
+) -> Result<RemoteFileInfo> {
     // Init Phase
     event_producer.send(Ok(Event::Progress(0))).await;
 
-    let mut bucket = payload.connection.bucket()?;
+    let mut bucket = uploadable_conf.connection.bucket()?;
 
     // this header is required to make the uploaded file public readable.
     bucket.add_header("x-amz-acl", "public-read");
@@ -162,24 +112,11 @@ async fn s3_upload_progress_task(
     event_producer.send(Ok(Event::DeltaProgress(2))).await;
     println!("2");
 
-    let ext = Path::new(&payload.local_path)
-        .extension()
-        .map_or(Cow::default(), |ext| ext.to_string_lossy());
+    let local_path = uploadable_conf.uploadable.local_path().await?;
 
-    let path = payload
-        .endpoint_config
-        .path()
-        .as_ref()
-        .unwrap_or(&"".to_owned())
-        .to_owned();
-    let new_file_name: String = format!(
-        "{}/{}.{}",
-        &path,
-        &payload.endpoint_config.file_name(),
-        &ext
-    );
+    let remote_file_path = uploadable_conf.uploadable.remote_file_path();
 
-    let file_info = get_file_info(&payload.local_path).await?;
+    let file_info = uploadable_conf.uploadable.local_file_info()?;
 
     event_producer.send(Ok(Event::DeltaProgress(5))).await;
     println!("5");
@@ -189,7 +126,7 @@ async fn s3_upload_progress_task(
     // Each part must be at least 5 MB in size, except the last part.
     // https://docs.aws.amazon.com/AmazonS3/latest/userguide/qfacts.html
     let min_chunck_size = SIUnit::new(6., SISize::Megabyte);
-    let mut file_stream = FileStream::new(payload.local_path.as_ref())
+    let mut file_stream = FileStream::new(local_path.to_string_lossy())
         .await?
         .set_mode(get_chunk::ChunkSize::Bytes(min_chunck_size.into()));
 
@@ -200,9 +137,9 @@ async fn s3_upload_progress_task(
 
     // File <= 5MB
     if chunk_number < 2 {
-        let file = fs::read(&payload.local_path).await?;
+        let file = fs::read(local_path).await?;
         bucket
-            .put_object_with_content_type(new_file_name, &file, &file_info.mime_type)
+            .put_object_with_content_type(remote_file_path, &file, &file_info.mime_type)
             .await?;
 
         event_producer.send(Ok(Event::DeltaProgress(80))).await;
@@ -216,7 +153,7 @@ async fn s3_upload_progress_task(
         let mut index = 1;
 
         let upload_response = bucket
-            .initiate_multipart_upload(&new_file_name, &file_info.mime_type)
+            .initiate_multipart_upload(&remote_file_path, &file_info.mime_type)
             .await?;
 
         loop {
@@ -229,7 +166,7 @@ async fn s3_upload_progress_task(
                             // Prepare data for the part upload task
                             let mut event_producer = event_producer.clone();
                             let bucket = bucket.clone();
-                            let new_file_name = new_file_name.clone();
+                            let new_file_name = remote_file_path.clone();
                             let upload_id = upload_response.upload_id.clone();
                             let mime_type = file_info.mime_type.clone();
                             let canc_token = canc_token.clone();
@@ -239,7 +176,7 @@ async fn s3_upload_progress_task(
                                     _ = canc_token.cancelled() => {
                                         println!("Aborting upload");
                                         let _ = bucket.abort_upload(&new_file_name, &upload_id).await;
-                                        return Err(Error::Aborted)
+                                        Err(Error::Aborted)
                                     },
                                     res = bucket
                                     .put_multipart_chunk(chunk, &new_file_name, index, &upload_id, &mime_type) => {
@@ -272,14 +209,14 @@ async fn s3_upload_progress_task(
         parts_result.sort_by(|a, b| a.part_number.cmp(&b.part_number));
 
         bucket
-            .complete_multipart_upload(&new_file_name, &upload_response.upload_id, parts_result)
+            .complete_multipart_upload(&remote_file_path, &upload_response.upload_id, parts_result)
             .await?;
     }
 
     // Fin phase: 5%
     event_producer.send(Ok(Event::Progress(95))).await;
 
-    let file_info = FileInfo::new(&payload.endpoint_config, &file_info, &ext);
+    let file_info = uploadable_conf.uploadable.remote_file_info()?;
 
     event_producer.send(Ok(Event::DeltaProgress(5))).await;
 
@@ -288,82 +225,27 @@ async fn s3_upload_progress_task(
 
 #[named]
 #[tauri::command]
-pub async fn s3_xml_upload(payload: XmlPayload) -> Result<FileInfo> {
-    let upload_result = s3_xml_upload_internal(payload, false).await;
+pub async fn s3_upload(uploadable_conf: UploadableConf) -> Result<RemoteFileInfo> {
+    let upload_result = s3_upload_internal(uploadable_conf, false).await;
     log_if_error_and_return!(upload_result)
-}
-
-#[named]
-#[tauri::command]
-pub async fn s3_upload(payload: FilePayload) -> Result<FileInfo> {
-    let upload_result = s3_upload_internal(payload, false, true).await;
-    log_if_error_and_return!(upload_result)
-}
-
-async fn s3_xml_upload_internal(payload: XmlPayload, use_path_style: bool) -> Result<FileInfo> {
-    let ext = Path::new(&payload.endpoint_config.file_name())
-        .extension()
-        .map_or("".to_string(), |ext| format!(".{}", ext.to_string_lossy()));
-
-    let temp_file = write_string_to_temp_file(&payload.content, &ext).await?;
-
-    let file_payload = FilePayload {
-        local_path: temp_file.path().to_owned(),
-        connection: payload.connection,
-        endpoint_config: payload.endpoint_config,
-    };
-
-    s3_upload_internal(file_payload, use_path_style, false).await
 }
 
 async fn s3_upload_internal(
-    payload: FilePayload,
+    uploadable_conf: UploadableConf,
     use_path_style: bool,
-    concat_extension: bool,
-) -> Result<FileInfo> {
-    let mut bucket = payload.connection.bucket()?;
-
-    // this header is required to make the uploaded file public readable.
-    bucket.add_header("x-amz-acl", "public-read");
-
-    //Useful for testing/old S3 implementation
-    if use_path_style {
-        bucket.set_path_style();
+) -> Result<RemoteFileInfo> {
+    let (tx, mut rx) = channel(20);
+    let _ = s3_upload_progress_internal(tx.into(), uploadable_conf, use_path_style);
+    while let Some(data) = rx.recv().await {
+        match data {
+            (_, Ok(Event::Progress(_))) => (),
+            (_, Ok(Event::DeltaProgress(_))) => (),
+            (_, Ok(Event::FileResult(res))) => return Ok(res),
+            (_, Err(err)) => return Err(err),
+        }
     }
 
-    let file = fs::read(&payload.local_path).await?;
-    let file_info = get_file_info(&payload.local_path).await?;
-
-    let ext = Path::new(&payload.local_path)
-        .extension()
-        .map_or(Cow::default(), |ext| ext.to_string_lossy());
-
-    let path = payload
-        .endpoint_config
-        .path()
-        .as_ref()
-        .unwrap_or(&"".to_owned())
-        .to_owned();
-
-    let filename = match concat_extension {
-        true => format!(
-            "{}/{}.{}",
-            &path,
-            &payload.endpoint_config.file_name(),
-            &ext
-        ),
-        false => format!("{}/{}", &path, &payload.endpoint_config.file_name()),
-    };
-
-    let res = bucket
-        .put_object_with_content_type(filename, &file, &file_info.mime_type)
-        .await?;
-
-    Ok(FileInfo::new(
-        &payload.endpoint_config,
-        &file_info,
-        if concat_extension { &ext } else { "" },
-    ))
+    Err(Error::Aborted)
 }
 
 #[cfg(test)]
@@ -379,11 +261,8 @@ mod test {
 
     use crate::{
         commands::{
-            common::EndPointPayloadConf,
-            s3::{
-                s3_upload_internal, s3_upload_progress_internal, s3_xml_upload_internal,
-                s3_xml_upload_progress_internal, FilePayload, S3Connection, XmlPayload,
-            },
+            common::{RemoteUploadableConf, Uploadable},
+            s3::{s3_upload_internal, s3_upload_progress_internal, S3Connection, UploadableConf},
         },
         test_file,
     };
@@ -446,10 +325,7 @@ mod test {
         let port = 3121;
         let bucket = "test-ok";
         let domain = "http://localhost:".to_owned() + port.to_string().as_str();
-        let payload = XmlPayload {
-            content: std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
-                .unwrap_or_default()
-                .to_owned(),
+        let uploadable_conf = UploadableConf {
             connection: S3Connection {
                 bucket_name: bucket.to_owned(),
                 region: REGION.to_owned(),
@@ -457,7 +333,13 @@ mod test {
                 access_key: ACCESS_KEY.to_owned(),
                 secret_key: SECRET_KEY.to_owned(),
             },
-            endpoint_config: EndPointPayloadConf::new("gitbar".to_owned(), None, domain, false),
+            uploadable: Uploadable::new(
+                None,
+                std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
+                    .ok()
+                    .map(|val| val.to_owned()),
+                RemoteUploadableConf::new("gitbar".to_owned(), None, domain, false),
+            ),
         };
 
         let handle = spawn(async move {
@@ -468,11 +350,11 @@ mod test {
         sleep(Duration::from_secs(2)).await;
         prepare_s3_bucket(port, bucket).await;
 
-        let info_result = s3_xml_upload_internal(payload, true).await;
+        let info_result = s3_upload_internal(uploadable_conf, true).await;
         assert!(info_result.is_ok());
         let file_info = info_result.unwrap();
         assert_eq!(file_info.size(), &FILESIZE);
-        assert_eq!(file_info.mime_type(), "text/xml");
+        assert_eq!(file_info.mime_type(), "application/octet-stream");
 
         handle.abort();
     }
@@ -482,10 +364,7 @@ mod test {
         let port = 3122;
         let bucket = "test-err-host";
         let domain = "https://localhost:".to_owned() + port.to_string().as_str();
-        let payload = XmlPayload {
-            content: std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
-                .unwrap_or_default()
-                .to_owned(),
+        let uploadable_conf = UploadableConf {
             connection: S3Connection {
                 bucket_name: bucket.to_owned(),
                 region: REGION.to_owned(),
@@ -493,7 +372,13 @@ mod test {
                 access_key: ACCESS_KEY.to_owned(),
                 secret_key: SECRET_KEY.to_owned(),
             },
-            endpoint_config: EndPointPayloadConf::new("gitbar".to_owned(), None, domain, false),
+            uploadable: Uploadable::new(
+                None,
+                std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
+                    .ok()
+                    .map(|val| val.to_owned()),
+                RemoteUploadableConf::new("gitbar".to_owned(), None, domain, false),
+            ),
         };
 
         let handle = spawn(async move {
@@ -503,7 +388,7 @@ mod test {
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
         prepare_s3_bucket(port, bucket).await;
-        assert!(s3_xml_upload_internal(payload, true).await.is_err());
+        assert!(s3_upload_internal(uploadable_conf, true).await.is_err());
         handle.abort();
     }
 
@@ -512,8 +397,7 @@ mod test {
         let port = 3123;
         let bucket = "test-err-local-path";
         let domain = "http://localhost:".to_owned() + port.to_string().as_str();
-        let payload = FilePayload {
-            local_path: test_file!("gitbar.rss").to_owned(),
+        let uploadable_conf = UploadableConf {
             connection: S3Connection {
                 bucket_name: bucket.to_owned(),
                 region: REGION.to_owned(),
@@ -521,7 +405,11 @@ mod test {
                 access_key: ACCESS_KEY.to_owned(),
                 secret_key: SECRET_KEY.to_owned(),
             },
-            endpoint_config: EndPointPayloadConf::new("gitbar".to_owned(), None, domain, false),
+            uploadable: Uploadable::new(
+                Some(test_file!("gitbar.rss").into()),
+                None,
+                RemoteUploadableConf::new("gitbar".to_owned(), None, domain, false),
+            ),
         };
 
         let handle = spawn(async move {
@@ -531,7 +419,7 @@ mod test {
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
         prepare_s3_bucket(port, bucket).await;
-        assert!(s3_upload_internal(payload, true, true).await.is_err());
+        assert!(s3_upload_internal(uploadable_conf, true).await.is_err());
         handle.abort();
     }
 
@@ -539,10 +427,7 @@ mod test {
     async fn test_s3_upload_err_bucket() {
         let port = 3124;
         let domain = "http://localhost:".to_owned() + port.to_string().as_str();
-        let payload = XmlPayload {
-            content: std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
-                .unwrap_or_default()
-                .to_owned(),
+        let uploadable_conf = UploadableConf {
             connection: S3Connection {
                 bucket_name: "not_a_bucket".to_owned(),
                 region: REGION.to_owned(),
@@ -550,7 +435,13 @@ mod test {
                 access_key: ACCESS_KEY.to_owned(),
                 secret_key: SECRET_KEY.to_owned(),
             },
-            endpoint_config: EndPointPayloadConf::new("gitbar".to_owned(), None, domain, false),
+            uploadable: Uploadable::new(
+                None,
+                std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
+                    .ok()
+                    .map(|val| val.to_owned()),
+                RemoteUploadableConf::new("gitbar".to_owned(), None, domain, false),
+            ),
         };
 
         let handle = spawn(async move {
@@ -559,7 +450,7 @@ mod test {
 
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
-        assert!(s3_xml_upload_internal(payload, true).await.is_err());
+        assert!(s3_upload_internal(uploadable_conf, true).await.is_err());
         handle.abort();
     }
 
@@ -568,10 +459,7 @@ mod test {
         let port = 3125;
         let bucket = "test-ok";
         let domain = "http://localhost:".to_owned() + port.to_string().as_str();
-        let payload = XmlPayload {
-            content: std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
-                .unwrap_or_default()
-                .to_owned(),
+        let uploadable_conf = UploadableConf {
             connection: S3Connection {
                 bucket_name: bucket.to_owned(),
                 region: REGION.to_owned(),
@@ -579,9 +467,12 @@ mod test {
                 access_key: ACCESS_KEY.to_owned(),
                 secret_key: SECRET_KEY.to_owned(),
             },
-            endpoint_config: EndPointPayloadConf::new("gitbar".to_owned(), None, domain, false),
+            uploadable: Uploadable::new(
+                Some(test_file!("gitbar.xml").into()),
+                None,
+                RemoteUploadableConf::new("gitbar".to_owned(), None, domain, false),
+            ),
         };
-
         let handle = spawn(async move {
             s3_server(port).await;
         });
@@ -591,9 +482,8 @@ mod test {
         prepare_s3_bucket(port, bucket).await;
 
         let (tx, mut rx) = channel(2);
-        let original_id = s3_xml_upload_progress_internal(tx.into(), payload, true)
-            .await
-            .unwrap();
+        let original_id = s3_upload_progress_internal(tx.into(), uploadable_conf, true);
+
         let mut at_least_one_progress = false;
         let mut at_least_one_result = false;
 
@@ -624,10 +514,7 @@ mod test {
         let port = 3126;
         let bucket = "test-err-host";
         let domain = "https://localhost:".to_owned() + port.to_string().as_str();
-        let payload = XmlPayload {
-            content: std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
-                .unwrap_or_default()
-                .to_owned(),
+        let uploadable_conf = UploadableConf {
             connection: S3Connection {
                 bucket_name: bucket.to_owned(),
                 region: REGION.to_owned(),
@@ -635,7 +522,13 @@ mod test {
                 access_key: ACCESS_KEY.to_owned(),
                 secret_key: SECRET_KEY.to_owned(),
             },
-            endpoint_config: EndPointPayloadConf::new("gitbar".to_owned(), None, domain, false),
+            uploadable: Uploadable::new(
+                None,
+                std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
+                    .ok()
+                    .map(|val| val.to_owned()),
+                RemoteUploadableConf::new("gitbar".to_owned(), None, domain, false),
+            ),
         };
 
         let handle = spawn(async move {
@@ -647,9 +540,8 @@ mod test {
         prepare_s3_bucket(port, bucket).await;
 
         let (tx, mut rx) = channel(2);
-        let original_id = s3_xml_upload_progress_internal(tx.into(), payload, true)
-            .await
-            .unwrap();
+        let original_id = s3_upload_progress_internal(tx.into(), uploadable_conf, true);
+
         let mut at_least_one_error = false;
 
         while let Some((id, event)) = rx.recv().await {
@@ -670,8 +562,7 @@ mod test {
         let port = 3127;
         let bucket = "test-err-local-path";
         let domain = "http://localhost:".to_owned() + port.to_string().as_str();
-        let payload = FilePayload {
-            local_path: test_file!("gitbar.rss").to_owned(),
+        let uploadable_conf = UploadableConf {
             connection: S3Connection {
                 bucket_name: bucket.to_owned(),
                 region: REGION.to_owned(),
@@ -679,7 +570,11 @@ mod test {
                 access_key: ACCESS_KEY.to_owned(),
                 secret_key: SECRET_KEY.to_owned(),
             },
-            endpoint_config: EndPointPayloadConf::new("gitbar".to_owned(), None, domain, false),
+            uploadable: Uploadable::new(
+                Some(test_file!("gitbar.rss").into()),
+                None,
+                RemoteUploadableConf::new("gitbar".to_owned(), None, domain, false),
+            ),
         };
 
         let handle = spawn(async move {
@@ -691,7 +586,7 @@ mod test {
         prepare_s3_bucket(port, bucket).await;
 
         let (tx, mut rx) = channel(2);
-        let original_id = s3_upload_progress_internal(tx.into(), payload, None, true);
+        let original_id = s3_upload_progress_internal(tx.into(), uploadable_conf, true);
         let mut at_least_one_error = false;
 
         while let Some((id, event)) = rx.recv().await {
@@ -711,10 +606,7 @@ mod test {
     async fn test_s3_upload_progress_err_bucket() {
         let port = 3128;
         let domain = "http://localhost:".to_owned() + port.to_string().as_str();
-        let payload = XmlPayload {
-            content: std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
-                .unwrap_or_default()
-                .to_owned(),
+        let uploadable_conf = UploadableConf {
             connection: S3Connection {
                 bucket_name: "not_a_bucket".to_owned(),
                 region: REGION.to_owned(),
@@ -722,7 +614,13 @@ mod test {
                 access_key: ACCESS_KEY.to_owned(),
                 secret_key: SECRET_KEY.to_owned(),
             },
-            endpoint_config: EndPointPayloadConf::new("gitbar".to_owned(), None, domain, false),
+            uploadable: Uploadable::new(
+                None,
+                std::str::from_utf8(include_bytes!(test_file!("gitbar.xml")))
+                    .ok()
+                    .map(|val| val.to_owned()),
+                RemoteUploadableConf::new("gitbar".to_owned(), None, domain, false),
+            ),
         };
 
         let handle = spawn(async move {
@@ -733,9 +631,8 @@ mod test {
         sleep(Duration::from_secs(2)).await;
 
         let (tx, mut rx) = channel(2);
-        let original_id = s3_xml_upload_progress_internal(tx.into(), payload, true)
-            .await
-            .unwrap();
+        let original_id = s3_upload_progress_internal(tx.into(), uploadable_conf, true);
+
         let mut at_least_one_error = false;
 
         while let Some((id, event)) = rx.recv().await {

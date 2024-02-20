@@ -19,6 +19,8 @@ pub enum Error {
     TokioSendClosed,
     #[error("Task failed to execute to completion")]
     TokioSet(#[from] tokio::task::JoinError),
+    #[error("Error while acquiring local path")]
+    LocalPathConversion,
     #[error("Task aborted before completion")]
     Aborted,
 }

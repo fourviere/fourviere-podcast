@@ -13,8 +13,8 @@ export function getTauriUploadCommandByRemote(
   switch (startUploadCommand.remote.remote) {
     case "s3":
       return {
-        command: "s3_upload_window_progress",
-        payload: {
+        command: "s3_upload_progress",
+        uploadableConf: {
           local_path: startUploadCommand.localPath,
           file_name: startUploadCommand.fileName,
           ...startUploadCommand.remote.s3,
@@ -22,8 +22,8 @@ export function getTauriUploadCommandByRemote(
       };
     case "ftp":
       return {
-        command: "ftp_upload_window_progress",
-        payload: {
+        command: "ftp_upload_progress",
+        uploadableConf: {
           local_path: startUploadCommand.localPath,
           file_name: startUploadCommand.fileName,
           ...startUploadCommand.remote.ftp,

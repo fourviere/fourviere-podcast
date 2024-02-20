@@ -21,7 +21,7 @@ export interface UploadsStore {
 const uploadsStore = create<UploadsStore>((set) => ({
   uploads: {},
   startUpload: async (upload) => {
-    const { command, payload } = getTauriUploadCommandByRemote(upload);
+    const { command, uploadableConf } = getTauriUploadCommandByRemote(upload);
 
     if (!command) {
       // if remote is not configured or equals to none we don't start the upload
@@ -30,7 +30,7 @@ const uploadsStore = create<UploadsStore>((set) => ({
 
     const id = generateId(upload.feedId, upload.field);
 
-    const eventStreamId = await invoke<string>(command, { payload });
+    const eventStreamId = await invoke<string>(command, { uploadableConf });
 
     const unlisten = await listen<UploadEvent>(eventStreamId, function (event) {
       if (isProgressEvent(event)) {

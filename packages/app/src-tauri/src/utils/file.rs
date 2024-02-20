@@ -1,6 +1,8 @@
+use std::{fs, path::Path};
+
 use crate::utils::result::Result;
 use getset::Getters;
-use mime_guess::from_path;
+use mime_guess::{from_ext, from_path};
 use serde::Serialize;
 use tempfile::{tempdir, TempDir};
 
@@ -18,15 +20,21 @@ pub struct TempFile {
     path: String,
 }
 
-pub async fn get_file_info(path: &str) -> Result<FileInfo> {
-    let mime_type = from_path(path).first_or_octet_stream().to_string();
-    let size = tokio::fs::metadata(path).await?.len();
+pub fn get_payload_info(data: &str, ext: &str) -> Result<FileInfo> {
+    let mime_type = from_ext(ext).first_or_octet_stream().to_string();
+    let size = data.len().try_into().unwrap_or_default();
     Ok(FileInfo { mime_type, size })
 }
 
-pub async fn write_string_to_temp_file(data: &str, ext: &str) -> Result<TempFile> {
+pub fn get_file_info<P: AsRef<Path>>(path: P) -> Result<FileInfo> {
+    let mime_type = from_path(&path).first_or_octet_stream().to_string();
+    let size = fs::metadata(path)?.len();
+    Ok(FileInfo { mime_type, size })
+}
+
+pub async fn write_to_temp_file(data: impl AsRef<[u8]>, filename: &str) -> Result<TempFile> {
     let tmp_dir = tempdir()?;
-    let file_path = tmp_dir.path().join(format!("temp{ext}"));
+    let file_path = tmp_dir.path().join(filename);
     let path_string = file_path.to_string_lossy().into_owned();
 
     tokio::fs::write(file_path, data).await?;
@@ -36,9 +44,8 @@ pub async fn write_string_to_temp_file(data: &str, ext: &str) -> Result<TempFile
     })
 }
 
-pub async fn write_string_to_file(data: &str, path: &str) -> Result<String> {
+pub async fn write_to_file(data: impl AsRef<[u8]>, path: &str) -> Result<String> {
     tokio::fs::write(&path, data).await?;
-
     Ok(path.to_owned())
 }
 
@@ -47,7 +54,7 @@ mod test {
 
     use crate::{
         test_file,
-        utils::file::{get_file_info, write_string_to_temp_file},
+        utils::file::{get_file_info, write_to_temp_file},
     };
 
     #[cfg(target_os = "windows")]
@@ -61,7 +68,7 @@ mod test {
 
     #[tokio::test]
     async fn test_file_info_ok() {
-        let file_info = get_file_info(test_file!("gitbar.xml")).await.unwrap();
+        let file_info = get_file_info(test_file!("gitbar.xml")).unwrap();
 
         assert_eq!(file_info.size, FILESIZE);
 
@@ -72,7 +79,7 @@ mod test {
     async fn test_write_temp_ok() {
         let data =
             std::str::from_utf8(include_bytes!(test_file!("gitbar.xml"))).unwrap_or_default();
-        let tmp_file = write_string_to_temp_file(data, "xml").await.unwrap();
+        let tmp_file = write_to_temp_file(data, "xml").await.unwrap();
 
         let size = tokio::fs::metadata(tmp_file.path()).await.unwrap().len();
         assert_eq!(size, FILESIZE);
