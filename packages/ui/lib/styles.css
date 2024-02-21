@@ -39,6 +39,13 @@ body,
   @apply text-slate-800  hover:text-slate-900;
 }
 
+.button.warning {
+  @apply border border-rose-500 bg-white  text-rose-700 hover:bg-rose-200 hover:bg-rose-200 hover:text-rose-700;
+}
+.button.warning svg {
+  @apply text-rose-800  hover:text-rose-700;
+}
+
 .button > .content.sm {
   @apply flex space-x-1 p-2;
 }

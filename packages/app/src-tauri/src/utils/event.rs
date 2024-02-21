@@ -16,7 +16,7 @@ use super::result::{Error, Result};
 pub enum Event {
     DeltaProgress(u8),
     Progress(u8),
-    FileResult(crate::commands::common::FileInfo),
+    FileResult(crate::commands::common::RemoteFileInfo),
 }
 
 pub type Message = Result<Event>;

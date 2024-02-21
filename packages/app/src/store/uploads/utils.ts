@@ -1,4 +1,3 @@
-import { Event } from "@tauri-apps/api/event";
 import {
   ErrorEvent,
   FileResultEvent,
@@ -14,7 +13,7 @@ export function getTauriUploadCommandByRemote(
     case "s3":
       return {
         command: "s3_upload_progress",
-        payload: {
+        uploadableConf: {
           local_path: startUploadCommand.localPath,
           file_name: startUploadCommand.fileName,
           ...startUploadCommand.remote.s3,
@@ -23,7 +22,7 @@ export function getTauriUploadCommandByRemote(
     case "ftp":
       return {
         command: "ftp_upload_progress",
-        payload: {
+        uploadableConf: {
           local_path: startUploadCommand.localPath,
           file_name: startUploadCommand.fileName,
           ...startUploadCommand.remote.ftp,

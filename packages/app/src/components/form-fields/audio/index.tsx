@@ -143,12 +143,10 @@ const Audio = ({ name, feedId }: AudioProps) => {
             {!hasRemote && (
               <div>
                 <Link to={`/feed/${feedId}/feed-config`}>
-                  <a>
-                    <Note>
-                      Configure remote storage for uploading files from your
-                      computer
-                    </Note>
-                  </a>
+                  <Note>
+                    Configure remote storage for uploading files from your
+                    computer
+                  </Note>
                 </Link>
               </div>
             )}

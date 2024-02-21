@@ -6,11 +6,7 @@ import { Configuration } from "../store/feed/types";
 export default function UseCurrentFeed() {
   const { feedId } = useParams<{ feedId: string }>();
 
-  if (!feedId) {
-    return null;
-  }
-
-  const project = feedStore((state) => state.getProjectById(feedId));
+  const project = feedStore((state) => state.getProjectById(feedId!));
   const updateFeed = feedStore((state) => state.updateFeed);
   const updateConfiguration = feedStore((state) => state.updateConfiguration);
 
@@ -19,9 +15,9 @@ export default function UseCurrentFeed() {
   }
 
   return {
-    update: (value: Feed) => updateFeed(feedId, value),
+    update: (value: Feed) => updateFeed(feedId!, value),
     updateConfiguration: (value: Configuration) =>
-      updateConfiguration(feedId, value),
+      updateConfiguration(feedId!, value),
     feed: project.feed,
     configuration: project.configuration,
     feedId,

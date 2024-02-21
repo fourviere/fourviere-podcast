@@ -1,4 +1,4 @@
-import { Type } from "@sinclair/typebox";
+import { Type, Static } from "@sinclair/typebox";
 
 // RSS SPECIFICATION https://www.rssboard.org/rss-specification
 const RSSItemSchema = Type.Object({
@@ -51,3 +51,4 @@ const ItunesItemSchema = Type.Object({
 });
 
 export const ItemSchema = Type.Intersect([RSSItemSchema, ItunesItemSchema]);
+export type Item = Static<typeof ItemSchema>;

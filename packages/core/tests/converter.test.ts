@@ -7,7 +7,7 @@ describe("PodcastConverter", () => {
     (i) => {
       const feedXML = fs.readFileSync(
         `${__dirname}/fixtures/${i}.xml`,
-        "utf-8"
+        "utf-8",
       );
 
       const json = parseXML(feedXML);
@@ -16,7 +16,7 @@ describe("PodcastConverter", () => {
 
       expect(xml).toMatchSnapshot();
       expect(json).toMatchSnapshot();
-    }
+    },
   );
   it("Should throw exception when trying to convert not valid xml", () => {
     expect(() => parseXML(`dsadasdasdasd`)).toThrow("Invalid xml");

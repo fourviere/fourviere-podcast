@@ -6,7 +6,7 @@ import appStore from "../../store/app";
 import { useEffect, useState } from "react";
 import { Container } from "@fourviere/ui/lib/box";
 import ContainerTitle from "@fourviere/ui/lib/container-title";
-import useTranslations from "../../hooks/useTranslations";
+import useTranslations from "../../hooks/use-translations";
 
 export default function SourceCode() {
   const { feedId } = useParams<{ feedId: string }>();

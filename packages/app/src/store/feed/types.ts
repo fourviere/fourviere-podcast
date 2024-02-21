@@ -1,5 +1,10 @@
 import { Feed } from "@fourviere/core/lib/schema/feed";
 
+export interface Project {
+  feed: Feed;
+  configuration: Configuration;
+}
+
 export interface Configuration {
   feed: {
     filename: string;
@@ -30,9 +35,4 @@ export interface Configuration {
       https: boolean;
     };
   };
-}
-
-export interface Project {
-  feed: Feed;
-  configuration: Configuration;
 }
