@@ -3,7 +3,7 @@ name: "publish"
 on:
   push:
     branches:
-      - release
+      - nightly
 
 # `tauri-action` can also upload app bundles to an existing GitHub release.
 # This workflow uses different actions to create and publish the release.
@@ -36,12 +36,11 @@ jobs:
             const { data } = await github.rest.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              tag_name: `app-v${process.env.PACKAGE_VERSION}`,
-              name: `Desktop App v${process.env.PACKAGE_VERSION}`,
-              body: 'Take a look at the assets to download and install this app.',
+              tag_name: `app-v${process.env.PACKAGE_VERSION}-nightly`,
+              name: `Desktop App v${process.env.PACKAGE_VERSION}-nightly`,
+              body: 'Take a look at the assets to download and install this app. This is a nightly version and may contain bugs. Please report any issues you find. Thank you! 🚀. ',
               draft: true,
-              prerelease: false,
-              make_latest: true
+              prerelease: true
             })
             return data.id
 
