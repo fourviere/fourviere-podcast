@@ -5137,7 +5137,7 @@ dependencies = [
 [[package]]
 name = "tauri-plugin-channel"
 version = "0.1.0"
-source = "git+https://github.com/fourviere/tauri-plugin-channel.git?branch=sender_receiver_ts#f5f842cf53bdab7412d476f83ac3e5a983596775"
+source = "git+https://github.com/fourviere/tauri-plugin-channel.git?branch=v0.1.x#a4283999ac5eba941b758091956800eb34596496"
 dependencies = [
  "async-stream",
  "futures-core",
