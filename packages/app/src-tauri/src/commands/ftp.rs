@@ -58,18 +58,18 @@ pub struct UploadableConf {
 }
 
 #[tauri::command]
-pub async fn ftp_upload_progress(window: Window, uploadable: UploadableConf) -> Uuid {
-    ftp_upload_progress_internal(window.into(), uploadable)
+pub async fn ftp_upload_progress(window: Window, uploadable_conf: UploadableConf) -> Uuid {
+    ftp_upload_progress_internal(window.into(), uploadable_conf)
 }
 
 #[named]
-fn ftp_upload_progress_internal(channel: Channel, uploadable: UploadableConf) -> Uuid {
+fn ftp_upload_progress_internal(channel: Channel, uploadable_conf: UploadableConf) -> Uuid {
     let mut event_producer = EventProducer::new(channel);
     let id = event_producer.id();
     let canc_token = get_cancellation_token(id);
 
     spawn(async move {
-        let result = ftp_upload_progress_task(&mut event_producer, canc_token, uploadable)
+        let result = ftp_upload_progress_task(&mut event_producer, canc_token, uploadable_conf)
             .await
             .map(Event::FileResult);
         log_if_error_and_return!(&result);
@@ -85,6 +85,7 @@ async fn ftp_upload_progress_task(
     mut uploadable_conf: UploadableConf,
 ) -> Result<RemoteFileInfo> {
     // Init Phase
+    print!("Init phase: 5%");
     event_producer.send(Ok(Event::Progress(0))).await;
 
     let mut ftp_stream = uploadable_conf.connection.connect().await?;
@@ -95,9 +96,12 @@ async fn ftp_upload_progress_task(
         ftp_stream.cwd(path).await?;
     }
 
+    print!("Init phase: a%");
     ftp_stream.transfer_type(FileType::Binary).await?;
 
     event_producer.send(Ok(Event::DeltaProgress(2))).await;
+
+    print!("Init phase: b%");
 
     let local_path = uploadable_conf
         .uploadable
@@ -109,6 +113,7 @@ async fn ftp_upload_progress_task(
 
     let filename = uploadable_conf.uploadable.remote_filename();
 
+    print!("Init phase: c%");
     event_producer.send(Ok(Event::DeltaProgress(2))).await;
 
     // Trasfer phase: 80-88%
@@ -131,6 +136,7 @@ async fn ftp_upload_progress_task(
                 return Err(Error::Aborted)
             }
         }
+        print!("Trasfer phase: 80-88%")
     }
 
     ftp_stream.finalize_put_stream(writer.into_inner()).await?;

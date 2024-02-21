@@ -68,7 +68,11 @@ export default function FeedUploader() {
       await localPersist(xml);
     } else {
       const { https, http_host, path } = currentRemote!;
-      const feedUrl = `${https ? "https" : "http"}://${http_host}/${path}/${
+      let host_path = "";
+      if (path && path !== "") {
+        host_path = "/" + path;
+      }
+      const feedUrl = `${https ? "https" : "http"}://${http_host}${host_path}/${
         configuration.feed.filename
       }`;
       console.log(feedUrl);
@@ -109,15 +113,19 @@ export default function FeedUploader() {
 
       try {
         setLoading(true);
+        if (remote.remote === "none") {
+          return;
+        }
         await invoke(`${remote.remote}_upload`, {
           uploadableConf: {
             payload: xml,
             file_name: configuration.feed.filename,
-            ...configuration.remotes.s3,
+            ...configuration.remotes[remote.remote],
           },
         });
       } catch (e) {
         //notify user
+        console.error(e);
         addError(t["edit_feed.feed-uploader.error_uploading_feed"]);
       } finally {
         setLoading(false);
