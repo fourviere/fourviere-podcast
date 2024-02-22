@@ -1,3 +1,4 @@
+import type { Sender, Receiver } from "tauri-plugin-channel-api";
 import { Configuration } from "../feed/types";
 
 export interface Upload {
@@ -5,8 +6,8 @@ export interface Upload {
   field: string;
   progress: number | false;
   feedId?: string;
-  eventStreamId?: string;
-  unlisten?: () => void;
+  receiver?: Receiver;
+  sender?: Sender;
   error?: string;
   value?: {
     url: string;
