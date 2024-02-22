@@ -6,7 +6,7 @@ use std::{
 use cached::proc_macro::cached;
 use derive_new::new;
 use getset::Getters;
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize};
 use tokio_util::sync::CancellationToken;
 use uuid::Uuid;
 
@@ -62,7 +62,6 @@ impl Uploadable {
         let file_name = self.remote_filename();
 
         match self.remote_config.path() {
-            Some(ref s) if s.is_empty() => file_name, 
             Some(path) => format!("{path}/{file_name}"),
             None => file_name,
         }
@@ -136,11 +135,16 @@ pub struct RemoteUploadableConf {
     file_name: String,
 
     #[getset(get = "pub ")]
-    #[serde(default)]
+    #[serde(default, deserialize_with = "empty_string_is_none")]
     path: Option<String>,
 
     http_host: String,
     https: bool,
+}
+
+fn empty_string_is_none<'de, D: Deserializer<'de>>(data: D) -> Result<Option<String>, D::Error> {
+    let obj: Option<String> = Option::deserialize(data)?.map(|data: String| data.trim().to_owned());
+    Ok(obj.filter(|data| !data.is_empty()))
 }
 
 #[derive(Debug, Getters, PartialEq, Serialize)]
