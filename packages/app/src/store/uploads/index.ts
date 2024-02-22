@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { channel } from "tauri-plugin-channel-api";
+import { channel } from "@fourviere/tauri-plugin-channel-api";
 import { produce } from "immer";
 import { Id, StartUploadCommand, Upload, UploadEvent } from "./types";
 import {
@@ -32,7 +32,7 @@ const uploadsStore = create<UploadsStore>((set) => ({
     const [sender, receiver] = await channel(command, { uploadableConf });
 
     await receiver.listen<UploadEvent>((event) => {
-      console.log(event)
+      console.log(event);
       if (isProgressEvent(event)) {
         set((state) => {
           return produce(state, (draft) => {
@@ -78,7 +78,7 @@ const uploadsStore = create<UploadsStore>((set) => ({
           field: upload.field,
           progress: 0,
           receiver,
-          sender
+          sender,
         },
       },
     }));
@@ -94,7 +94,7 @@ const uploadsStore = create<UploadsStore>((set) => ({
       return;
     }
 
-    await upload.sender.emit("Abort");
+    await upload.sender?.emit("Abort");
 
     set((state) => {
       return produce(state, (draft) => {

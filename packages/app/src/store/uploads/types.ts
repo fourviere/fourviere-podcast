@@ -1,4 +1,4 @@
-import type { Sender, Receiver } from "tauri-plugin-channel-api";
+import type { Sender, Receiver } from "@fourviere/tauri-plugin-channel-api";
 import { Configuration } from "../feed/types";
 
 export interface Upload {

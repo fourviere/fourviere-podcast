@@ -40,9 +40,7 @@ export function generateId(feedId: string, field: string) {
   return `${feedId}-${field}`;
 }
 
-export function isProgressEvent(
-  event: UploadEvent,
-): event is ProgressEvent {
+export function isProgressEvent(event: UploadEvent): event is ProgressEvent {
   return (
     event &&
     "Ok" in event &&
@@ -62,12 +60,6 @@ export function isFileResultEvent(
   );
 }
 
-export function isErrorEvent(
-  event: UploadEvent,
-): event is ErrorEvent {
-  return (
-    event &&
-    "Err" in event &&
-    event.Err !== undefined
-  );
+export function isErrorEvent(event: UploadEvent): event is ErrorEvent {
+  return event && "Err" in event && event.Err !== undefined;
 }

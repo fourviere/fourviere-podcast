@@ -57,9 +57,12 @@ pub struct UploadableConf {
 }
 
 #[tauri::command]
-pub async fn ftp_upload_progress(app_handle: AppHandle, uploadable: UploadableConf) -> Channel {
+pub async fn ftp_upload_progress(
+    app_handle: AppHandle,
+    uploadable_conf: UploadableConf,
+) -> Channel {
     let (producer, receiver, channel) = build_channel(app_handle);
-    ftp_upload_progress_internal(producer, receiver, uploadable);
+    ftp_upload_progress_internal(producer, receiver, uploadable_conf);
     channel
 }
 
@@ -67,10 +70,10 @@ pub async fn ftp_upload_progress(app_handle: AppHandle, uploadable: UploadableCo
 fn ftp_upload_progress_internal(
     mut producer: EventProducer,
     receiver: CommandReceiver,
-    uploadable: UploadableConf,
+    uploadable_conf: UploadableConf,
 ) {
     spawn(async move {
-        let result = ftp_upload_progress_task(&mut producer, receiver, uploadable)
+        let result = ftp_upload_progress_task(&mut producer, receiver, uploadable_conf)
             .await
             .map(Event::FileResult);
         log_if_error_and_return!(&result);
