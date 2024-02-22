@@ -1,23 +1,22 @@
 use ::function_name::named;
-use get_chunk::iterator::FileIter;
+use get_chunk::stream::{FileStream, StreamExt};
 use serde::Deserialize;
 use std::str;
 use suppaftp::{types::FileType, AsyncFtpStream, Mode};
-use tauri::Window;
-use tokio::{io::AsyncWriteExt, select, spawn, sync::mpsc::channel};
-use tokio_util::{compat::FuturesAsyncWriteCompatExt, sync::CancellationToken};
-use uuid::Uuid;
+use tauri::AppHandle;
+use tauri_plugin_channel::Channel;
+use tokio::{io::AsyncWriteExt, select, spawn};
+use tokio_util::compat::FuturesAsyncWriteCompatExt;
 
 use crate::{
-    commands::common::get_cancellation_token,
     log_if_error_and_return,
     utils::{
-        event::{Channel, Event, EventProducer},
+        event::{Command, CommandReceiver, Event, EventProducer},
         result::{Error, Result},
     },
 };
 
-use super::common::{RemoteFileInfo, Uploadable};
+use super::common::{build_channel, build_local_channel, RemoteFileInfo, Uploadable};
 
 #[derive(Deserialize)]
 struct FtpConnection {
@@ -58,32 +57,34 @@ pub struct UploadableConf {
 }
 
 #[tauri::command]
-pub async fn ftp_upload_progress(window: Window, uploadable: UploadableConf) -> Uuid {
-    ftp_upload_progress_internal(window.into(), uploadable)
+pub async fn ftp_upload_progress(app_handle: AppHandle, uploadable: UploadableConf) -> Channel {
+    let (producer, receiver, channel) = build_channel(app_handle);
+    ftp_upload_progress_internal(producer, receiver, uploadable);
+    channel
 }
 
 #[named]
-fn ftp_upload_progress_internal(channel: Channel, uploadable: UploadableConf) -> Uuid {
-    let mut event_producer = EventProducer::new(channel);
-    let id = event_producer.id();
-    let canc_token = get_cancellation_token(id);
-
+fn ftp_upload_progress_internal(
+    mut producer: EventProducer,
+    receiver: CommandReceiver,
+    uploadable: UploadableConf,
+) {
     spawn(async move {
-        let result = ftp_upload_progress_task(&mut event_producer, canc_token, uploadable)
+        let result = ftp_upload_progress_task(&mut producer, receiver, uploadable)
             .await
             .map(Event::FileResult);
         log_if_error_and_return!(&result);
-        event_producer.send(result).await;
+        producer.send(result).await;
     });
-
-    id
 }
 
 async fn ftp_upload_progress_task(
     event_producer: &mut EventProducer,
-    canc_token: CancellationToken,
+    receiver: CommandReceiver,
     mut uploadable_conf: UploadableConf,
 ) -> Result<RemoteFileInfo> {
+    let _ = receiver.started().await;
+
     // Init Phase
     event_producer.send(Ok(Event::Progress(0))).await;
 
@@ -114,18 +115,19 @@ async fn ftp_upload_progress_task(
     // Trasfer phase: 80-88%
 
     // Step by 8%
-    let file_iter = FileIter::new(local_path)?.set_mode(get_chunk::ChunkSize::Percent(10.));
+    let mut file_stream = FileStream::new(local_path)
+        .await?
+        .set_mode(get_chunk::ChunkSize::Percent(10.));
 
     let mut writer = ftp_stream.put_with_stream(filename).await?.compat_write();
 
-    for chunk in file_iter {
-        let chunk = chunk?;
+    while let Ok(Some(chunk)) = file_stream.try_next().await {
         select! {
             res = writer.write_all(&chunk) => {
                 res?;
                 event_producer.send(Ok(Event::DeltaProgress(8))).await;
             },
-            _ = canc_token.cancelled() => {
+            _ = receiver.cancelled() => {
                 let _ = ftp_stream.abort(writer.into_inner()).await;
                 let _ = ftp_stream.quit().await;
                 return Err(Error::Aborted)
@@ -154,14 +156,16 @@ pub async fn ftp_upload(uploadable_conf: UploadableConf) -> Result<RemoteFileInf
 }
 
 async fn ftp_upload_internal(uploadable_conf: UploadableConf) -> Result<RemoteFileInfo> {
-    let (tx, mut rx) = channel(20);
-    let _ = ftp_upload_progress_internal(tx.into(), uploadable_conf);
-    while let Some(data) = rx.recv().await {
+    let (producer, receiver, mut rx_event, tx_command) = build_local_channel();
+    ftp_upload_progress_internal(producer, receiver, uploadable_conf);
+    let _ = tx_command.send(Command::Start).await;
+
+    while let Some(data) = rx_event.recv().await {
         match data {
-            (_, Ok(Event::Progress(_))) => (),
-            (_, Ok(Event::DeltaProgress(_))) => (),
-            (_, Ok(Event::FileResult(res))) => return Ok(res),
-            (_, Err(err)) => return Err(err),
+            Ok(Event::Progress(_)) => (),
+            Ok(Event::DeltaProgress(_)) => (),
+            Ok(Event::FileResult(res)) => return Ok(res),
+            Err(err) => return Err(err),
         }
     }
     Err(Error::Aborted)
@@ -177,14 +181,15 @@ mod test {
         ServerError,
     };
     use tempfile::tempdir;
-    use tokio::{spawn, sync::mpsc::channel, time::sleep};
+    use tokio::{spawn, time::sleep};
 
     use crate::{
         commands::{
-            common::{RemoteUploadableConf, Uploadable},
+            common::{build_local_channel, RemoteUploadableConf, Uploadable},
             ftp::{ftp_upload, ftp_upload_progress_internal, FtpConnection, UploadableConf},
         },
         test_file,
+        utils::event::Command,
     };
 
     #[cfg(target_os = "windows")]
@@ -379,14 +384,14 @@ mod test {
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
 
-        let (tx, mut rx) = channel(2);
-        let original_id = ftp_upload_progress_internal(tx.into(), uploadable_conf);
+        let (producer, receiver, mut rx_event, tx_command) = build_local_channel();
+        let _ = tx_command.send(Command::Start).await;
+        ftp_upload_progress_internal(producer, receiver, uploadable_conf);
 
         let mut at_least_one_progress = false;
         let mut at_least_one_result = false;
 
-        while let Some((id, event)) = rx.recv().await {
-            assert_eq!(original_id, id);
+        while let Some(event) = rx_event.recv().await {
             match event {
                 Ok(event) => match event {
                     crate::utils::event::Event::Progress(_) => at_least_one_progress = true,
@@ -439,12 +444,13 @@ mod test {
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
 
-        let (tx, mut rx) = channel(2);
-        let original_id = ftp_upload_progress_internal(tx.into(), uploadable_conf);
+        let (producer, receiver, mut rx_event, tx_command) = build_local_channel();
+        let _ = tx_command.send(Command::Start).await;
+        ftp_upload_progress_internal(producer, receiver, uploadable_conf);
+
         let mut at_least_one_error = false;
 
-        while let Some((id, event)) = rx.recv().await {
-            assert_eq!(original_id, id);
+        while let Some(event) = rx_event.recv().await {
             match event {
                 Ok(_) => (),
                 Err(_) => at_least_one_error = true,
@@ -482,13 +488,13 @@ mod test {
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
 
-        let (tx, mut rx) = channel(2);
-        let original_id = ftp_upload_progress_internal(tx.into(), uploadable_conf);
+        let (producer, receiver, mut rx_event, tx_command) = build_local_channel();
+        let _ = tx_command.send(Command::Start).await;
+        ftp_upload_progress_internal(producer, receiver, uploadable_conf);
 
         let mut at_least_one_error = false;
 
-        while let Some((id, event)) = rx.recv().await {
-            assert_eq!(original_id, id);
+        while let Some(event) = rx_event.recv().await {
             match event {
                 Ok(_) => (),
                 Err(_) => at_least_one_error = true,
@@ -525,12 +531,13 @@ mod test {
         // Hopefully the server is up =D
         sleep(Duration::from_secs(2)).await;
 
-        let (tx, mut rx) = channel(2);
-        let original_id = ftp_upload_progress_internal(tx.into(), uploadable_conf);
+        let (producer, receiver, mut rx_event, tx_command) = build_local_channel();
+        let _ = tx_command.send(Command::Start).await;
+        ftp_upload_progress_internal(producer, receiver, uploadable_conf);
+
         let mut at_least_one_error = false;
 
-        while let Some((id, event)) = rx.recv().await {
-            assert_eq!(original_id, id);
+        while let Some(event) = rx_event.recv().await {
             match event {
                 Ok(_) => (),
                 Err(_) => at_least_one_error = true,

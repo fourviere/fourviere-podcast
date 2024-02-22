@@ -16,6 +16,7 @@ fn main() {
                 .filter(filter)
                 .build(),
         )
+        .plugin(tauri_plugin_channel::init())
         .invoke_handler(tauri::generate_handler![
             commands::network::fetch_feed,
             commands::fs::read_text_file,
@@ -25,7 +26,6 @@ fn main() {
             commands::s3::s3_upload_progress,
             commands::ftp::ftp_upload,
             commands::ftp::ftp_upload_progress,
-            commands::common::abort_progress_task,
             commands::log::log_status,
             commands::log::set_log_status,
         ])

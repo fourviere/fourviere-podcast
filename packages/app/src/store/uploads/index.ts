@@ -1,6 +1,5 @@
 import { create } from "zustand";
-import { invoke } from "@tauri-apps/api";
-import { listen } from "@tauri-apps/api/event";
+import { channel } from "tauri-plugin-channel-api";
 import { produce } from "immer";
 import { Id, StartUploadCommand, Upload, UploadEvent } from "./types";
 import {
@@ -30,13 +29,14 @@ const uploadsStore = create<UploadsStore>((set) => ({
 
     const id = generateId(upload.feedId, upload.field);
 
-    const eventStreamId = await invoke<string>(command, { uploadableConf });
+    const [sender, receiver] = await channel(command, { uploadableConf });
 
-    const unlisten = await listen<UploadEvent>(eventStreamId, function (event) {
+    await receiver.listen<UploadEvent>((event) => {
+      console.log(event)
       if (isProgressEvent(event)) {
         set((state) => {
           return produce(state, (draft) => {
-            draft.uploads[id].progress = event.payload.Ok.Progress;
+            draft.uploads[id].progress = event.Ok.Progress;
           });
         });
       }
@@ -45,24 +45,22 @@ const uploadsStore = create<UploadsStore>((set) => ({
         set((state) => {
           return produce(state, (draft) => {
             draft.uploads[id].progress = false;
-            draft.uploads[id].value = event.payload.Ok.FileResult;
+            draft.uploads[id].value = event.Ok.FileResult;
             draft.uploads[id].feedId = upload.feedId;
-            delete draft.uploads[id].unlisten;
+            delete draft.uploads[id].receiver;
+            delete draft.uploads[id].sender;
           });
         });
-
-        unlisten();
       }
 
       if (isErrorEvent(event)) {
         // improve error management
-        console.error("error scope", event.payload.Err);
+        console.error("error scope", event.Err);
 
-        unlisten();
         set((state) => {
           return produce(state, (draft) => {
             if (draft.uploads[id]) {
-              draft.uploads[id].error = event.payload.Err;
+              draft.uploads[id].error = event.Err;
               draft.uploads[id].progress = false;
             }
           });
@@ -70,16 +68,17 @@ const uploadsStore = create<UploadsStore>((set) => ({
       }
     });
 
+    await sender.emit("Start");
+
     set((state) => ({
       uploads: {
         ...state.uploads,
         [id]: {
           id,
-          eventStreamId,
           field: upload.field,
-          // initialize progress to 7 to avoid the progress bar to be hidden
-          progress: 7,
-          unlisten,
+          progress: 0,
+          receiver,
+          sender
         },
       },
     }));
@@ -91,15 +90,11 @@ const uploadsStore = create<UploadsStore>((set) => ({
       return;
     }
 
-    if (!upload.eventStreamId) {
+    if (!upload.sender) {
       return;
     }
 
-    await invoke("abort_progress_task", {
-      uuid: upload.eventStreamId,
-    });
-
-    upload.unlisten?.();
+    await upload.sender.emit("Abort");
 
     set((state) => {
       return produce(state, (draft) => {

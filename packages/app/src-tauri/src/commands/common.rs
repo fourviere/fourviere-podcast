@@ -3,29 +3,20 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use cached::proc_macro::cached;
 use derive_new::new;
 use getset::Getters;
 use serde::{Deserialize, Deserializer, Serialize};
-use tokio_util::sync::CancellationToken;
-use uuid::Uuid;
+use tauri::AppHandle;
+use tauri_plugin_channel::{channel, Channel};
+use tokio::sync::mpsc::{Receiver, Sender};
 
 use crate::utils::{
+    event::{Command, Message},
     file::{get_file_info, get_payload_info, write_to_temp_file, TempFile},
     result::{Error, Result},
 };
 
-#[tauri::command]
-pub async fn abort_progress_task(uuid: Uuid) -> Result<()> {
-    get_cancellation_token(uuid).cancel();
-    println!("Aborted task {}", uuid);
-    Ok(())
-}
-
-#[cached(sync_writes = true)]
-pub fn get_cancellation_token(_uuid: Uuid) -> CancellationToken {
-    CancellationToken::new()
-}
+use crate::utils::event::{CommandReceiver, EventProducer};
 
 #[derive(Deserialize, Getters, new)]
 pub struct Uploadable {
@@ -87,7 +78,7 @@ impl Uploadable {
         }
 
         if let Some(data) = &self.payload {
-            let file = write_to_temp_file(data, &self.remote_filename()).await?; 
+            let file = write_to_temp_file(data, &self.remote_filename()).await?;
             let path = Ok(file.path().into());
             self.temp_file = Some(file);
             return path;
@@ -159,42 +150,23 @@ pub struct RemoteFileInfo {
     size: u64,
 }
 
-#[cfg(test)]
-mod test {
-    use std::time::Duration;
+pub fn build_channel(app_handle: AppHandle) -> (EventProducer, CommandReceiver, Channel) {
+    let (sender, receiver, channel) = channel(app_handle);
+    let producer = EventProducer::new(sender);
+    let receiver = CommandReceiver::new(receiver);
+    (producer, receiver, channel)
+}
 
-    use tokio::{spawn, sync::mpsc::channel, time::sleep};
+pub fn build_local_channel() -> (
+    EventProducer,
+    CommandReceiver,
+    Receiver<Message>,
+    Sender<Command>,
+) {
+    let (tx_event, rx_event) = tokio::sync::mpsc::channel(2);
+    let (tx_command, rx_command) = tokio::sync::mpsc::channel(2);
+    let producer = EventProducer::new(tx_event);
+    let receiver = CommandReceiver::new(rx_command);
 
-    use crate::{
-        commands::common::{abort_progress_task, get_cancellation_token},
-        utils::{event::EventProducer, result::Error},
-    };
-
-    #[tokio::test(flavor = "multi_thread")]
-    async fn test_abort_ok() {
-        let (tx, mut rx) = channel(2);
-        let mut event_producer = EventProducer::new(tx.into());
-        let original_id = event_producer.id();
-
-        spawn(async move {
-            let token = get_cancellation_token(event_producer.id());
-            sleep(Duration::from_secs(3)).await;
-            token.cancelled().await;
-            event_producer.send(Err(Error::Aborted)).await
-        });
-
-        assert!(abort_progress_task(original_id).await.is_ok());
-
-        match rx.recv().await {
-            Some((id, message)) => {
-                assert_eq!(original_id, id);
-                match message {
-                    Ok(_) => panic!("Return type must be Error::Aborted. Found {message:?}"),
-                    Err(Error::Aborted) => {}
-                    Err(_) => panic!("Return type must be Error::Aborted. Found {message:?}"),
-                }
-            }
-            None => panic!("Tx closed"),
-        }
-    }
+    (producer, receiver, rx_event, tx_command)
 }
