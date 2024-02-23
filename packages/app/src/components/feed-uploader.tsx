@@ -108,16 +108,20 @@ export default function FeedUploader() {
       }
 
       try {
+        if (remote.remote === "none") {
+          return;
+        }
         setLoading(true);
         await invoke(`${remote.remote}_upload`, {
           uploadableConf: {
             payload: xml,
             file_name: configuration.feed.filename,
-            ...configuration.remotes.s3,
+            ...configuration.remotes[remote.remote],
           },
         });
       } catch (e) {
         //notify user
+        console.error(e);
         addError(t["edit_feed.feed-uploader.error_uploading_feed"]);
       } finally {
         setLoading(false);
