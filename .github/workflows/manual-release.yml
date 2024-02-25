@@ -41,7 +41,6 @@ jobs:
               body: 'Take a look at the assets to download and install this app.',
               draft: true,
               prerelease: false,
-              make_latest: true
             })
             return data.id
 
