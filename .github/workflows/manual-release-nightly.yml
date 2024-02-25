@@ -28,9 +28,6 @@ jobs:
       - name: get version
         run: echo "PACKAGE_VERSION=$(node -p "require('./packages/app/src-tauri/tauri.conf.json').package.version")" >> $GITHUB_ENV
 
-      - name: disable updater
-        run: node .github/disable_updater.js 
-
       - name: create release
         id: create-release
         uses: actions/github-script@v6
@@ -82,6 +79,9 @@ jobs:
 
       - name: rustc details
         run: rustc -vV
+
+      - name: disable updater
+        run: node .github/disable_updater.js 
 
       - uses: tauri-apps/tauri-action@v0
         env:
