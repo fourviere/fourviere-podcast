@@ -71,7 +71,7 @@ const Image = ({ name, feedId }: ImageProps) => {
 
   return (
     <>
-      {status?.progress && (
+      {status?.progress ? (
         <Container flex="row-middle" spaceX="sm" wFull>
           <Progress progress={status.progress} />
           <Button
@@ -83,9 +83,9 @@ const Image = ({ name, feedId }: ImageProps) => {
             Abort
           </Button>
         </Container>
-      )}
+      ) : null}
 
-      {!status?.progress && (
+      {!status?.progress ? (
         <Container flex="row-middle" spaceX="md" wFull>
           {field.value && (
             <ImageComponent
@@ -126,7 +126,7 @@ const Image = ({ name, feedId }: ImageProps) => {
             )}
           </Container>
         </Container>
-      )}
+      ) : null}
     </>
   );
 };

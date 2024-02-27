@@ -1,5 +1,8 @@
 use ::function_name::named;
-use get_chunk::stream::{FileStream, StreamExt};
+use get_chunk::{
+    data_size_format::si::{SISize, SIUnit},
+    stream::{FileStream, StreamExt},
+};
 use serde::Deserialize;
 use std::str;
 use suppaftp::{types::FileType, AsyncFtpStream, Mode};
@@ -117,18 +120,24 @@ async fn ftp_upload_progress_task(
 
     // Trasfer phase: 80-88%
 
-    // Step by 8%
+    let min_chunck_size = SIUnit::new(6., SISize::Megabyte);
     let mut file_stream = FileStream::new(local_path)
         .await?
-        .set_mode(get_chunk::ChunkSize::Percent(10.));
+        .set_mode(get_chunk::ChunkSize::Bytes(min_chunck_size.into()));
 
     let mut writer = ftp_stream.put_with_stream(filename).await?.compat_write();
+
+    let chunk_number = <SIUnit as Into<f64>>::into(
+        SIUnit::auto(file_stream.get_file_size()) / min_chunck_size.into(),
+    )
+    .ceil() as u16;
+    let delta_progress = 80 / (chunk_number) as u8;
 
     while let Ok(Some(chunk)) = file_stream.try_next().await {
         select! {
             res = writer.write_all(&chunk) => {
                 res?;
-                event_producer.send(Ok(Event::DeltaProgress(8))).await;
+                event_producer.send(Ok(Event::DeltaProgress(delta_progress))).await;
             },
             _ = receiver.cancelled() => {
                 let _ = ftp_stream.abort(writer.into_inner()).await;
