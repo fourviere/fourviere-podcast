@@ -2255,7 +2255,7 @@ dependencies = [
  "httpdate",
  "itoa 1.0.10",
  "pin-project-lite",
- "socket2 0.4.10",
+ "socket2 0.5.5",
  "tokio",
  "tower-service",
  "tracing",
@@ -5168,7 +5168,7 @@ dependencies = [
 [[package]]
 name = "tauri-plugin-log"
 version = "0.0.0"
-source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#da76481ad36a563bc1cc06256bef704af7407ee1"
+source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#67df245eeea52aefa72950d0070b64b0d064c319"
 dependencies = [
  "byte-unit",
  "fern",
