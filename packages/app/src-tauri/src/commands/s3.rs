@@ -216,9 +216,8 @@ async fn s3_upload_internal(
 
     while let Some(data) = rx_event.recv().await {
         match data {
-            Ok(Event::Progress(_)) => (),
-            Ok(Event::DeltaProgress(_)) => (),
             Ok(Event::FileResult(res)) => return Ok(res),
+            Ok(_) => (),
             Err(err) => return Err(err),
         }
     }

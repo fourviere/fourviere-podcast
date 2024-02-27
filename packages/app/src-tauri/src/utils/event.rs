@@ -17,6 +17,12 @@ pub enum Event {
     DeltaProgress(u8),
     Progress(u8),
     FileResult(crate::commands::common::RemoteFileInfo),
+    TranscriptionSegment {
+        text: String,
+        offset: f64,
+        duration: f64,
+        probability_of_no_speech: f64,
+    },
 }
 
 pub type Message = Result<Event>;
