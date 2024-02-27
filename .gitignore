@@ -3,3 +3,4 @@ packages/*/node_modules
 .DS_Store
 bin
 packages/app/src-tauri/binaries
+package-lock.json
