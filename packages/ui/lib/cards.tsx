@@ -1,6 +1,7 @@
 import tw from "tailwind-styled-components";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import classNames from "classnames";
+import ImageComponent from "./image";
 
 const Sizes = {
   xs: "w-16 h-16",
@@ -31,16 +32,17 @@ export function ImageLinkCard({
 }) {
   return (
     <div className={`${Sizes[size]} relative`} onClick={onClick}>
-      <img
+      <ImageComponent
         className={classNames(
           `rounded-lg ${Sizes[size]} cursor-pointer object-cover transition-all duration-200 ease-in-out hover:border-4 hover:border-solid hover:opacity-100 hover:shadow-lg`,
           {
-            "border-slate-200 hover:border-slate-200":
+            "border-slate-200 text-slate-200 hover:border-slate-200":
               theme === "light" && !active,
-            "border-slate-900 hover:border-slate-700":
+            "border-slate-900 text-slate-200 hover:border-slate-700":
               theme === "dark" && !active,
             "opacity-30": faded,
-            "border-4 border-solid border-slate-200": active,
+            "border-4 border-solid border-slate-200 text-slate-200 hover:text-slate-400":
+              active,
           },
         )}
         src={src}
