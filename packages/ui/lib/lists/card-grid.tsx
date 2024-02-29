@@ -1,4 +1,5 @@
 import { PropsWithChildren } from "react";
+import ImageComponent from "../image";
 
 type CardGridProps = {
   title: string;
@@ -22,7 +23,7 @@ type CardGridItemProps = {
 
 export const Card = ({ image, title }: CardGridItemProps) => (
   <div className="items-list-item mr-1 h-full w-full cursor-pointer overflow-hidden rounded-lg border border-slate-100 bg-white bg-opacity-60 text-xs text-slate-700 shadow transition-all duration-300 hover:bg-slate-700 hover:text-slate-100 hover:shadow-lg">
-    {image && <img src={image} className="" />}
+    {image && <ImageComponent src={image} className="min-h-32 w-full" />}
 
     <div className=" overflow-hidden p-3">{title}</div>
   </div>
