@@ -67,6 +67,25 @@ export const PROJECT_BASE_CONFIGURATION: Configuration = {
   },
   remotes: {
     remote: "none",
+    ftp: {
+      host: "ftp.myhost.com",
+      user: "ftpuser",
+      port: 734,
+      password: "changeme",
+      path: "folder",
+      http_host: "myhost.com/folder",
+      https: true,
+    },
+    s3: {
+      https: true,
+      endpoint: "s3endpoint.com",
+      region: "eu2",
+      bucket_name: "podcast",
+      access_key: "change me",
+      secret_key: "change me",
+      path: "mypodcast",
+      http_host: "s3endpoint.com",
+    },
   },
   meta: {
     lastFeedUpdate: new Date(),
