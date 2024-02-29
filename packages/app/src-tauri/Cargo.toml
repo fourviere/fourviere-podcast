@@ -27,7 +27,7 @@ derive-new = "0.6.0"
 function_name = "0.3.0"
 get_chunk = { version = "1.2.1", features = ["size_format", "stream"] }
 getset = "0.1.2"
-log = "0.4.20"
+log = "0.4.21"
 mime_guess = "2.0.4"
 reqwest = { version = "0.11", features = ["json"] }
 rust-s3 = "0.33.0"
