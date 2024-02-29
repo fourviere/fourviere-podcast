@@ -34,7 +34,7 @@ rust-s3 = "0.33.0"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 suppaftp = { version = "5.3.1", features = ["async-native-tls"] }
-tauri = { version = "1.5", features = [ "updater", "shell-sidecar", "dialog-all", "path-all", "fs-all", "shell-open", "process-command-api"] }
+tauri = { version = "1.6", features = [ "updater", "shell-sidecar", "dialog-all", "path-all", "fs-all", "shell-open", "process-command-api"] }
 tauri-plugin-channel = { git = "https://github.com/fourviere/tauri-plugin-channel.git", branch = "v0.1.x" }
 tauri-plugin-log = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 tempfile = "3.10.1"
