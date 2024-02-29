@@ -4,7 +4,7 @@ use get_chunk::{
     stream::{FileStream, StreamExt},
 };
 use serde::Deserialize;
-use std::{io, net::ToSocketAddrs, str, time::Duration};
+use std::str;
 use suppaftp::{types::FileType, AsyncFtpStream, Mode};
 use tauri::AppHandle;
 use tauri_plugin_channel::Channel;
@@ -31,20 +31,8 @@ struct FtpConnection {
 
 impl FtpConnection {
     async fn connect(&self) -> Result<AsyncFtpStream> {
-        let addr = format!("{}:{}", self.host, self.port)
-            .to_socket_addrs()?
-            .next()
-            .ok_or_else(|| {
-                io::Error::new(
-                    io::ErrorKind::AddrNotAvailable,
-                    format!(
-                        "Could not find destination address for {}:{}",
-                        self.host, self.port
-                    ),
-                )
-            })?;
-
-        let mut ftp_stream = AsyncFtpStream::connect_timeout(addr, Duration::from_secs(2)).await?;
+        let addr = format!("{}:{}", self.host, self.port);
+        let mut ftp_stream = AsyncFtpStream::connect(addr).await?;
         ftp_stream.login(&self.user, &self.password).await?;
 
         // As default set the FTP connection to passive mode
