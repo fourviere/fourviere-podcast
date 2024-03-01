@@ -11,6 +11,7 @@ import {
 } from "@fourviere/core/lib/const";
 import { fetchFeed } from "../../native/network";
 import { Project } from "./types";
+import CONFIG from "../../../src-tauri/tauri.conf.json";
 
 export interface FeedState {
   projects: Record<string, Project>;
@@ -78,6 +79,8 @@ const feedStore = create<FeedState>((set, get) => {
           };
           draft.projects[id] = { feed, configuration };
           draft.projects[id].configuration.feed.filename = filename;
+          draft.projects[id].feed.rss.channel[0].generator =
+            `${CONFIG.package.productName} ${CONFIG.package.version}`;
         });
       });
     },
@@ -91,6 +94,8 @@ const feedStore = create<FeedState>((set, get) => {
             feed,
             configuration: PROJECT_BASE_CONFIGURATION,
           };
+          draft.projects[id].feed.rss.channel[0].generator =
+            `${CONFIG.package.productName} ${CONFIG.package.version}`;
         });
       });
     },
@@ -104,6 +109,8 @@ const feedStore = create<FeedState>((set, get) => {
             new Date().toUTCString();
           draft.projects[id].configuration.meta.lastFeedUpdate = new Date();
           draft.projects[id].configuration.meta.feedIsDirty = true;
+          draft.projects[id].feed.rss.channel[0].generator =
+            `${CONFIG.package.productName} ${CONFIG.package.version}`;
         });
       });
     },
@@ -115,6 +122,8 @@ const feedStore = create<FeedState>((set, get) => {
       set((state: FeedState) => {
         return produce(state, (draft) => {
           draft.projects[id].feed = feed;
+          draft.projects[id].feed.rss.channel[0].generator =
+            `${CONFIG.package.productName} ${CONFIG.package.version}`;
           draft.projects[id].configuration.meta.lastFeedUpdate = new Date();
           draft.projects[id].configuration.meta.feedIsDirty = false;
         });
@@ -126,6 +135,8 @@ const feedStore = create<FeedState>((set, get) => {
       set((state: FeedState) => {
         return produce(state, (draft) => {
           draft.projects[id].feed = feed;
+          draft.projects[id].feed.rss.channel[0].generator =
+            `${CONFIG.package.productName} ${CONFIG.package.version}`;
           draft.projects[id].configuration.meta.lastFeedUpdate = new Date();
           draft.projects[id].configuration.meta.feedIsDirty = false;
         });
@@ -164,6 +175,8 @@ const feedStore = create<FeedState>((set, get) => {
           draft.projects[id].feed.rss.channel[0].item?.unshift(
             EPISODE_TEMPLATE(),
           );
+          draft.projects[id].feed.rss.channel[0].generator =
+            `${CONFIG.package.productName} ${CONFIG.package.version}`;
         });
       });
     },
