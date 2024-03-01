@@ -180,7 +180,7 @@ loadState<string[]>("feeds").then((keys) => {
   // Load each project file
   Promise.all(
     keys.map(async (key) => {
-      let proj = await loadState<Project>(key);
+      const proj = await loadState<Project>(key);
       if (proj)
         return {
           id: key,
@@ -189,8 +189,8 @@ loadState<string[]>("feeds").then((keys) => {
     }),
   ).then((records) => {
     //Remove undefined elements
-    let records_cleaned = records.flatMap((f) => (f ? [f] : []));
-    let state: Partial<FeedState> = { projects: {} };
+    const records_cleaned = records.flatMap((f) => (f ? [f] : []));
+    const state: Partial<FeedState> = { projects: {} };
 
     //Build project records
     records_cleaned.reduce((acc, curr) => {

@@ -1,4 +1,3 @@
-
 import { Store } from "@tauri-apps/plugin-store";
 
 export async function persistState<T>(store: string, state: T) {
