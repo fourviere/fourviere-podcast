@@ -25,6 +25,7 @@
     "@monaco-editor/react": "^4.6.0",
     "@tauri-apps/api": "^1.5.0",
     "@tauri-apps/plugin-log": "https://github.com/tauri-apps/tauri-plugin-log#v1",
+    "@tauri-apps/plugin-store": "https://github.com/tauri-apps/tauri-plugin-store#v1",
     "@fourviere/tauri-plugin-channel-api": "^0.1.0",
     "deepmerge": "^4.3.1",
     "formik": "^2.4.5",

@@ -78,6 +78,8 @@ const feedStore = create<FeedState>((set, get) => {
           };
           draft.projects[id] = { feed, configuration };
           draft.projects[id].configuration.feed.filename = filename;
+          // Update LastFeedUpdate to induce a modification in the last 10 seconds
+          draft.projects[id].configuration.meta.lastFeedUpdate = new Date();
         });
       });
     },
@@ -91,6 +93,8 @@ const feedStore = create<FeedState>((set, get) => {
             feed,
             configuration: PROJECT_BASE_CONFIGURATION,
           };
+          // Update LastFeedUpdate to induce a modification in the last 10 seconds
+          draft.projects[id].configuration.meta.lastFeedUpdate = new Date();
         });
       });
     },
@@ -170,18 +174,49 @@ const feedStore = create<FeedState>((set, get) => {
   };
 });
 
-loadState<FeedState>("feeds")
-  .then((state) => {
-    if (state) {
-      feedStore.setState(state);
-    }
-  })
-  .catch((e) => {
-    console.error("Error loading state", e);
+// Extract feed keys from feeds
+loadState<string[]>("feeds").then((keys) => {
+  if (!keys) return;
+  // Load each project file
+  Promise.all(
+    keys.map(async (key) => {
+      let proj = await loadState<Project>(key);
+      if (proj)
+        return {
+          id: key,
+          proj: proj,
+        };
+    }),
+  ).then((records) => {
+    //Remove undefined elements
+    let records_cleaned = records.flatMap((f) => (f ? [f] : []));
+    let state: Partial<FeedState> = { projects: {} };
+
+    //Build project records
+    records_cleaned.reduce((acc, curr) => {
+      if (acc) acc[curr.id] = curr.proj;
+      return acc;
+    }, state.projects);
+    feedStore.setState(state);
   });
+});
 
 feedStore.subscribe((state) => {
-  persistState("feeds", state).catch((e) => {
+  const timeGuard = new Date().getTime();
+  Object.entries(state.projects).forEach(([key, value]) => {
+    const lastTimeSaved = new Date(
+      value.configuration.meta.lastFeedUpdate,
+    ).getTime();
+    // Only one record at time will be persisted
+    if (timeGuard - lastTimeSaved <= 10000) {
+      persistState(key, value).catch((e) => {
+        console.error("Error persisting state", e);
+      });
+    }
+  });
+
+  //Store feed keys
+  persistState("feeds", Object.keys(state.projects)).catch((e) => {
     console.error("Error persisting state", e);
   });
 });
