@@ -67,22 +67,26 @@ const feedStore = create<FeedState>((set, get) => {
     initProjectFromUrl: async (feedUrl) => {
       const data = await fetchFeed(feedUrl);
       if (!data) return;
-      const feed = parseXML(data);
-      set((state: FeedState) => {
-        return produce(state, (draft) => {
-          const filename = feedUrl.split("/").pop() || DEFAULT_FEED_FILENAME;
-
-          const id = uuidv4();
-          const configuration = {
-            ...PROJECT_BASE_CONFIGURATION,
-            feed: { ...PROJECT_BASE_CONFIGURATION.feed, filename },
-          };
-          draft.projects[id] = { feed, configuration };
-          draft.projects[id].configuration.feed.filename = filename;
-          draft.projects[id].feed.rss.channel[0].generator =
-            `${CONFIG.package.productName} ${CONFIG.package.version}`;
+      try {
+        const feed = parseXML(data);
+        set((state: FeedState) => {
+          return produce(state, (draft) => {
+            const filename = feedUrl.split("/").pop() || DEFAULT_FEED_FILENAME;
+            const id = uuidv4();
+            const configuration = {
+              ...PROJECT_BASE_CONFIGURATION,
+              feed: { ...PROJECT_BASE_CONFIGURATION.feed, filename },
+            };
+            draft.projects[id] = { feed, configuration };
+            draft.projects[id].configuration.feed.filename = filename;
+            draft.projects[id].feed.rss.channel[0].generator =
+              `${CONFIG.package.productName} ${CONFIG.package.version}`;
+          });
         });
-      });
+      } catch (e) {
+        console.error("Error parsing feed", e);
+        throw e;
+      }
     },
 
     initProjectFromFileContents: (fileContents) => {

@@ -1,5 +1,6 @@
 import jsonpath from "jsonpath";
 import { timeToSeconds } from "./utils";
+import { Feed } from "./schema/feed";
 
 /**
  * The xml to json converting process is not perfect, it is not able to distinguish
@@ -132,14 +133,67 @@ function normalizeSeasonEpisode(data: unknown): unknown {
     (value: { [key: string]: unknown }) => {
       const dd = {
         ...(value as Record<string, unknown>),
-        "podcast:season": value["itunes:season"] ?? undefined,
-        "podcast:episode": value["itunes:episode"] ?? undefined,
+        ...(value["itunes:season"]
+          ? { "podcast:season": value["itunes:season"] }
+          : undefined),
+        ...(value["itunes:episode"]
+          ? { "podcast:episode": value["itunes:episode"] }
+          : undefined),
       };
+      //itunes:season and itunes:episode are not valid in the final feed
       delete dd["itunes:season" as keyof typeof dd];
       delete dd["itunes:episode" as keyof typeof dd];
       return dd;
     },
   );
+  return d;
+}
+
+function normalizeNamespaces(data: unknown): Feed {
+  //check if minimal namespace are there and inject the basic ones
+  const d = data as Feed;
+  const ITUNES_VALUE = "http://www.itunes.com/dtds/podcast-1.0.dtd";
+  const PODCAST_VALUE =
+    "https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md";
+
+  const namespacesInUse = d["rss"]?.["@"];
+
+  if (!namespacesInUse || !Object.keys(namespacesInUse).length) {
+    if (d["rss"]?.["@"] === undefined) {
+      d["rss"] = {
+        ...d["rss"],
+        "@": {
+          version: "2.0",
+          "xmlns:itunes": ITUNES_VALUE,
+          "xmlns:podcast": PODCAST_VALUE,
+        },
+      };
+    }
+    d["rss"]["@"] = {
+      version: "2.0",
+      "xmlns:itunes": ITUNES_VALUE,
+      "xmlns:podcast": PODCAST_VALUE,
+    };
+  }
+
+  if (
+    !namespacesInUse?.["xmlns:itunes"] ||
+    namespacesInUse?.["xmlns:itunes"] !== ITUNES_VALUE
+  ) {
+    d["rss"]["@"]["xmlns:itunes"] = ITUNES_VALUE;
+  }
+
+  if (
+    !namespacesInUse?.["xmlns:podcast"] ||
+    namespacesInUse?.["xmlns:podcast"] !== PODCAST_VALUE
+  ) {
+    d["rss"]["@"]["xmlns:podcast"] = PODCAST_VALUE;
+  }
+
+  if (!namespacesInUse?.["version"] || namespacesInUse?.["version"] !== "2.0") {
+    d["rss"]["@"]["version"] = "2.0";
+  }
+
   return d;
 }
 
@@ -152,5 +206,6 @@ export function normalize(data: unknown): unknown {
   data = normalizeStrings(data);
   data = normalizeGuid(data);
   data = normalizeSeasonEpisode(data);
+  data = normalizeNamespaces(data);
   return data;
 }
