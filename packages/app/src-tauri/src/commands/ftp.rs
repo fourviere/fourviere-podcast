@@ -44,7 +44,7 @@ impl FtpConnection {
                 )
             })?;
 
-        let mut ftp_stream = AsyncFtpStream::connect_timeout(addr, Duration::from_secs(2)).await?;
+        let mut ftp_stream = AsyncFtpStream::connect_timeout(addr, Duration::from_secs(10)).await?;
         ftp_stream.login(&self.user, &self.password).await?;
 
         // As default set the FTP connection to passive mode
