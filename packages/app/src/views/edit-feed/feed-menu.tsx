@@ -2,6 +2,7 @@ import SideMenu, { SideMenuItem } from "@fourviere/ui/lib/menu/side-menu";
 import { NavLink, NavLinkProps } from "react-router-dom";
 import useTranslations from "../../hooks/use-translations";
 import {
+  BanknotesIcon,
   CodeBracketSquareIcon,
   Cog8ToothIcon,
   MusicalNoteIcon,
@@ -32,6 +33,15 @@ export default function FeedMenu() {
             icon={<MusicalNoteIcon />}
           >
             {t["edit_feed.channel_field.itunes.title"]}
+          </SideMenuItem>
+
+          <SideMenuItem<NavLinkProps>
+            component={NavLink}
+            to="feed-v4v"
+            key="feed-v4v"
+            icon={<BanknotesIcon />}
+          >
+            {t["edit_feed.channel_field.v4v.title"]}
           </SideMenuItem>
 
           <hr />

@@ -18,6 +18,7 @@ import Itunes from "./views/edit-feed/itunes";
 import { attachConsole } from "@tauri-apps/plugin-log";
 import ItemsIndex from "./views/edit-item/items-index";
 import ItemGeneral from "./views/edit-item/item-general";
+import V4v from "./views/edit-feed/v4v";
 
 void attachConsole();
 
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: "feed-itunes",
         Component: Itunes,
+      },
+      {
+        path: "feed-v4v",
+        Component: V4v,
       },
       {
         path: "feed-items",

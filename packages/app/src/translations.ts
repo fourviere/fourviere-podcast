@@ -68,6 +68,25 @@ const TRANSLATIONS = {
     "edit_feed.channel_field.itunes.complete": "Itunes complete",
     "edit_feed.channel_field.itunes.complete.description":
       "If you will never publish another episode to your show, use this tag.",
+    "edit_feed.channel_field.v4v.title": "V4V & founding",
+    "edit_feed.channel_field.v4v.description": `designates the cryptocurrency or payment layer that will be used, the
+    transport method for transacting the payments, and a suggested amount denominated in
+    the given cryptocurrency.`,
+
+    "edit_feed.channel_field.v4v.name": "Name",
+    "edit_feed.channel_field.v4v.customKey": "Custom key",
+    "edit_feed.channel_field.v4v.customValue": "Custom value",
+    "edit_feed.channel_field.v4v.type": "Type",
+    "edit_feed.channel_field.v4v.suggested": "Suggested",
+    "edit_feed.channel_field.v4v.method": "Method",
+    "edit_feed.channel_field.v4v.valueRecipient.name": "Name",
+    "edit_feed.channel_field.v4v.valueRecipient.node": "Node",
+    "edit_feed.channel_field.v4v.valueRecipient.address": "Address",
+    "edit_feed.channel_field.v4v.valueRecipient.customKey": "Custom key",
+    "edit_feed.channel_field.v4v.valueRecipient.customValue": "Custom value",
+    "edit_feed.channel_field.v4v.valueRecipient.split": "Split",
+    "edit_feed.channel_field.v4v.valueRecipient.fee": "Fee",
+
     //-----
     "edit_feed.items.add_episode": "Add episode",
     "edit_feed.items.delete_episode":

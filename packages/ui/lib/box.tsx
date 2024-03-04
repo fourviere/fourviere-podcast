@@ -66,6 +66,7 @@ interface Props<E extends React.ElementType> {
   scroll?: boolean;
   sticky?: boolean;
   background?: "dark" | "light";
+  card?: boolean;
 }
 
 export function Container<E extends React.ElementType>({
@@ -78,6 +79,7 @@ export function Container<E extends React.ElementType>({
   scroll,
   as,
   sticky,
+  card,
   ...props
 }: PropsWithChildren<Props<E>> & React.ComponentPropsWithoutRef<E>) {
   const Component = as || "div" || "form";
@@ -94,6 +96,14 @@ export function Container<E extends React.ElementType>({
         { "sticky top-0": sticky },
         { "bg-slate-50": props.background === "light" },
         { "bg-slate-900": props.background === "dark" },
+        {
+          "rounded-lg border border-slate-200 bg-slate-50 px-2 py-3":
+            card && (props.background === "light" || !props?.background),
+        },
+        {
+          "rounded-lg bg-slate-900 p-2 shadow-lg":
+            card && props.background === "dark",
+        },
       )}
     >
       {children}

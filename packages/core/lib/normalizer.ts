@@ -15,6 +15,7 @@ function normalizeArrays(data: unknown): unknown {
     `rss.channel[*].item`,
     `rss.channel[*].link`,
     `rss.channel[*].item[*].link`,
+    `rss.channel[*]["podcast:value"]["podcast:valueRecipient"]`,
   ];
   const d = data;
   for (const field of arrayFields) {
@@ -61,6 +62,7 @@ function normalizeBoolean(data: unknown): unknown {
   const fields: string[] = [
     `$..["itunes:explicit"]`,
     `$..item[*].guid["@"].isPermaLink`,
+    `$..["podcast:value"]["podcast:valueRecipient"]["@"].fee`,
   ];
 
   const d = data;
