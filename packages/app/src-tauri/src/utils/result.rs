@@ -23,6 +23,11 @@ pub enum Error {
     LocalPathConversion,
     #[error("Task aborted before completion")]
     Aborted,
+    #[error("Error while acquiring system keyring")]
+    Keyring(#[from] keyring::Error),
+    #[cfg(target_os = "macos")]
+    #[error("Error while manipulating json")]
+    Serde(#[from] serde_json::Error),
 }
 
 impl Serialize for Error {

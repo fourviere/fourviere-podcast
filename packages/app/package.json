@@ -23,6 +23,7 @@
     "@fourviere/ui": "^0.1.0",
     "@heroicons/react": "^2.0.18",
     "@monaco-editor/react": "^4.6.0",
+    "@msgpack/msgpack": "^2.8.0",
     "@tauri-apps/api": "^1.5.0",
     "@tauri-apps/plugin-log": "https://github.com/tauri-apps/tauri-plugin-log#v1",
     "@fourviere/tauri-plugin-channel-api": "^0.1.0",

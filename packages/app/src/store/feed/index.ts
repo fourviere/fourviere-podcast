@@ -10,7 +10,7 @@ import {
   DEFAULT_FEED_FILENAME,
 } from "@fourviere/core/lib/const";
 import { fetchFeed } from "../../native/network";
-import { Project } from "./types";
+import { Configuration, Project } from "./types";
 
 export interface FeedState {
   projects: Record<string, Project>;
@@ -70,14 +70,19 @@ const feedStore = create<FeedState>((set, get) => {
       set((state: FeedState) => {
         return produce(state, (draft) => {
           const filename = feedUrl.split("/").pop() || DEFAULT_FEED_FILENAME;
+          const base_config = JSON.parse(
+            JSON.stringify(PROJECT_BASE_CONFIGURATION),
+          ) as Configuration;
 
           const id = uuidv4();
           const configuration = {
-            ...PROJECT_BASE_CONFIGURATION,
-            feed: { ...PROJECT_BASE_CONFIGURATION.feed, filename },
+            ...base_config,
+            feed: { ...base_config.feed, filename },
           };
+          configuration.feed.filename = filename;
+          // Update LastFeedUpdate to induce a modification in the last 10 seconds
+          configuration.meta.lastFeedUpdate = new Date();
           draft.projects[id] = { feed, configuration };
-          draft.projects[id].configuration.feed.filename = filename;
         });
       });
     },
@@ -87,9 +92,14 @@ const feedStore = create<FeedState>((set, get) => {
       set((state: FeedState) => {
         return produce(state, (draft) => {
           const id = uuidv4();
+          const base_config = JSON.parse(
+            JSON.stringify(PROJECT_BASE_CONFIGURATION),
+          ) as Configuration;
+          // Update LastFeedUpdate to induce a modification in the last 10 seconds
+          base_config.meta.lastFeedUpdate = new Date();
           draft.projects[id] = {
             feed,
-            configuration: PROJECT_BASE_CONFIGURATION,
+            configuration: base_config,
           };
         });
       });
@@ -170,18 +180,49 @@ const feedStore = create<FeedState>((set, get) => {
   };
 });
 
-loadState<FeedState>("feeds")
-  .then((state) => {
-    if (state) {
-      feedStore.setState(state);
-    }
-  })
-  .catch((e) => {
-    console.error("Error loading state", e);
+// Extract feed keys from feeds
+loadState<string[]>("feeds").then((keys) => {
+  if (!keys) return;
+  // Load each project file
+  Promise.all(
+    keys.map(async (key) => {
+      const proj = await loadState<Project>(key);
+      if (proj)
+        return {
+          id: key,
+          proj: proj,
+        };
+    }),
+  ).then((records) => {
+    //Remove undefined elements
+    const records_cleaned = records.flatMap((f) => (f ? [f] : []));
+    const state: Partial<FeedState> = { projects: {} };
+
+    //Build project records
+    records_cleaned.reduce((acc, curr) => {
+      if (acc) acc[curr.id] = curr.proj;
+      return acc;
+    }, state.projects);
+    feedStore.setState(state);
   });
+});
 
 feedStore.subscribe((state) => {
-  persistState("feeds", state).catch((e) => {
+  const timeGuard = new Date().getTime();
+  Object.entries(state.projects).forEach(([key, value]) => {
+    const lastTimeSaved = new Date(
+      value.configuration.meta.lastFeedUpdate,
+    ).getTime();
+    // Only one record at time will be persisted
+    if (timeGuard - lastTimeSaved <= 10000) {
+      persistState(key, value).catch((e) => {
+        console.error("Error persisting state", e);
+      });
+    }
+  });
+
+  //Store feed keys
+  persistState("feeds", Object.keys(state.projects)).catch((e) => {
     console.error("Error persisting state", e);
   });
 });
