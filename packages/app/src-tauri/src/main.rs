@@ -16,7 +16,6 @@ fn main() {
                 .filter(filter)
                 .build(),
         )
-        .plugin(tauri_plugin_store::Builder::default().build())
         .plugin(tauri_plugin_channel::init())
         .invoke_handler(tauri::generate_handler![
             commands::network::fetch_feed,

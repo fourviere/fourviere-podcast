@@ -1753,7 +1753,6 @@ dependencies = [
  "tauri-build",
  "tauri-plugin-channel",
  "tauri-plugin-log",
- "tauri-plugin-store",
  "tempfile",
  "thiserror",
  "tokio",
@@ -5463,18 +5462,6 @@ dependencies = [
  "serde_repr",
  "tauri",
  "time",
-]
-
-[[package]]
-name = "tauri-plugin-store"
-version = "0.0.0"
-source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#ed682dd96eb765e7cd3cdbc3cc64f794a0d6f9df"
-dependencies = [
- "log",
- "serde",
- "serde_json",
- "tauri",
- "thiserror",
 ]
 
 [[package]]

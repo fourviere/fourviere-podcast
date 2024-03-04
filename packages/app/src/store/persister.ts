@@ -1,14 +1,29 @@
-import { Store } from "@tauri-apps/plugin-store";
 import { Project } from "./feed/types";
 import { AppState } from "./app";
 import { invoke } from "@tauri-apps/api/tauri";
+import {
+  writeBinaryFile,
+  BaseDirectory,
+  createDir,
+  exists,
+  readBinaryFile,
+} from "@tauri-apps/api/fs";
+import { appDataDir } from "@tauri-apps/api/path";
+import { Encoder, Decoder } from "@msgpack/msgpack";
+
+const encoder = new Encoder();
+const decoder = new Decoder();
 
 export async function persistState<T>(store: string, state: T) {
   try {
-    const value = await maybe_obfuscate(store, state);
-    const storeFile = new Store(`${store}.dat`);
-    await storeFile.set(store, value);
-    await storeFile.save();
+    const value = encoder.encode(await maybe_obfuscate(store, state));
+    const dirExists = await exists(await appDataDir());
+    if (!dirExists) {
+      await createDir(await appDataDir());
+    }
+    await writeBinaryFile(`${store}.dat`, value, {
+      dir: BaseDirectory.AppData,
+    });
   } catch (e) {
     console.log("persistState error", e);
   }
@@ -16,9 +31,10 @@ export async function persistState<T>(store: string, state: T) {
 
 export async function loadState<T>(store: string) {
   try {
-    const storeFile = new Store(`${store}.dat`);
-    const value = (await storeFile.get(store)) as T;
-
+    const encoded = await readBinaryFile(`${store}.dat`, {
+      dir: BaseDirectory.AppData,
+    });
+    const value = decoder.decode(encoded) as T;
     // Project handling
     if (hasConfiguration(value)) {
       if (value.configuration.remotes.ftp) {

@@ -10,7 +10,7 @@ import {
   DEFAULT_FEED_FILENAME,
 } from "@fourviere/core/lib/const";
 import { fetchFeed } from "../../native/network";
-import { Project } from "./types";
+import { Configuration, Project } from "./types";
 
 export interface FeedState {
   projects: Record<string, Project>;
@@ -70,16 +70,19 @@ const feedStore = create<FeedState>((set, get) => {
       set((state: FeedState) => {
         return produce(state, (draft) => {
           const filename = feedUrl.split("/").pop() || DEFAULT_FEED_FILENAME;
+          const base_config = JSON.parse(
+            JSON.stringify(PROJECT_BASE_CONFIGURATION),
+          ) as Configuration;
 
           const id = uuidv4();
           const configuration = {
-            ...PROJECT_BASE_CONFIGURATION,
-            feed: { ...PROJECT_BASE_CONFIGURATION.feed, filename },
+            ...base_config,
+            feed: { ...base_config.feed, filename },
           };
-          draft.projects[id] = { feed, configuration };
-          draft.projects[id].configuration.feed.filename = filename;
+          configuration.feed.filename = filename;
           // Update LastFeedUpdate to induce a modification in the last 10 seconds
-          draft.projects[id].configuration.meta.lastFeedUpdate = new Date();
+          configuration.meta.lastFeedUpdate = new Date();
+          draft.projects[id] = { feed, configuration };
         });
       });
     },
@@ -89,12 +92,15 @@ const feedStore = create<FeedState>((set, get) => {
       set((state: FeedState) => {
         return produce(state, (draft) => {
           const id = uuidv4();
+          const base_config = JSON.parse(
+            JSON.stringify(PROJECT_BASE_CONFIGURATION),
+          ) as Configuration;
+          // Update LastFeedUpdate to induce a modification in the last 10 seconds
+          base_config.meta.lastFeedUpdate = new Date();
           draft.projects[id] = {
             feed,
-            configuration: PROJECT_BASE_CONFIGURATION,
+            configuration: base_config,
           };
-          // Update LastFeedUpdate to induce a modification in the last 10 seconds
-          draft.projects[id].configuration.meta.lastFeedUpdate = new Date();
         });
       });
     },

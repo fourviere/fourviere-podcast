@@ -49,7 +49,6 @@ fn internal_set_secret(name: &str, value: &str) -> Result<()> {
     let mut secrets = get_secret_map()?;
     let _ = secrets.map.insert(name.to_string(), value.to_string());
     let pwd = serde_json::to_string(&secrets)?;
-    println!("{pwd}");
     let entry = Entry::new(SERVICE_NAME, MACOS_KEYRING)?;
     entry.set_password(&pwd).map_err(Into::into)
 }
