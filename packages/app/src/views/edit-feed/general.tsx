@@ -9,13 +9,13 @@ import useTranslations from "../../hooks/use-translations";
 import Select from "@fourviere/ui/lib/form/fields/select";
 import PODCASTCATEGORIES from "@fourviere/core/lib/podcast-namespace/categories";
 import { FC } from "react";
-import { LANGUAGE_BY_LOCALE } from "../../consts";
 import FormObjectField from "@fourviere/ui/lib/form/form-object-field";
 import { ChannelLinks } from "../../components/form-fields/channel-links";
 import ContainerTitle from "@fourviere/ui/lib/container-title";
 import CKEditor from "@fourviere/ui/lib/form/fields/ckeditor";
 import FormBlocker from "../../components/form-blocker";
 import Img from "../../components/form-fields/image";
+import { LANGUAGE_BY_LOCALE } from "@fourviere/core/lib/const";
 
 export default function General() {
   const currentFeed = UseCurrentFeed();
@@ -140,14 +140,12 @@ export default function General() {
                     name="rss.channel.0.language"
                     as={Select as FC}
                     fieldProps={{
-                      options: Object.entries(LANGUAGE_BY_LOCALE).map(
-                        ([key, value]) => {
-                          return {
-                            name: key.replace("_", "-"),
-                            value: value.replace("_", "-"),
-                          };
-                        },
-                      ),
+                      options: Object.entries(
+                        LANGUAGE_BY_LOCALE as Record<string, string>,
+                      ).map(([key, value]) => ({
+                        name: key,
+                        value: value,
+                      })),
                       labelProperty: "value",
                       keyProperty: "name",
                       lowercase: true,

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified"
+	elementFormDefault="qualified"
+	targetNamespace="http://www.itunes.com/dtds/podcast-1.0.dtd"
+	xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="itunesExtension">
+		<xs:annotation>
+			<xs:documentation>This is a wrapper for itunes extension elements for RSS 2.0.
+			If you need to use this, you should read the specs at
+			http://www.apple.com/itunes/store/podcaststechspecs.html</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="itunes:category" minOccurs="0" maxOccurs="unbounded" >
+					<xs:annotation>
+						<xs:documentation><![CDATA[ 
+<p>There are two ways to browse podcast subject categories on iTunes: click Browse in the Quick Links box or click a selection in the Category box. The former method leads to a text-based table, while the latter leads to pages that include the podcast art.</p> 
+					<p>For placement within the older, text-based browse system, podcast feeds may list up to 3 category/subcategory pairs. (For example, "Music" counts as 1, as does "Business &gt; Careers.") For placement within the newer browse system based on Category links, however, and for placement within the Top Podcasts lists that appear in the right column of most podcast pages, only the first category listed in the feed is used.</p>
+
+					<p>Categories and subcategories can be specified as follows. Use a top level <code>&lt;itunes:category&gt;</code> to specify the browse category, and a nested <code>&lt;itunes:category&gt;</code> to specify the browse subcategory. Choose from the existing categories and subcategories in iTunes. Be sure to properly escape ampersands. A complete list is included at the end of this document.</p>
+					<p>Note that a separate set of categories was active until July 2006, when it was replaced by the new set at the end of this document. During a transition period, most of the old categories and subcategories will be automatically mapped to corresponding ones within the new system. For example, if your podcast was listed under "Arts &amp; Entertainment &gt; Photography", it will now appear under "Arts &gt; Visual Arts." However, 3 categories have been removed and do not have a similar replacement: "International", "Talk Radio", and "Public Radio". Those categories overlapped with others in the old system, making some podcasts difficult to discover. If one of these categories is listed as the first subject in your podcast feed, that category information will be ignored and the second category will be used to determine eligibility and placement in that feature page.</p>
+
+					
+					<h4>Examples:</h4>
+	
+					<h4>Single category:</h4>
+					<pre><code>	&lt;itunes:category text="Music" /&gt;</code></pre><br>
+	
+					<h4>Category with ampersand:</h4>
+					<pre><code>	&lt;itunes:category text="TV &amp;amp; Film" /&gt;</code></pre><br>
+
+	
+					<h4>Category with Subcategory:</h4>
+					<pre><code>	&lt;itunes:category text="Society &amp;amp; Culture"&gt;
+		&lt;itunes:category text="History" /&gt;
+		&lt;/itunes:category&gt;</code></pre><br>
+	
+					<h4>Entry with multiple categories:</h4>
+
+					<pre><code>	&lt;itunes:category text="Society &amp;amp; Culture"&gt;
+		&lt;itunes:category text="History" /&gt;
+		&lt;/itunes:category&gt;
+		&lt;itunes:category text="Technology"&gt;
+		&lt;itunes:category text="Gadgets" /&gt;
+
+		&lt;/itunes:category&gt;</code></pre>
+						]]> 
+						</xs:documentation>
+					</xs:annotation>				
+				</xs:element>
+				<xs:element ref="itunes:keywords" minOccurs="0" >
+					<xs:annotation>
+						<xs:documentation><![CDATA[ 
+This tag allows users to search on a maximum of 12 text keywords. Use commas to separate keywords.
+						]]> 
+						</xs:documentation>
+					</xs:annotation>				
+				</xs:element>
+				<xs:element ref="itunes:subtitle" minOccurs="0" >
+					<xs:annotation>
+						<xs:documentation><![CDATA[ 
+The contents of this tag are shown in the Description column in iTunes. The subtitle displays best if it is only a few words long.
+						]]> 
+						</xs:documentation>
+					</xs:annotation>								
+				
+				</xs:element>
+				<xs:element ref="itunes:duration" minOccurs="0" >
+					<xs:annotation>
+						<xs:documentation><![CDATA[ 
+<p>The content of this tag is shown in the Time column in iTunes.</p>
+<p>The tag can be formatted HH:MM:SS, H:MM:SS, MM:SS, or M:SS (H = hours, M = minutes, S = seconds). If an integer is provided (no colon present), the value is assumed to be in seconds. If one colon is present, the number to the left is assumed to be minutes, and the number to the right is assumed to be seconds. If more than two colons are present, the numbers furthest to the right are ignored.</p>
+						]]> 
+						</xs:documentation>
+					</xs:annotation>				
+				</xs:element>
+				<xs:element ref="itunes:summary" minOccurs="0" >
+					<xs:annotation>
+						<xs:documentation><![CDATA[ 
+The contents of this tag are shown in a separate window that appears when the "circled i" in the Description 
+column is clicked. It also appears on the iTunes page for your podcast. This field can be up to 4000 characters. 
+If &lt;itunes:summary> is not included, the contents of the <description> tag are used.
+						]]> 
+						</xs:documentation>
+					</xs:annotation>				
+				</xs:element>
+				<xs:element ref="itunes:image" minOccurs="0" >
+					<xs:annotation>
+						<xs:documentation><![CDATA[ 
+<p>This tag specifies the artwork for your podcast. Put the URL to the image in the href attribute. iTunes prefers square .jpg images that are at least 300 x 300 pixels, which is different than what is specified for the standard RSS image tag.</p>
+<p>iTunes supports images in JPEG and PNG formats. The URL must end in ".jpg" or ".png". If the itunes:image tag is not present, iTunes will use the contents of the RSS image tag.</p>
+<p>If you change your podcast’s image, also change the file’s name. iTunes may not change the image if it checks your feed and the image URL is the same.</p>
+<p>Spend some time developing an attractive, original image that represents your podcast well. Potential subscribers will see it on your podcast’s page and a much smaller version of the image in search results and feature placements. Make sure your design is effective in both sizes.</p>
+
+<p>The itunes:image tag is <b>not</b> supported at the item level. It is possible to include art within individual episodes, but the art is included within the media file’s metadata, not in the RSS feed. To add artwork to an episode using iTunes, highlight the episode and select "Get Info" from the "File" menu. Click the Artwork tab. Then click "Add," navigate to and select an image file, and click "Choose." </p>
+						]]> 
+						</xs:documentation>
+					</xs:annotation>				
+				</xs:element>
+				<xs:element ref="itunes:explicit" minOccurs="0" >
+					<xs:annotation>
+						<xs:documentation><![CDATA[ 
+<p>This tag should be used to indicate whether or not your podcast contains explicit material. The three values for this tag are "yes", "no", and "clean".</p>
+
+<p>If you populate this tag with "yes", an "explicit" parental advisory graphic will appear next to your podcast artwork on the iTunes Music Store, and in the Name column in iTunes. If the value is "clean", the parental advisory type is considered Clean, meaning that no explicit language or adult content is included anywhere in the episodes, and a "clean" graphic will appear. If the explicit tag is present and has any other value (e.g. "no") you see no indicator — blank is the default advisory type.</p>
+<p>This tag contains information that will be used to contact the owner of the podcast for communication specifically about their podcast. It will not be publicly displayed.</p>
+						]]> 
+						</xs:documentation>
+					</xs:annotation>				
+				</xs:element>
+				<xs:element ref="itunes:owner" minOccurs="0" >
+					<xs:annotation>
+						<xs:documentation><![CDATA[ 
+<p>Put the email address of the owner in a nested <code><strong>&lt;itunes:email&gt;</strong></code>element.</p>
+<p>Put the name of the owner in a nested <code><strong>&lt;itunes:name&gt;</strong></code>element.</p>
+						]]> 
+						</xs:documentation>
+					</xs:annotation>						
+				</xs:element>
+				<xs:element ref="itunes:author" minOccurs="0" >
+					<xs:annotation>
+						<xs:documentation><![CDATA[ 
+<p>The content of this tag is shown in the Artist column in iTunes. If the tag is not present, iTunes uses the contents of the <code>&lt;author&gt;</code> tag. If <code>&lt;itunes:author&gt;</code> is not present at the feed level, iTunes will use the contents of <code>&lt;managingEditor&gt;</code>.</p>
+						]]> 
+						</xs:documentation>
+					</xs:annotation>				
+				</xs:element>
+				<xs:element ref="itunes:block" minOccurs="0" >
+					<xs:annotation>
+						<xs:documentation><![CDATA[ 
+<p>Use this inside a <code>&lt;channel&gt;</code> element to prevent the entire podcast from appearing in the iTunes Podcast directory. Use this inside an <code>&lt;item&gt;</code> element to prevent that episode from appearing in the iTunes Podcast directory. For example, you may want a specific episode blocked from iTunes if its content might cause the feed to be removed from iTunes.</p>
+<p>If this tag is present and set to "yes" (case insensitive), that means to block the feed or the episode. If the tag’s value is any other value, including empty string, it’s indicated as a signal to unblock the feed or episode. At the feed level, if there is no block tag, then the block status of the feed is left unchanged. At the episode level, if there is no block tag, it is the same as if a block=no were present.</p>
+	
+						]]> 
+						</xs:documentation>
+					</xs:annotation>								
+				</xs:element>
+				<xs:element ref="itunes:new-feed-url" minOccurs="0" >
+					<xs:annotation>
+						<xs:documentation><![CDATA[ 
+This tag allows you to change the URL where the podcast feed is located. It is added at the <code>&lt;channel&gt;</code> level. The feed format is:</p>
+
+<code>&lt;itunes:new-feed-url&gt;http://newlocation.com/example.rss&lt;/itunes:new-feed-url&gt;</code>
+<p>After adding the tag to your old feed, you should maintain the old feed for 48 hours before retiring it. At that point, iTunes will have updated the directory with the new feed URL. For more information, please see the "Changing Your Feed URL" section above.</p>
+						]]> 
+						</xs:documentation>
+					</xs:annotation>								
+				</xs:element>				
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="category" type="itunes:itunesCategoryType"/>
+	<xs:element name="keywords" type="xs:string"/>
+	<xs:element name="subtitle" type="xs:string"/>
+	<xs:element name="duration" type="xs:string" />
+	<xs:element name="summary" type="xs:string" />
+	<xs:element name="image" type="itunes:itunesImageType" />
+	<xs:element name="explicit" type="xs:string" />
+	<xs:element name="owner" type="itunes:itunesOwnerType" />
+	<xs:element name="author" type="xs:string" />
+	<xs:element name="block" type="xs:string" />
+	<xs:element name="new-feed-url" type="xs:string" />
+	<xs:complexType name="itunesOwnerType">
+		<xs:all>
+			<xs:element type="xs:string" name="name" />
+			<xs:element type="xs:string" name="email" />
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="itunesCategoryType">
+		<xs:attribute type="xs:string" name="text" use="required" />
+	</xs:complexType>
+	<xs:complexType name="itunesImageType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute type="xs:string" name="rel" />
+				<xs:attribute type="xs:string" name="type" />
+				<xs:attribute type="xs:anyURI" name="href" />
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+
+</xs:schema>

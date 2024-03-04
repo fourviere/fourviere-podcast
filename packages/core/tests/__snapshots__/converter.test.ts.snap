@@ -69,7 +69,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:image href="https://cdn.dgt.fm/digitalia696.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia696.jpg 1400w"></podcast:images>
       <itunes:keywords>x, elon_musk, shadowban, censura, infowars, deep_fake, vintage, maps</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>696</podcast:episode>
     </item>
     <item>
@@ -91,7 +90,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:image href="https://cdn.dgt.fm/digitalia695.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia695.jpg 1400w"></podcast:images>
       <itunes:keywords>DSA, EU, westminster_declaration, meme, ai, glasshole, aeronautica</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>695</podcast:episode>
     </item>
     <item>
@@ -113,7 +111,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia694.jpg 1400w"></podcast:images>
       <itunes:keywords>netflix, telegram, hamas, israele, crittografia, machine_learning,
         fotoritocco</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>694</podcast:episode>
     </item>
     <item>
@@ -136,7 +133,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia693.jpg 1400w"></podcast:images>
       <itunes:keywords>gig_economy, sanità, dating, vaporwave, musica, humane, llm,
         advertising, videogame, captcha</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>693</podcast:episode>
     </item>
     <item>
@@ -158,7 +154,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:image href="https://cdn.dgt.fm/digitalia692.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia692.jpg 1400w"></podcast:images>
       <itunes:keywords>google, chatGPT, Lama, Meta, LLM, TIM, snoop_dog, t-red</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>692</podcast:episode>
     </item>
     <item>
@@ -181,7 +176,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:image href="https://cdn.dgt.fm/digitalia691.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia691.jpg 1400w"></podcast:images>
       <itunes:keywords>microsoft, xbox, nintendo, leak, assistenti_vocali, LLM, privacy</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>691</podcast:episode>
     </item>
     <item>
@@ -204,7 +198,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia690.jpg 1400w"></podcast:images>
       <itunes:keywords>unity, videogames, apple, iPhone, emf, pirateria, crypto, llm, chatgpt,
         airbnb</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>690</podcast:episode>
     </item>
     <item>
@@ -226,7 +219,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:image href="https://cdn.dgt.fm/digitalia689.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia689.jpg 1400w"></podcast:images>
       <itunes:keywords>automotive, privacy, DSA, europa, spotify, deezer, airbnb</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>689</podcast:episode>
     </item>
     <item>
@@ -249,7 +241,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia688.jpg 1400w"></podcast:images>
       <itunes:keywords>retrogaming, utopia, smart_city, moderazione, LLM, openAI, x,
         instagram, tiktok</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>688</podcast:episode>
     </item>
     <item>
@@ -273,7 +264,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:image href="https://cdn.dgt.fm/digitalia687.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia687.jpg 1400w"></podcast:images>
       <itunes:keywords>infosec, privacy, scam, spam, chatGPT, LLM</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>687</podcast:episode>
     </item>
     <item>
@@ -295,7 +285,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:image href="https://cdn.dgt.fm/digitalia686.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia686.jpg 1400w"></podcast:images>
       <itunes:keywords>speciale, gingilli, utility, libri, software</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>686</podcast:episode>
     </item>
     <item>
@@ -318,7 +307,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia685.jpg 1400w"></podcast:images>
       <itunes:keywords>miiyo, retrogaming, stack_overflow, sam_altman, oppenheimer, LLM,
         dark_pattern, tiktok, x.com</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>685</podcast:episode>
     </item>
     <item>
@@ -341,7 +329,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia684.jpg 1400w"></podcast:images>
       <itunes:keywords>openAI, traffico, automotive, sorveglianza, palm_pilot, crittografia,
         LLM, oppenheimer</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>684</podcast:episode>
     </item>
     <item>
@@ -364,7 +351,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia683.jpg 1400w"></podcast:images>
       <itunes:keywords>call_of_duty, pirateria, batterie, sorveglianza, dna, threads, tiktok,
         zuckerberg, ai</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>683</podcast:episode>
     </item>
     <item>
@@ -387,7 +373,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia682.jpg 1400w"></podcast:images>
       <itunes:keywords>jony_ive, threads, twitter, reddit, privacy, dark_pattern,
         superallineamento, LLM, arte</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>682</podcast:episode>
     </item>
     <item>
@@ -410,7 +395,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia681.jpg 1400w"></podcast:images>
       <itunes:keywords>waze, snowden, twitter, IRL, Stitcher, gameboy, IA_act, LLM, valve,
         disinformazione, euro_digitale, reddit</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>681</podcast:episode>
     </item>
     <item>
@@ -433,7 +417,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia680.jpg 1400w"></podcast:images>
       <itunes:keywords>amazon_ring, data_broker, sorveglianza, privacy, reddit, twitter, IA,
         chatGPT, automotive, beatles</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>680</podcast:episode>
     </item>
     <item>
@@ -456,7 +439,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia679.jpg 1400w"></podcast:images>
       <itunes:keywords>amazon_ring, data_broker, sorveglianza, privacy, reddit, twitter, IA,
         chatGPT, automotive, beatles</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>679</podcast:episode>
     </item>
     <item>
@@ -479,7 +461,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia678.jpg 1400w"></podcast:images>
       <itunes:keywords>berlusconi, snowden, reddit, ufo, vision_pro, stack_overflow, bias,
         videogames, twitter</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>678</podcast:episode>
     </item>
     <item>
@@ -501,7 +482,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:image href="https://cdn.dgt.fm/digitalia677.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia677.jpg 1400w"></podcast:images>
       <itunes:keywords>tiktok, vision_pro, airpods, chatGPT, spam, robotica, droni, scuola</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>677</podcast:episode>
     </item>
     <item>
@@ -524,7 +504,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia676.jpg 1400w"></podcast:images>
       <itunes:keywords>avvocato, giurisprudenza, amore, scrittura, chatGPT, LLM, windows11,
         rider, gig_economy</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>676</podcast:episode>
     </item>
     <item>
@@ -546,7 +525,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:image href="https://cdn.dgt.fm/digitalia675.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia675.jpg 1400w"></podcast:images>
       <itunes:keywords>llm, AI, sting, politica, multa, robotica, swatting, tiktok</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>675</podcast:episode>
     </item>
     <item>
@@ -569,7 +547,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia674.jpg 1400w"></podcast:images>
       <itunes:keywords>llm, chatGPT, copilot, ligabue, mantellini, stack_overflow, videogames,
         palantir, passkeys</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>674</podcast:episode>
     </item>
     <item>
@@ -592,7 +569,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia673.jpg 1400w"></podcast:images>
       <itunes:keywords>llm, gmail, amp, esport, fortnite, ultima_online, openAI,
         brain_scanner, blue_sky</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>673</podcast:episode>
     </item>
     <item>
@@ -614,7 +590,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia672.jpg 1400w"></podcast:images>
       <itunes:keywords>reddit, API, alby, FAST, open_to_meraviglia, turismo, open_source,
         fitness</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>672</podcast:episode>
     </item>
     <item>
@@ -635,7 +610,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:image href="https://cdn.dgt.fm/digitalia671.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia671.jpg 1400w"></podcast:images>
       <itunes:keywords>speciale, sex, dating, sexting, tinder, monster_match, relazioni</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>671</podcast:episode>
     </item>
     <item>
@@ -658,7 +632,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia670.jpg 1400w"></podcast:images>
       <itunes:keywords>android_auto, carplay, automotive, droni, apple_silicon, windows,
         virtualizzazione, sex</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>670</podcast:episode>
     </item>
     <item>
@@ -681,7 +654,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:images srcset="https://cdn.dgt.fm/digitalia669.jpg 1400w"></podcast:images>
       <itunes:keywords>crittovalute, chatGPT, generativeAI, mastodon, wikipedia, dogecoin,
         substack, twitter, palantir</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>669</podcast:episode>
     </item>
     <item>
@@ -703,7 +675,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:image href="https://cdn.dgt.fm/digitalia668.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia668.jpg 1400w"></podcast:images>
       <itunes:keywords>tiktok, boring_ah, chatGPT, LLM, AI, monopattini, sharing, dating</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>668</podcast:episode>
     </item>
     <item>
@@ -726,7 +697,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:image href="https://cdn.dgt.fm/digitalia667.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia667.jpg 1400w"></podcast:images>
       <itunes:keywords>gordon_moore, internet_archive, TikTok, openAI, chatGPT, bard</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>667</podcast:episode>
     </item>
     <item>
@@ -748,7 +718,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:image href="https://cdn.dgt.fm/digitalia666.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia666.jpg 1400w"></podcast:images>
       <itunes:keywords>wikipedia, gpt-4, llm, openAI, microsoft, meta, siae, nft</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>666</podcast:episode>
     </item>
     <item>
@@ -771,7 +740,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:image href="https://cdn.dgt.fm/digitalia665.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia665.jpg 1400w"></podcast:images>
       <itunes:keywords>llm, ia, OpenAI, twitter, svb, startup, religione, Spotify, fediverso</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>665</podcast:episode>
     </item>
     <item>
@@ -793,7 +761,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:image href="https://cdn.dgt.fm/digitalia664.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia664.jpg 1400w"></podcast:images>
       <itunes:keywords>llm, ia, automotive, OpenAI, WokeGPT, sharenting, social_credit_score</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>664</podcast:episode>
     </item>
     <item>
@@ -815,7 +782,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:image href="https://cdn.dgt.fm/digitalia663.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia663.jpg 1400w"></podcast:images>
       <itunes:keywords>automotive, TikTok, censura, videogames, donne, LLM, IA, ad_blocker</itunes:keywords>
-      <podcast:season>0</podcast:season>
       <podcast:episode>663</podcast:episode>
     </item>
     <item>
@@ -836,7 +802,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <podcast:transcript url="https://cdn.dgt.fm/digitalia662.srt" type="application/srt"></podcast:transcript>
       <itunes:image href="https://cdn.dgt.fm/digitalia662.jpg"></itunes:image>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia662.jpg 1400w"></podcast:images>
-      <podcast:season>0</podcast:season>
       <podcast:episode>662</podcast:episode>
     </item>
     <item>
@@ -857,7 +822,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:image href="https://cdn.dgt.fm/digitalia661.jpg"></itunes:image>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia661.srt" type="application/srt"></podcast:transcript>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia661.jpg 1400w"></podcast:images>
-      <podcast:season>0</podcast:season>
       <podcast:episode>661</podcast:episode>
     </item>
     <item>
@@ -878,7 +842,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:image href="https://cdn.dgt.fm/digitalia660.jpg"></itunes:image>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia660.srt" type="application/srt"></podcast:transcript>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia660.jpg 1400w"></podcast:images>
-      <podcast:season>0</podcast:season>
       <podcast:episode>660</podcast:episode>
     </item>
     <item>
@@ -899,7 +862,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:image href="https://cdn.dgt.fm/digitalia659.jpg"></itunes:image>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia659.srt" type="application/srt"></podcast:transcript>
       <podcast:images srcset="https://cdn.dgt.fm/digitalia659.jpg 1400w"></podcast:images>
-      <podcast:season>0</podcast:season>
       <podcast:episode>659</podcast:episode>
     </item>
     <item>
@@ -920,7 +882,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:title> La legge ineluttabile dell&apos;Inscittificazione </itunes:title>
       <podcast:transcript url="https://cdn.dgt.fm/digitalia658.srt" type="application/srt" rel="captions"></podcast:transcript>
       <podcast:images srcset="http://cdn.dgt.fm/digitalia658.jpg 1400w"></podcast:images>
-      <podcast:season>0</podcast:season>
       <podcast:episode>658</podcast:episode>
     </item>
     <item>
@@ -940,7 +901,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:title>Digitaliani odiatori tedeschi</itunes:title>
       <itunes:image href="http://cdn.dgt.fm/digitalia657.jpg"></itunes:image>
       <podcast:images srcset="http://cdn.dgt.fm/digitalia657.jpg 1400w"></podcast:images>
-      <podcast:season>0</podcast:season>
       <podcast:episode>657</podcast:episode>
     </item>
     <item>
@@ -958,7 +918,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:duration>6323</itunes:duration>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title> Tagliare l&apos;erba nei campi digitali </itunes:title>
-      <podcast:season>0</podcast:season>
       <podcast:episode>656</podcast:episode>
     </item>
     <item>
@@ -976,7 +935,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:duration>6477</itunes:duration>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Sfonda la sbarra</itunes:title>
-      <podcast:season>0</podcast:season>
       <podcast:episode>655</podcast:episode>
     </item>
     <item>
@@ -994,7 +952,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:duration>6891</itunes:duration>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Il consolador umano</itunes:title>
-      <podcast:season>0</podcast:season>
       <podcast:episode>654</podcast:episode>
     </item>
     <item>
@@ -1012,7 +969,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:duration>6625</itunes:duration>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Mean time to disillusion</itunes:title>
-      <podcast:season>0</podcast:season>
       <podcast:episode>653</podcast:episode>
     </item>
     <item>
@@ -1030,7 +986,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:duration>6191</itunes:duration>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Segue dibattito</itunes:title>
-      <podcast:season>0</podcast:season>
       <podcast:episode>652</podcast:episode>
     </item>
     <item>
@@ -1048,7 +1003,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:duration>6073</itunes:duration>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title> Elon alle porte dell&apos;inferno </itunes:title>
-      <podcast:season>0</podcast:season>
       <podcast:episode>651</podcast:episode>
     </item>
     <item>
@@ -1065,7 +1019,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:duration>6374</itunes:duration>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Quando torneremo a comprare carta igienica</itunes:title>
-      <podcast:season>0</podcast:season>
       <podcast:episode>650</podcast:episode>
     </item>
     <item>
@@ -1083,7 +1036,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:duration>6415</itunes:duration>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Filetto di panda</itunes:title>
-      <podcast:season>0</podcast:season>
       <podcast:episode>649</podcast:episode>
     </item>
     <item>
@@ -1102,7 +1054,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:duration>6792</itunes:duration>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>A Roma si dice come dico io</itunes:title>
-      <podcast:season>0</podcast:season>
       <podcast:episode>648</podcast:episode>
     </item>
     <item>
@@ -1120,7 +1071,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:duration>2743</itunes:duration>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Speciale Machine Learning</itunes:title>
-      <podcast:season>0</podcast:season>
       <podcast:episode>647</podcast:episode>
     </item>
     <item>
@@ -1138,7 +1088,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:duration>6265</itunes:duration>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>La postilla di Solerio</itunes:title>
-      <podcast:season>0</podcast:season>
       <podcast:episode>646</podcast:episode>
     </item>
     <item>
@@ -1154,7 +1103,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:duration>6417</itunes:duration>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Oggi lavoro due giorni in più</itunes:title>
-      <podcast:season>0</podcast:season>
       <podcast:episode>645</podcast:episode>
     </item>
     <item>
@@ -1171,7 +1119,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:duration>6398</itunes:duration>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Il Metaverso è dentro di te</itunes:title>
-      <podcast:season>0</podcast:season>
       <podcast:episode>644</podcast:episode>
     </item>
     <item>
@@ -1189,7 +1136,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:duration>6305</itunes:duration>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Vado a farmi su DALL-E</itunes:title>
-      <podcast:season>0</podcast:season>
       <podcast:episode>643</podcast:episode>
     </item>
     <item>
@@ -1207,7 +1153,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
       <itunes:duration>5919</itunes:duration>
       <itunes:episodeType>full</itunes:episodeType>
       <itunes:title>Google come Maradona</itunes:title>
-      <podcast:season>0</podcast:season>
       <podcast:episode>642</podcast:episode>
     </item>
   </channel>
@@ -1288,7 +1233,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia696.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1336,7 +1280,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia695.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1384,7 +1327,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia694.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1433,7 +1375,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia693.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1481,7 +1422,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia692.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1530,7 +1470,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia691.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1579,7 +1518,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia690.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1627,7 +1565,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia689.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1676,7 +1613,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia688.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1726,7 +1662,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia687.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1774,7 +1709,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia686.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1823,7 +1757,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia685.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1872,7 +1805,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia684.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1921,7 +1853,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia683.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -1970,7 +1901,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia682.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2019,7 +1949,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia681.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2068,7 +1997,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia680.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2117,7 +2045,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia679.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2166,7 +2093,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia678.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2214,7 +2140,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia677.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2263,7 +2188,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia676.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2311,7 +2235,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia675.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2360,7 +2283,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia674.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2409,7 +2331,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia673.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2457,7 +2378,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia672.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2504,7 +2424,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia671.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2553,7 +2472,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia670.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2602,7 +2520,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia669.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2650,7 +2567,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia668.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2699,7 +2615,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia667.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2747,7 +2662,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia666.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2796,7 +2710,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia665.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2844,7 +2757,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia664.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2892,7 +2804,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia663.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2939,7 +2850,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia662.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -2986,7 +2896,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia661.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -3033,7 +2942,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia660.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -3080,7 +2988,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "https://cdn.dgt.fm/digitalia659.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -3127,7 +3034,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "http://cdn.dgt.fm/digitalia658.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "podcast:transcript": {
               "@": {
                 "rel": "captions",
@@ -3175,7 +3081,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
                 "srcset": "http://cdn.dgt.fm/digitalia657.jpg 1400w",
               },
             },
-            "podcast:season": 0,
             "pubDate": "Mon, 23 Jan 2023 23:47:10 +0100",
             "title": "Digitalia #657 - Digitaliani odiatori tedeschi",
           },
@@ -3206,7 +3111,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               "http://digitalia.fm/656/",
             ],
             "podcast:episode": 656,
-            "podcast:season": 0,
             "pubDate": "Mon, 16 Jan 2023 23:48:49 +0100",
             "title": " Digitalia #656 - Tagliare l'erba nei campi digitali ",
           },
@@ -3237,7 +3141,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               "http://digitalia.fm/655/",
             ],
             "podcast:episode": 655,
-            "podcast:season": 0,
             "pubDate": "Tue, 10 Jan 2023 00:00:32 +0100",
             "title": "Digitalia #655 - Sfonda la sbarra",
           },
@@ -3268,7 +3171,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               "http://digitalia.fm/654",
             ],
             "podcast:episode": 654,
-            "podcast:season": 0,
             "pubDate": "Mon, 19 Dec 2022 23:50:56 +0100",
             "title": "Digitalia #654 - Il consolador umano",
           },
@@ -3299,7 +3201,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               "http://digitalia.fm/653/",
             ],
             "podcast:episode": 653,
-            "podcast:season": 0,
             "pubDate": "Tue, 13 Dec 2022 00:06:16 +0100",
             "title": "Digitalia #653 - Mean time to disillusion",
           },
@@ -3330,7 +3231,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               "http://digitalia.fm/652/",
             ],
             "podcast:episode": 652,
-            "podcast:season": 0,
             "pubDate": "Mon, 05 Dec 2022 23:48:38 +0100",
             "title": "Digitalia #652 - Segue dibattito",
           },
@@ -3361,7 +3261,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               "http://digitalia.fm/651/",
             ],
             "podcast:episode": 651,
-            "podcast:season": 0,
             "pubDate": "Mon, 28 Nov 2022 23:45:47 +0100",
             "title": " Digitalia #651 - Elon alle porte dell'inferno ",
           },
@@ -3391,7 +3290,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               "http://digitalia.fm/650/",
             ],
             "podcast:episode": 650,
-            "podcast:season": 0,
             "pubDate": "Mon, 21 Nov 2022 23:52:15 +0100",
             "title": "Digitalia #650 - Quando torneremo a comprare carta igienica",
           },
@@ -3422,7 +3320,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               "http://digitalia.fm/649/",
             ],
             "podcast:episode": 649,
-            "podcast:season": 0,
             "pubDate": "Tue, 15 Nov 2022 00:09:25 +0100",
             "title": "Digitalia #649 - Filetto di panda",
           },
@@ -3454,7 +3351,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               "http://digitalia.fm/648/",
             ],
             "podcast:episode": 648,
-            "podcast:season": 0,
             "pubDate": "Mon, 07 Nov 2022 23:48:16 +0100",
             "title": "Digitalia #648 - A Roma si dice come dico io",
           },
@@ -3485,7 +3381,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               "http://digitalia.fm/647/",
             ],
             "podcast:episode": 647,
-            "podcast:season": 0,
             "pubDate": "Tue, 01 Nov 2022 00:30:33 +0100",
             "title": "Digitalia #647 - Speciale Machine Learning",
           },
@@ -3516,7 +3411,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               "http://digitalia.fm/646/",
             ],
             "podcast:episode": 646,
-            "podcast:season": 0,
             "pubDate": "Mon, 24 Oct 2022 23:39:00 +0200",
             "title": "Digitalia #646 - La postilla di Solerio",
           },
@@ -3545,7 +3439,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               "http://digitalia.fm/645/",
             ],
             "podcast:episode": 645,
-            "podcast:season": 0,
             "pubDate": "Tue, 18 Oct 2022 19:02:40 +0200",
             "title": "Digitalia #645 - Oggi lavoro due giorni in più",
           },
@@ -3575,7 +3468,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               "http://digitalia.fm/644/",
             ],
             "podcast:episode": 644,
-            "podcast:season": 0,
             "pubDate": "Tue, 11 Oct 2022 07:56:56 +0200",
             "title": "Digitalia #644 - Il Metaverso è dentro di te",
           },
@@ -3606,7 +3498,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               "http://digitalia.fm/643/",
             ],
             "podcast:episode": 643,
-            "podcast:season": 0,
             "pubDate": "Mon, 03 Oct 2022 23:43:22 +0200",
             "title": "Digitalia #643 - Vado a farmi su DALL-E",
           },
@@ -3637,7 +3528,6 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
               "http://digitalia.fm/642/",
             ],
             "podcast:episode": 642,
-            "podcast:season": 0,
             "pubDate": "Mon, 26 Sep 2022 23:37:38 +0200",
             "title": "Digitalia #642 - Google come Maradona",
           },
@@ -3715,7 +3605,7 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
 `;
 
 exports[`PodcastConverter Should correctly serialize a "gitbar" with required fields 1`] = `
-"<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:podcast="https://podcastindex.org/namespace/1.0" xmlns:media="http://search.yahoo.com/mrss/" version="2.0">
+"<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:podcast="https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md" xmlns:media="http://search.yahoo.com/mrss/" version="2.0">
   <channel>
     <title>Gitbar - Italian developer podcast</title>
     <link href="https://www.gitbar.it"></link>
@@ -3798,7 +3688,7 @@ exports[`PodcastConverter Should correctly serialize a "gitbar" with required fi
       "xmlns:atom": "http://www.w3.org/2005/Atom",
       "xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
       "xmlns:media": "http://search.yahoo.com/mrss/",
-      "xmlns:podcast": "https://podcastindex.org/namespace/1.0",
+      "xmlns:podcast": "https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md",
     },
     "channel": [
       {
@@ -3852,8 +3742,6 @@ exports[`PodcastConverter Should correctly serialize a "gitbar" with required fi
             "link": [
               "https://www.spreaker.com/user/brainrepo/ep165-lucadelpuppo-typescript",
             ],
-            "podcast:episode": undefined,
-            "podcast:season": undefined,
             "pubDate": "Fri, 27 Oct 2023 13:09:54 +0000",
             "title": "Ep.175 - Typescript con Luca Del Puppo (Nearform)",
           },
@@ -6941,7 +6829,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://reflex.livewire.io/chapters/podcast/917393e3-1b1e-5cef-ace4-edaa54e1f810/item/ff31b3ca-4da7-456a-ab82-52ffae34f7e4/chapters/https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/ff31b3ca-4da7-456a-ab82-52ffae34f7e4",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1684513486.722_pcifeedimage.png 1600w",
@@ -6969,7 +6856,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -7105,7 +6991,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://reflex.livewire.io/chapters/podcast/917393e3-1b1e-5cef-ace4-edaa54e1f810/item/a469a9fd-35e8-403a-b305-da26e7015f0a/chapters/https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/a469a9fd-35e8-403a-b305-da26e7015f0a",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://behindthesch3m3s.com/wp-content/uploads/2023/01/v4v-storm-good-quality.gif 750w",
@@ -7133,7 +7018,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -7269,7 +7153,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://reflex.livewire.io/chapters/podcast/917393e3-1b1e-5cef-ace4-edaa54e1f810/item/8a90a402-85ab-4cd8-b9f4-3a2b9cfb53b8/chapters/https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/8a90a402-85ab-4cd8-b9f4-3a2b9cfb53b8",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://behindthesch3m3s.com/wp-content/uploads/2023/01/v4v-storm-good-quality.gif 750w",
@@ -7297,7 +7180,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -7446,7 +7328,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/f25a2089-01fd-49a2-a00b-1013b7fd8ae6",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://behindthesch3m3s.com/wp-content/uploads/2023/01/v4v-storm-good-quality.gif 750w",
@@ -7474,7 +7355,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -7613,7 +7493,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/62438155-0962-4078-8c07-fbe6f192c8e3",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1684513486.722_pcifeedimage.png 1600w",
@@ -7641,7 +7520,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -7758,7 +7636,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/3341e5b2-926d-4f1a-8aee-f7e95b4f16b4",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://behindthesch3m3s.com/wp-content/uploads/2023/01/v4v-storm-good-quality.gif 750w",
@@ -7795,7 +7672,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -7935,7 +7811,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/7d04de2b-d0b9-46ff-9479-5e5c19846e6d-x",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://behindthesch3m3s.com/wp-content/uploads/2023/01/v4v-storm-good-quality.gif 750w",
@@ -7963,7 +7838,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -8093,7 +7967,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20145",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://behindthesch3m3s.com/wp-content/uploads/2023/01/v4v-storm-good-quality.gif 750w",
@@ -8139,7 +8012,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -8289,7 +8161,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20144",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://behindthesch3m3s.com/wp-content/uploads/2023/01/v4v-storm-good-quality.gif 750w",
@@ -8317,7 +8188,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -8462,7 +8332,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20143",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://behindthesch3m3s.com/wp-content/uploads/2023/01/v4v-storm-good-quality.gif 750w",
@@ -8490,7 +8359,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -8620,7 +8488,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20142",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://behindthesch3m3s.com/wp-content/uploads/2023/01/v4v-storm-good-quality.gif 750w",
@@ -8648,7 +8515,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -8778,7 +8644,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20141",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1684513486.722_pcifeedimage.png 1600w",
@@ -8806,7 +8671,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -8936,7 +8800,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20140",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1684513486.722_pcifeedimage.png 1600w",
@@ -8982,7 +8845,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -9145,7 +9007,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20139",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://behindthesch3m3s.com/wp-content/uploads/2023/01/v4v-storm-good-quality.gif 750w",
@@ -9173,7 +9034,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -9303,7 +9163,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20138",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://behindthesch3m3s.com/wp-content/uploads/2023/01/v4v-storm-good-quality.gif 750w",
@@ -9340,7 +9199,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -9481,7 +9339,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20137",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1684513486.722_pcifeedimage.png 1600w",
@@ -9509,7 +9366,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -9639,7 +9495,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20136",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1684513486.722_pcifeedimage.png 1600w",
@@ -9676,7 +9531,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -9816,7 +9670,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20135",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://behindthesch3m3s.com/wp-content/uploads/2023/01/v4v-storm-good-quality.gif 750w",
@@ -9844,7 +9697,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -9991,7 +9843,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20134",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -10019,7 +9870,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -10166,7 +10016,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20133",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1684513486.722_pcifeedimage.png 1600w",
@@ -10203,7 +10052,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -10372,7 +10220,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "https://chapters.hypercatcher.com/http%3Amp3s.nashownotes.compc20rss.xml/PC20132",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1684513486.722_pcifeedimage.png 1600w",
@@ -10400,7 +10247,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -10541,7 +10387,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20131",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -10578,7 +10423,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -10729,7 +10573,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20130",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -10757,7 +10600,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -10895,7 +10737,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20129",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -10941,7 +10782,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -11087,7 +10927,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20128",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -11133,7 +10972,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -11271,7 +11109,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20127",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -11299,7 +11136,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -11427,7 +11263,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20126",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -11455,7 +11290,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -11583,7 +11417,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20125",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -11611,7 +11444,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -11739,7 +11571,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20124",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -11767,7 +11598,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -11895,7 +11725,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20123",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -11932,7 +11761,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -12070,7 +11898,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20122",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -12107,7 +11934,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -12245,7 +12071,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20121",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -12273,7 +12098,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -12401,7 +12225,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20120",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -12446,7 +12269,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -12584,7 +12406,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20119",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -12612,7 +12433,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -12740,7 +12560,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20118",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -12777,7 +12596,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -12914,7 +12732,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20117",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -12942,7 +12759,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -13067,7 +12883,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20116",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -13113,7 +12928,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -13248,7 +13062,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20115",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -13286,7 +13099,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -13413,7 +13225,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20114",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -13441,7 +13252,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -13558,7 +13368,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20113",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -13586,7 +13395,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -13703,7 +13511,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20112",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -13731,7 +13538,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -13866,7 +13672,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20111",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -13894,7 +13699,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -14011,7 +13815,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20110",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -14039,7 +13842,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -14156,7 +13958,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20109",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -14193,7 +13994,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -14320,7 +14120,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20108",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -14348,7 +14147,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -14465,7 +14263,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20107",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -14493,7 +14290,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -14610,7 +14406,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20106",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -14638,7 +14433,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -14755,7 +14549,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20105",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -14783,7 +14576,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -14900,7 +14692,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20104",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1665178176.536_by-v4vlogobinvert.png 1495w",
@@ -14937,7 +14728,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -15054,7 +14844,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20103",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -15082,7 +14871,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -15199,7 +14987,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20102",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1663953598.374_phoebe-01.jpg 900w",
@@ -15236,7 +15023,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -15363,7 +15149,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20101",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1654303210.889_runningwithscissorsnew.png 1440w",
@@ -15391,7 +15176,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -15508,7 +15292,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC20100",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1654303210.889_runningwithscissorsnew.png 1440w",
@@ -15545,7 +15328,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -15668,7 +15450,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2099",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -15696,7 +15477,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -15801,7 +15581,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2098",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1654303210.889_runningwithscissorsnew.png 1440w",
@@ -15838,7 +15617,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -15953,7 +15731,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2097",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1654303210.889_runningwithscissorsnew.png 1440w",
@@ -15981,7 +15758,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -16086,7 +15862,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2096",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1654303210.889_runningwithscissorsnew.png 1440w",
@@ -16123,7 +15898,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -16238,7 +16012,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2095",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -16266,7 +16039,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -16371,7 +16143,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2094",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -16408,7 +16179,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -16521,7 +16291,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2093",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1654303210.889_runningwithscissorsnew.png 1440w",
@@ -16558,7 +16327,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -16663,7 +16431,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2092",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1654303210.889_runningwithscissorsnew.png 1440w",
@@ -16700,7 +16467,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -16805,7 +16571,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2091",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1654303210.889_runningwithscissorsnew.png 1440w",
@@ -16842,7 +16607,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -16947,7 +16711,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2090",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -16984,7 +16747,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -17081,7 +16843,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2089",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -17118,7 +16879,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -17223,7 +16983,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2088",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1654303210.889_runningwithscissorsnew.png 1440w",
@@ -17260,7 +17019,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -17365,7 +17123,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2087",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -17393,7 +17150,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -17490,7 +17246,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2086",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -17518,7 +17273,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -17615,7 +17369,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2085",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -17652,7 +17405,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -17757,7 +17509,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2084",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -17794,7 +17545,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -17901,7 +17651,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2083",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -17929,7 +17678,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -18026,7 +17774,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2082",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -18054,7 +17801,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -18151,7 +17897,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2081",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -18179,7 +17924,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -18276,7 +18020,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2080",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -18304,7 +18047,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -18401,7 +18143,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2079",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -18429,7 +18170,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -18526,7 +18266,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2078",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -18563,7 +18302,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -18670,7 +18408,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2077",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -18707,7 +18444,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -18814,7 +18550,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2076",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -18851,7 +18586,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -18948,7 +18682,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2075",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -18985,7 +18718,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -19082,7 +18814,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2074",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -19128,7 +18859,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:socialInteract": {
               "@": {
                 "accountId": "@dave",
@@ -19243,7 +18973,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2073",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -19289,7 +19018,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -19386,7 +19114,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2072",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -19414,7 +19141,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -19503,7 +19229,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2071",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -19531,7 +19256,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -19620,7 +19344,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2070",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -19657,7 +19380,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -19746,7 +19468,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2069",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -19792,7 +19513,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",
@@ -19881,7 +19601,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 "url": "http://34.117.70.159/http%3Amp3s.nashownotes.compc20rss.xml/PC2068",
               },
             },
-            "podcast:episode": undefined,
             "podcast:images": {
               "@": {
                 "srcset": "https://noagendaassets.com/enc/1601061118.678_pciavatar.jpg 816w",
@@ -19909,7 +19628,6 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
                 },
               },
             ],
-            "podcast:season": undefined,
             "podcast:transcript": {
               "@": {
                 "type": "application/srt",

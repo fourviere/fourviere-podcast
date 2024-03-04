@@ -25,8 +25,8 @@ export function parseXML(xmlString: string) {
   const validation = XMLValidator.validate(xmlString, {
     allowBooleanAttributes: true,
   });
+
   if (validation !== true) {
-    console.log(validation.err);
     throw new InvalidXMLError(`Invalid xml ${JSON.stringify(validation.err)}`);
   }
 
@@ -36,8 +36,6 @@ export function parseXML(xmlString: string) {
 
   if (!isValid) {
     const validationErrors = podcastValidator.errors;
-    console.log(validationErrors);
-    console.log(jsData);
     throw new InvalidPodcastFeedError("Invalid podcast feed", validationErrors);
   }
 
