@@ -13,6 +13,15 @@ The features that Fourviere offers include:
 - File editing and transformation features: creation of chapters and store it in the json file and the multimedia file in the form of ID3V2 tags, integration with Podcast Index web services, ChatGPT for creating episode notes, and integrated transcription function.
 - Native video tag support: It will be possible to configure the embedded tag for the video quickly, as well as upload the video with the same simplicity. Thanks to the power of FFMPEG integrated into the application, it will also be possible to compress and encode the video and audio files automatically.
 
+## Prequisites
+### MacOS
+1. Install [brew](https://brew.sh/)
+2. brew install pkg-config 
+3. brew install ffmpeg
+
+### Windows
+TODO
+
 ## Bootstrap the project
 
 [![test-on-pr](https://github.com/fourviere/fourviere-podcast/actions/workflows/test-on-pr.yml/badge.svg)](https://github.com/fourviere/fourviere-podcast/actions/workflows/test-on-pr.yml)
@@ -21,3 +30,4 @@ The features that Fourviere offers include:
 - Clone the repository
 - Run `npm install` from the project's root folder
 - Run `npm run dev` from the projects root folder
+
