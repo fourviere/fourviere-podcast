@@ -15,8 +15,7 @@ interface Props {
 export const Categories = ({ name }: Props) => {
   const t = useTranslations();
 
-  const [input] =
-    useField<Feed["rss"]["channel"]["0"]["itunes:category"]>(name);
+  const [input] = useField<Feed["rss"]["channel"]["itunes:category"]>(name);
 
   const categories = input.value;
 

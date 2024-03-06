@@ -50,12 +50,12 @@ export default function FeedUploader() {
     setLoading(false);
 
     const feed = parseXML(data!);
-    if (!feed.rss.channel[0].lastBuildDate) {
+    if (!feed.rss.channel.lastBuildDate) {
       addError(t["edit_feed.feed-uploader.remote_feed_not_valid"]);
       return;
     }
 
-    const remoteLastUpdate = new Date(feed.rss.channel[0].lastBuildDate);
+    const remoteLastUpdate = new Date(feed.rss.channel.lastBuildDate);
 
     return remoteLastUpdate.getTime() < localLastUpdate.getTime();
   }

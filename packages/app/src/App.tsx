@@ -1,11 +1,7 @@
 import { createPortal } from "react-dom";
 import StartView from "./views/start";
 import appStore from "./store/app";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  useLocation,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Toast from "@fourviere/ui/lib/modals/toast";
 import { ErrorBox } from "@fourviere/ui/lib/box";
@@ -65,14 +61,14 @@ const router = createBrowserRouter([
         path: "feed-config",
         Component: FeedConfiguration,
       },
-      {
-        path: "*",
-        Component: () => {
-          const location = useLocation();
-          console.log("location", location);
-          return <div>NOt found</div>;
-        },
-      },
+      // {
+      //   path: "*",
+      //   Component: () => {
+      //     const location = useLocation();
+      //     console.log("location", location);
+      //     return <div>NOt found</div>;
+      //   },
+      // },
     ],
   },
 ]);

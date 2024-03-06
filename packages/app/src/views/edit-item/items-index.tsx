@@ -43,7 +43,7 @@ const ItemsIndex: React.FC<Props> = () => {
           {t["edit_feed.items.title"]}
         </ContainerTitle>
         <CardGrid title="Items">
-          {currentFeed?.feed.rss.channel[0].item?.map((item) => (
+          {currentFeed?.feed.rss.channel.item?.map((item) => (
             <NavLink
               key={item.guid["#text"]}
               to={`/feed/${currentFeed.feedId}/feed-items/${encodeURIComponent(

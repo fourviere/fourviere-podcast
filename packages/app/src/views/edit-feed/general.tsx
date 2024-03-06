@@ -60,26 +60,26 @@ export default function General() {
                 description={t["edit_feed.presentation.title.description"]}
               >
                 <FormRow
-                  name="rss.channel.0.title"
+                  name="rss.channel.title"
                   label={t["edit_feed.channel_field.show_name"]}
                 >
                   <FormField
-                    id="rss.channel.0.title"
-                    name="rss.channel.0.title"
+                    id="rss.channel.title"
+                    name="rss.channel.title"
                     as={Input}
                     fieldProps={{ size: "lg" }}
                     initValue="My podcast title"
                     emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                   />
                 </FormRow>
-                <FormRow name="rss.channel.0.image.url" label={"test image"}>
+                <FormRow name="rss.channel.image.url" label={"test image"}>
                   <FormField
-                    id="rss.channel.0.image.url"
-                    name="rss.channel.0.image.url"
+                    id="rss.channel.image.url"
+                    name="rss.channel.image.url"
                     as={Img}
                     fieldProps={{
                       feedId: currentFeed.feedId,
-                      name: "rss.channel.0.image.url",
+                      name: "rss.channel.image.url",
                     }}
                     emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                     initValue="https://"
@@ -87,15 +87,15 @@ export default function General() {
                 </FormRow>
 
                 <FormRow
-                  name="rss.channel.0.description"
+                  name="rss.channel.description"
                   label={t["edit_feed.channel_field.show_description"]}
                 >
                   <FormField
-                    id="rss.channel.0.description"
-                    name="rss.channel.0.description"
+                    id="rss.channel.description"
+                    name="rss.channel.description"
                     as={CKEditor as FC}
                     fieldProps={{
-                      value: values.rss.channel[0].description,
+                      value: values.rss.channel.description,
                       setFieldValue, //TODO: remove this move into the component
                     }}
                     initValue="My podcast description"
@@ -103,12 +103,12 @@ export default function General() {
                   />
                 </FormRow>
                 <FormRow
-                  name={`rss.channel.0.["itunes:type"]`}
+                  name={`rss.channel.["itunes:type"]`}
                   label={t["edit_feed.channel_field.type"]}
                 >
                   <FormField
-                    id={`rss.channel.0.["itunes:type"]`}
-                    name={`rss.channel.0.["itunes:type"]`}
+                    id={`rss.channel.["itunes:type"]`}
+                    name={`rss.channel.["itunes:type"]`}
                     fieldProps={{
                       options: [
                         { name: "Episodic", value: "episodic" },
@@ -123,8 +123,8 @@ export default function General() {
                   />
                 </FormRow>
                 <ChannelLinks
-                  name="rss.channel.0.link"
-                  values={values.rss.channel[0].link}
+                  name="rss.channel.link"
+                  values={values.rss.channel.link}
                 />
               </FormSection>
               <FormSection
@@ -132,12 +132,12 @@ export default function General() {
                 description={t["edit_feed.indexing.title.description"]}
               >
                 <FormRow
-                  name="rss.channel.0.category.0"
+                  name="rss.channel.category.0"
                   label={t["edit_feed.channel_field.language"]}
                 >
                   <FormField
-                    id="rss.channel.0.language"
-                    name="rss.channel.0.language"
+                    id="rss.channel.language"
+                    name="rss.channel.language"
                     as={Select as FC}
                     fieldProps={{
                       options: Object.entries(
@@ -155,12 +155,12 @@ export default function General() {
                   />
                 </FormRow>
                 <FormRow
-                  name="rss.channel.0.category.0"
+                  name="rss.channel.category.0"
                   label={t["edit_feed.channel_field.category"]}
                 >
                   <FormField
-                    id="rss.channel.0.category.0"
-                    name="rss.channel.0.category.0"
+                    id="rss.channel.category.0"
+                    name="rss.channel.category.0"
                     as={Select as FC}
                     fieldProps={{
                       options: PODCASTCATEGORIES,
@@ -172,12 +172,12 @@ export default function General() {
                   />
                 </FormRow>
                 <FormRow
-                  name={`rss.channel.0.["itunes:explicit"]`}
+                  name={`rss.channel.["itunes:explicit"]`}
                   label={t["edit_feed.channel_field.explicit"]}
                 >
                   <FormField
-                    id={`rss.channel.0.["itunes:explicit"]`}
-                    name={`rss.channel.0.["itunes:explicit"]`}
+                    id={`rss.channel.["itunes:explicit"]`}
+                    name={`rss.channel.["itunes:explicit"]`}
                     fieldProps={{
                       options: [
                         { name: "No", value: "no" },
@@ -192,12 +192,12 @@ export default function General() {
                   />
                 </FormRow>
                 <FormRow
-                  name={`rss.channel.0.["itunes:block"]`}
+                  name={`rss.channel.["itunes:block"]`}
                   label={t["edit_feed.channel_field.block"]}
                 >
                   <FormField
-                    id={`rss.channel.0.["itunes:block"]`}
-                    name={`rss.channel.0.["itunes:block"]`}
+                    id={`rss.channel.["itunes:block"]`}
+                    name={`rss.channel.["itunes:block"]`}
                     fieldProps={{
                       options: [
                         { name: "No", value: "no" },
@@ -212,12 +212,12 @@ export default function General() {
                   />
                 </FormRow>
                 <FormRow
-                  name={`rss.channel.0.["itunes:complete"]`}
+                  name={`rss.channel.["itunes:complete"]`}
                   label={t["edit_feed.channel_field.complete"]}
                 >
                   <FormField
-                    id={`rss.channel.0.["itunes:complete"]`}
-                    name={`rss.channel.0.["itunes:complete"]`}
+                    id={`rss.channel.["itunes:complete"]`}
+                    name={`rss.channel.["itunes:complete"]`}
                     fieldProps={{
                       options: [
                         { name: "No", value: "no" },
@@ -233,12 +233,12 @@ export default function General() {
                 </FormRow>
 
                 <FormRow
-                  name={`rss.channel.0.["itunes:new-feed-url"]`}
+                  name={`rss.channel.["itunes:new-feed-url"]`}
                   label={t["edit_feed.channel_field.new_feed_url"]}
                 >
                   <FormField
-                    id={`rss.channel.0.["itunes:new-feed-url"]`}
-                    name={`rss.channel.0.["itunes:new-feed-url"]`}
+                    id={`rss.channel.["itunes:new-feed-url"]`}
+                    name={`rss.channel.["itunes:new-feed-url"]`}
                     as={Input}
                     initValue="Jhon Doe"
                     emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
@@ -250,24 +250,24 @@ export default function General() {
                 description={t["edit_feed.ownership.title.description"]}
               >
                 <FormRow
-                  name={`rss.channel.0.copyright`}
+                  name={`rss.channel.copyright`}
                   label={t["edit_feed.channel_field.copyright"]}
                 >
                   <FormField
-                    id={`rss.channel.0.copyright`}
-                    name={`rss.channel.0.copyright`}
+                    id={`rss.channel.copyright`}
+                    name={`rss.channel.copyright`}
                     as={Input}
                     initValue="© 2021 My Podcast"
                     emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
                   />
                 </FormRow>
                 <FormRow
-                  name={`rss.channel.0.["itunes:author"]`}
+                  name={`rss.channel.["itunes:author"]`}
                   label={t["edit_feed.channel_field.author"]}
                 >
                   <FormField
-                    id={`rss.channel.0.["itunes:author"]`}
-                    name={`rss.channel.0.["itunes:author"]`}
+                    id={`rss.channel.["itunes:author"]`}
+                    name={`rss.channel.["itunes:author"]`}
                     as={Input}
                     initValue="Jhon Doe"
                     emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
@@ -276,7 +276,7 @@ export default function General() {
 
                 <FormObjectField
                   emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
-                  fieldName={`rss.channel.0.["itunes:owner"]`}
+                  fieldName={`rss.channel.["itunes:owner"]`}
                   initValue={{
                     "itunes:name": "Jhon Doe",
                     "itunes:email": "jhon@doe.audio",
@@ -284,22 +284,22 @@ export default function General() {
                   label={t["edit_feed.channel_field.owner"]}
                 >
                   <FormRow
-                    name={`rss.channel.0.["itunes:owner"].name`}
+                    name={`rss.channel.["itunes:owner"].name`}
                     label={t["edit_feed.channel_field.owner.name"]}
                   >
                     <FormField
-                      id={`rss.channel.0.["itunes:owner"].["itunes:name"]]`}
-                      name={`rss.channel.0.["itunes:owner"].["itunes:name"]`}
+                      id={`rss.channel.["itunes:owner"].["itunes:name"]]`}
+                      name={`rss.channel.["itunes:owner"].["itunes:name"]`}
                       as={Input}
                     />
                   </FormRow>
                   <FormRow
-                    name={`rss.channel.0.["itunes:owner"].email`}
+                    name={`rss.channel.["itunes:owner"].email`}
                     label={t["edit_feed.channel_field.owner.email"]}
                   >
                     <FormField
-                      id={`rss.channel.0.["itunes:owner"].["itunes:email"]]`}
-                      name={`rss.channel.0.["itunes:owner"].["itunes:email"]`}
+                      id={`rss.channel.["itunes:owner"].["itunes:email"]]`}
+                      name={`rss.channel.["itunes:owner"].["itunes:email"]`}
                       as={Input}
                     />
                   </FormRow>

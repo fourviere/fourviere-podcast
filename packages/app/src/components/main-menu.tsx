@@ -27,8 +27,8 @@ const SideMenu: React.FC = () => {
             faded={!!feedId && feedId !== key}
             active={feedId === key}
             src={
-              projects?.[key]?.feed?.rss?.channel?.[0]?.image?.url ||
-              // projects?.[key]?.feed?.rss?.channel?.[0]["itunes:image"]?.["@"]
+              projects?.[key]?.feed?.rss?.channel.image?.url ||
+              // projects?.[key]?.feed?.rss?.channel["itunes:image"]?.["@"]
               //   ?.href ||
               "/logo.svg"
             }

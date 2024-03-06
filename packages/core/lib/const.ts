@@ -1,5 +1,5 @@
 import { Configuration } from "../../app/src/store/feed/types";
-import { Item } from "./schema/item";
+import { Item } from "@fourviere/core/lib/schema/item";
 import { v4 as uuidv4 } from "uuid";
 
 export const FEED_TEMPLATE = `
@@ -51,7 +51,7 @@ export const EPISODE_TEMPLATE = () =>
     enclosure: {
       "@": {
         url: "",
-        length: "0",
+        length: 0,
         type: "audio/mpeg",
       },
     },

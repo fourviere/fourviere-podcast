@@ -12,7 +12,7 @@ const FeedSchema = Type.Object({
         "https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md",
       ),
     }),
-    channel: Type.Array(ChannelSchema),
+    channel: ChannelSchema,
   }),
 });
 
