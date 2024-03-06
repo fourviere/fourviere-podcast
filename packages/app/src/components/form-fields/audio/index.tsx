@@ -103,7 +103,7 @@ const Audio = ({ name, feedId }: AudioProps) => {
 
   return (
     <>
-      {status?.progress && (
+      {status?.progress ? (
         <Container flex="row-middle" spaceX="sm" wFull>
           <Progress progress={status.progress} />
           <Button
@@ -115,9 +115,9 @@ const Audio = ({ name, feedId }: AudioProps) => {
             Abort
           </Button>
         </Container>
-      )}
+      ) : null}
 
-      {!status?.progress && (
+      {!status?.progress ? (
         <Container flex="col" spaceY="md" wFull>
           {field.value && <AudioPlayer src={field?.value?.url} />}
           <Container flex="col" spaceY="sm" wFull>
@@ -152,7 +152,7 @@ const Audio = ({ name, feedId }: AudioProps) => {
             )}
           </Container>
         </Container>
-      )}
+      ) : null}
     </>
   );
 };
