@@ -4,11 +4,23 @@ type Props = {
   progress: number;
   showValue?: boolean;
   height?: "px" | "sm" | "md";
+  width?: "sm" | "md";
 };
 
-export default function Progress({ progress, showValue, height }: Props) {
+export default function Progress({
+  progress,
+  showValue,
+  height,
+  width,
+}: Props) {
   return (
-    <div className="w-full rounded-full border border-slate-200">
+    <div
+      className={classNames("rounded-full border border-slate-200", {
+        "w-12": width === "sm",
+        "w-8": width === "md",
+        "w-full": !width,
+      })}
+    >
       <div
         className={classNames(
           "m-px rounded-full bg-slate-600 text-center text-xs font-medium leading-none text-slate-100 transition-all duration-500",

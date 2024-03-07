@@ -16,6 +16,7 @@ const ARRAYS: string[] = [
   `rss.channel.item`,
   `rss.channel.link`,
   `rss.channel.item.link`,
+  `rss.channel.podcast:value.podcast:valueRecipient`,
 ] as const;
 
 const CONFIG_PARSER: X2jOptions = {
@@ -37,6 +38,7 @@ const CONFIG_BUILDER: XmlBuilderOptions = {
   ignoreAttributes: false,
   attributeNamePrefix: "",
   attributesGroupName: "@",
+  format: true,
 };
 
 const parser = new XMLParser(CONFIG_PARSER);

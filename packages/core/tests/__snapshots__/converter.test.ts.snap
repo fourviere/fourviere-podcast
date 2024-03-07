@@ -2560,16 +2560,18 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "method": "keysend",
           "type": "lightning",
         },
-        "podcast:valueRecipient": {
-          "@": {
-            "address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
-            "customKey": 696969,
-            "customValue": "wpR6rfgvTTRpzDoDkdX7",
-            "name": "Digitalia",
-            "split": 100,
-            "type": "node",
+        "podcast:valueRecipient": [
+          {
+            "@": {
+              "address": "030a58b8653d32b99200a2334cfe913e51dc7d155aa0116c176657a4f1722677a3",
+              "customKey": 696969,
+              "customValue": "wpR6rfgvTTRpzDoDkdX7",
+              "name": "Digitalia",
+              "split": 100,
+              "type": "node",
+            },
           },
-        },
+        ],
       },
       "pubDate": "Mon, 30 Oct 2023 23:49:52 +0100",
       "title": "Digitalia",

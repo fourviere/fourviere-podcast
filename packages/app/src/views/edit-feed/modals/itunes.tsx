@@ -4,13 +4,13 @@ import FormRow from "@fourviere/ui/lib/form/form-row";
 import Input from "@fourviere/ui/lib/form/fields/input";
 import { Formik } from "formik";
 import { FormField } from "@fourviere/ui/lib/form/form-field";
-import UseCurrentFeed from "../../hooks/use-current-feed.tsx";
-import useTranslations from "../../hooks/use-translations.tsx";
+import UseCurrentFeed from "../../../hooks/use-current-feed.tsx";
+import useTranslations from "../../../hooks/use-translations.tsx";
 import FormObjectField from "@fourviere/ui/lib/form/form-object-field";
 import Boolean from "@fourviere/ui/lib/form/fields/boolean";
-import { Categories } from "../../components/form-fields/categories.tsx";
+import { Categories } from "../../../components/form-fields/categories.tsx";
 import ContainerTitle from "@fourviere/ui/lib/container-title.tsx";
-import Img from "../../components/form-fields/image/index.tsx";
+import Img from "../../../components/form-fields/image/index.tsx";
 
 export default function Itunes() {
   const currentFeed = UseCurrentFeed();

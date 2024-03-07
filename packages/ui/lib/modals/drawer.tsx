@@ -10,6 +10,7 @@ const Backdrop = ({ onClick }: { onClick: React.MouseEventHandler }) => (
     animate={{
       opacity: 1,
       transition: { ease: "easeOut", duration: 0.6 },
+      zIndex: 10000,
     }}
     exit={{
       opacity: 0,
@@ -22,7 +23,7 @@ const CloseButton = tw.button`rounded-full text-xs absolute right-2 leading-none
 
 const containerTypes = {
   top: {
-    classes: `fixed top-0 right-0 left-0 z-30`,
+    classes: `fixed top-0 right-0 left-0`,
     animations: {
       initial: { translateY: -100, opacity: 0 },
       animate: {
@@ -38,9 +39,9 @@ const containerTypes = {
     },
   },
   bottom: {
-    classes: `fixed bottom-0 right-5 left-5 z-30 rounded-t-xl`,
+    classes: `fixed bottom-0 right-5 left-5 rounded-t-xl`,
     animations: {
-      initial: { translateY: 100, opacity: 0 },
+      initial: { translateY: 100, opacity: 0, zIndex: 100000 },
       animate: {
         translateY: 0,
         opacity: 1,
@@ -54,9 +55,9 @@ const containerTypes = {
     },
   },
   left: {
-    classes: `fixed top-0 bottom-0 left-0 z-30`,
+    classes: `fixed top-0 bottom-0 left-0`,
     animations: {
-      initial: { translateX: -100, opacity: 0 },
+      initial: { translateX: -100, opacity: 0, zIndex: 100000 },
       animate: {
         translateX: 0,
         opacity: 1,
@@ -70,13 +71,14 @@ const containerTypes = {
     },
   },
   right: {
-    classes: `fixed top-0 bottom-0 right-0 z-30`,
+    classes: `fixed top-0 bottom-0 right-0`,
     animations: {
       initial: { translateX: 100, opacity: 0 },
       animate: {
         translateX: 0,
         opacity: 1,
         transition: { delay: 0.2, ease: "easeOut" },
+        zIndex: 100000,
       },
       exit: {
         translateX: 100,
@@ -105,7 +107,7 @@ const Container = ({
   </motion.div>
 );
 
-const OuterContainer = tw.div`fixed top-0 right-0 bottom-0 left-0 `;
+const OuterContainer = tw.div`fixed top-0 right-0 bottom-0 left-0 z-30`;
 
 function Drawer({
   onClose,

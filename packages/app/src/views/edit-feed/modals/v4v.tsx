@@ -4,16 +4,16 @@ import FormRow from "@fourviere/ui/lib/form/form-row";
 import Input from "@fourviere/ui/lib/form/fields/input";
 import { FieldArray, Formik } from "formik";
 import { FormField } from "@fourviere/ui/lib/form/form-field";
-import UseCurrentFeed from "../../hooks/use-current-feed";
-import useTranslations from "../../hooks/use-translations";
+import UseCurrentFeed from "../../../hooks/use-current-feed";
+import useTranslations from "../../../hooks/use-translations";
 
 import ContainerTitle from "@fourviere/ui/lib/container-title";
 
-import FormBlocker from "../../components/form-blocker";
+import FormBlocker from "../../../components/form-blocker";
 import ResetField from "@fourviere/ui/lib/form/reset-field";
 import Undefined from "@fourviere/ui/lib/form/fields/undefined";
 
-const PREFIX = `rss.channel.0["podcast:value"]`;
+const PREFIX = `rss.channel["podcast:value"]`;
 
 export default function V4v() {
   const currentFeed = UseCurrentFeed();
@@ -35,7 +35,6 @@ export default function V4v() {
       {({ values, handleSubmit, dirty, isSubmitting }) => {
         return (
           <Container
-            scroll
             wFull
             flex="col"
             spaceY="sm"
@@ -132,11 +131,11 @@ export default function V4v() {
                 {({ remove, push }) => (
                   <Container spaceY="5xl">
                     {Array.isArray(
-                      values.rss.channel[0]?.["podcast:value"]?.[
+                      values.rss.channel?.["podcast:value"]?.[
                         "podcast:valueRecipient"
                       ],
                     )
-                      ? values.rss.channel[0]?.["podcast:value"]?.[
+                      ? values.rss.channel?.["podcast:value"]?.[
                           "podcast:valueRecipient"
                         ].map((_, index: number) => {
                           return (

@@ -4,11 +4,11 @@ const ValueRecipientSchema = Type.Object({
   "@": Type.Object({
     type: Type.String(),
     address: Type.String(),
-    split: Type.String(),
+    split: Type.Number(),
     name: Type.Optional(Type.String()),
-    customKey: Type.Optional(Type.String()),
+    customKey: Type.Optional(Type.Number()),
     customValue: Type.Optional(Type.String()),
-    fee: Type.Optional(Type.String()),
+    fee: Type.Optional(Type.Boolean()),
   }),
 });
 
@@ -20,7 +20,7 @@ const ValueSchema = Type.Object({
   "@": Type.Object({
     type: Type.String(),
     method: Type.String(),
-    suggested: Type.Optional(Type.String()),
+    suggested: Type.Optional(Type.Number()),
   }),
 });
 

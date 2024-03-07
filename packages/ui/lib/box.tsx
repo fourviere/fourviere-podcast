@@ -87,6 +87,7 @@ export function Container<E extends React.ElementType>({
     <Component
       {...props}
       className={classNames(
+        "z-0",
         `${containerXSpaces[spaceX]}`,
         `${containerYSpaces[spaceY]}`,
         `${containerPadding[padding]}`,
