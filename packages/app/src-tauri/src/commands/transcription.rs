@@ -55,12 +55,12 @@ fn string_to_whisper_model<'de, D: Deserializer<'de>>(
 #[tauri::command]
 pub async fn whisper_transcriber(app_handle: AppHandle, conf: WhisperConf) -> Result<Channel> {
     let (producer, receiver, channel) = build_channel(app_handle);
-    let transcribe = internal_whisper_transcriber(conf, producer, receiver).await;
+    let transcribe = whisper_transcriber_internal(conf, producer, receiver).await;
     log_if_error_and_return!(transcribe)?;
     Ok(channel)
 }
 
-async fn internal_whisper_transcriber(
+async fn whisper_transcriber_internal(
     conf: WhisperConf,
     mut producer: EventProducer,
     receiver: CommandReceiver,
@@ -172,7 +172,7 @@ mod test {
         },
     };
 
-    use super::{internal_whisper_transcriber, WhisperConf};
+    use super::{whisper_transcriber_internal, WhisperConf};
 
     #[ignore]
     #[tokio::test(flavor = "multi_thread")]
@@ -187,7 +187,7 @@ mod test {
 
         let (producer, receiver, mut rx_event, tx_command) = build_local_channel();
 
-        assert!(internal_whisper_transcriber(conf, producer, receiver)
+        assert!(whisper_transcriber_internal(conf, producer, receiver)
             .await
             .is_ok());
         let _ = tx_command.send(Command::Start).await;
