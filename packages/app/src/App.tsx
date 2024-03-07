@@ -10,11 +10,11 @@ import SourceCode from "./views/edit-feed/source-code";
 import General from "./views/edit-feed/general";
 import FeedConfiguration from "./views/edit-feed/configuration";
 import GlobalConfiguration from "./views/configuration";
-import Itunes from "./views/edit-feed/modals/itunes";
+import Itunes from "./views/edit-feed/forms/itunes";
 import { attachConsole } from "@tauri-apps/plugin-log";
 import ItemsIndex from "./views/edit-item/items-index";
 import ItemGeneral from "./views/edit-item/item-general";
-import V4v from "./views/edit-feed/modals/v4v";
+import V4v from "./views/edit-feed/forms/v4v";
 
 void attachConsole();
 

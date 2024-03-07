@@ -17,8 +17,8 @@ import FormBlocker from "../../components/form-blocker";
 import Img from "../../components/form-fields/image";
 import { LANGUAGE_BY_LOCALE } from "@fourviere/core/lib/const";
 import Drawer from "@fourviere/ui/lib/modals/drawer";
-import V4v from "./modals/v4v";
-import Itunes from "./modals/itunes";
+import V4v from "./forms/v4v";
+import Itunes from "./forms/itunes";
 import ButtonCard from "@fourviere/ui/lib/buttonCard";
 import BitcoinIcon from "@fourviere/ui/lib/icons/bitcoin";
 import ItunesIcon from "@fourviere/ui/lib/icons/itunes";
@@ -78,7 +78,7 @@ export default function General() {
                     description={t["edit_feed.presentation.title.description"]}
                   >
                     <FormRow
-                      name="rss.channel.title"
+                      htmlFor="rss.channel.title"
                       label={t["edit_feed.channel_field.show_name"]}
                     >
                       <FormField
@@ -92,7 +92,10 @@ export default function General() {
                         }
                       />
                     </FormRow>
-                    <FormRow name="rss.channel.image.url" label={"test image"}>
+                    <FormRow
+                      htmlFor="rss.channel.image.url"
+                      label={"test image"}
+                    >
                       <FormField
                         id="rss.channel.image.url"
                         name="rss.channel.image.url"
@@ -109,7 +112,7 @@ export default function General() {
                     </FormRow>
 
                     <FormRow
-                      name="rss.channel.description"
+                      htmlFor="rss.channel.description"
                       label={t["edit_feed.channel_field.show_description"]}
                     >
                       <FormField
@@ -127,7 +130,7 @@ export default function General() {
                       />
                     </FormRow>
                     <FormRow
-                      name={`rss.channel.["itunes:type"]`}
+                      htmlFor={`rss.channel.["itunes:type"]`}
                       label={t["edit_feed.channel_field.type"]}
                     >
                       <FormField
@@ -159,7 +162,7 @@ export default function General() {
                     description={t["edit_feed.indexing.title.description"]}
                   >
                     <FormRow
-                      name="rss.channel.category.0"
+                      htmlFor="rss.channel.category.0"
                       label={t["edit_feed.channel_field.language"]}
                     >
                       <FormField
@@ -184,7 +187,7 @@ export default function General() {
                       />
                     </FormRow>
                     <FormRow
-                      name="rss.channel.category.0"
+                      htmlFor="rss.channel.category.0"
                       label={t["edit_feed.channel_field.category"]}
                     >
                       <FormField
@@ -203,7 +206,7 @@ export default function General() {
                       />
                     </FormRow>
                     <FormRow
-                      name={`rss.channel.["itunes:explicit"]`}
+                      htmlFor={`rss.channel.["itunes:explicit"]`}
                       label={t["edit_feed.channel_field.explicit"]}
                     >
                       <FormField
@@ -225,7 +228,7 @@ export default function General() {
                       />
                     </FormRow>
                     <FormRow
-                      name={`rss.channel.["itunes:block"]`}
+                      htmlFor={`rss.channel.["itunes:block"]`}
                       label={t["edit_feed.channel_field.block"]}
                     >
                       <FormField
@@ -247,7 +250,7 @@ export default function General() {
                       />
                     </FormRow>
                     <FormRow
-                      name={`rss.channel.["itunes:complete"]`}
+                      htmlFor={`rss.channel.["itunes:complete"]`}
                       label={t["edit_feed.channel_field.complete"]}
                     >
                       <FormField
@@ -270,7 +273,7 @@ export default function General() {
                     </FormRow>
 
                     <FormRow
-                      name={`rss.channel.["itunes:new-feed-url"]`}
+                      htmlFor={`rss.channel.["itunes:new-feed-url"]`}
                       label={t["edit_feed.channel_field.new_feed_url"]}
                     >
                       <FormField
@@ -289,7 +292,7 @@ export default function General() {
                     description={t["edit_feed.ownership.title.description"]}
                   >
                     <FormRow
-                      name={`rss.channel.copyright`}
+                      htmlFor={`rss.channel.copyright`}
                       label={t["edit_feed.channel_field.copyright"]}
                     >
                       <FormField
@@ -303,7 +306,7 @@ export default function General() {
                       />
                     </FormRow>
                     <FormRow
-                      name={`rss.channel.["itunes:author"]`}
+                      htmlFor={`rss.channel.["itunes:author"]`}
                       label={t["edit_feed.channel_field.author"]}
                     >
                       <FormField
@@ -329,7 +332,7 @@ export default function General() {
                       label={t["edit_feed.channel_field.owner"]}
                     >
                       <FormRow
-                        name={`rss.channel.["itunes:owner"].name`}
+                        htmlFor={`rss.channel.["itunes:owner"].name`}
                         label={t["edit_feed.channel_field.owner.name"]}
                       >
                         <FormField
@@ -339,7 +342,7 @@ export default function General() {
                         />
                       </FormRow>
                       <FormRow
-                        name={`rss.channel.["itunes:owner"].email`}
+                        htmlFor={`rss.channel.["itunes:owner"].email`}
                         label={t["edit_feed.channel_field.owner.email"]}
                       >
                         <FormField

@@ -99,7 +99,7 @@ export default function ItemGeneral() {
                   description={t["edit_feed.items_fields.media.description"]}
                 >
                   <FormRow
-                    name="rss.channel.item[${itemIndex}].enclosure.@.url"
+                    htmlFor="rss.channel.item[${itemIndex}].enclosure.@.url"
                     label={t["edit_feed.items_fields.enclosure_url"]}
                   >
                     <FormField<typeof AudioField>
@@ -118,7 +118,7 @@ export default function ItemGeneral() {
                   </FormRow>
 
                   <FormRow
-                    name={`rss.channel.item[${itemIndex}]["itunes:duration"]`}
+                    htmlFor={`rss.channel.item[${itemIndex}]["itunes:duration"]`}
                     label={t["edit_feed.items_fields.duration"]}
                   >
                     <FormField
@@ -143,7 +143,7 @@ export default function ItemGeneral() {
                   }
                 >
                   <FormRow
-                    name="rss.channel.title"
+                    htmlFor="rss.channel.title"
                     label={t["edit_feed.items_fields.title"]}
                   >
                     <FormField
@@ -159,7 +159,7 @@ export default function ItemGeneral() {
                   </FormRow>
 
                   <FormRow
-                    name={`rss.channel.item[${itemIndex}]["podcast:season"]`}
+                    htmlFor={`rss.channel.item[${itemIndex}]["podcast:season"]`}
                     label={t["edit_feed.items_fields.podcast_season"]}
                   >
                     <FormField
@@ -173,7 +173,7 @@ export default function ItemGeneral() {
                     />
                   </FormRow>
                   <FormRow
-                    name={`rss.channel.item[${itemIndex}]["podcast:episode"]`}
+                    htmlFor={`rss.channel.item[${itemIndex}]["podcast:episode"]`}
                     label={t["edit_feed.items_fields.podcast_episode"]}
                   >
                     <FormField
@@ -188,7 +188,7 @@ export default function ItemGeneral() {
                   </FormRow>
 
                   <FormRow
-                    name="rss.channel.guid.#text"
+                    htmlFor="rss.channel.guid.#text"
                     label={t["edit_feed.items_fields.guid"]}
                   >
                     <Container flex="col" spaceY="md">
@@ -220,7 +220,7 @@ export default function ItemGeneral() {
                     </Container>
                   </FormRow>
                   <FormRow
-                    name={`rss.channel.item[${itemIndex}].author`}
+                    htmlFor={`rss.channel.item[${itemIndex}].author`}
                     label={t["edit_feed.items_fields.author"]}
                   >
                     <FormField
@@ -234,7 +234,7 @@ export default function ItemGeneral() {
                     />
                   </FormRow>
 
-                  <FormRow name="rss.channel.image.url" label={"test image"}>
+                  <FormRow htmlFor="rss.channel.image.url" label={"test image"}>
                     <FormField
                       id={`rss.channel.item.${itemIndex}.["itunes:image"].@.href`}
                       name={`rss.channel.item.${itemIndex}.["itunes:image"].@.href`}
@@ -254,7 +254,7 @@ export default function ItemGeneral() {
                     values={values.rss.channel.item?.[Number(itemIndex)].link}
                   />
                   <FormRow
-                    name="rss.channel.description"
+                    htmlFor="rss.channel.description"
                     label={t["edit_feed.items_fields.description"]}
                   >
                     <FormField
@@ -275,7 +275,7 @@ export default function ItemGeneral() {
                   </FormRow>
 
                   <FormRow
-                    name="rss.channel.item[${itemIndex}]['itunes:explicit']"
+                    htmlFor="rss.channel.item[${itemIndex}]['itunes:explicit']"
                     label={t["edit_feed.items_fields.explicit"]}
                   >
                     <FormField
@@ -300,7 +300,7 @@ export default function ItemGeneral() {
                   description={t["edit_feed.items_fields.itunes.description"]}
                 >
                   <FormRow
-                    name={`rss.channel.item[${itemIndex}]["itunes:subtitle"]`}
+                    htmlFor={`rss.channel.item[${itemIndex}]["itunes:subtitle"]`}
                     label={t["edit_feed.items_fields.itunes_subtitle"]}
                   >
                     <FormField
@@ -314,7 +314,7 @@ export default function ItemGeneral() {
                     />
                   </FormRow>
                   <FormRow
-                    name="rss.channel.description"
+                    htmlFor="rss.channel.description"
                     label={t["edit_feed.items_fields.itunes_summary"]}
                   >
                     <FormField<typeof CKEditor>
@@ -335,7 +335,7 @@ export default function ItemGeneral() {
                     />
                   </FormRow>
                   <FormRow
-                    name={`rss.channel.item[${itemIndex}]["itunes:episodeType"]`}
+                    htmlFor={`rss.channel.item[${itemIndex}]["itunes:episodeType"]`}
                     label={t["edit_feed.items_fields.episode_type"]}
                   >
                     <FormField
@@ -361,7 +361,7 @@ export default function ItemGeneral() {
                     t["edit_feed.configuration.feed.actions.description"]
                   }
                 >
-                  <FormRow name="feed.actions">
+                  <FormRow htmlFor="feed.actions">
                     <Container wFull spaceX="sm" spaceY="sm">
                       <Button
                         size="lg"

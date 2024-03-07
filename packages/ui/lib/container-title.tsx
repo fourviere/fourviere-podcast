@@ -1,6 +1,7 @@
 import { PropsWithChildren } from "react";
 import Button from "./button";
 import { CheckIcon } from "@heroicons/react/24/outline";
+import { Title } from "./typography";
 
 type Props = {
   title?: string;
@@ -26,7 +27,7 @@ const ContainerTitle = ({
   return (
     <div className="sticky top-0 z-10 flex w-full items-center border-b border-slate-100 bg-slate-50 bg-opacity-95 p-5 text-xl">
       <div className="flex-shrink flex-grow">
-        <h1 className="leading-none">{children}</h1>
+        <Title>{children}</Title>
         {isDirty && (
           <div className="mt-[3px] animate-pulse text-xs leading-tight text-slate-400">
             This page contains unsaved changes

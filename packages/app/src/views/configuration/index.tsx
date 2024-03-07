@@ -55,7 +55,7 @@ const Configurations: React.FC<Props> = () => {
                 description={t["configurations.locale.description"]}
               >
                 <FormRow
-                  name="configurations.currentLanguage"
+                  htmlFor="configurations.currentLanguage"
                   label={t["configurations.locale.language"]}
                 >
                   <FormField
@@ -78,7 +78,7 @@ const Configurations: React.FC<Props> = () => {
                 description={t["configurations.podcast_index.description"]}
               >
                 <FormRow
-                  name="services.podcastIndex.enabled"
+                  htmlFor="services.podcastIndex.enabled"
                   label={t["configurations.podcast_index.enabled"]}
                 >
                   <FormField
@@ -93,7 +93,7 @@ const Configurations: React.FC<Props> = () => {
                   />
                 </FormRow>
                 <FormRow
-                  name="configurations.services.podcastIndex.apiKey"
+                  htmlFor="configurations.services.podcastIndex.apiKey"
                   label={t["configurations.podcast_index.api_key"]}
                 >
                   <FormField
@@ -105,7 +105,7 @@ const Configurations: React.FC<Props> = () => {
                   />
                 </FormRow>
                 <FormRow
-                  name="configurations.services.podcastIndex.apiSecret"
+                  htmlFor="configurations.services.podcastIndex.apiSecret"
                   label={t["configurations.podcast_index.api_secret"]}
                 >
                   <FormField

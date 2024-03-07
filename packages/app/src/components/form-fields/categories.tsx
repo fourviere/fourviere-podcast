@@ -22,7 +22,7 @@ export const Categories = ({ name }: Props) => {
   return (
     <FieldArray name={name}>
       {({ remove, push }) => (
-        <FormRow name="itunes_ext.categories" label="itunes categories">
+        <FormRow htmlFor="itunes_ext.categories" label="itunes categories">
           <div className="space-y-1">
             {categories.map((category, index) => {
               const subCategories = APPLE_PODCAST_CATEGORIES.find(

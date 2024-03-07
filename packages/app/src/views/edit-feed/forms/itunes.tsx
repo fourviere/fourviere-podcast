@@ -64,7 +64,7 @@ export default function Itunes() {
                 label={t["edit_feed.channel_field.itunes.image"]}
               >
                 <FormRow
-                  name="rss.channel.['itunes:image'].@.href"
+                  htmlFor="rss.channel.['itunes:image'].@.href"
                   label={"test image"}
                 >
                   <FormField
@@ -95,7 +95,7 @@ export default function Itunes() {
                 label={t["edit_feed.channel_field.owner"]}
               >
                 <FormRow
-                  name={`rss.channel.["itunes:owner"].name`}
+                  htmlFor={`rss.channel.["itunes:owner"].name`}
                   label={t["edit_feed.channel_field.owner.name"]}
                 >
                   <FormField
@@ -105,7 +105,7 @@ export default function Itunes() {
                   />
                 </FormRow>
                 <FormRow
-                  name={`rss.channel.["itunes:owner"].email`}
+                  htmlFor={`rss.channel.["itunes:owner"].email`}
                   label={t["edit_feed.channel_field.owner.email"]}
                 >
                   <FormField
@@ -121,7 +121,7 @@ export default function Itunes() {
               description={t["edit_feed.itunes_indexing.title.description"]}
             >
               <FormRow
-                name={`rss.channel.["itunes:keywords"]`}
+                htmlFor={`rss.channel.["itunes:keywords"]`}
                 label={t["edit_feed.channel_field.itunes.keywords"]}
               >
                 <FormField
@@ -134,7 +134,7 @@ export default function Itunes() {
               </FormRow>
               <Categories name={`rss.channel.["itunes:category"]`} />
               <FormRow
-                name={`rss.channel.["itunes:complete"]`}
+                htmlFor={`rss.channel.["itunes:complete"]`}
                 label={t["edit_feed.channel_field.itunes.complete"]}
               >
                 <FormField

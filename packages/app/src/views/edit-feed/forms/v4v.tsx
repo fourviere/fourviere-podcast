@@ -58,7 +58,7 @@ export default function V4v() {
               description={t["edit_feed.channel_field.v4v.description"]}
             >
               <FormRow
-                name={`${PREFIX}["@"].name`}
+                htmlFor={`${PREFIX}["@"].name`}
                 label={t["edit_feed.channel_field.v4v.name"]}
               >
                 <FormField
@@ -69,7 +69,7 @@ export default function V4v() {
               </FormRow>
               <Container flex="row-center" spaceX="sm" spaceY="sm">
                 <FormRow
-                  name={`${PREFIX}["@"].customKey`}
+                  htmlFor={`${PREFIX}["@"].customKey`}
                   label={t["edit_feed.channel_field.v4v.customKey"]}
                 >
                   <FormField
@@ -79,7 +79,7 @@ export default function V4v() {
                   />
                 </FormRow>
                 <FormRow
-                  name={`${PREFIX}["@"].customValue`}
+                  htmlFor={`${PREFIX}["@"].customValue`}
                   label={t["edit_feed.channel_field.v4v.customValue"]}
                 >
                   <FormField
@@ -90,7 +90,7 @@ export default function V4v() {
                 </FormRow>
               </Container>
               <FormRow
-                name={`${PREFIX}["@"].type`}
+                htmlFor={`${PREFIX}["@"].type`}
                 label={t["edit_feed.channel_field.v4v.type"]}
               >
                 <FormField
@@ -102,7 +102,7 @@ export default function V4v() {
 
               <Container flex="row-center" spaceX="sm">
                 <FormRow
-                  name={`${PREFIX}["@"].method`}
+                  htmlFor={`${PREFIX}["@"].method`}
                   label={t["edit_feed.channel_field.v4v.method"]}
                 >
                   <FormField
@@ -112,7 +112,7 @@ export default function V4v() {
                   />
                 </FormRow>
                 <FormRow
-                  name={`${PREFIX}["@"].suggested`}
+                  htmlFor={`${PREFIX}["@"].suggested`}
                   label={t["edit_feed.channel_field.v4v.suggested"]}
                 >
                   <FormField
@@ -148,7 +148,7 @@ export default function V4v() {
                               <Container flex="col" spaceY="sm" wFull>
                                 <Container flex="row-center" spaceX="md">
                                   <FormRow
-                                    name={`${PREFIX}.["podcast:valueRecipient"].${index}.@.name`}
+                                    htmlFor={`${PREFIX}.["podcast:valueRecipient"].${index}.@.name`}
                                     label={
                                       t[
                                         "edit_feed.channel_field.v4v.valueRecipient.name"
@@ -162,7 +162,7 @@ export default function V4v() {
                                     />
                                   </FormRow>
                                   <FormRow
-                                    name={`${PREFIX}.["podcast:valueRecipient"].${index}.@.type`}
+                                    htmlFor={`${PREFIX}.["podcast:valueRecipient"].${index}.@.type`}
                                     label={
                                       t[
                                         "edit_feed.channel_field.v4v.valueRecipient.node"
@@ -178,7 +178,7 @@ export default function V4v() {
                                 </Container>
 
                                 <FormRow
-                                  name={`${PREFIX}.["podcast:valueRecipient"].${index}.@.address`}
+                                  htmlFor={`${PREFIX}.["podcast:valueRecipient"].${index}.@.address`}
                                   label={
                                     t[
                                       "edit_feed.channel_field.v4v.valueRecipient.address"
@@ -193,7 +193,7 @@ export default function V4v() {
                                 </FormRow>
                                 <Container flex="row-center" spaceX="md">
                                   <FormRow
-                                    name={`${PREFIX}.["podcast:valueRecipient"].${index}.@.customKey`}
+                                    htmlFor={`${PREFIX}.["podcast:valueRecipient"].${index}.@.customKey`}
                                     label={
                                       t[
                                         "edit_feed.channel_field.v4v.valueRecipient.customKey"
@@ -207,7 +207,7 @@ export default function V4v() {
                                     />
                                   </FormRow>
                                   <FormRow
-                                    name={`${PREFIX}.["podcast:valueRecipient"].${index}.@.customValue`}
+                                    htmlFor={`${PREFIX}.["podcast:valueRecipient"].${index}.@.customValue`}
                                     label={
                                       t[
                                         "edit_feed.channel_field.v4v.valueRecipient.customValue"
@@ -223,7 +223,7 @@ export default function V4v() {
                                 </Container>
                                 <Container flex="row-center" spaceX="md">
                                   <FormRow
-                                    name={`${PREFIX}.["podcast:valueRecipient"].${index}.@.split`}
+                                    htmlFor={`${PREFIX}.["podcast:valueRecipient"].${index}.@.split`}
                                     label={
                                       t[
                                         "edit_feed.channel_field.v4v.valueRecipient.split"
@@ -237,7 +237,7 @@ export default function V4v() {
                                     />
                                   </FormRow>
                                   <FormRow
-                                    name={`${PREFIX}.["podcast:valueRecipient"].${index}.@.fee`}
+                                    htmlFor={`${PREFIX}.["podcast:valueRecipient"].${index}.@.fee`}
                                     label={
                                       t[
                                         "edit_feed.channel_field.v4v.valueRecipient.fee"

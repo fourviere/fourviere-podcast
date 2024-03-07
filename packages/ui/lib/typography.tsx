@@ -8,3 +8,4 @@ export const Title = tw.div`text-xl font-semibold leading-1`;
 
 export const P = tw.p`text-sm`;
 export const Note = tw.p`text-xs text-slate-400`;
+export const Label = tw.p`text-xs text-slate-700`;

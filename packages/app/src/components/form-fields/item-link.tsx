@@ -17,7 +17,7 @@ interface Props {
 export const ItemLink = ({ name, values }: Props) => {
   const t = useTranslations();
   return (
-    <FormRow name={name} label={t["edit_feed.items_fields.link"]}>
+    <FormRow htmlFor={name} label={t["edit_feed.items_fields.link"]}>
       <FieldArray
         name={name}
         render={(arrayHelpers) => (
