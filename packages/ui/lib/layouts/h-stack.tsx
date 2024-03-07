@@ -57,8 +57,10 @@ interface HStackProps extends React.PropsWithChildren {
   as?: ElementType;
 }
 
-const HStack: React.FC<HStackProps> = ({
-  justifyContent,
+type DivProps = React.JSX.IntrinsicElements["div"];
+type FormProps = React.JSX.IntrinsicElements["form"];
+
+const HStack = ({
   alignItems,
   spacing,
   paddingX,
@@ -69,16 +71,17 @@ const HStack: React.FC<HStackProps> = ({
   children,
   as,
   scroll,
-}) => {
+  justifyContent,
+}: HStackProps & (DivProps | FormProps)) => {
   const Component = as ?? "div";
   // Use classNames to dynamically build the class string
   const classes = classNames({
-    [SPACING[spacing]]: SPACING,
-    [VERTICAL_JUSTIFY[justifyContent]]: justifyContent,
-    [VERTICAL_ALIGN[alignItems]]: alignItems,
+    [SPACING[spacing ?? "0"]]: SPACING,
+    [VERTICAL_JUSTIFY[justifyContent ?? "start"]]: justifyContent,
+    [VERTICAL_ALIGN[alignItems ?? "top"]]: alignItems,
     "flex-wrap": wrap,
-    [PADDING_X[paddingX]]: paddingX,
-    [PADDING_Y[paddingY]]: paddingY,
+    [PADDING_X[paddingX ?? "0"]]: paddingX,
+    [PADDING_Y[paddingY ?? "0"]]: paddingY,
     "w-full": wFull,
     "md:flex flex-row": responsive,
     "flex flex-row": !responsive,

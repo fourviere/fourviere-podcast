@@ -18,7 +18,6 @@ import Img from "../../components/form-fields/image";
 import { LANGUAGE_BY_LOCALE } from "@fourviere/core/lib/const";
 import Drawer from "@fourviere/ui/lib/modals/drawer";
 import V4v from "./modals/v4v";
-import Button from "@fourviere/ui/lib/button";
 import Itunes from "./modals/itunes";
 import ButtonCard from "@fourviere/ui/lib/buttonCard";
 import BitcoinIcon from "@fourviere/ui/lib/icons/bitcoin";
@@ -70,7 +69,7 @@ export default function General() {
                   spacing="4"
                   as="form"
                   wFull
-                  onSubmit={(e) => {
+                  onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
                     e.preventDefault();
                     handleSubmit();
                   }}
@@ -412,7 +411,7 @@ export default function General() {
               width="sm"
             />
           }
-          // description="Configure your podcast for iTunes. This includes the podcast title, description, category, and more. iTunes is the largest podcast directory and is used by many podcast apps."
+          description="Configure your podcast for iTunes. This includes the podcast title, description, category, and more. iTunes is the largest podcast directory and is used by many podcast apps."
           onClick={() => setItunesModal(true)}
           icon={ItunesIcon}
         />

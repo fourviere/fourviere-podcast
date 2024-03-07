@@ -53,11 +53,14 @@ interface VStackProps extends React.PropsWithChildren {
   wrap?: boolean;
   wFull?: boolean;
   responsive?: boolean;
-  scroll: boolean;
+  scroll?: boolean;
   as?: ElementType;
 }
 
-const VStack: React.FC<VStackProps> = ({
+type DivProps = React.JSX.IntrinsicElements["div"];
+type FormProps = React.JSX.IntrinsicElements["form"];
+
+const VStack = ({
   justifyContent,
   alignItems,
   spacing,
@@ -68,16 +71,16 @@ const VStack: React.FC<VStackProps> = ({
   responsive,
   children,
   as,
-}) => {
+}: VStackProps & (DivProps | FormProps)) => {
   const Component = as ?? "div";
   // Use classNames to dynamically build the class string
   const classes = classNames({
-    [SPACING[spacing]]: SPACING,
-    [VERTICAL_JUSTIFY[justifyContent]]: justifyContent,
-    [VERTICAL_ALIGN[alignItems]]: alignItems,
+    [SPACING[spacing ?? "0"]]: SPACING,
+    [VERTICAL_JUSTIFY[justifyContent ?? "start"]]: justifyContent,
+    [VERTICAL_ALIGN[alignItems ?? "top"]]: alignItems,
     "flex-wrap": wrap,
-    [PADDING_X[paddingX]]: paddingX,
-    [PADDING_Y[paddingY]]: paddingY,
+    [PADDING_X[paddingX ?? 0]]: paddingX,
+    [PADDING_Y[paddingY ?? 0]]: paddingY,
     "w-full": wFull,
     "md:flex flex-col": responsive,
     "flex flex-col": !responsive,

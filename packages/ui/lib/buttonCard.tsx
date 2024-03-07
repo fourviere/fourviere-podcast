@@ -49,7 +49,7 @@ const ButtonCard: React.FC<ButtonCardProps> = ({
 
       <div className="space-y-3">
         <H1>{title}</H1>
-        {description <P className="text-xs ">{description}</P>
+        {description && <P className="text-xs ">{description}</P>}
       </div>
     </button>
   );
