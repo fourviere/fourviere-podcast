@@ -29,10 +29,10 @@ pub mod test_utility {
     }
 
     #[cfg(not(windows))]
-    pub fn copy_test_binary_to_deps(file_name: &str) -> std::io::Result<u64> {
+    pub fn copy_binary_to_deps(file_name: &str) -> std::io::Result<u64> {
         let prj_dir = env!("CARGO_MANIFEST_DIR");
-        let source = format!("{prj_dir}/target/debug/{file_name}.exe");
-        let dest = format!("{prj_dir}/target/debug/deps/{file_name}.exe");
+        let source = format!("{prj_dir}/target/debug/{file_name}");
+        let dest = format!("{prj_dir}/target/debug/deps/{file_name}");
         std::fs::copy(&source, &dest)
     }
 }
