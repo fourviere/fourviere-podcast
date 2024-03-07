@@ -5,9 +5,11 @@ use kalosm_sound::{
     rodio::{decoder::DecoderError, Decoder},
     Whisper, WhisperLanguage, WhisperSource,
 };
-use metadata::MediaFileMetadata;
 use serde::{Deserialize, Deserializer};
-use tauri::AppHandle;
+use tauri::{
+    api::process::{Command, CommandEvent},
+    AppHandle,
+};
 use tauri_plugin_channel::Channel;
 use tokio::{select, spawn, sync::mpsc};
 use tokio_util::sync::CancellationToken;
@@ -53,18 +55,18 @@ fn string_to_whisper_model<'de, D: Deserializer<'de>>(
 #[tauri::command]
 pub async fn whisper_transcriber(app_handle: AppHandle, conf: WhisperConf) -> Result<Channel> {
     let (producer, receiver, channel) = build_channel(app_handle);
-    let transcribe = internal_whisper_transcriber(conf, producer, receiver);
+    let transcribe = internal_whisper_transcriber(conf, producer, receiver).await;
     log_if_error_and_return!(transcribe)?;
     Ok(channel)
 }
 
-fn internal_whisper_transcriber(
+async fn internal_whisper_transcriber(
     conf: WhisperConf,
     mut producer: EventProducer,
     receiver: CommandReceiver,
 ) -> Result<()> {
     let audio = load_audio(&conf.audio_path)?;
-    let audio_duration_secs = get_audio_duration_secs(&conf.audio_path);
+    let audio_duration_secs = get_audio_duration_secs(&conf.audio_path).await?;
     let (tx, mut rx) = mpsc::unbounded_channel();
 
     let model = Whisper::builder()
@@ -131,13 +133,30 @@ fn load_audio(path: &Option<PathBuf>) -> Result<Decoder<BufReader<File>>> {
     }
 }
 
-fn get_audio_duration_secs(path: &Option<PathBuf>) -> f64 {
-    match path {
-        Some(path) => MediaFileMetadata::new(&path)
-            .map(|val| val._duration.unwrap_or_default())
-            .unwrap_or_default(),
-        None => 0.,
+async fn get_audio_duration_secs(path: &Option<PathBuf>) -> Result<f64> {
+    let mut duration_string = "".to_owned();
+    if let Some(path) = path {
+        let sidecar = Command::new_sidecar("ffprobe")?.args([
+            "-show_entries",
+            "format=duration",
+            "-v",
+            "quiet",
+            "-print_format",
+            "json",
+            path.to_str().unwrap_or(""),
+        ]);
+        let (mut rx, _) = sidecar.spawn().unwrap();
+        while let Some(event) = rx.recv().await {
+            if let CommandEvent::Stdout(line) = event {
+                if line.contains("duration") {
+                    if let Some((_, value)) = line.split_once(':') {
+                        duration_string = value.trim().replace('"', "")
+                    }
+                }
+            }
+        }
     }
+    duration_string.parse().map_err(Into::into)
 }
 
 #[cfg(test)]
@@ -147,7 +166,10 @@ mod test {
     use crate::{
         commands::common::build_local_channel,
         test_file,
-        utils::event::{Command, Event},
+        utils::{
+            event::{Command, Event},
+            test::test_utility::copy_binary_to_deps,
+        },
     };
 
     use super::{internal_whisper_transcriber, WhisperConf};
@@ -161,9 +183,13 @@ mod test {
             model: kalosm_sound::WhisperSource::Tiny,
         };
 
+        copy_binary_to_deps("ffprobe").unwrap();
+
         let (producer, receiver, mut rx_event, tx_command) = build_local_channel();
 
-        assert!(internal_whisper_transcriber(conf, producer, receiver).is_ok());
+        assert!(internal_whisper_transcriber(conf, producer, receiver)
+            .await
+            .is_ok());
         let _ = tx_command.send(Command::Start).await;
         let mut test_transcription = false;
         let mut test_100 = false;

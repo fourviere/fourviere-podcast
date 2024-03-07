@@ -27,6 +27,8 @@ pub enum Error {
     Decoder(#[from] kalosm_sound::rodio::decoder::DecoderError),
     #[error("Whisper instantation failed")]
     Whisper,
+    #[error("F64 parsing  failed")]
+    ParseFloat(#[from] std::num::ParseFloatError),
 }
 
 impl Serialize for Error {
