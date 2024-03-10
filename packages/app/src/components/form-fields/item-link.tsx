@@ -4,7 +4,7 @@ import Undefined from "@fourviere/ui/lib/form/fields/undefined";
 import { FormField } from "@fourviere/ui/lib/form/form-field";
 import FormRow from "@fourviere/ui/lib/form/form-row";
 import { FieldArray } from "formik";
-import useTranslations from "../../hooks/use-translations";
+import { useTranslation } from "react-i18next";
 import Input from "@fourviere/ui/lib/form/fields/input";
 
 const BASE_URL = "https://...";
@@ -15,9 +15,11 @@ interface Props {
 }
 
 export const ItemLink = ({ name, values }: Props) => {
-  const t = useTranslations();
+  const { t } = useTranslation("", {
+    keyPrefix: "",
+  });
   return (
-    <FormRow htmlFor={name} label={t["edit_feed.items_fields.link"]}>
+    <FormRow htmlFor={name} label={t("edit_feed.items_fields.link")}>
       <FieldArray
         name={name}
         render={(arrayHelpers) => (
@@ -30,9 +32,9 @@ export const ItemLink = ({ name, values }: Props) => {
                       id={`${name}.${index}`}
                       name={`${name}.${index}`}
                       as={Input}
-                      emtpyValueButtonMessage={
-                        t["ui.forms.empty_field.message"]
-                      }
+                      emtpyValueButtonMessage={t(
+                        "ui.forms.empty_field.message",
+                      )}
                       initValue={BASE_URL}
                       overrideReset={() => arrayHelpers.remove(index)}
                       postSlot={
@@ -49,7 +51,7 @@ export const ItemLink = ({ name, values }: Props) => {
               </>
             ) : (
               <Undefined onClick={() => arrayHelpers.push(BASE_URL)}>
-                {t["ui.forms.empty_field.message"]}
+                {t("ui.forms.empty_field.message")}
               </Undefined>
             )}
           </Container>

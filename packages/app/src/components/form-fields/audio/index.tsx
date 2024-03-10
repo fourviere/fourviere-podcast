@@ -8,7 +8,7 @@ import Input from "@fourviere/ui/lib/form/fields/input";
 import { useField } from "formik";
 import uploadsStore from "../../../store/uploads";
 import { v4 as uuidv4 } from "uuid";
-import Progress from "@fourviere/ui/lib/progress";
+import Progress from "@fourviere/ui/lib/progress/linear";
 import { generateId } from "../../../store/uploads/utils";
 import useUploadChange from "../../../hooks/use-upload-change";
 import useSelectFile from "../../../hooks/use-select-file";

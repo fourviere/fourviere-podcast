@@ -37,7 +37,7 @@ export default React.forwardRef<HTMLInputElement, Props>(
         ) : (
           <img
             onClick={onImageClick}
-            className="h-24 w-24 cursor-pointer rounded border border-slate-300 object-cover shadow"
+            className="h-24 w-24 cursor-pointer rounded border border-slate-300 object-cover"
             src={field.value ?? "https://via.placeholder.com/150"}
           />
         )}
@@ -47,7 +47,7 @@ export default React.forwardRef<HTMLInputElement, Props>(
             <input
               ref={ref}
               {...field}
-              className="focus:shadow-outline w-full appearance-none rounded-lg border px-3 py-2 text-sm leading-tight shadow focus:outline-none"
+              className="w-full appearance-none rounded-lg border px-3 py-2 text-sm leading-tight focus:outline-none"
             />
             {meta.error && typeof meta.error === "string" && (
               <div className="w-50%  mx-3 rounded-b bg-rose-50 px-2 py-1 text-xs text-rose-600">

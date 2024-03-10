@@ -55,8 +55,8 @@ const useConfirmationModal = () => {
               icon={modal.icon ?? ExclamationTriangleIcon}
               title={modal.title}
               message={modal.message}
-              okButton={t["modals.confirmation.ok"]}
-              cancelButton={t["modals.confirmation.cancel"]}
+              okButton={t("modals.confirmation.ok")}
+              cancelButton={t("modals.confirmation.cancel")}
               ok={modal.ok}
               cancel={modal.cancel}
             />,

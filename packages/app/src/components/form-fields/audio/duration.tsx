@@ -2,7 +2,7 @@ import Input from "@fourviere/ui/lib/form/fields/input";
 import { useField } from "formik";
 import { useEffect, useState } from "react";
 import { getDuration } from "../../../native/audio";
-import useTranslations from "../../../hooks/use-translations";
+import { useTranslation } from "react-i18next";
 
 type DurationProps = {
   audioFieldName: string;
@@ -16,7 +16,9 @@ export default function Duration({
   const [audioField] = useField<string>(audioFieldName);
   const [field, meta, helpers] = useField<number>(durationFieldName);
   const [error, setError] = useState<string | undefined>(undefined);
-  const t = useTranslations();
+  const { t } = useTranslation("", {
+    keyPrefix: "",
+  });
 
   useEffect(() => {
     setError(undefined);
@@ -33,7 +35,7 @@ export default function Duration({
       })
       .catch(() => {
         void helpers.setValue(0);
-        setError(t["edit_feed.audio.duration.error"]);
+        setError(t("edit_feed.audio.duration.error"));
       });
   }, [audioField.value]);
 

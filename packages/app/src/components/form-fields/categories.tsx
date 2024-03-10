@@ -5,7 +5,7 @@ import { Field, FieldArray, useField } from "formik";
 import Select from "@fourviere/ui/lib/form/fields/select";
 import ResetField from "@fourviere/ui/lib/form/reset-field";
 import Undefined from "@fourviere/ui/lib/form/fields/undefined";
-import useTranslations from "../../hooks/use-translations.tsx";
+import { useTranslation } from "react-i18next";
 import { Feed } from "@fourviere/core/lib/schema/feed";
 
 interface Props {
@@ -13,7 +13,9 @@ interface Props {
 }
 
 export const Categories = ({ name }: Props) => {
-  const t = useTranslations();
+  const { t } = useTranslation("", {
+    keyPrefix: "",
+  });
 
   const [input] = useField<Feed["rss"]["channel"]["itunes:category"]>(name);
 
@@ -75,7 +77,7 @@ export const Categories = ({ name }: Props) => {
                   })
                 }
               >
-                {t["ui.forms.empty_field.message"]}
+                {t("ui.forms.empty_field.message")}
               </Undefined>
             )}
           </div>

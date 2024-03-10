@@ -33,21 +33,23 @@ const CKeditor = ({ value, setFieldValue, name }: Props) => {
     setData(value);
   }, [value]);
   return (
-    <div className="-p-px w-full appearance-none overflow-hidden break-words rounded-lg border bg-white leading-tight shadow">
-      <CKEditor
-        config={{
-          toolbar: TOOLBAR_CONFIG,
-        }}
-        editor={ClassicEditor}
-        data={data}
-        onChange={(_, editor) => {
-          if (data !== editor.getData()) {
-            setData(editor.getData());
-          }
-          void setFieldValue?.(name, editor.getData());
-        }}
-      />
-    </div>
+    <>
+      <div className="-p-px h-full w-full appearance-none self-stretch overflow-hidden break-words rounded-lg border bg-white leading-tight shadow">
+        <CKEditor
+          config={{
+            toolbar: TOOLBAR_CONFIG,
+          }}
+          editor={ClassicEditor}
+          data={data}
+          onChange={(_, editor) => {
+            if (data !== editor.getData()) {
+              setData(editor.getData());
+            }
+            void setFieldValue?.(name, editor.getData());
+          }}
+        />
+      </div>
+    </>
   );
 };
 

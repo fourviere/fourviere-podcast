@@ -6,14 +6,16 @@ import appStore from "../../store/app";
 import { useEffect, useState } from "react";
 import { Container } from "@fourviere/ui/lib/box";
 import ContainerTitle from "@fourviere/ui/lib/container-title";
-import useTranslations from "../../hooks/use-translations";
+import { useTranslation } from "react-i18next";
 
 export default function SourceCode() {
   const { feedId } = useParams<{ feedId: string }>();
   const { addError } = appStore((state) => state);
   const [tempState, setTempState] = useState<string>();
   const [isDirty, setIsDirty] = useState<boolean>();
-  const t = useTranslations();
+  const { t } = useTranslation("", {
+    keyPrefix: "",
+  });
 
   if (!feedId) {
     return null;
@@ -54,7 +56,7 @@ export default function SourceCode() {
           void setState();
         }}
       >
-        {t["edit_feed.channel_field.itunes.title"]}
+        {t("edit_feed.channel_field.itunes.title")}
       </ContainerTitle>
 
       <Editor

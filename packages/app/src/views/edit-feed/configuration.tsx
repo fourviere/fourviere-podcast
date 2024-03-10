@@ -6,7 +6,7 @@ import Boolean from "@fourviere/ui/lib/form/fields/boolean";
 import { Formik } from "formik";
 import { FormField } from "@fourviere/ui/lib/form/form-field";
 import UseCurrentFeed from "../../hooks/use-current-feed";
-import useTranslations from "../../hooks/use-translations";
+import { useTranslation } from "react-i18next";
 import Select from "@fourviere/ui/lib/form/fields/select";
 import { FC } from "react";
 import ContainerTitle from "@fourviere/ui/lib/container-title";
@@ -15,7 +15,9 @@ import FeedSync from "../../components/feed-sync";
 import FeedDeleter from "../../components/feed-deleter";
 export default function Configuration() {
   const currentFeed = UseCurrentFeed();
-  const t = useTranslations();
+  const { t } = useTranslation("", {
+    keyPrefix: "",
+  });
 
   if (!currentFeed) {
     return null;
@@ -39,15 +41,15 @@ export default function Configuration() {
               isSubmitting={isSubmitting}
               onSave={() => handleSubmit()}
             >
-              {t["edit_feed.configuration.title"]}
+              {t("edit_feed.configuration.title")}
             </ContainerTitle>
             <FormSection
-              title={t["edit_feed.configuration.feed.title"]}
-              description={t["edit_feed.configuration.feed.description"]}
+              title={t("edit_feed.configuration.feed.title")}
+              description={t("edit_feed.configuration.feed.description")}
             >
               <FormRow
                 htmlFor="feed.filename"
-                label={t["edit_feed.configuration.feed.filename"]}
+                label={t("edit_feed.configuration.feed.filename")}
               >
                 <FormField
                   id="feed.filename"
@@ -59,10 +61,10 @@ export default function Configuration() {
             </FormSection>
 
             <FormSection
-              title={t["edit_feed.configuration.remotes.title"]}
-              description={t["edit_feed.configuration.remotes.description"]}
+              title={t("edit_feed.configuration.remotes.title")}
+              description={t("edit_feed.configuration.remotes.description")}
             >
-              <FormRow htmlFor="" label={t["edit_feed.configuration.title"]}>
+              <FormRow htmlFor="" label={t("edit_feed.configuration.title")}>
                 <FormField
                   id="remotes.remote"
                   name="remotes.remote"
@@ -82,7 +84,7 @@ export default function Configuration() {
                 <>
                   <FormRow
                     htmlFor="remotes.s3.endpoint"
-                    label={t["edit_feed.configuration.s3.endpoint"]}
+                    label={t("edit_feed.configuration.s3.endpoint")}
                   >
                     <FormField
                       id="remotes.s3.endpoint"
@@ -92,7 +94,7 @@ export default function Configuration() {
                   </FormRow>
                   <FormRow
                     htmlFor="remotes.s3.region"
-                    label={t["edit_feed.configuration.s3.region"]}
+                    label={t("edit_feed.configuration.s3.region")}
                   >
                     <FormField
                       id="remotes.s3.region"
@@ -102,7 +104,7 @@ export default function Configuration() {
                   </FormRow>
                   <FormRow
                     htmlFor="remotes.s3.bucket_name"
-                    label={t["edit_feed.configuration.s3.bucket_name"]}
+                    label={t("edit_feed.configuration.s3.bucket_name")}
                   >
                     <FormField
                       id="remotes.s3.bucket_name"
@@ -112,7 +114,7 @@ export default function Configuration() {
                   </FormRow>
                   <FormRow
                     htmlFor="remotes.s3.access_key"
-                    label={t["edit_feed.configuration.s3.access_key"]}
+                    label={t("edit_feed.configuration.s3.access_key")}
                   >
                     <FormField
                       id="remotes.s3.access_key"
@@ -122,7 +124,7 @@ export default function Configuration() {
                   </FormRow>
                   <FormRow
                     htmlFor="remotes.s3.secret_key"
-                    label={t["edit_feed.configuration.s3.secret_key"]}
+                    label={t("edit_feed.configuration.s3.secret_key")}
                   >
                     <FormField
                       fieldProps={{ type: "password" }}
@@ -133,7 +135,7 @@ export default function Configuration() {
                   </FormRow>
                   <FormRow
                     htmlFor="remotes.s3.path"
-                    label={t["edit_feed.configuration.s3.path"]}
+                    label={t("edit_feed.configuration.s3.path")}
                   >
                     <FormField
                       id="remotes.s3.path"
@@ -143,13 +145,13 @@ export default function Configuration() {
                   </FormRow>
                   <FormRow
                     htmlFor="remotes.s3.https"
-                    label={t["edit_feed.configuration.s3.https"]}
+                    label={t("edit_feed.configuration.s3.https")}
                   >
                     <FormField
                       id="remotes.s3.https"
                       name="remotes.s3.https"
                       fieldProps={{
-                        label: t["edit_feed.configuration.s3.https.info"],
+                        label: t("edit_feed.configuration.s3.https.info"),
                         value: values.remotes.s3?.https,
                         setFieldValue,
                       }}
@@ -158,7 +160,7 @@ export default function Configuration() {
                   </FormRow>
                   <FormRow
                     htmlFor="remotes.s3.http_host"
-                    label={t["edit_feed.configuration.s3.http_host"]}
+                    label={t("edit_feed.configuration.s3.http_host")}
                   >
                     <FormField
                       id="remotes.s3.http_host"
@@ -173,7 +175,7 @@ export default function Configuration() {
                 <>
                   <FormRow
                     htmlFor="remotes.ftp.host"
-                    label={t["edit_feed.configuration.ftp.host"]}
+                    label={t("edit_feed.configuration.ftp.host")}
                   >
                     <FormField
                       id="remotes.ftp.host"
@@ -183,7 +185,7 @@ export default function Configuration() {
                   </FormRow>
                   <FormRow
                     htmlFor="remotes.ftp.port"
-                    label={t["edit_feed.configuration.ftp.port"]}
+                    label={t("edit_feed.configuration.ftp.port")}
                   >
                     <FormField
                       id="remotes.ftp.port"
@@ -194,7 +196,7 @@ export default function Configuration() {
                   </FormRow>
                   <FormRow
                     htmlFor="remotes.ftp.user"
-                    label={t["edit_feed.configuration.ftp.user"]}
+                    label={t("edit_feed.configuration.ftp.user")}
                   >
                     <FormField
                       id="remotes.ftp.user"
@@ -204,7 +206,7 @@ export default function Configuration() {
                   </FormRow>
                   <FormRow
                     htmlFor="remotes.ftp.password"
-                    label={t["edit_feed.configuration.ftp.password"]}
+                    label={t("edit_feed.configuration.ftp.password")}
                   >
                     <FormField
                       id="remotes.ftp.password"
@@ -215,7 +217,7 @@ export default function Configuration() {
                   </FormRow>
                   <FormRow
                     htmlFor="remotes.ftp.path"
-                    label={t["edit_feed.configuration.ftp.path"]}
+                    label={t("edit_feed.configuration.ftp.path")}
                   >
                     <FormField
                       id="remotes.ftp.path"
@@ -225,26 +227,26 @@ export default function Configuration() {
                   </FormRow>
                   <FormRow
                     htmlFor="remotes.ftp.https"
-                    label={t["edit_feed.configuration.ftp.https"]}
+                    label={t("edit_feed.configuration.ftp.https")}
                   >
                     <FormField
                       id="remotes.ftp.https"
                       name="remotes.ftp.https"
                       fieldProps={{
-                        label: t["edit_feed.configuration.ftp.https.info"],
+                        label: t("edit_feed.configuration.ftp.https.info"),
                         value: values.remotes.ftp?.https,
                         setFieldValue,
                       }}
                       initValue={true}
-                      emtpyValueButtonMessage={
-                        t["ui.forms.empty_field.message"]
-                      }
+                      emtpyValueButtonMessage={t(
+                        "ui.forms.empty_field.message",
+                      )}
                       as={Boolean}
                     />
                   </FormRow>
                   <FormRow
                     htmlFor="remotes.ftp.http_host"
-                    label={t["edit_feed.configuration.ftp.http_host"]}
+                    label={t("edit_feed.configuration.ftp.http_host")}
                   >
                     <FormField
                       id="remotes.ftp.http_host"
@@ -256,10 +258,10 @@ export default function Configuration() {
               )}
             </FormSection>
             <FormSection
-              title={t["edit_feed.configuration.feed.actions"]}
-              description={
-                t["edit_feed.configuration.feed.actions.description"]
-              }
+              title={t("edit_feed.configuration.feed.actions")}
+              description={t(
+                "edit_feed.configuration.feed.actions.description",
+              )}
             >
               <FormRow htmlFor="feed.actions">
                 <Container wFull spaceX="sm" spaceY="sm">

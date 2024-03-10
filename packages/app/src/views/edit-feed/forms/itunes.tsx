@@ -5,7 +5,7 @@ import Input from "@fourviere/ui/lib/form/fields/input";
 import { Formik } from "formik";
 import { FormField } from "@fourviere/ui/lib/form/form-field";
 import UseCurrentFeed from "../../../hooks/use-current-feed.tsx";
-import useTranslations from "../../../hooks/use-translations.tsx";
+import { useTranslation } from "react-i18next";
 import FormObjectField from "@fourviere/ui/lib/form/form-object-field";
 import Boolean from "@fourviere/ui/lib/form/fields/boolean";
 import { Categories } from "../../../components/form-fields/categories.tsx";
@@ -14,7 +14,9 @@ import Img from "../../../components/form-fields/image/index.tsx";
 
 export default function Itunes() {
   const currentFeed = UseCurrentFeed();
-  const t = useTranslations();
+  const { t } = useTranslation("", {
+    keyPrefix: "",
+  });
 
   if (!currentFeed) {
     return null;
@@ -44,16 +46,16 @@ export default function Itunes() {
               isSubmitting={isSubmitting}
               onSave={() => handleSubmit()}
             >
-              {t["edit_feed.channel_field.itunes.title"]}
+              {t("edit_feed.channel_field.itunes.title")}
             </ContainerTitle>
             <FormSection
-              title={t["edit_feed.itunes_presentation.title"]}
-              description={
-                t["edit_feed.channel_field.itunes.complete.description"]
-              }
+              title={t("edit_feed.itunes_presentation.title")}
+              description={t(
+                "edit_feed.channel_field.itunes.complete.description",
+              )}
             >
               <FormObjectField
-                emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                emtpyValueButtonMessage={t("ui.forms.empty_field.message")}
                 fieldName={`rss.channel.['itunes:image']`}
                 cols={1}
                 initValue={{
@@ -61,7 +63,7 @@ export default function Itunes() {
                     href: "https://",
                   },
                 }}
-                label={t["edit_feed.channel_field.itunes.image"]}
+                label={t("edit_feed.channel_field.itunes.image")}
               >
                 <FormRow
                   htmlFor="rss.channel.['itunes:image'].@.href"
@@ -75,28 +77,28 @@ export default function Itunes() {
                       feedId: currentFeed.feedId,
                       name: "rss.channel.['itunes:image'].@.href",
                     }}
-                    emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                    emtpyValueButtonMessage={t("ui.forms.empty_field.message")}
                     initValue="https://"
                   />
                 </FormRow>
               </FormObjectField>
             </FormSection>
             <FormSection
-              title={t["edit_feed.itunes_ownership.title"]}
-              description={t["edit_feed.itunes_ownership.title.description"]}
+              title={t("edit_feed.itunes_ownership.title")}
+              description={t("edit_feed.itunes_ownership.title.description")}
             >
               <FormObjectField
-                emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                emtpyValueButtonMessage={t("ui.forms.empty_field.message")}
                 fieldName={`rss.channel.["itunes:owner"]`}
                 initValue={{
                   "itunes:name": "Jhon Doe",
                   "itunes:email": "jhon@doe.audio",
                 }}
-                label={t["edit_feed.channel_field.owner"]}
+                label={t("edit_feed.channel_field.owner")}
               >
                 <FormRow
                   htmlFor={`rss.channel.["itunes:owner"].name`}
-                  label={t["edit_feed.channel_field.owner.name"]}
+                  label={t("edit_feed.channel_field.owner.name")}
                 >
                   <FormField
                     id={`rss.channel.["itunes:owner"].["itunes:name"]]`}
@@ -106,7 +108,7 @@ export default function Itunes() {
                 </FormRow>
                 <FormRow
                   htmlFor={`rss.channel.["itunes:owner"].email`}
-                  label={t["edit_feed.channel_field.owner.email"]}
+                  label={t("edit_feed.channel_field.owner.email")}
                 >
                   <FormField
                     id={`rss.channel.["itunes:owner"].["itunes:email"]`}
@@ -117,39 +119,40 @@ export default function Itunes() {
               </FormObjectField>
             </FormSection>
             <FormSection
-              title={t["edit_feed.itunes_indexing.title"]}
-              description={t["edit_feed.itunes_indexing.title.description"]}
+              title={t("edit_feed.itunes_indexing.title")}
+              description={t("edit_feed.itunes_indexing.title.description")}
             >
               <FormRow
                 htmlFor={`rss.channel.["itunes:keywords"]`}
-                label={t["edit_feed.channel_field.itunes.keywords"]}
+                label={t("edit_feed.channel_field.itunes.keywords")}
               >
                 <FormField
                   id={`rss.channel.["itunes:keywords"]`}
                   name={`rss.channel.["itunes:keywords"]`}
                   as={Input}
                   initValue="technology, news, podcast"
-                  emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                  emtpyValueButtonMessage={t("ui.forms.empty_field.message")}
                 />
               </FormRow>
               <Categories name={`rss.channel.["itunes:category"]`} />
               <FormRow
                 htmlFor={`rss.channel.["itunes:complete"]`}
-                label={t["edit_feed.channel_field.itunes.complete"]}
+                label={t("edit_feed.channel_field.itunes.complete")}
               >
                 <FormField
                   id={`rss.channel.["itunes:complete"]`}
                   name={`rss.channel.["itunes:complete"]`}
                   fieldProps={{
-                    label:
-                      t["edit_feed.channel_field.itunes.complete.description"],
+                    label: t(
+                      "edit_feed.channel_field.itunes.complete.description",
+                    ),
                     value: values.rss.channel["itunes:complete"],
                     setFieldValue,
                     mapBoolean: (b: boolean) => (b ? "yes" : undefined),
                     unmapBoolean: (b: string) => b === "yes",
                   }}
                   initValue={"yes"}
-                  emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                  emtpyValueButtonMessage={t("ui.forms.empty_field.message")}
                   as={Boolean}
                 />
               </FormRow>

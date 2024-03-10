@@ -9,6 +9,7 @@ const SPACING = {
   "4": "space-y-3",
   "5": "space-y-4",
   "6": "space-y-5",
+  "7": "space-y-6",
 } as const;
 const PADDING_X = {
   "0": "px-0",
@@ -18,6 +19,7 @@ const PADDING_X = {
   "4": "px-3",
   "5": "px-4",
   "6": "px-5",
+  "7": "px-6",
 } as const;
 const PADDING_Y = {
   "0": "py-0",
@@ -27,6 +29,7 @@ const PADDING_Y = {
   "4": "py-3",
   "5": "py-4",
   "6": "py-5",
+  "7": "py-6",
 } as const;
 
 const VERTICAL_ALIGN = {
@@ -54,7 +57,9 @@ interface VStackProps extends React.PropsWithChildren {
   wFull?: boolean;
   responsive?: boolean;
   scroll?: boolean;
+  style?: React.CSSProperties;
   as?: ElementType;
+  className?: string;
 }
 
 type DivProps = React.JSX.IntrinsicElements["div"];
@@ -70,24 +75,33 @@ const VStack = ({
   wFull,
   responsive,
   children,
+  style,
   as,
+  className,
 }: VStackProps & (DivProps | FormProps)) => {
   const Component = as ?? "div";
   // Use classNames to dynamically build the class string
-  const classes = classNames({
-    [SPACING[spacing ?? "0"]]: SPACING,
-    [VERTICAL_JUSTIFY[justifyContent ?? "start"]]: justifyContent,
-    [VERTICAL_ALIGN[alignItems ?? "top"]]: alignItems,
-    "flex-wrap": wrap,
-    [PADDING_X[paddingX ?? 0]]: paddingX,
-    [PADDING_Y[paddingY ?? 0]]: paddingY,
-    "w-full": wFull,
-    "md:flex flex-col": responsive,
-    "flex flex-col": !responsive,
-    "overflow-y-auto": "scroll",
-  });
+  const classes = classNames(
+    {
+      [SPACING[spacing ?? "0"]]: SPACING,
+      [VERTICAL_JUSTIFY[justifyContent ?? "start"]]: justifyContent,
+      [VERTICAL_ALIGN[alignItems ?? "top"]]: alignItems,
+      "flex-wrap": wrap,
+      [PADDING_X[paddingX ?? 0]]: paddingX,
+      [PADDING_Y[paddingY ?? 0]]: paddingY,
+      "w-full": wFull,
+      "md:flex flex-col": responsive,
+      "flex flex-col": !responsive,
+      "overflow-y-auto": "scroll",
+    },
+    className,
+  );
 
-  return <Component className={classes}>{children}</Component>;
+  return (
+    <Component className={classes} style={style}>
+      {children}
+    </Component>
+  );
 };
 
 export default VStack;

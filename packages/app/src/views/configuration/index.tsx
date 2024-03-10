@@ -1,45 +1,122 @@
 import { FullPageColumnLayout } from "@fourviere/ui/lib/layouts/full-page";
-import React, { FC } from "react";
+import React from "react";
 import SideMenu from "../../components/main-menu";
-import { Container } from "@fourviere/ui/lib/box";
-import FormSection from "@fourviere/ui/lib/form/form-section";
-import FormRow from "@fourviere/ui/lib/form/form-row";
 import Input from "@fourviere/ui/lib/form/fields/input";
-import { Formik } from "formik";
-import { FormField } from "@fourviere/ui/lib/form/form-field";
 import useConfigurations from "../../hooks/use-configurations";
-import useTranslations from "../../hooks/use-translations";
 import Select from "@fourviere/ui/lib/form/fields/select";
-import TRANSLATIONS from "../../translations";
 import Boolean from "@fourviere/ui/lib/form/fields/boolean";
-import ContainerTitle from "@fourviere/ui/lib/container-title";
-import FormBlocker from "../../components/form-blocker";
+import { useTranslation } from "react-i18next";
+import Form from "./Form";
+import i18n from "../../i18n";
+import { AppState } from "../../store/app";
+import VStack from "@fourviere/ui/lib/layouts/v-stack";
+import { Static, Type } from "@sinclair/typebox";
 
 interface Props {}
 
+const schema = Type.Object({
+  locale: Type.String(),
+  services: Type.Object({
+    podcastIndex: Type.Union([
+      Type.Object({
+        enabled: Type.Literal(true),
+        apiKey: Type.String({ default: "", minLength: 4 }),
+        apiSecret: Type.String({ default: "", minLength: 4 }),
+      }),
+      Type.Object({
+        enabled: Type.Literal(false),
+      }),
+    ]),
+  }),
+});
+type Schema = Static<typeof schema>;
+
 const Configurations: React.FC<Props> = () => {
   const { configurations, update } = useConfigurations();
-  const t = useTranslations();
+  const { t } = useTranslation("configuration", {
+    keyPrefix: "index",
+  });
   return (
     <FullPageColumnLayout>
       <SideMenu />
-      <Formik
+      <VStack scroll wFull>
+        <Form<Schema>
+          onSubmit={(values: Schema) => {
+            update(values as AppState);
+            i18n.changeLanguage(values.locale);
+          }}
+          title={t("title")}
+          sections={[
+            {
+              title: t("locale.title"),
+              description: t("locale.description"),
+              fields: [
+                {
+                  id: "configurations.currentLanguage",
+                  name: "locale",
+                  label: t("locale.fields.language.label"),
+                  type: "select",
+                  defaultValue: "en",
+                  component: Select,
+                  fieldProps: {
+                    options: [
+                      { value: "en", name: "English" },
+                      { value: "fr", name: "Français" },
+                      { value: "it", name: "Italiano" },
+                    ],
+                    labelProperty: "name",
+                    keyProperty: "value",
+                  },
+                },
+              ],
+            },
+            {
+              title: t("podcast_index.title"),
+              description: t("podcast_index.description"),
+              fields: [
+                {
+                  id: "configurations.services.podcastIndex.enabled",
+                  name: "services.podcastIndex.enabled",
+                  label: t("podcast_index.fields.enabled.label"),
+                  type: "boolean",
+                  defaultValue: false,
+                  component: Boolean,
+                },
+                {
+                  id: "configurations.services.podcastIndex.apiKey",
+                  name: "services.podcastIndex.apiKey",
+                  label: t("podcast_index.fields.api_key.label"),
+                  type: "input",
+                  defaultValue: "",
+                  component: Input,
+                },
+                {
+                  id: "configurations.services.podcastIndex.apiSecret",
+                  name: "services.podcastIndex.apiSecret",
+                  label: t("podcast_index.fields.api_secret.label"),
+                  type: "input",
+                  defaultValue: "",
+                  component: Input,
+                },
+              ],
+            },
+          ]}
+          data={configurations as Schema}
+          schema={schema}
+        />
+      </VStack>
+      {/* <Formik
         initialValues={configurations}
         enableReinitialize
         onSubmit={(values, { setSubmitting }) => {
           update(values);
+          i18n.changeLanguage(values.locale);
           setSubmitting(false);
         }}
       >
         {({ handleSubmit, setFieldValue, values, dirty, isSubmitting }) => {
           return (
-            <Container
-              scroll
-              wFull
-              flex="col"
-              as="form"
-              onSubmit={handleSubmit}
-            >
+            <VStack scroll wFull as="form" onSubmit={handleSubmit}>
               <FormBlocker dirty={dirty} />
 
               <ContainerTitle
@@ -47,26 +124,27 @@ const Configurations: React.FC<Props> = () => {
                 isSubmitting={isSubmitting}
                 onSave={() => handleSubmit()}
               >
-                {t["edit_feed.configuration.title"]}
+                {t("title")}
               </ContainerTitle>
 
               <FormSection
-                title={t["configurations.locale.title"]}
-                description={t["configurations.locale.description"]}
+                title={t("locale.title")}
+                description={t("locale.description")}
               >
                 <FormRow
                   htmlFor="configurations.currentLanguage"
-                  label={t["configurations.locale.language"]}
+                  label={t("locale.fields.language.label")}
                 >
                   <FormField
                     id="locale"
                     name="locale"
                     as={Select as FC}
                     fieldProps={{
-                      options: Object.keys(TRANSLATIONS).map((key) => ({
-                        value: key,
-                        name: key.toUpperCase(),
-                      })),
+                      options: [
+                        { value: "en", name: "English" },
+                        { value: "fr", name: "Français" },
+                        { value: "it", name: "Italiano" },
+                      ],
                       labelProperty: "name",
                       keyProperty: "value",
                     }}
@@ -74,18 +152,15 @@ const Configurations: React.FC<Props> = () => {
                 </FormRow>
               </FormSection>
               <FormSection
-                title={t["configurations.podcast_index.title"]}
-                description={t["configurations.podcast_index.description"]}
+                title={t("podcast_index.title")}
+                description={t("podcast_index.description")}
               >
-                <FormRow
-                  htmlFor="services.podcastIndex.enabled"
-                  label={t["configurations.podcast_index.enabled"]}
-                >
+                <FormRow htmlFor="services.podcastIndex.enabled">
                   <FormField
                     id="services.podcastIndex.enabled"
                     name="services.podcastIndex.enabled"
                     fieldProps={{
-                      label: t["configurations.podcast_index.enabled.label"],
+                      label: t("podcast_index.fields.enabled.label"),
                       setFieldValue,
                       value: values.services.podcastIndex.enabled,
                     }}
@@ -94,19 +169,19 @@ const Configurations: React.FC<Props> = () => {
                 </FormRow>
                 <FormRow
                   htmlFor="configurations.services.podcastIndex.apiKey"
-                  label={t["configurations.podcast_index.api_key"]}
+                  label={t("podcast_index.fields.api_key.label")}
                 >
                   <FormField
                     id="services.podcastIndex.apiKey"
                     name="services.podcastIndex.apiKey"
                     as={Input}
                     initValue="1234"
-                    emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                    emtpyValueButtonMessage={t("ui.forms.empty_field.message")}
                   />
                 </FormRow>
                 <FormRow
                   htmlFor="configurations.services.podcastIndex.apiSecret"
-                  label={t["configurations.podcast_index.api_secret"]}
+                  label={t("podcast_index.fields.api_secret.label")}
                 >
                   <FormField
                     id="services.podcastIndex.apiSecret"
@@ -115,15 +190,15 @@ const Configurations: React.FC<Props> = () => {
                       type: "password",
                     }}
                     initValue="1234"
-                    emtpyValueButtonMessage={t["ui.forms.empty_field.message"]}
+                    emtpyValueButtonMessage={t("ui.forms.empty_field.message")}
                     as={Input}
                   />
                 </FormRow>
               </FormSection>
-            </Container>
+            </VStack>
           );
         }}
-      </Formik>
+      </Formik> */}
     </FullPageColumnLayout>
   );
 };

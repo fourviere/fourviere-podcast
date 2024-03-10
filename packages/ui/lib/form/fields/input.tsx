@@ -1,19 +1,19 @@
 import classNames from "classnames";
 import { Container } from "@fourviere/ui/lib/box";
 import React from "react";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 
 type InputSize = "sm" | "base" | "lg" | "xl" | "2xl";
 
-const style = ({ error, size }: Pick<InputProps, "error" | "size">) =>
+const style = ({ size }: Pick<InputProps, "size">) =>
   classNames(
-    "shadow appearance-none border rounded-lg w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline ",
+    " appearance-none border rounded-lg w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline ",
     {
       "text-sm": size === "sm",
       "text-base": size === "base",
       "text-lg": size === "lg",
       "text-xl font-light": size === "xl",
       "text-2xl font-light": size === "2xl",
-      "text-rose-600 border-rose-600 placeholder:text-rose-400": !!error,
     },
   );
 
@@ -44,7 +44,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     <Container wFull flex="col">
       <input
         ref={ref}
-        className={style({ size, error })}
+        className={style({ size })}
         id={name}
         name={name}
         type={type}
@@ -54,8 +54,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       />
 
       {error && typeof error === "string" && (
-        <div className="w-50%  mx-3 rounded-b bg-rose-50 px-2 py-1 text-xs text-rose-600">
-          {error}
+        <div className="flex items-center space-x-1 rounded-b px-2 py-1 text-xs text-rose-600">
+          <ExclamationCircleIcon className=" h-3 w-3" />
+          <span>{error}</span>
         </div>
       )}
     </Container>

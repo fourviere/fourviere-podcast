@@ -4,18 +4,21 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import UseCurrentFeed from "../../hooks/use-current-feed";
 
-import CardGrid, { Card } from "@fourviere/ui/lib/lists/card-grid";
+import { Card } from "@fourviere/ui/lib/lists/card-grid";
 import ContainerTitle from "@fourviere/ui/lib/container-title";
 import { Container } from "@fourviere/ui/lib/box";
 import Button from "@fourviere/ui/lib/button";
-import useTranslations from "../../hooks/use-translations";
+import { useTranslation } from "react-i18next";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import feedStore from "../../store/feed";
+import Grid from "@fourviere/ui/lib/layouts/grid";
 
 interface Props {}
 
 const ItemsIndex: React.FC<Props> = () => {
-  const t = useTranslations();
+  const { t } = useTranslation("", {
+    keyPrefix: "",
+  });
   const currentFeed = UseCurrentFeed();
   const { addEpisodeToProject } = feedStore((state) => state);
 
@@ -36,13 +39,13 @@ const ItemsIndex: React.FC<Props> = () => {
               Icon={PlusCircleIcon}
               onClick={addEpisode}
             >
-              {t["edit_feed.items.add_episode"]}
+              {t("edit_feed.items.add_episode")}
             </Button>
           }
         >
-          {t["edit_feed.items.title"]}
+          {t("edit_feed.items.title")}
         </ContainerTitle>
-        <CardGrid title="Items">
+        <Grid cols="2" mdCols="4" lgCols="6">
           {currentFeed?.feed.rss.channel.item?.map((item) => (
             <NavLink
               key={item.guid["#text"]}
@@ -56,7 +59,7 @@ const ItemsIndex: React.FC<Props> = () => {
               />
             </NavLink>
           ))}
-        </CardGrid>
+        </Grid>
       </Container>
     </FullPageColumnLayout>
   );

@@ -14,7 +14,7 @@ const Backdrop = ({ onClick }: { onClick: React.MouseEventHandler }) => (
     }}
     exit={{
       opacity: 0,
-      transition: { delay: 0.2, ease: "easeOut" },
+      transition: { delay: 0.5, ease: "easeOut" },
     }}
   />
 );
@@ -30,6 +30,7 @@ const containerTypes = {
         translateY: 0,
         opacity: 1,
         transition: { delay: 0.2, ease: "easeOut" },
+        zIndex: 100000,
       },
       exit: {
         translateY: -100,
@@ -46,6 +47,7 @@ const containerTypes = {
         translateY: 0,
         opacity: 1,
         transition: { delay: 0.2, ease: "easeOut" },
+        zIndex: 100000,
       },
       exit: {
         translateY: 100,
@@ -62,6 +64,7 @@ const containerTypes = {
         translateX: 0,
         opacity: 1,
         transition: { delay: 0.2, ease: "easeOut" },
+        zIndex: 100000,
       },
       exit: {
         translateX: -100,

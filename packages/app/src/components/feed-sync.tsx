@@ -34,8 +34,8 @@ export default function FeedSync() {
           }
           if (
             await askForConfirmation({
-              title: t["edit_feed.feed-sync.ask_overwrite.title"],
-              message: t["edit_feed.feed-sync.ask_overwrite"],
+              title: t("edit_feed.feed-sync.ask_overwrite.title"),
+              message: t("edit_feed.feed-sync.ask_overwrite"),
             })
           ) {
             patchFeedFromFileContents(currentFeed.feedId!, content);
@@ -54,8 +54,8 @@ export default function FeedSync() {
 
         if (
           await askForConfirmation({
-            title: t["edit_feed.feed-sync.ask_overwrite.title"],
-            message: t["edit_feed.feed-sync.ask_overwrite"],
+            title: t("edit_feed.feed-sync.ask_overwrite.title"),
+            message: t("edit_feed.feed-sync.ask_overwrite"),
           })
         ) {
           setLoading(true);
@@ -63,7 +63,7 @@ export default function FeedSync() {
           setLoading(false);
         }
       } catch (e) {
-        addError(t["edit_feed.feed-sync.error_fetching_feed"]);
+        addError(t("edit_feed.feed-sync.error_fetching_feed"));
         setLoading(false);
       }
     }
@@ -80,7 +80,7 @@ export default function FeedSync() {
         isLoading={loading}
         Icon={ArrowDownOnSquareIcon}
       >
-        {t["edit_feed.feed-sync.button_label"]}
+        {t("edit_feed.feed-sync.button_label")}
       </Button>
     </>
   );

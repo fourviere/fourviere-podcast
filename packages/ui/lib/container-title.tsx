@@ -10,11 +10,13 @@ type Props = {
   isDirtyMessage?: string;
   onSave?: () => void;
   postSlot?: React.ReactNode;
+  isDisabled?: boolean;
 };
 
 const ContainerTitle = ({
   isDirty,
   isSubmitting,
+  isDisabled,
   onSave,
   children,
   postSlot,
@@ -43,7 +45,7 @@ const ContainerTitle = ({
       {!!onSave && (
         <Button
           size="md"
-          isDisabled={!isDirty && !isSubmitting}
+          isDisabled={!isDirty && !isSubmitting && !isDisabled}
           onClick={onSubmit}
           Icon={CheckIcon}
         >

@@ -76,7 +76,7 @@ export const usePodcastIndex = (/* arguments */) => {
     const { apiSecret, apiKey, enabled } = getConfigurations("podcastIndex");
 
     if (!enabled || !apiSecret || !apiKey) {
-      addError(t["start.start_by_index.errors.podcast_index_misconfigured"]);
+      addError(t("start.start_by_index.errors.podcast_index_misconfigured"));
       return;
     }
     setIsLoading(true);
@@ -84,7 +84,7 @@ export const usePodcastIndex = (/* arguments */) => {
       const response = await fetchAPI(query, apiKey, apiSecret);
       setFeeds(response.feeds);
     } catch (error) {
-      addError(t["start.start_by_index.errors.generic"]);
+      addError(t("start.start_by_index.errors.generic"));
     } finally {
       setIsLoading(false);
     }

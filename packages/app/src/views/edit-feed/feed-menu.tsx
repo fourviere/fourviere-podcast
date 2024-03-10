@@ -1,6 +1,6 @@
 import SideMenu, { SideMenuItem } from "@fourviere/ui/lib/menu/side-menu";
 import { NavLink, NavLinkProps } from "react-router-dom";
-import useTranslations from "../../hooks/use-translations";
+import { useTranslation } from "react-i18next";
 import {
   BanknotesIcon,
   CodeBracketSquareIcon,
@@ -12,7 +12,9 @@ import {
 import FeedUploader from "../../components/feed-uploader";
 
 export default function FeedMenu() {
-  const t = useTranslations();
+  const { t } = useTranslation("", {
+    keyPrefix: "",
+  });
   return (
     <SideMenu
       main={
@@ -23,7 +25,7 @@ export default function FeedMenu() {
             key="feed-basic"
             icon={<PencilSquareIcon />}
           >
-            {t["edit_feed.presentation.title"]}
+            {t("edit_feed.presentation.title")}
           </SideMenuItem>
 
           <SideMenuItem<NavLinkProps>
@@ -32,7 +34,7 @@ export default function FeedMenu() {
             key="feed-itunes"
             icon={<MusicalNoteIcon />}
           >
-            {t["edit_feed.channel_field.itunes.title"]}
+            {t("edit_feed.channel_field.itunes.title")}
           </SideMenuItem>
 
           <SideMenuItem<NavLinkProps>
@@ -41,7 +43,7 @@ export default function FeedMenu() {
             key="feed-v4v"
             icon={<BanknotesIcon />}
           >
-            {t["edit_feed.channel_field.v4v.title"]}
+            {t("edit_feed.channel_field.v4v.title")}
           </SideMenuItem>
 
           <hr />
@@ -52,7 +54,7 @@ export default function FeedMenu() {
             key="feed-items"
             icon={<QueueListIcon />}
           >
-            {t["edit_feed.items.title"]}
+            {t("edit_feed.items.title")}
           </SideMenuItem>
 
           <hr />
@@ -63,7 +65,7 @@ export default function FeedMenu() {
             key="feed-source-code"
             icon={<CodeBracketSquareIcon />}
           >
-            {t["edit_feed.source-code.title"]}
+            {t("edit_feed.source-code.title")}
           </SideMenuItem>
 
           <SideMenuItem<NavLinkProps>
@@ -72,7 +74,7 @@ export default function FeedMenu() {
             key="feed-config"
             icon={<Cog8ToothIcon />}
           >
-            {t["edit_feed.configuration.title"]}
+            {t("edit_feed.configuration.title")}
           </SideMenuItem>
         </>
       }

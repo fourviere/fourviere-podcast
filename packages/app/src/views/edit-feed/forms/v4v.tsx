@@ -5,7 +5,7 @@ import Input from "@fourviere/ui/lib/form/fields/input";
 import { FieldArray, Formik } from "formik";
 import { FormField } from "@fourviere/ui/lib/form/form-field";
 import UseCurrentFeed from "../../../hooks/use-current-feed";
-import useTranslations from "../../../hooks/use-translations";
+import { useTranslation } from "react-i18next";
 
 import ContainerTitle from "@fourviere/ui/lib/container-title";
 
@@ -17,7 +17,9 @@ const PREFIX = `rss.channel["podcast:value"]`;
 
 export default function V4v() {
   const currentFeed = UseCurrentFeed();
-  const t = useTranslations();
+  const { t } = useTranslation("", {
+    keyPrefix: "",
+  });
 
   if (!currentFeed) {
     return null;
@@ -50,16 +52,16 @@ export default function V4v() {
               isSubmitting={isSubmitting}
               onSave={() => handleSubmit()}
             >
-              {t["edit_feed.channel_field.v4v.title"]}
+              {t("edit_feed.channel_field.v4v.title")}
             </ContainerTitle>
 
             <FormSection
               title="Configuration"
-              description={t["edit_feed.channel_field.v4v.description"]}
+              description={t("edit_feed.channel_field.v4v.description")}
             >
               <FormRow
                 htmlFor={`${PREFIX}["@"].name`}
-                label={t["edit_feed.channel_field.v4v.name"]}
+                label={t("edit_feed.channel_field.v4v.name")}
               >
                 <FormField
                   id={`${PREFIX}["@"].name`}
@@ -70,7 +72,7 @@ export default function V4v() {
               <Container flex="row-center" spaceX="sm" spaceY="sm">
                 <FormRow
                   htmlFor={`${PREFIX}["@"].customKey`}
-                  label={t["edit_feed.channel_field.v4v.customKey"]}
+                  label={t("edit_feed.channel_field.v4v.customKey")}
                 >
                   <FormField
                     id={`${PREFIX}["@"].customKey`}
@@ -80,7 +82,7 @@ export default function V4v() {
                 </FormRow>
                 <FormRow
                   htmlFor={`${PREFIX}["@"].customValue`}
-                  label={t["edit_feed.channel_field.v4v.customValue"]}
+                  label={t("edit_feed.channel_field.v4v.customValue")}
                 >
                   <FormField
                     id={`${PREFIX}["@"].customValue`}
@@ -91,7 +93,7 @@ export default function V4v() {
               </Container>
               <FormRow
                 htmlFor={`${PREFIX}["@"].type`}
-                label={t["edit_feed.channel_field.v4v.type"]}
+                label={t("edit_feed.channel_field.v4v.type")}
               >
                 <FormField
                   id={`${PREFIX}["@"].type`}
@@ -103,7 +105,7 @@ export default function V4v() {
               <Container flex="row-center" spaceX="sm">
                 <FormRow
                   htmlFor={`${PREFIX}["@"].method`}
-                  label={t["edit_feed.channel_field.v4v.method"]}
+                  label={t("edit_feed.channel_field.v4v.method")}
                 >
                   <FormField
                     id={`${PREFIX}["@"].method`}
@@ -113,7 +115,7 @@ export default function V4v() {
                 </FormRow>
                 <FormRow
                   htmlFor={`${PREFIX}["@"].suggested`}
-                  label={t["edit_feed.channel_field.v4v.suggested"]}
+                  label={t("edit_feed.channel_field.v4v.suggested")}
                 >
                   <FormField
                     id={`${PREFIX}["@"].suggested`}
@@ -125,7 +127,7 @@ export default function V4v() {
             </FormSection>
             <FormSection
               title="Splits"
-              description={t["edit_feed.channel_field.v4v.description"]}
+              description={t("edit_feed.channel_field.v4v.description")}
             >
               <FieldArray name={`${PREFIX}["podcast:valueRecipient"]`}>
                 {({ remove, push }) => (
@@ -279,7 +281,7 @@ export default function V4v() {
                         })
                       }
                     >
-                      {t["ui.forms.empty_field.message"]}
+                      {t("ui.forms.empty_field.message")}
                     </Undefined>
                   </Container>
                 )}

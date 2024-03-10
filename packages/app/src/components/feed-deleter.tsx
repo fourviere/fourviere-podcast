@@ -18,8 +18,8 @@ export default function FeedDeleter() {
 
   async function remove() {
     const del = await askForConfirmation({
-      title: t["edit_feed.feed-deleter.ask_delete.title"],
-      message: t["edit_feed.feed-deleter.ask_delete"],
+      title: t("edit_feed.feed-deleter.ask_delete.title"),
+      message: t("edit_feed.feed-deleter.ask_delete"),
     });
 
     if (del) {
@@ -39,7 +39,7 @@ export default function FeedDeleter() {
         onClick={remove}
         Icon={TrashIcon}
       >
-        {t["edit_feed.feed-deleter.button_label"]}
+        {t("edit_feed.feed-deleter.button_label")}
       </Button>
     </>
   );

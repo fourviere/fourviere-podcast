@@ -7,7 +7,7 @@ import { Formik } from "formik";
 import Img from "../../components/form-fields/image";
 import { FormField } from "@fourviere/ui/lib/form/form-field";
 import UseCurrentFeed from "../../hooks/use-current-feed";
-import useTranslations from "../../hooks/use-translations";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { FullPageColumnLayout } from "@fourviere/ui/lib/layouts/full-page";
 import { ItemLink } from "../../components/form-fields/item-link";
@@ -27,7 +27,9 @@ import useConfirmationModal from "../../hooks/use-confirmation-modal";
 export default function ItemGeneral() {
   const currentFeed = UseCurrentFeed();
   const { itemGUID } = useParams<{ itemGUID: string }>(); //todo: fix using guid
-  const t = useTranslations();
+  const { t } = useTranslation("", {
+    keyPrefix: "",
+  });
   const { deleteEpisodeFromProject } = feedStore((state) => state);
   const navigate = useNavigate();
   const { askForConfirmation, renderConfirmationModal } =
@@ -65,8 +67,8 @@ export default function ItemGeneral() {
 
             const remove = () => {
               askForConfirmation({
-                title: t["edit_feed.feed-deleter.ask_delete.title"],
-                message: t["edit_feed.items.delete_episode"],
+                title: t("edit_feed.feed-deleter.ask_delete.title"),
+                message: t("edit_feed.items.delete_episode"),
               }).then((del) => {
                 if (itemGUID && del) {
                   setSkipExitProtection(true);
@@ -95,12 +97,12 @@ export default function ItemGeneral() {
                 </ContainerTitle>
 
                 <FormSection
-                  title={t["edit_feed.items_fields.media.title"]}
-                  description={t["edit_feed.items_fields.media.description"]}
+                  title={t("edit_feed.items_fields.media.title")}
+                  description={t("edit_feed.items_fields.media.description")}
                 >
                   <FormRow
                     htmlFor="rss.channel.item[${itemIndex}].enclosure.@.url"
-                    label={t["edit_feed.items_fields.enclosure_url"]}
+                    label={t("edit_feed.items_fields.enclosure_url")}
                   >
                     <FormField<typeof AudioField>
                       id={`rss.channel.item[${itemIndex}].enclosure.@`}
@@ -111,15 +113,15 @@ export default function ItemGeneral() {
                         name: `rss.channel.item[${itemIndex}].enclosure.@`,
                       }}
                       initValue="https://www.spreaker.com/user/brainrepo/ep-190-matteo-croce-kernel"
-                      emtpyValueButtonMessage={
-                        t["ui.forms.empty_field.message"]
-                      }
+                      emtpyValueButtonMessage={t(
+                        "ui.forms.empty_field.message",
+                      )}
                     />
                   </FormRow>
 
                   <FormRow
                     htmlFor={`rss.channel.item[${itemIndex}]["itunes:duration"]`}
-                    label={t["edit_feed.items_fields.duration"]}
+                    label={t("edit_feed.items_fields.duration")}
                   >
                     <FormField
                       id={`rss.channel.item[${itemIndex}]["itunes:duration"]`}
@@ -130,21 +132,21 @@ export default function ItemGeneral() {
                         durationFieldName: `rss.channel.item[${itemIndex}]["itunes:duration"]`,
                       }}
                       initValue={0}
-                      emtpyValueButtonMessage={
-                        t["ui.forms.empty_field.message"]
-                      }
+                      emtpyValueButtonMessage={t(
+                        "ui.forms.empty_field.message",
+                      )}
                     />
                   </FormRow>
                 </FormSection>
                 <FormSection
-                  title={t["edit_feed.items_fields.presentation.title"]}
-                  description={
-                    t["edit_feed.items_fields.presentation.description"]
-                  }
+                  title={t("edit_feed.items_fields.presentation.title")}
+                  description={t(
+                    "edit_feed.items_fields.presentation.description",
+                  )}
                 >
                   <FormRow
                     htmlFor="rss.channel.title"
-                    label={t["edit_feed.items_fields.title"]}
+                    label={t("edit_feed.items_fields.title")}
                   >
                     <FormField
                       id={`rss.channel.item[${itemIndex}].title`}
@@ -152,44 +154,44 @@ export default function ItemGeneral() {
                       as={Input}
                       fieldProps={{ size: "lg" }}
                       initValue="My podcast title"
-                      emtpyValueButtonMessage={
-                        t["ui.forms.empty_field.message"]
-                      }
+                      emtpyValueButtonMessage={t(
+                        "ui.forms.empty_field.message",
+                      )}
                     />
                   </FormRow>
 
                   <FormRow
                     htmlFor={`rss.channel.item[${itemIndex}]["podcast:season"]`}
-                    label={t["edit_feed.items_fields.podcast_season"]}
+                    label={t("edit_feed.items_fields.podcast_season")}
                   >
                     <FormField
                       id={`rss.channel.item[${itemIndex}]["podcast:season"]`}
                       name={`rss.channel.item[${itemIndex}]["podcast:season"]`}
                       as={Input}
                       initValue="1"
-                      emtpyValueButtonMessage={
-                        t["ui.forms.empty_field.message"]
-                      }
+                      emtpyValueButtonMessage={t(
+                        "ui.forms.empty_field.message",
+                      )}
                     />
                   </FormRow>
                   <FormRow
                     htmlFor={`rss.channel.item[${itemIndex}]["podcast:episode"]`}
-                    label={t["edit_feed.items_fields.podcast_episode"]}
+                    label={t("edit_feed.items_fields.podcast_episode")}
                   >
                     <FormField
                       id={`rss.channel.item[${itemIndex}]["podcast:episode"]`}
                       name={`rss.channel.item[${itemIndex}]["podcast:episode"]`}
                       as={Input}
                       initValue="1"
-                      emtpyValueButtonMessage={
-                        t["ui.forms.empty_field.message"]
-                      }
+                      emtpyValueButtonMessage={t(
+                        "ui.forms.empty_field.message",
+                      )}
                     />
                   </FormRow>
 
                   <FormRow
                     htmlFor="rss.channel.guid.#text"
-                    label={t["edit_feed.items_fields.guid"]}
+                    label={t("edit_feed.items_fields.guid")}
                   >
                     <Container flex="col" spaceY="md">
                       <FormField
@@ -197,9 +199,9 @@ export default function ItemGeneral() {
                         name={`rss.channel.item[${itemIndex}].guid.#text`}
                         as={Input}
                         initValue="Unique identifier for the episode"
-                        emtpyValueButtonMessage={
-                          t["ui.forms.empty_field.message"]
-                        }
+                        emtpyValueButtonMessage={t(
+                          "ui.forms.empty_field.message",
+                        )}
                       />
 
                       <FormField
@@ -221,16 +223,16 @@ export default function ItemGeneral() {
                   </FormRow>
                   <FormRow
                     htmlFor={`rss.channel.item[${itemIndex}].author`}
-                    label={t["edit_feed.items_fields.author"]}
+                    label={t("edit_feed.items_fields.author")}
                   >
                     <FormField
                       id={`rss.channel.item[${itemIndex}].author]`}
                       name={`rss.channel.item[${itemIndex}].author`}
                       as={Input}
                       initValue="Mauro Murru"
-                      emtpyValueButtonMessage={
-                        t["ui.forms.empty_field.message"]
-                      }
+                      emtpyValueButtonMessage={t(
+                        "ui.forms.empty_field.message",
+                      )}
                     />
                   </FormRow>
 
@@ -243,9 +245,9 @@ export default function ItemGeneral() {
                         feedId: currentFeed.feedId,
                         name: `rss.channel.item.${itemIndex}.["itunes:image"].@.href`,
                       }}
-                      emtpyValueButtonMessage={
-                        t["ui.forms.empty_field.message"]
-                      }
+                      emtpyValueButtonMessage={t(
+                        "ui.forms.empty_field.message",
+                      )}
                       initValue="https://"
                     />
                   </FormRow>
@@ -255,7 +257,7 @@ export default function ItemGeneral() {
                   />
                   <FormRow
                     htmlFor="rss.channel.description"
-                    label={t["edit_feed.items_fields.description"]}
+                    label={t("edit_feed.items_fields.description")}
                   >
                     <FormField
                       id={`rss.channel.item[${itemIndex}].description`}
@@ -268,15 +270,15 @@ export default function ItemGeneral() {
                         setFieldValue,
                       }}
                       initValue="My episode description"
-                      emtpyValueButtonMessage={
-                        t["ui.forms.empty_field.message"]
-                      }
+                      emtpyValueButtonMessage={t(
+                        "ui.forms.empty_field.message",
+                      )}
                     />
                   </FormRow>
 
                   <FormRow
                     htmlFor="rss.channel.item[${itemIndex}]['itunes:explicit']"
-                    label={t["edit_feed.items_fields.explicit"]}
+                    label={t("edit_feed.items_fields.explicit")}
                   >
                     <FormField
                       id={`rss.channel.item[${itemIndex}]['itunes:explicit']`}
@@ -296,26 +298,26 @@ export default function ItemGeneral() {
                   </FormRow>
                 </FormSection>
                 <FormSection
-                  title={t["edit_feed.items_fields.itunes.title"]}
-                  description={t["edit_feed.items_fields.itunes.description"]}
+                  title={t("edit_feed.items_fields.itunes.title")}
+                  description={t("edit_feed.items_fields.itunes.description")}
                 >
                   <FormRow
                     htmlFor={`rss.channel.item[${itemIndex}]["itunes:subtitle"]`}
-                    label={t["edit_feed.items_fields.itunes_subtitle"]}
+                    label={t("edit_feed.items_fields.itunes_subtitle")}
                   >
                     <FormField
                       id={`rss.channel.item[${itemIndex}]["itunes:subtitle"]`}
                       name={`rss.channel.item[${itemIndex}]["itunes:subtitle"]`}
                       as={Input}
                       initValue="My podcast subtitle"
-                      emtpyValueButtonMessage={
-                        t["ui.forms.empty_field.message"]
-                      }
+                      emtpyValueButtonMessage={t(
+                        "ui.forms.empty_field.message",
+                      )}
                     />
                   </FormRow>
                   <FormRow
                     htmlFor="rss.channel.description"
-                    label={t["edit_feed.items_fields.itunes_summary"]}
+                    label={t("edit_feed.items_fields.itunes_summary")}
                   >
                     <FormField<typeof CKEditor>
                       id={`rss.channel.item[${itemIndex}]["itunes:summary"]`}
@@ -329,14 +331,14 @@ export default function ItemGeneral() {
                         setFieldValue,
                       }}
                       initValue="My episode sumary"
-                      emtpyValueButtonMessage={
-                        t["ui.forms.empty_field.message"]
-                      }
+                      emtpyValueButtonMessage={t(
+                        "ui.forms.empty_field.message",
+                      )}
                     />
                   </FormRow>
                   <FormRow
                     htmlFor={`rss.channel.item[${itemIndex}]["itunes:episodeType"]`}
-                    label={t["edit_feed.items_fields.episode_type"]}
+                    label={t("edit_feed.items_fields.episode_type")}
                   >
                     <FormField
                       id={`rss.channel.item[${itemIndex}]["itunes:episodeType"]`}
@@ -349,17 +351,17 @@ export default function ItemGeneral() {
                         lowercase: true,
                       }}
                       initValue="full"
-                      emtpyValueButtonMessage={
-                        t["ui.forms.empty_field.message"]
-                      }
+                      emtpyValueButtonMessage={t(
+                        "ui.forms.empty_field.message",
+                      )}
                     />
                   </FormRow>
                 </FormSection>
                 <FormSection
-                  title={t["edit_feed.configuration.feed.actions"]}
-                  description={
-                    t["edit_feed.configuration.feed.actions.description"]
-                  }
+                  title={t("edit_feed.configuration.feed.actions")}
+                  description={t(
+                    "edit_feed.configuration.feed.actions.description",
+                  )}
                 >
                   <FormRow htmlFor="feed.actions">
                     <Container wFull spaceX="sm" spaceY="sm">
@@ -369,7 +371,7 @@ export default function ItemGeneral() {
                         Icon={TrashIcon}
                         onClick={() => remove()}
                       >
-                        {t["edit_feed.items.delete_episode.title"]}
+                        {t("edit_feed.items.delete_episode.title")}
                       </Button>
                     </Container>
                   </FormRow>
