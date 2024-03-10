@@ -1,20 +1,30 @@
-import FormSection from "@fourviere/ui/lib/form/form-section";
-import FormRow from "@fourviere/ui/lib/form/form-row";
-import Input from "@fourviere/ui/lib/form/fields/input";
-import { Formik } from "formik";
-import { FormField } from "@fourviere/ui/lib/form/form-field";
 import UseCurrentFeed from "../../../hooks/use-current-feed";
 import { useTranslation } from "react-i18next";
-import Select from "@fourviere/ui/lib/form/fields/select";
+import Input from "@fourviere/ui/lib/form/fields/input";
+
 import PODCASTCATEGORIES from "@fourviere/core/lib/podcast-namespace/categories";
-import { FC } from "react";
-import FormObjectField from "@fourviere/ui/lib/form/form-object-field";
-import { ChannelLinks } from "../../../components/form-fields/channel-links";
-import ContainerTitle from "@fourviere/ui/lib/container-title";
-import FormBlocker from "../../../components/form-blocker";
-import Img from "../../../components/form-fields/image";
 import { LANGUAGE_BY_LOCALE } from "@fourviere/core/lib/const";
 import VStack from "@fourviere/ui/lib/layouts/v-stack";
+import Form from "@fourviere/ui/lib/form";
+import {
+  categorySchema,
+  descriptionSchema,
+  imageSchema,
+  titleSchema,
+} from "@fourviere/core/lib/schema/rss/channel";
+import { Static, Type } from "@sinclair/typebox";
+
+const payloadSchema = Type.Object({
+  rss: Type.Object({
+    channel: Type.Object({
+      title: titleSchema,
+      image: imageSchema,
+      description: descriptionSchema,
+      category: categorySchema,
+    }),
+  }),
+});
+type PayloadType = Static<typeof payloadSchema>;
 
 export default function General() {
   const currentFeed = UseCurrentFeed();
@@ -27,8 +37,82 @@ export default function General() {
   }
 
   return (
-    <>
-      <Formik
+    <VStack scroll wFull>
+      <Form<PayloadType>
+        onSubmit={(values) => {
+          currentFeed.update(values);
+        }}
+        title={t("title")}
+        sections={[
+          {
+            title: t("podcast_index.title"),
+            description: t("podcast_index.description"),
+            fields: [
+              {
+                id: "rss.channel.title",
+                name: "rss.channel.title",
+                label: t("podcast_index.fields.api_key.label"),
+                type: "text",
+                defaultValue: "",
+                style: "lg",
+                component: "input",
+                width: "1",
+              },
+              {
+                id: "rss.channel.image.url",
+                name: "rss.channel.image.url",
+                label: t("podcast_index.fields.api_key.label"),
+                // component: Img,
+                component: "input",
+                width: "1",
+              },
+              {
+                id: "rss.channel.['itunes:type']",
+                name: "rss.channel.['itunes:type']",
+                label: t("podcast_index.fields.api_key.label"),
+                component: "select",
+                options: { episodic: "Episodic", serial: "Serial" },
+                width: "1/2",
+              },
+
+              {
+                id: "rss.channel.language",
+                name: "rss.channel.language",
+                label: t("podcast_index.fields.api_key.label"),
+                component: "select",
+                options: LANGUAGE_BY_LOCALE,
+                width: "1/2",
+              },
+              // {
+              //   id: "rss.channel.link",
+              //   name: "rss.channel.link",
+              //   label: t("channellinks"),
+              //   // component: ChannelLinks,
+              //   component: "inpu",
+              //   width: "1",
+              // },
+              // {
+              //   id: "rss.channel.category.0",
+              //   name: "rss.channel.category.0",
+              //   label: t("podcast_index.fields.api_key.label"),
+              //   type: "select",
+              //   defaultValue: "",
+              //   // component: Select as FC,
+              //   component: Input,
+              //   fieldProps: {
+              //     options: PODCASTCATEGORIES,
+              //     labelProperty: "name",
+              //     keyProperty: "name",
+              //   },
+              //   width: "1",
+              // },
+            ],
+          },
+        ]}
+        data={currentFeed.feed as PayloadType}
+        schema={payloadSchema}
+      />
+      {/* <Formik
         initialValues={currentFeed.feed}
         enableReinitialize
         onSubmit={(values, { setSubmitting }) => {
@@ -56,61 +140,7 @@ export default function General() {
                   handleSubmit();
                 }}
               >
-                <FormSection
-                  description={t("edit_feed.presentation.title.description")}
-                >
-                  <FormRow
-                    htmlFor="rss.channel.title"
-                    label={t("edit_feed.channel_field.show_name")}
-                  >
-                    <FormField
-                      id="rss.channel.title"
-                      name="rss.channel.title"
-                      as={Input}
-                      fieldProps={{ size: "lg" }}
-                      initValue="My podcast title"
-                      emtpyValueButtonMessage={t(
-                        "ui.forms.empty_field.message",
-                      )}
-                    />
-                  </FormRow>
-                  <FormRow htmlFor="rss.channel.image.url" label={"test image"}>
-                    <FormField
-                      id="rss.channel.image.url"
-                      name="rss.channel.image.url"
-                      as={Img}
-                      fieldProps={{
-                        feedId: currentFeed.feedId,
-                        name: "rss.channel.image.url",
-                      }}
-                      emtpyValueButtonMessage={t(
-                        "ui.forms.empty_field.message",
-                      )}
-                      initValue="https://"
-                    />
-                  </FormRow>
-                  <FormRow
-                    htmlFor={`rss.channel.["itunes:type"]`}
-                    label={t("edit_feed.channel_field.type")}
-                  >
-                    <FormField
-                      id={`rss.channel.["itunes:type"]`}
-                      name={`rss.channel.["itunes:type"]`}
-                      fieldProps={{
-                        options: [
-                          { name: "Episodic", value: "episodic" },
-                          { name: "Serial", value: "serial" },
-                        ],
-                        labelProperty: "name",
-                        keyProperty: "value",
-                      }}
-                      as={Select as FC}
-                      initValue="yes"
-                      emtpyValueButtonMessage={t(
-                        "ui.forms.empty_field.message",
-                      )}
-                    />
-                  </FormRow>
+                
                   <ChannelLinks
                     name="rss.channel.link"
                     values={values.rss.channel.link}
@@ -315,7 +345,7 @@ export default function General() {
             </>
           );
         }}
-      </Formik>
-    </>
+      </Formik> */}
+    </VStack>
   );
 }

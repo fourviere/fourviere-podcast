@@ -34,7 +34,7 @@ const CKeditor = ({ value, setFieldValue, name }: Props) => {
   }, [value]);
   return (
     <>
-      <div className="-p-px h-full w-full appearance-none self-stretch overflow-hidden break-words rounded-lg border bg-white leading-tight shadow">
+      <div className="-p-px flex h-full w-full self-stretch overflow-hidden break-words rounded-lg bg-slate-100 leading-tight">
         <CKEditor
           config={{
             toolbar: TOOLBAR_CONFIG,

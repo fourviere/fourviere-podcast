@@ -34,6 +34,8 @@ const appStore = create<AppState>((set, get) => {
     services: {
       podcastIndex: {
         enabled: false,
+        apiKey: "",
+        apiSecret: "",
       },
     },
     errors: [],

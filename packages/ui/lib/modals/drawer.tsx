@@ -1,6 +1,7 @@
 import tw from "tailwind-styled-components";
-import React, { PropsWithChildren } from "react";
+import React, { ButtonHTMLAttributes, PropsWithChildren } from "react";
 import { motion } from "framer-motion";
+import classNames from "classnames";
 
 const Backdrop = ({ onClick }: { onClick: React.MouseEventHandler }) => (
   <motion.button
@@ -19,11 +20,26 @@ const Backdrop = ({ onClick }: { onClick: React.MouseEventHandler }) => (
   />
 );
 
-const CloseButton = tw.button`rounded-full text-xs absolute right-2 leading-none px-3 py-2.5 top-2 bg-slate-800 hover:bg-slate-900 text-slate-100 hover:rounded-full z-20`;
+const CloseButton = ({
+  className,
+  onClick,
+}: React.ButtonHTMLAttributes<{ className: string }>) => {
+  return (
+    <button
+      onClick={onClick}
+      className={classNames("absolute z-20 ", className)}
+    >
+      <div>&times;</div>
+    </button>
+  );
+};
 
 const containerTypes = {
   top: {
     classes: `fixed top-0 right-0 left-0`,
+    closeButton:
+      "-bottom-8 leading-none w-8 h-8 right-5 bg-white text-slate-800 items-center justify-center rounded-b-full bg-slate-100",
+
     animations: {
       initial: { translateY: -100, opacity: 0 },
       animate: {
@@ -41,6 +57,9 @@ const containerTypes = {
   },
   bottom: {
     classes: `fixed bottom-0 right-5 left-5 rounded-t-xl`,
+    closeButton:
+      "-top-8 leading-none w-8 h-8 right-5 bg-white text-slate-800 items-center justify-center rounded-t-full bg-slate-100",
+
     animations: {
       initial: { translateY: 100, opacity: 0, zIndex: 100000 },
       animate: {
@@ -58,6 +77,9 @@ const containerTypes = {
   },
   left: {
     classes: `fixed top-0 bottom-0 left-0`,
+    closeButton:
+      "-rigth-8 leading-none w-8 h-8 top-5 bg-white text-slate-800 items-center justify-center rounded-l-full bg-slate-100",
+
     animations: {
       initial: { translateX: -100, opacity: 0, zIndex: 100000 },
       animate: {
@@ -74,7 +96,9 @@ const containerTypes = {
     },
   },
   right: {
-    classes: `fixed top-0 bottom-0 right-0`,
+    classes: `fixed top-0 bottom-0 right-0 aspect-square roundeed-l-full`,
+    closeButton:
+      "-left-8 leading-none w-8 h-8 top-5 bg-white text-slate-800 items-center justify-center rounded-l-full bg-slate-100",
     animations: {
       initial: { translateX: 100, opacity: 0 },
       animate: {
@@ -105,7 +129,10 @@ const Container = ({
     className={`${containerTypes[type].classes} bg-white shadow-lg`}
     {...containerTypes[type].animations}
   >
-    <CloseButton onClick={onClose}>&times;</CloseButton>
+    <CloseButton
+      className={containerTypes[type].closeButton}
+      onClick={onClose}
+    />
     {children}
   </motion.div>
 );

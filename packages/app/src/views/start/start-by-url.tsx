@@ -2,7 +2,7 @@ import { FunctionComponent, useState } from "react";
 import feedStore from "../../store/feed/index";
 import { Title } from "@fourviere/ui/lib/typography";
 import Button from "@fourviere/ui/lib/button";
-import Input from "@fourviere/ui/lib/form/fields/input";
+import { InputRaw } from "@fourviere/ui/lib/form/fields/input";
 import { useFormik } from "formik";
 import appStore from "../../store/app";
 
@@ -21,12 +21,7 @@ interface Props {
 }
 
 const StartByURL: FunctionComponent<Props> = ({ done }) => {
-  const { t } = useTranslation("start", {
-    keyPrefix: "start_by_url",
-  });
-  const { t: tErrors } = useTranslation("start", {
-    keyPrefix: "errors",
-  });
+  const { t } = useTranslation("start");
   const { initProjectFromUrl } = feedStore((state) => state);
   const { addError } = appStore((state) => state);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,7 +32,7 @@ const StartByURL: FunctionComponent<Props> = ({ done }) => {
     },
     onSubmit: async (data) => {
       if (!URL_REGEX.test(data.url)) {
-        addError(tErrors("invalid_url"));
+        addError(t("errors.invalid_url"));
         return;
       }
       setIsLoading(true);
@@ -46,11 +41,11 @@ const StartByURL: FunctionComponent<Props> = ({ done }) => {
         done();
       } catch (e) {
         if (e instanceof InvalidXMLError) {
-          addError(tErrors("invalid_xml"));
+          addError(t("errors.invalid_xml"));
         } else if (e instanceof InvalidPodcastFeedError) {
-          addError(tErrors("invalid_podcast_feed"));
+          addError(t("invalid_podcast_feed"));
         } else {
-          addError(tErrors("generic"));
+          addError(t("errors.generic"));
         }
         console.error(e);
       } finally {
@@ -62,20 +57,20 @@ const StartByURL: FunctionComponent<Props> = ({ done }) => {
   return (
     <VStack paddingX="6" paddingY="6" spacing="7">
       <VStack spacing="3">
-        <Title>{t("title")}</Title>
+        <Title>{t("start_by_url.title")}</Title>
 
         <form onSubmit={formik.handleSubmit}>
           <HStack spacing="3">
-            <Input
-              size="2xl"
+            <InputRaw
               name="url"
+              componentStyle="2xl"
               placeholder="https://example.com/feed.xml"
               onChange={formik.handleChange}
               value={formik.values.url}
             />
 
             <Button size="lg" type="submit" isLoading={isLoading}>
-              {t("submit")}
+              {t("start_by_url.action")}
             </Button>
           </HStack>
         </form>

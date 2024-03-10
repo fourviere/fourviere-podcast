@@ -1,7 +1,7 @@
 import { Static, Type } from "@sinclair/typebox";
 import { ChannelSchema } from "./channel";
 
-const FeedSchema = Type.Object({
+export const FeedSchema = Type.Object({
   rss: Type.Object({
     "@": Type.Object({
       version: Type.Literal("2.0"),

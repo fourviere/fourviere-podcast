@@ -2,10 +2,10 @@ import { Container } from "@fourviere/ui/lib/box";
 import AddField from "@fourviere/ui/lib/form/add-field";
 import Undefined from "@fourviere/ui/lib/form/fields/undefined";
 import { FormField } from "@fourviere/ui/lib/form/form-field";
-import FormRow from "@fourviere/ui/lib/form/form-row";
-import { FieldArray } from "formik";
-import { useTranslation } from "react-i18next";
-import Input from "@fourviere/ui/lib/form/fields/input";
+import { FieldArray, useField } from "formik";
+import { Input } from "@fourviere/ui/lib/form/fields/input";
+import VStack from "@fourviere/ui/lib/layouts/v-stack";
+import Box from "@fourviere/ui/lib/layouts/box";
 
 const BASE_URL = "https://...";
 const INIT_VALUE = {
@@ -27,48 +27,39 @@ interface Props {
 }
 
 export const ChannelLinks = ({ name, values }: Props) => {
-  const { t } = useTranslation("", {
-    keyPrefix: "",
-  });
   return (
-    <FormRow htmlFor={name} label={t("edit_feed.channel_field.link")}>
-      <FieldArray
-        name={name}
-        render={(arrayHelpers) => (
-          <Container spaceY="sm">
-            {values && values.length > 0 ? (
-              <>
-                {values.map((_, index) => (
-                  <div key={index}>
-                    <FormField
-                      id={`${name}.${index}["@"].href`}
-                      name={`${name}.${index}["@"].href`}
-                      as={Input}
-                      emtpyValueButtonMessage={t(
-                        "ui.forms.empty_field.message",
-                      )}
-                      initValue={BASE_URL}
-                      overrideReset={() => arrayHelpers.remove(index)}
-                      postSlot={
-                        <AddField
-                          onClick={() => arrayHelpers.insert(index, INIT_VALUE)}
-                        ></AddField>
-                      }
-                    />
-                  </div>
-                ))}
-                <Container flex="row-center" spaceX="sm">
-                  <AddField onClick={() => arrayHelpers.push(INIT_VALUE)} />
-                </Container>
-              </>
-            ) : (
-              <Undefined onClick={() => arrayHelpers.push(INIT_VALUE)}>
-                {t("ui.forms.empty_field.message")}
-              </Undefined>
-            )}
-          </Container>
-        )}
-      />
-    </FormRow>
+    <Box paddingX="3" paddingY="3" wFull bgColor="slate-100" rounded="lg">
+      <VStack spacing="2" wFull>
+        <FieldArray
+          name={name}
+          render={(arrayHelpers) => (
+            <Container spaceY="sm">
+              {values?.map((_, index) => (
+                <div key={index}>
+                  <FormField
+                    id={`${name}.${index}["@"].href`}
+                    name={`${name}.${index}["@"].href`}
+                    as={Input}
+                    initValue={BASE_URL}
+                  />
+                </div>
+              ))}
+
+              <Container flex="row-center" spaceX="sm">
+                <AddField
+                  onClick={() => {
+                    console.log("add");
+                    arrayHelpers.push({});
+                  }}
+                />
+              </Container>
+              <button onClick={() => arrayHelpers.push(INIT_VALUE)}>
+                adsads
+              </button>
+            </Container>
+          )}
+        />
+      </VStack>
+    </Box>
   );
 };

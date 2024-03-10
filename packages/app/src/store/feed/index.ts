@@ -12,6 +12,7 @@ import {
 import { fetchFeed } from "../../native/network";
 import { Project } from "./types";
 import CONFIG from "../../../src-tauri/tauri.conf.json";
+import appStore from "../app";
 
 export interface FeedState {
   projects: Record<string, Project>;
@@ -85,6 +86,7 @@ const feedStore = create<FeedState>((set, get) => {
         });
       } catch (e) {
         console.error("Error parsing feed", e);
+        appStore.getState().addError("Error parsing feed");
         throw e;
       }
     },

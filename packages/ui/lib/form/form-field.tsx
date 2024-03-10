@@ -22,7 +22,7 @@ export function FormField<A>({
   emtpyValueButtonMessage?: string;
 }) {
   const Component = as as React.ElementType;
-  const [field, , helpers] = useField(name);
+  const [field, value, helpers] = useField(name);
   function reset() {
     void helpers.setValue(undefined);
   }
@@ -31,7 +31,13 @@ export function FormField<A>({
     <div className="relative">
       {typeof field.value !== "undefined" || !emtpyValueButtonMessage ? (
         <div className="flex items-center space-x-1">
-          <Component id={id} {...field} {...fieldProps} />
+          <Component
+            id={id}
+            name={name}
+            value={value}
+            {...field}
+            {...fieldProps}
+          />
           {initValue ? <ResetField onClick={overrideReset || reset} /> : null}
           {postSlot}
         </div>

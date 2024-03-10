@@ -21,29 +21,17 @@ const resources = {
         title: "Import new feed from podcast index",
         submit: "Search",
         importing_in_progress: "Importing in progress... please wait",
+        errors: {
+          http_call_failure:
+            "Error during fetching podcast index, check the credentials or the connection and try again",
+          misconfigured:
+            "Podcast index is misconfigured or disabled, please check your configuration",
+        },
       },
-      // start_by_url: {
-      //   title: "Import new feed from remote address",
-      //   action: "Import",
-      //   errors: {
-      //     invalid_xml: "The feed is not a valid XML",
-      //     invalid_podcast_feed: "The feed is not a valid podcast feed",
-      //     generic: "Error during fetching podcast feed",
-      //     invalid_url: "The URL provided is not valid",
-      //   },
-      // },
-      // start_by_index: {
-      //   title: "Import a podcast feed from podcastindex",
-      //   action: "Search",
-      //   errors: {
-      //     generic: "Error during fetching podcast index",
-      //     podcast_index_misconfigured:
-      //       "Podcast index is misconfigured or disabled, please check your configuration",
-      //     invalid_xml: "The feed is not a valid XML",
-      //     invalid_podcast_feed: "The feed is not a valid podcast feed",
-      //   },
-      //   importing_in_progress: "Importing in progress... please wait",
-      // },
+      start_by_url: {
+        title: "Import new feed from remote address",
+        action: "Import",
+      },
     },
     configuration: {
       index: {

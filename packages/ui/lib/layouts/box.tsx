@@ -50,6 +50,18 @@ const VERTICAL_JUSTIFY = {
   around: "justify-around",
   evenly: "justify-evenly",
 } as const;
+const BACKGROUND_COLOR = {
+  white: "bg-white",
+  black: "bg-black",
+  "slate-100": "bg-slate-100",
+} as const;
+const ROUNDED = {
+  none: "rounded-none",
+  sm: "rounded-sm",
+  base: "rounded",
+  lg: "rounded-lg",
+  full: "rounded-full",
+} as const;
 
 interface HStackProps extends React.PropsWithChildren {
   justifyContent?: keyof typeof VERTICAL_JUSTIFY;
@@ -58,11 +70,14 @@ interface HStackProps extends React.PropsWithChildren {
   marginY?: keyof typeof MARGIN_Y;
   paddingX?: keyof typeof PADDING_X;
   paddingY?: keyof typeof PADDING_Y;
+  bgColor?: keyof typeof BACKGROUND_COLOR;
+  rounded?: keyof typeof ROUNDED;
   wrap?: boolean;
   wFull?: boolean;
   responsive?: boolean;
   scroll?: boolean;
   as?: ElementType;
+  style?: React.CSSProperties;
 }
 
 type Props = HStackProps & React.JSX.IntrinsicElements["div"];
@@ -75,6 +90,9 @@ const Box = ({
   as,
   marginX,
   marginY,
+  rounded,
+  bgColor,
+  style,
 }: Props) => {
   const Component = as ?? "div";
   const classes = classNames({
@@ -82,10 +100,16 @@ const Box = ({
     [PADDING_Y[paddingY ?? "0"]]: paddingY,
     [MARGIN_X[marginX ?? "0"]]: marginX,
     [MARGIN_Y[marginY ?? "0"]]: marginY,
+    [ROUNDED[rounded ?? "none"]]: rounded,
+    [BACKGROUND_COLOR[bgColor ?? "white"]]: bgColor,
     "w-full": wFull,
   });
 
-  return <Component className={classes}>{children}</Component>;
+  return (
+    <Component style={style} className={classes}>
+      {children}
+    </Component>
+  );
 };
 
 export default Box;

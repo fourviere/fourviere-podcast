@@ -16,7 +16,6 @@ type Props = {
 const ContainerTitle = ({
   isDirty,
   isSubmitting,
-  isDisabled,
   onSave,
   children,
   postSlot,
@@ -45,7 +44,7 @@ const ContainerTitle = ({
       {!!onSave && (
         <Button
           size="md"
-          isDisabled={!isDirty && !isSubmitting && !isDisabled}
+          isDisabled={!isDirty && !isSubmitting}
           onClick={onSubmit}
           Icon={CheckIcon}
         >

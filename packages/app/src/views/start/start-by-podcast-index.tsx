@@ -2,7 +2,7 @@ import { FunctionComponent, useState } from "react";
 import feedStore from "../../store/feed/index";
 import { H1, Title } from "@fourviere/ui/lib/typography";
 import Button from "@fourviere/ui/lib/button";
-import Input from "@fourviere/ui/lib/form/fields/input";
+import { InputRaw } from "@fourviere/ui/lib/form/fields/input";
 import appStore from "../../store/app";
 import { useFormik } from "formik";
 import { usePodcastIndex } from "../../hooks/use-podcast-index";
@@ -67,8 +67,8 @@ const StartByIndex: FunctionComponent<Props> = ({ done }) => {
         <Title>{t("title")}</Title>
         <form onSubmit={formik.handleSubmit}>
           <HStack spacing="3">
-            <Input
-              size="2xl"
+            <InputRaw
+              componentStyle="2xl"
               placeholder="podcasting 2.0"
               name="term"
               onChange={formik.handleChange}
