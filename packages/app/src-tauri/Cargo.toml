@@ -38,7 +38,7 @@ tauri = { version = "1.6", features = [ "updater", "shell-sidecar", "dialog-all"
 tauri-plugin-channel = { git = "https://github.com/fourviere/tauri-plugin-channel.git", branch = "v0.1.x" }
 tauri-plugin-log = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 tempfile = "3.10.1"
-thiserror = "1.0.57"
+thiserror = "1.0.58"
 tokio = { version = "1", features = ["fs", "macros"] }
 tokio-util = {version = "0.7.10", features = ["compat"] }
 
