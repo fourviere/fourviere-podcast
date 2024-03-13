@@ -129,22 +129,3 @@ const AddButton = tw.button<{
 }>`flex items-center justify-center p-1 bg-white hover:bg-slate-50 text-slate-600 hover:text-slate-800 mb-1.5 ${({
   main,
 }) => (main ? "rounded-full" : "rounded-b-full")}`;
-
-// These function are used to derive the key for the array items
-function keifyElements(
-  arr: Array<Record<string, unknown>>,
-): Array<Record<string, unknown>> {
-  return (
-    arr?.map((e: Record<string, unknown>) => ({
-      ...e,
-      __k: simpleHash(JSON.stringify(e)),
-    })) ?? []
-  );
-}
-
-function unkeifyElements(
-  arr: Array<Record<string, unknown>>,
-): Array<Record<string, unknown>> {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  return arr.map(({ __k, ...e }) => e);
-}
