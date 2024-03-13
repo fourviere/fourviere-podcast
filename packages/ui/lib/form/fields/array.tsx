@@ -1,8 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { FieldArray, Field, FieldProps } from "formik";
+import { FieldArray, FieldProps, FormikTouched } from "formik";
 import { Reorder } from "framer-motion";
-import Input from "./input";
-import FormRow from "../form-row";
 import Button from "../../button";
 import { ArrowsUpDownIcon, TrashIcon } from "@heroicons/react/24/outline";
 import "./array.css";
@@ -10,16 +8,21 @@ import tw from "tailwind-styled-components";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { simpleHash } from "../../utils/string";
 import { v4 as uuidv4 } from "uuid";
+import { FieldConf, generateFormikField, getValueByPath } from "..";
+import Grid from "../../layouts/grid";
 
 const ArrayForm: React.ComponentType<
   FieldProps<Array<Record<string, unknown>>> & {
     label: string;
-    touched: boolean;
+    touched: FormikTouched<unknown>;
+    childrenFields: Array<FieldConf>;
+    defaultItem: Record<string, unknown>;
   }
-> = ({ field, form }) => {
+> = ({ field, form, childrenFields, touched, defaultItem }) => {
   const [dragEnabled, setDragEnabled] = useState(false);
 
-  const v = useMemo(() => keifyElements(field.value), [field.value]);
+  //const v = useMemo(() => keifyElements(field.value), [field.value]);
+  const v = useMemo(() => field.value, [field.value]);
 
   useEffect(() => {
     const t = setTimeout(() => {
@@ -33,11 +36,11 @@ const ArrayForm: React.ComponentType<
         {({ insert, remove }) => (
           <Reorder.Group
             axis="y"
-            values={v}
+            values={v ?? []}
             layoutScroll={true}
-            className="max-h-[500px] overflow-y-auto text-sm"
+            className="text-sm"
             onReorder={(e) => {
-              form.setFieldValue(field.name, unkeifyElements(e));
+              form.setFieldValue(field.name, e);
             }}
           >
             <FieldHeader>
@@ -50,31 +53,39 @@ const ArrayForm: React.ComponentType<
                 <span>sort</span>
               </Button>
             </FieldHeader>
-            {v.map((item, index) => (
+            <AddButtonContainer>
+              <AddButton
+                main
+                type="button"
+                onClick={() => insert(0, { ...defaultItem, __k: uuidv4() })}
+              >
+                <PlusCircleIcon className="h-5 w-5" />
+              </AddButton>
+            </AddButtonContainer>
+            {v?.map((item, index) => (
               <Reorder.Item
                 drag={dragEnabled}
                 /* This 2 drag enabled checks are used for allowing the field editing whithout refreshing the value */
-                key={dragEnabled ? JSON.stringify(item) : index}
+                key={dragEnabled ? simpleHash(JSON.stringify(item)) : index}
                 value={dragEnabled && item}
               >
                 <ArrayItem dragEnabled={dragEnabled}>
                   <DeleteButton onClick={() => remove(index)}>
                     <TrashIcon className="h-4 w-4" />
                   </DeleteButton>
-                  <FormRow label="miaooai" htmlFor="1">
-                    <Field
-                      as={Input}
-                      name={`${field.name}[${index}]["@"].href`}
-                      disabled={dragEnabled}
-                    />
-                  </FormRow>
-                  <FormRow label="miaooai" htmlFor="2">
-                    <Field
-                      as={Input}
-                      name={`${field.name}[${index}]["@"].type`}
-                      disabled={dragEnabled}
-                    />
-                  </FormRow>
+                  <Grid cols="1" mdCols="2" spacing="4">
+                    {childrenFields.map((subField, subIndex) => {
+                      return generateFormikField(
+                        subField,
+                        subIndex,
+                        getValueByPath(
+                          touched,
+                          `${index}${subField.name ? `.${subField.name}` : ""}`,
+                        ),
+                        `${field.name}.${index}`,
+                      );
+                    })}
+                  </Grid>
                   {dragEnabled && (
                     <DisabledView>
                       <ArrowsUpDownIcon className="h-5 w-5 text-slate-600" />
@@ -83,15 +94,10 @@ const ArrayForm: React.ComponentType<
                 </ArrayItem>
                 <AddButtonContainer>
                   <AddButton
+                    main={false}
                     type="button"
                     onClick={() =>
-                      insert(index + 1, {
-                        "@": {
-                          href: "sss",
-                          type: "sss",
-                          __k: uuidv4(),
-                        },
-                      })
+                      insert(index + 1, { ...defaultItem, __k: uuidv4() })
                     }
                   >
                     <PlusCircleIcon className="h-5 w-5" />
@@ -109,7 +115,7 @@ const ArrayForm: React.ComponentType<
 export default ArrayForm;
 
 const FieldContainer = tw.div`space-y-3 rounded-lg bg-slate-100 p-3`;
-const FieldHeader = tw.div`flex justify-between items-center sticky top-0 z-10 bg-slate-100/95 pb-3`;
+const FieldHeader = tw.div`flex justify-between items-center sticky top-0 bg-slate-100/95 pb-3`;
 
 const ArrayItem = tw.div<{
   dragEnabled: boolean | undefined;
@@ -118,14 +124,18 @@ const ArrayItem = tw.div<{
 const DeleteButton = tw.button`absolute right-1 top-1 flex items-center justify-center text-slate-800 hover:text-rose-100 w-6 h-6 rounded-full bg-slate-100 hover:bg-rose-600 `;
 const DisabledView = tw.div`absolute inset-0 flex cursor-move items-center justify-center bg-white/60`;
 const AddButtonContainer = tw.button`flex justify-center w-full`;
-const AddButton = tw.button`flex items-center justify-center p-1 bg-white hover:bg-slate-50 rounded-b-full text-slate-600 hover:text-slate-800 mb-1.5`;
+const AddButton = tw.button<{
+  main: boolean;
+}>`flex items-center justify-center p-1 bg-white hover:bg-slate-50 text-slate-600 hover:text-slate-800 mb-1.5 ${({
+  main,
+}) => (main ? "rounded-full" : "rounded-b-full")}`;
 
 // These function are used to derive the key for the array items
 function keifyElements(
   arr: Array<Record<string, unknown>>,
 ): Array<Record<string, unknown>> {
   return (
-    arr.map((e: Record<string, unknown>) => ({
+    arr?.map((e: Record<string, unknown>) => ({
       ...e,
       __k: simpleHash(JSON.stringify(e)),
     })) ?? []

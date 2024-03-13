@@ -152,9 +152,7 @@ export default function General() {
       <AnimatePresence>
         {generalModal && (
           <Drawer type="right" onClose={() => setGeneralModal(false)}>
-            <Container scroll style={{ height: "100vh" }}>
-              <GeneralForm />
-            </Container>
+            <GeneralForm />
           </Drawer>
         )}
         {v4vModal && (

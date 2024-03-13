@@ -1,5 +1,9 @@
 export default [
   {
+    id: 0,
+    name: "",
+  },
+  {
     id: 1,
     name: "Arts",
   },
@@ -446,5 +450,17 @@ export default [
   {
     id: 112,
     name: "Cryptocurrency",
+  },
+  {
+    id: 113,
+    name: "News & Politics",
+  },
+  {
+    id: 114,
+    name: "Podcasting",
+  },
+  {
+    id: 115,
+    name: "Radio",
   },
 ];

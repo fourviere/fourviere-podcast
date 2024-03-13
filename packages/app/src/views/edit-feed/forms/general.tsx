@@ -10,8 +10,9 @@ import {
   titleSchema,
 } from "@fourviere/core/lib/schema/rss/channel";
 import { Static, Type } from "@sinclair/typebox";
-import { FeedState } from "../../../store/feed";
+import { v4 as uuidv4 } from "uuid";
 import { Feed } from "@fourviere/core/lib/schema/feed";
+import PODCAST_CATEGORIES from "@fourviere/core/lib/podcast-namespace/categories";
 
 const payloadSchema = Type.Object({
   rss: Type.Object({
@@ -19,7 +20,15 @@ const payloadSchema = Type.Object({
       title: titleSchema,
       image: imageSchema,
       description: descriptionSchema,
-      // category: categorySchema,
+      link: Type.Array(
+        Type.Object({
+          "@": Type.Object({
+            href: Type.String({ minLength: 3 }),
+            rel: Type.String(),
+            type: Type.String(),
+          }),
+        }),
+      ),
     }),
   }),
 });
@@ -36,10 +45,10 @@ export default function General() {
   }
 
   return (
-    <VStack scroll wFull>
+    <VStack scroll wFull hFull>
       <Form<PayloadType>
         onSubmit={(values) => {
-          currentFeed.update(values);
+          currentFeed.update(values as Feed);
         }}
         title={t("presentation.title")}
         sections={[
@@ -58,29 +67,29 @@ export default function General() {
                 width: "1",
               },
 
-              // {
-              //   id: "rss.channel.link",
-              //   name: "rss.channel.link",
-              //   label: t("channellinks"),
-              //   // component: ChannelLinks,
-              //   component: "inpu",
-              //   width: "1",
-              // },
-              // {
-              //   id: "rss.channel.category.0",
-              //   name: "rss.channel.category.0",
-              //   label: t("podcast_index.fields.api_key.label"),
-              //   type: "select",
-              //   defaultValue: "",
-              //   // component: Select as FC,
-              //   component: Input,
-              //   fieldProps: {
-              //     options: PODCASTCATEGORIES,
-              //     labelProperty: "name",
-              //     keyProperty: "name",
-              //   },
-              //   width: "1",
-              // },
+              {
+                id: "rss.channel.category",
+                name: "rss.channel.category",
+                label: t("presentation.fields.category.label"),
+                component: "array",
+                defaultItem: { _: "" },
+                childrenFields: [
+                  {
+                    id: "",
+                    name: "",
+                    label: t("presentation.fields.category.label"),
+                    component: "select",
+                    options: PODCAST_CATEGORIES.reduce(
+                      (a, e) => ({
+                        ...a,
+                        [e.name]: e.name,
+                      }),
+                      {},
+                    ),
+                    width: "1",
+                  },
+                ],
+              },
             ],
           },
           {
@@ -133,6 +142,45 @@ export default function General() {
                 name: "rss.channel.link",
                 label: t("channellinks"),
                 component: "array",
+                defaultItem: {
+                  "@": {
+                    href: "test",
+                    type: "test",
+                    rel: "test",
+                    __k: uuidv4(),
+                  },
+                },
+                childrenFields: [
+                  {
+                    id: "@.href",
+                    name: "@.href",
+                    label: t("presentation_tags.fields.link.label"),
+                    component: "input",
+                    width: "1",
+                  },
+                  {
+                    id: "rss.channel.language",
+                    name: "rss.channel.language",
+                    label: t("presentation_tags.fields.language.label"),
+                    component: "select",
+                    options: LANGUAGE_BY_LOCALE,
+                    width: "1/2",
+                  },
+                  {
+                    id: "['@'].type",
+                    name: "['@'].type",
+                    label: t("presentation_tags.fields.type.label"),
+                    component: "input",
+                    width: "1/2",
+                  },
+                  {
+                    id: "['@'].rel",
+                    name: "['@'].rel",
+                    label: t("presentation_tags.fields.type.label"),
+                    component: "input",
+                    width: "1/2",
+                  },
+                ],
                 width: "1",
               },
             ],
