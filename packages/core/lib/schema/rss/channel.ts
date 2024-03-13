@@ -77,41 +77,38 @@ const linkSchema = Type.Array(
 const categorySchema = Type.Array(Type.String());
 const copyrightSchema = Type.String();
 const generatorSchema = Type.String();
-const imageSchema = Type.Optional(
-  Type.Object({
-    url: Type.String(),
-    title: Type.String(),
-    link: Type.String(),
-    description: Type.Optional(Type.String()),
-    height: Type.Optional(Type.Number()),
-    width: Type.Optional(Type.Number()),
+const imageSchema = Type.Object({
+  url: Type.String({
+    minLength: 3,
+    pattern: "^(https?|http?)://",
   }),
-);
+  title: Type.String(),
+  link: Type.String(),
+  description: Type.Optional(Type.String()),
+  height: Type.Optional(Type.Number()),
+  width: Type.Optional(Type.Number()),
+});
 const languageSchema = Type.String();
 const lastBuildDateSchema = Type.String();
 const managingEditorSchema = Type.String();
 const pubDateSchema = Type.String();
-const skipHoursSchema = Type.Optional(
-  Type.Array(
-    Type.Object({
-      hour: Type.Number(),
-    }),
-  ),
+const skipHoursSchema = Type.Array(
+  Type.Object({
+    hour: Type.Number(),
+  }),
 );
-const skipDaysSchema = Type.Optional(
-  Type.Array(
-    Type.Object({
-      day: Type.Union([
-        Type.Literal("Monday"),
-        Type.Literal("Tuesday"),
-        Type.Literal("Wednesday"),
-        Type.Literal("Thursday"),
-        Type.Literal("Friday"),
-        Type.Literal("Saturday"),
-        Type.Literal("Sunday"),
-      ]),
-    }),
-  ),
+const skipDaysSchema = Type.Array(
+  Type.Object({
+    day: Type.Union([
+      Type.Literal("Monday"),
+      Type.Literal("Tuesday"),
+      Type.Literal("Wednesday"),
+      Type.Literal("Thursday"),
+      Type.Literal("Friday"),
+      Type.Literal("Saturday"),
+      Type.Literal("Sunday"),
+    ]),
+  }),
 );
 const webMasterSchema = Type.String();
 const ttlSchema = Type.Number();

@@ -10,7 +10,7 @@ import FormObjectField from "@fourviere/ui/lib/form/form-object-field";
 import Boolean from "@fourviere/ui/lib/form/fields/boolean";
 import { Categories } from "../../../components/form-fields/categories.tsx";
 import ContainerTitle from "@fourviere/ui/lib/container-title.tsx";
-import Img from "../../../components/form-fields/image/index.tsx";
+import Img from "../../../components/form-fields/image/_index.tsx";
 
 export default function Itunes() {
   const currentFeed = UseCurrentFeed();

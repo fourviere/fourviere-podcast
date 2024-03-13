@@ -68,14 +68,13 @@ export function parseXML(
   // skip required check used for importing
   const errors = skipRequiredCheck
     ? podcastValidator.errors?.filter(
-        (error) =>
-          error.keyword !== "required" || error.instancePath !== "/rss/channel",
+        (error) => error.keyword !== "required", //|| error.instancePath !== "/rss/channel",
       )
     : podcastValidator.errors;
 
   if (!isValid && errors?.length) {
     const validationErrors = podcastValidator.errors;
-    console.error(validationErrors);
+    console.error(validationErrors, jsData);
     throw new InvalidPodcastFeedError("Invalid podcast feed", validationErrors);
   }
 

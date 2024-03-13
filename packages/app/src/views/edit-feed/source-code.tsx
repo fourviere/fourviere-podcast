@@ -4,9 +4,9 @@ import feedStore from "../../store/feed/index";
 import { parseXML, serializeToXML } from "@fourviere/core/lib/converter";
 import appStore from "../../store/app";
 import { useEffect, useState } from "react";
-import { Container } from "@fourviere/ui/lib/box";
 import ContainerTitle from "@fourviere/ui/lib/container-title";
 import { useTranslation } from "react-i18next";
+import VStack from "@fourviere/ui/lib/layouts/v-stack";
 
 export default function SourceCode() {
   const { feedId } = useParams<{ feedId: string }>();
@@ -48,7 +48,7 @@ export default function SourceCode() {
   };
 
   return (
-    <Container wFull flex="col">
+    <VStack wFull hFull>
       <ContainerTitle
         isDirty={isDirty}
         isSubmitting={false}
@@ -74,6 +74,6 @@ export default function SourceCode() {
           scrollBeyondLastLine: false,
         }}
       />
-    </Container>
+    </VStack>
   );
 }

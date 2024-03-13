@@ -55,6 +55,7 @@ interface VStackProps extends React.PropsWithChildren {
   paddingY?: keyof typeof PADDING_Y;
   wrap?: boolean;
   wFull?: boolean;
+  hFull?: boolean;
   responsive?: boolean;
   scroll?: boolean;
   style?: React.CSSProperties;
@@ -73,6 +74,7 @@ const VStack = ({
   paddingY,
   wrap,
   wFull,
+  hFull,
   responsive,
   children,
   style,
@@ -90,6 +92,7 @@ const VStack = ({
       [PADDING_X[paddingX ?? 0]]: paddingX,
       [PADDING_Y[paddingY ?? 0]]: paddingY,
       "w-full": wFull,
+      "h-full": hFull,
       "md:flex flex-col": responsive,
       "flex flex-col": !responsive,
       "overflow-y-auto": "scroll",

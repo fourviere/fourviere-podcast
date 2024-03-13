@@ -4,7 +4,7 @@ import FormRow from "@fourviere/ui/lib/form/form-row";
 import Input from "@fourviere/ui/lib/form/fields/input";
 import AudioField from "../../components/form-fields/audio";
 import { Formik } from "formik";
-import Img from "../../components/form-fields/image";
+import Img from "../../components/form-fields/image/_index";
 import { FormField } from "@fourviere/ui/lib/form/form-field";
 import UseCurrentFeed from "../../hooks/use-current-feed";
 import { useTranslation } from "react-i18next";

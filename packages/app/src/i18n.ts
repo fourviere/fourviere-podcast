@@ -62,6 +62,39 @@ const resources = {
         },
       },
     },
+    feed: {
+      forms: {
+        general: {
+          presentation: {
+            title: "Presentation",
+            description:
+              "This area will contain the fields necessary for, once completed, having defined the presentation of the podcast.",
+            fields: {
+              title: { label: "Podcast name" },
+              category: { label: "Show category" },
+            },
+          },
+          image: {
+            title: "Image",
+            description:
+              "An image in a podcast feed plays a crucial role in branding and visual identity, creating an immediate, engaging connection with potential listeners and setting the tone for the content, thereby significantly influencing a listener's decision to subscribe and engage with the podcast.",
+            fields: {
+              image: { label: "Image" },
+            },
+          },
+          presentation_tags: {
+            title: "Presentation tags",
+            description:
+              "This tag helps listeners set their expectations correctly before they start listening. It also allows podcast platforms and directories to organize and present content more effectively.",
+            fields: {
+              language: { label: "Language" },
+              type: { label: "Show type" },
+              explicit: { label: "Explicit" },
+            },
+          },
+        },
+      },
+    },
 
     ///OLD
 

@@ -20,7 +20,8 @@ const ValueSchema = Type.Object({
   "@": Type.Object({
     type: Type.String(),
     method: Type.String(),
-    suggested: Type.Optional(Type.Number()),
+    // String to suport exponential numbers 5e-18
+    suggested: Type.Optional(Type.Union([Type.String(), Type.Number()])),
   }),
 });
 

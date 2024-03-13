@@ -24,12 +24,14 @@ import {
   PaintBrushIcon,
 } from "@heroicons/react/24/outline";
 import Grid from "@fourviere/ui/lib/layouts/grid";
+import SourceCode from "./source-code";
 
 export default function General() {
   const [descriptionModal, setDescriptionModal] = useState<boolean>(false);
   const [v4vModal, setV4vModal] = useState<boolean>(false);
   const [itunesModal, setItunesModal] = useState<boolean>(false);
   const [generalModal, setGeneralModal] = useState<boolean>(false);
+  const [sourceModal, setSourceModal] = useState<boolean>(false);
   const currentFeed = UseCurrentFeed();
 
   return (
@@ -95,8 +97,7 @@ export default function General() {
             <TileButton
               icon={CodeBracketIcon}
               title="Code editor"
-              loading={70}
-              onClick={() => setV4vModal(true)}
+              onClick={() => setSourceModal(true)}
             />
             <TileButton
               label="coming soon"
@@ -151,29 +152,36 @@ export default function General() {
       <AnimatePresence>
         {generalModal && (
           <Drawer type="right" onClose={() => setGeneralModal(false)}>
-            <Container scroll style={{ width: "70vw", height: "100vh" }}>
+            <Container scroll style={{ height: "100vh" }}>
               <GeneralForm />
             </Container>
           </Drawer>
         )}
         {v4vModal && (
           <Drawer type="right" onClose={() => setV4vModal(false)}>
-            <Container scroll style={{ width: "70vw", height: "100vh" }}>
+            <Container scroll style={{ height: "100vh" }}>
               <V4v />
             </Container>
           </Drawer>
         )}
         {descriptionModal && (
           <Drawer type="right" onClose={() => setDescriptionModal(false)}>
-            <VStack style={{ width: "70vw", height: "100vh" }}>
+            <VStack style={{ height: "100vh" }}>
               <Description />
             </VStack>
           </Drawer>
         )}
         {itunesModal && (
           <Drawer type="right" onClose={() => setItunesModal(false)}>
-            <Container scroll style={{ width: "70vw", height: "100vh" }}>
+            <Container scroll style={{ height: "100vh" }}>
               <Itunes />
+            </Container>
+          </Drawer>
+        )}
+        {sourceModal && (
+          <Drawer type="right" onClose={() => setSourceModal(false)}>
+            <Container scroll style={{ height: "100vh" }}>
+              <SourceCode />
             </Container>
           </Drawer>
         )}

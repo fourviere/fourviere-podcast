@@ -96,7 +96,7 @@ const containerTypes = {
     },
   },
   right: {
-    classes: `fixed top-0 bottom-0 right-0 aspect-square roundeed-l-full`,
+    classes: `fixed top-0 bottom-0 right-0 aspect-square roundeed-l-full w-3/4`,
     closeButton:
       "-left-8 leading-none w-8 h-8 top-5 bg-white text-slate-800 items-center justify-center rounded-l-full bg-slate-100",
     animations: {

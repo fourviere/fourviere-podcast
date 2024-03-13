@@ -5,6 +5,7 @@ interface MicroCircularProps {
   radius?: number;
   className?: string;
   strokeWidth?: number;
+  showValue?: boolean;
 }
 
 const MicroCircular: React.FC<MicroCircularProps> = ({
@@ -12,6 +13,7 @@ const MicroCircular: React.FC<MicroCircularProps> = ({
   className = "",
   radius = 8,
   strokeWidth = 2,
+  showValue = false,
 }) => {
   const circumference = 2 * Math.PI * radius;
   const progress = (value / 100) * circumference;
@@ -20,29 +22,36 @@ const MicroCircular: React.FC<MicroCircularProps> = ({
 
   return (
     <div className={className}>
-      <svg height={width} width={width}>
-        <circle
-          cx={radius + strokeWidth}
-          cy={radius + strokeWidth}
-          r={radius}
-          fill="transparent"
-          stroke="#ccc"
-          strokeWidth={strokeWidth}
-        />
-        <circle
-          cx={radius + strokeWidth}
-          cy={radius + strokeWidth}
-          r={radius}
-          fill="transparent"
-          stroke="currentColor"
-          strokeWidth={strokeWidth}
-          strokeDasharray={`${progress} ${remaining}`}
-          className="transition-all duration-500"
-          transform={`rotate(-90 ${radius + strokeWidth} ${
-            radius + strokeWidth
-          })`}
-        />
-      </svg>
+      <div className="relative">
+        <svg height={width} width={width}>
+          <circle
+            cx={radius + strokeWidth}
+            cy={radius + strokeWidth}
+            r={radius}
+            fill="transparent"
+            stroke="#ccc"
+            strokeWidth={strokeWidth}
+          />
+          <circle
+            cx={radius + strokeWidth}
+            cy={radius + strokeWidth}
+            r={radius}
+            fill="transparent"
+            stroke="currentColor"
+            strokeWidth={strokeWidth}
+            strokeDasharray={`${progress} ${remaining}`}
+            className="transition-all duration-500"
+            transform={`rotate(-90 ${radius + strokeWidth} ${
+              radius + strokeWidth
+            })`}
+          />
+        </svg>
+        {showValue && (
+          <div className="text-2xs absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform font-semibold ">
+            {value.toFixed(0)}%
+          </div>
+        )}
+      </div>
     </div>
   );
 };

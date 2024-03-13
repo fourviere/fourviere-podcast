@@ -3,13 +3,15 @@ import React from "react";
 
 interface EditableProps extends React.PropsWithChildren {
   onClick?: () => void;
+  style?: React.CSSProperties;
 }
 
-const EditButton: React.FC<EditableProps> = ({ children, onClick }) => {
+const EditButton: React.FC<EditableProps> = ({ children, style, onClick }) => {
   return (
     <button
       onClick={onClick}
       className="border-inner group relative rounded-lg border-dashed border-slate-400 p-[6px] text-left transition-all duration-500 hover:border"
+      style={style}
     >
       <div className="-m-[6px] transition-all duration-500 group-hover:scale-[.96] group-hover:opacity-60">
         {children}
