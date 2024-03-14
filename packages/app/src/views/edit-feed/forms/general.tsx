@@ -28,6 +28,7 @@ const payloadSchema = Type.Object({
             type: Type.String(),
           }),
         }),
+        { minItems: 1 },
       ),
     }),
   }),
