@@ -51,8 +51,8 @@ export default function General() {
           </VStack>
         </HStack>
       </EditButton>
-      <HStack spacing="6" responsive>
-        <OneThirdPageBox responsive>
+      <HStack spacing="6" responsive={true}>
+        <OneThirdPageBox $responsive={true}>
           <VStack spacing="4">
             <EditButton onClick={() => setDescriptionModal(true)}>
               <P
@@ -66,7 +66,7 @@ export default function General() {
             </EditButton>
           </VStack>
         </OneThirdPageBox>
-        <TwoThirdsPageBox responsive>
+        <TwoThirdsPageBox $responsive>
           <Grid cols="2" mdCols="4" lgCols="6" wFull spacing="3">
             <TileButton
               icon={PaintBrushIcon}
@@ -142,7 +142,7 @@ export default function General() {
       </HStack>
       <hr />
       <H1>Episodes</H1>
-      <HStack spacing="6" responsive>
+      <HStack spacing="6" responsive={true}>
         <TwoThirdsPageBox>
           <P>Episodes</P>
         </TwoThirdsPageBox>

@@ -1,5 +1,5 @@
 import tw from "tailwind-styled-components";
-import React, { ButtonHTMLAttributes, PropsWithChildren } from "react";
+import React, { PropsWithChildren } from "react";
 import { motion } from "framer-motion";
 import classNames from "classnames";
 

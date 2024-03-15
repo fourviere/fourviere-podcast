@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { FieldArray, FieldProps, FormikTouched } from "formik";
 import { Reorder } from "framer-motion";
-import Button from "../../button";
 import { ArrowsUpDownIcon, TrashIcon } from "@heroicons/react/24/outline";
 import "./array.css";
 import tw from "tailwind-styled-components";
@@ -18,6 +17,7 @@ const ArrayForm: React.ComponentType<
     touched: FormikTouched<unknown>;
     childrenFields: Array<FieldConf>;
     defaultItem: Record<string, unknown>;
+    arrayErrorsFrom?: string[];
   }
 > = ({ field, form, childrenFields, touched, defaultItem }) => {
   const [dragEnabled, setDragEnabled] = useState(false);
@@ -31,6 +31,22 @@ const ArrayForm: React.ComponentType<
     }, 3000);
     return () => clearTimeout(t);
   }, [dragEnabled, field.value]);
+
+  function getOrphanErrors(index): string[] {
+    const keys = [];
+
+    for (const [, v] of childrenFields.entries()) {
+      keys.push(`${field.name}.${index}.${v.name}`);
+    }
+
+    const errors: Record<string, string> = Object.keys(form.errors)
+      .filter(
+        (e) => e.startsWith(field.name + "." + index) && !keys.includes(e),
+      )
+      .reduce((acc, e) => ({ ...acc, [e]: form.errors[e] }), {});
+
+    return Object.keys(errors).map((e) => errors[e]);
+  }
   return (
     <>
       <FieldContainer>
@@ -46,24 +62,22 @@ const ArrayForm: React.ComponentType<
               }}
             >
               <FieldHeader>
-                {v.length > 1 && (
+                {v?.length > 1 ? (
                   <SortButton
-                    active={dragEnabled}
+                    $active={dragEnabled}
                     onClick={() => setDragEnabled((d) => !d)}
                   >
-                    <ArrowsUpDownIcon className="h-5 w-5" />
-                    <span>sort</span>
+                    <ArrowsUpDownIcon className="h-4 w-4" />
                   </SortButton>
-                )}
-                <AddButton
-                  main
+                ) : null}
+                <Button
+                  $main
                   type="button"
                   onClick={() => insert(0, { ...defaultItem, __k: uuidv4() })}
                 >
                   <PlusCircleIcon className="h-5 w-5" />
-                </AddButton>
+                </Button>
               </FieldHeader>
-              <AddButtonContainer></AddButtonContainer>
               {v?.map((item, index) => (
                 <Reorder.Item
                   drag={dragEnabled}
@@ -71,23 +85,20 @@ const ArrayForm: React.ComponentType<
                   key={dragEnabled ? simpleHash(JSON.stringify(item)) : index}
                   value={dragEnabled && item}
                 >
-                  <ArrayItem dragEnabled={dragEnabled}>
-                    <DeleteButton onClick={() => remove(index)}>
-                      <TrashIcon className="h-4 w-4" />
-                    </DeleteButton>
+                  <ArrayItem $dragEnabled={dragEnabled}>
                     <Grid cols="1" mdCols="2" spacing="4">
                       {childrenFields.map((subField, subIndex) => {
-                        return generateFormikField(
-                          subField,
-                          subIndex,
-                          getValueByPath(
+                        return generateFormikField({
+                          field: subField,
+                          index: subIndex,
+                          touched: getValueByPath(
                             touched,
                             `${index}${
                               subField.name ? `.${subField.name}` : ""
                             }`,
                           ),
-                          `${field.name}.${index}`,
-                        );
+                          fieldNamePrefix: `${field.name}.${index}`,
+                        });
                       })}
                     </Grid>
                     {dragEnabled && (
@@ -95,18 +106,32 @@ const ArrayForm: React.ComponentType<
                         <ArrowsUpDownIcon className="h-5 w-5 text-slate-600" />
                       </DisabledView>
                     )}
+                    {getValueByPath(touched, `${index}`) &&
+                    getOrphanErrors(index).length ? (
+                      <ErrorAlert
+                        message={getOrphanErrors(index).join(". ")}
+                      ></ErrorAlert>
+                    ) : null}
                   </ArrayItem>
-                  <AddButtonContainer>
-                    <AddButton
-                      main={false}
+                  <ButtonContainer>
+                    <Button
+                      $main={false}
                       type="button"
                       onClick={() =>
                         insert(index + 1, { ...defaultItem, __k: uuidv4() })
                       }
                     >
                       <PlusCircleIcon className="h-5 w-5" />
-                    </AddButton>
-                  </AddButtonContainer>
+                    </Button>
+                    <Button
+                      $main={false}
+                      $danger={true}
+                      type="button"
+                      onClick={() => remove(index)}
+                    >
+                      <TrashIcon className="h-5 w-5" />
+                    </Button>
+                  </ButtonContainer>
                 </Reorder.Item>
               ))}
             </Reorder.Group>
@@ -125,22 +150,23 @@ const ArrayForm: React.ComponentType<
 export default ArrayForm;
 
 const FieldContainer = tw.div`space-y-3 rounded-lg bg-slate-100 p-3`;
-const FieldHeader = tw.div`flex items-center sticky top-0 bg-slate-100/95 pb-3 space-x-3`;
+const FieldHeader = tw.div`flex items-center sticky top-0 bg-slate-100/95 space-x-3`;
 
 const ArrayItem = tw.div<{
-  dragEnabled: boolean | undefined;
+  $dragEnabled: boolean | undefined;
 }>`relative overflow-hidden rounded-md bg-white p-3 mt-1.5 ${(p) =>
-  p.dragEnabled && "array-shaking-item"}`;
-const DeleteButton = tw.button`absolute right-1 top-1 flex items-center justify-center text-slate-800 hover:text-rose-100 w-6 h-6 rounded-full bg-slate-100 hover:bg-rose-600 `;
+  p.$dragEnabled && "array-shaking-item"}`;
 const DisabledView = tw.div`absolute inset-0 flex cursor-move items-center justify-center bg-white/60`;
-const AddButtonContainer = tw.button`flex justify-center w-full`;
-const AddButton = tw.button<{
-  main: boolean;
+const ButtonContainer = tw.div`flex justify-center w-full space-x-3`;
+const Button = tw.button<{
+  $main: boolean;
+  $danger?: boolean;
 }>`flex items-center justify-center p-1 bg-white hover:bg-slate-50 text-slate-600 hover:bg-slate-800 hover:text-slate-100 mb-1.5 transition-all duration-500 ${({
-  main,
-}) => (main ? "rounded-full" : "rounded-b-full")}`;
+  $main,
+}) => ($main ? "rounded-full" : "rounded-b-full")} ${({ $danger }) =>
+  $danger && "hover:bg-rose-500 hover:text-rose-100"}`;
 const SortButton = tw.button<{
-  active: boolean;
+  $active: boolean;
 }>`rounded-full px-2 py-1 text-2xs uppercase font-semibold flex items-center justify-center  bg-white hover:bg-slate-50 text-slate-600 hover:bg-slate-800 hover:text-slate-100 mb-1.5 transition-all duration-500 ${({
-  active,
-}) => active && `bg-slate-700 text-slate-100 animate-pulse`}`;
+  $active,
+}) => $active && `bg-slate-700 text-slate-100 animate-pulse`}`;

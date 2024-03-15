@@ -1,6 +1,10 @@
 import { PropsWithChildren } from "react";
 import Button from "./button";
-import { CheckIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowLeftCircleIcon,
+  CheckIcon,
+  ExclamationCircleIcon,
+} from "@heroicons/react/24/outline";
 import { Title } from "./typography";
 
 type Props = {
@@ -11,6 +15,7 @@ type Props = {
   onSave?: () => void;
   postSlot?: React.ReactNode;
   isDisabled?: boolean;
+  hasErrors?: boolean;
 };
 
 const ContainerTitle = ({
@@ -44,7 +49,7 @@ const ContainerTitle = ({
       {!!onSave && (
         <Button
           size="md"
-          isDisabled={!isDirty && !isSubmitting}
+          isDisabled={!isDirty || isSubmitting}
           onClick={onSubmit}
           Icon={CheckIcon}
         >

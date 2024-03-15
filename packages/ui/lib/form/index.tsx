@@ -11,6 +11,7 @@ import {
 } from "formik";
 import Boolean from "@fourviere/ui/lib/form/fields/boolean";
 import Ajv from "ajv";
+import addFormats from "ajv-formats";
 import localize from "ajv-i18n/localize";
 import { useTranslation } from "react-i18next";
 import Grid, { GridCell } from "@fourviere/ui/lib/layouts/grid";
@@ -18,6 +19,9 @@ import Input from "@fourviere/ui/lib/form/fields/input";
 import Select from "@fourviere/ui/lib/form/fields/select";
 import { ComponentType, InputHTMLAttributes } from "react";
 import ArrayForm from "@fourviere/ui/lib/form/fields/array";
+import ErrorAlert from "../alerts/error";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+import { ErrorBox } from "../box";
 
 export function getValueByPath(obj: Record<string, unknown>, path: string) {
   const keys = path.split(".");
@@ -42,7 +46,7 @@ const COMPONENT_MAP = {
 type BaseFieldConf = {
   id: string;
   name: string;
-  label: string;
+  label?: string | null;
   style?: string;
   defaultValue?: unknown;
   component:
@@ -66,6 +70,7 @@ interface InputFieldConf extends BaseFieldConf {
 interface ArrayFieldConf extends BaseFieldConf {
   childrenFields: FieldConf[];
   defaultItem?: Record<string, unknown>;
+  arrayErrorsFrom: string[];
 }
 
 interface SelectFieldConf extends BaseFieldConf {
@@ -78,9 +83,9 @@ export type FieldConf =
   | SelectFieldConf
   | ArrayFieldConf;
 
-type Section = {
-  title: string;
-  description: string;
+export type Section = {
+  title?: string | null;
+  description?: string | null;
   hideTitle?: boolean;
   fields: FieldConf[];
 };
@@ -105,9 +110,11 @@ export default function Form<DataType extends FormikValues>({
       initialValues={data}
       enableReinitialize
       validate={(values: DataType) => {
-        const ajv = new Ajv({
-          allErrors: true,
-        });
+        const ajv = addFormats(
+          new Ajv({
+            allErrors: true,
+          }),
+        );
 
         const validate = ajv.compile(schema);
         const valid = validate(values);
@@ -130,7 +137,7 @@ export default function Form<DataType extends FormikValues>({
         setSubmitting(false);
       }}
     >
-      {({ dirty, isSubmitting, handleSubmit, isValid, touched, errors }) => (
+      {({ dirty, isSubmitting, handleSubmit, isValid, touched }) => (
         <VStack>
           <ContainerTitle
             isDirty={dirty}
@@ -140,6 +147,17 @@ export default function Form<DataType extends FormikValues>({
           >
             {title}
           </ContainerTitle>
+          <div className="sticky top-[75px] z-10 p-3">
+            {Object.keys(touched).length > 0 && !isValid && (
+              <ErrorBox>
+                <div className="flex items-center">
+                  <ExclamationCircleIcon className="mr-1 h-3 w-3" /> The form
+                  has errors
+                </div>
+              </ErrorBox>
+            )}
+          </div>
+
           {sections.map((section) => (
             <FormSection
               key={section.title}
@@ -149,11 +167,11 @@ export default function Form<DataType extends FormikValues>({
             >
               <Grid cols="1" mdCols="2" spacing="4">
                 {section.fields.map((field, index) => {
-                  return generateFormikField(
+                  return generateFormikField({
                     field,
                     index,
-                    getValueByPath(touched, field.name),
-                  );
+                    touched: getValueByPath(touched, field.name),
+                  });
                 })}
               </Grid>
             </FormSection>
@@ -164,13 +182,20 @@ export default function Form<DataType extends FormikValues>({
   );
 }
 
-export function generateFormikField(
-  field: FieldConf,
-  index: number,
-  touched: FormikTouched<unknown>,
+export function generateFormikField({
+  field,
+  index,
+  touched,
+  fieldNamePrefix,
+  postSlot,
+}: {
+  field: FieldConf;
+  index: number;
+  touched: FormikTouched<unknown>;
   // Used for array fields
-  fieldNamePrefix?: string,
-) {
+  fieldNamePrefix?: string;
+  postSlot?: React.ReactNode;
+}) {
   const props: Record<string, unknown> = {
     touched,
   };
@@ -191,6 +216,7 @@ export function generateFormikField(
   if (field.component === "array" && (field as ArrayFieldConf).childrenFields) {
     props["childrenFields"] = (field as ArrayFieldConf).childrenFields;
     props["defaultItem"] = (field as ArrayFieldConf).defaultItem;
+    props["fieldNamePrefix"] = fieldNamePrefix;
   }
 
   let name = `${fieldNamePrefix ? fieldNamePrefix + "." : ""}${field.name}`;
@@ -209,8 +235,6 @@ export function generateFormikField(
         <FormikField
           name={name}
           label={field.label}
-          // Used for array fields
-          fieldNamePrefix={fieldNamePrefix}
           component={
             COMPONENT_MAP?.[field.component as keyof typeof COMPONENT_MAP] ??
             field.component ??
@@ -219,6 +243,7 @@ export function generateFormikField(
           style={field.style}
           {...props}
         />
+        {postSlot}
       </FormRow>
     </GridCell>
   );

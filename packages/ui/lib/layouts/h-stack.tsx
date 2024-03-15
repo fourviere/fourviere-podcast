@@ -102,7 +102,7 @@ const HStack = ({
       [PADDING_X[paddingX ?? "0"]]: paddingX,
       [PADDING_Y[paddingY ?? "0"]]: paddingY,
       "w-full": wFull,
-      "md:flex flex-row": responsive,
+      "md:flex flex-row": !!responsive,
       "flex flex-row": !responsive,
       "overflow-x-auto": scroll,
     },

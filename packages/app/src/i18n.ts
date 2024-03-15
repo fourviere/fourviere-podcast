@@ -6,6 +6,17 @@ import { initReactI18next } from "react-i18next";
 // or even better, manage them separated from your code: https://react.i18next.com/guides/multiple-translation-files)
 const resources = {
   en: {
+    utils: {
+      weekdays: {
+        monday: "Monday",
+        tuesday: "Tuesday",
+        wednesday: "Wednesday",
+        thursday: "Thursday",
+        friday: "Friday",
+        saturday: "Saturday",
+        sunday: "Sunday",
+      },
+    },
     start: {
       index: {
         welcome:
@@ -71,7 +82,6 @@ const resources = {
               "This area will contain the fields necessary for, once completed, having defined the presentation of the podcast.",
             fields: {
               title: { label: "Podcast name" },
-              category: { label: "Show category" },
             },
           },
           image: {
@@ -90,6 +100,45 @@ const resources = {
               language: { label: "Language" },
               type: { label: "Show type" },
               explicit: { label: "Explicit" },
+            },
+          },
+          ownership: {
+            title: "Ownership",
+            description:
+              "This section contains fields for specifying the ownership details of the podcast. It includes fields for the show owner's name and email.",
+            fields: {
+              webmaster: { label: "Webmaster" },
+              managingEditor: { label: "Managing editor" },
+              copyright: { label: "Copyright" },
+            },
+          },
+          category: {
+            title: "Category",
+            description:
+              "This tag helps listeners set their expectations correctly before they start listening. It also allows podcast platforms and directories to organize and present content more effectively.",
+            fields: {
+              category: { label: "Category" },
+            },
+          },
+          links: {
+            title: "Links",
+            description:
+              "This section contains the links to the podcast website and the feed.",
+            fields: {
+              links: { label: "Links" },
+              link_href: { label: "Link" },
+              link_type: { label: "Type" },
+              link_rel: { label: "Rel" },
+            },
+          },
+          feedTTLUpdateFrequency: {
+            title: "Feed update frequency",
+            description:
+              "This section contains TTL and the expected update frequency of the feed.",
+            fields: {
+              skipHours: { label: "Skip hours" },
+              skipDays: { label: "Skip days" },
+              ttl: { label: "TTL" },
             },
           },
         },

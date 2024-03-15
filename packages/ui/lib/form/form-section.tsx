@@ -14,7 +14,7 @@ export default function FormSection({
   children,
 }: PropsWithChildren<FormSectionProps>) {
   return (
-    <HStack wFull responsive>
+    <HStack wFull responsive={true}>
       {!hideTitle && (
         <div className="space-y-1 p-5 md:w-[200px] md:shrink-0 lg:w-1/3 xl:w-1/4">
           {title && <H2>{title}</H2>}

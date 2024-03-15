@@ -1,89 +1,27 @@
 import { Static, Type } from "@sinclair/typebox";
 
-// RSS SPECIFICATION https://www.rssboard.org/rss-specification
-// export const RSSChannelSchema = Type.Object({
-//   // MANDATORY
-//   title: Type.String(),
-//   description: Type.String(),
-//   link: Type.Optional(
-//     Type.Array(
-//       Type.Object({
-//         "#text": Type.Optional(Type.String()),
-//         "@": Type.Object({
-//           rel: Type.Optional(Type.String()),
-//           type: Type.Optional(Type.String()),
-//           href: Type.Optional(Type.String()),
-//         }),
-//       }),
-//     ),
-//   ),
-
-//   // OPTIONAL
-//   category: Type.Optional(Type.Array(Type.String())),
-//   copyright: Type.Optional(Type.String()),
-//   generator: Type.Optional(Type.String()),
-//   image: Type.Optional(
-//     Type.Object({
-//       url: Type.String(),
-//       title: Type.String(),
-//       link: Type.String(),
-//       description: Type.Optional(Type.String()),
-//       height: Type.Optional(Type.Number()),
-//       width: Type.Optional(Type.Number()),
-//     }),
-//   ),
-//   language: Type.Optional(Type.String()),
-//   lastBuildDate: Type.Optional(Type.String()),
-//   managingEditor: Type.Optional(Type.String()),
-//   pubDate: Type.Optional(Type.String()),
-//   skipHours: Type.Optional(
-//     Type.Array(
-//       Type.Object({
-//         hour: Type.Number(),
-//       }),
-//     ),
-//   ),
-//   skipDays: Type.Optional(
-//     Type.Array(
-//       Type.Object({
-//         day: Type.Union([
-//           Type.Literal("Monday"),
-//           Type.Literal("Tuesday"),
-//           Type.Literal("Wednesday"),
-//           Type.Literal("Thursday"),
-//           Type.Literal("Friday"),
-//           Type.Literal("Saturday"),
-//           Type.Literal("Sunday"),
-//         ]),
-//       }),
-//     ),
-//   ),
-//   webMaster: Type.Optional(Type.String()),
-//   ttl: Type.Optional(Type.Number()),
-// });
-
 const titleSchema = Type.String({ minLength: 3 });
-const descriptionSchema = Type.String();
-const linkSchema = Type.Array(
-  Type.Object({
-    "#text": Type.Optional(Type.String()),
-    "@": Type.Object({
-      rel: Type.Optional(Type.String()),
-      type: Type.Optional(Type.String()),
-      href: Type.Optional(Type.String()),
-    }),
+const descriptionSchema = Type.String({ minLength: 3 });
+const linkSchema = Type.Object({
+  "#text": Type.Optional(Type.String()),
+  "@": Type.Object({
+    rel: Type.Optional(Type.String()),
+    type: Type.Optional(Type.String()),
+    href: Type.Optional(Type.String({ format: "uri" })),
   }),
-);
-const categorySchema = Type.Array(Type.String());
+});
+const linksSchema = Type.Array(linkSchema);
+const categorySchema = Type.String();
+const categoriesSchema = Type.Array(categorySchema);
 const copyrightSchema = Type.String();
 const generatorSchema = Type.String();
 const imageSchema = Type.Object({
   url: Type.String({
     minLength: 3,
-    pattern: "^(https?|http?)://",
+    format: "uri",
   }),
-  title: Type.String(),
-  link: Type.String(),
+  title: Type.Optional(Type.String()),
+  link: Type.Optional(Type.String()),
   description: Type.Optional(Type.String()),
   height: Type.Optional(Type.Number()),
   width: Type.Optional(Type.Number()),
@@ -116,7 +54,7 @@ const ttlSchema = Type.Number();
 const RSSChannelSchema = Type.Object({
   title: titleSchema,
   description: descriptionSchema,
-  link: Type.Optional(linkSchema),
+  link: Type.Optional(linksSchema),
   category: Type.Optional(categorySchema),
   copyright: Type.Optional(copyrightSchema),
   generator: Type.Optional(generatorSchema),
@@ -124,10 +62,10 @@ const RSSChannelSchema = Type.Object({
   language: Type.Optional(languageSchema),
   lastBuildDate: Type.Optional(lastBuildDateSchema),
   managingEditor: Type.Optional(managingEditorSchema),
+  webMaster: Type.Optional(webMasterSchema),
   pubDate: Type.Optional(pubDateSchema),
   skipHours: Type.Optional(skipHoursSchema),
   skipDays: Type.Optional(skipDaysSchema),
-  webMaster: Type.Optional(webMasterSchema),
   ttl: Type.Optional(ttlSchema),
 });
 type RSSChannel = Static<typeof RSSChannelSchema>;
@@ -136,8 +74,8 @@ export {
   RSSChannelSchema,
   titleSchema,
   descriptionSchema,
-  linkSchema,
-  categorySchema,
+  linksSchema,
+  categoriesSchema,
   copyrightSchema,
   generatorSchema,
   imageSchema,

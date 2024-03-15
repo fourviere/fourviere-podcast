@@ -1,43 +1,67 @@
 import { Type } from "@sinclair/typebox";
 
+const itunesImageSchema = Type.Object({
+  "@": Type.Object({
+    href: Type.String(),
+  }),
+});
+const itunesCategorySchema = Type.Array(
+  Type.Object({
+    "@": Type.Object({
+      text: Type.String(),
+    }),
+    "itunes:category": Type.Optional(
+      Type.Object({
+        "@": Type.Object({
+          text: Type.String(),
+        }),
+      }),
+    ),
+  }),
+);
+const itunesExplicitSchema = Type.String();
+const itunesAuthorSchema = Type.String();
+const itunesOwnerSchema = Type.Object({
+  "itunes:name": Type.String(),
+  "itunes:email": Type.String(),
+});
+const itunesTypeSchema = Type.Union([
+  Type.Literal("episodic"),
+  Type.Literal("serial"),
+]);
+const itunesNewFeedUrlSchema = Type.String();
+const itunesBlockSchema = Type.Union([Type.Literal("yes"), Type.Literal("no")]);
+const itunesCompleteSchema = Type.Union([
+  Type.Literal("yes"),
+  Type.Literal("no"),
+]);
+
 // ITUNES http://www.itunes.com/dtds/podcast-1.0.dtd
 export const ItunesChannelSchema = Type.Object({
   // REQUIRED
-  "itunes:image": Type.Object({
-    "@": Type.Object({
-      href: Type.String(),
-    }),
-  }),
+  "itunes:image": itunesImageSchema,
 
-  "itunes:category": Type.Array(
-    Type.Object({
-      "@": Type.Object({
-        text: Type.String(),
-      }),
-      "itunes:category": Type.Optional(
-        Type.Object({
-          "@": Type.Object({
-            text: Type.String(),
-          }),
-        }),
-      ),
-    }),
-  ),
+  "itunes:category": itunesCategorySchema,
   // XML convert the "false" value as boolean
-  "itunes:explicit": Type.String(),
+  "itunes:explicit": itunesExplicitSchema,
   // OPTIONAL
-  "itunes:author": Type.Optional(Type.String()),
-  "itunes:owner": Type.Optional(
-    Type.Object({
-      "itunes:name": Type.String(),
-      "itunes:email": Type.Optional(Type.String()),
-    }),
-  ),
+  "itunes:author": Type.Optional(itunesAuthorSchema),
+  "itunes:owner": Type.Optional(itunesOwnerSchema),
 
-  "itunes:type": Type.Optional(
-    Type.Union([Type.Literal("episodic"), Type.Literal("serial")]),
-  ),
-  "itunes:new-feed-url": Type.Optional(Type.String()),
-  "itunes:block": Type.Optional(Type.Literal("yes")),
-  "itunes:complete": Type.Optional(Type.Literal("yes")),
+  "itunes:type": Type.Optional(itunesTypeSchema),
+  "itunes:new-feed-url": Type.Optional(itunesNewFeedUrlSchema),
+  "itunes:block": Type.Optional(itunesBlockSchema),
+  "itunes:complete": Type.Optional(itunesCompleteSchema),
 });
+
+export {
+  itunesImageSchema,
+  itunesCategorySchema,
+  itunesExplicitSchema,
+  itunesAuthorSchema,
+  itunesOwnerSchema,
+  itunesTypeSchema,
+  itunesNewFeedUrlSchema,
+  itunesBlockSchema,
+  itunesCompleteSchema,
+};

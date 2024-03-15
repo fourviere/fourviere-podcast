@@ -9,6 +9,7 @@ import Ajv from "ajv";
 import FeedSchema, { Feed } from "@fourviere/core/lib/schema/feed";
 import { InvalidPodcastFeedError, InvalidXMLError } from "./errors";
 import { normalize } from "./normalizer";
+import addFormats from "ajv-formats";
 
 const ARRAYS: string[] = [
   "rss.channel.category",
@@ -43,7 +44,9 @@ const CONFIG_BUILDER: XmlBuilderOptions = {
 
 const parser = new XMLParser(CONFIG_PARSER);
 const builder = new XMLBuilder(CONFIG_BUILDER);
-const podcastValidator = new Ajv({ allErrors: true }).compile(FeedSchema);
+const podcastValidator = addFormats(new Ajv({ allErrors: true })).compile(
+  FeedSchema,
+);
 
 export function serializeToXML(feed: Feed): string {
   return builder.build(feed) as string;
