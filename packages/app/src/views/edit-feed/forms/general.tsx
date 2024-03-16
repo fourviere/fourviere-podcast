@@ -38,8 +38,6 @@ export default function General() {
       title: null,
       description: t("presentation.description"),
       hideTitle: false,
-      preSlot: <div>dddd</div>,
-      postSlot: <div>dddds</div>,
       fields: [
         {
           id: "rss.channel.title",
@@ -49,8 +47,6 @@ export default function General() {
           style: "2xl",
           component: "input",
           width: "1",
-          preSlot: <div>miao</div>,
-          postSlot: <div>bau</div>,
         },
       ],
     },
@@ -170,9 +166,9 @@ export default function General() {
           component: "array",
           defaultItem: {
             "@": {
-              href: "test",
-              type: undefined,
-              rel: "test",
+              href: "https://www.fourviere.io",
+              type: "application/rss+xml",
+              rel: "last",
               __k: uuidv4(),
             },
           },
