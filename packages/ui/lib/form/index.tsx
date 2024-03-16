@@ -2,13 +2,7 @@ import ContainerTitle from "@fourviere/ui/lib/container-title";
 import FormRow from "@fourviere/ui/lib/form/form-row";
 import FormSection from "@fourviere/ui/lib/form/form-section";
 import VStack from "@fourviere/ui/lib/layouts/v-stack";
-import {
-  Formik,
-  FormikValues,
-  Field as FormikField,
-  FieldProps,
-  FormikTouched,
-} from "formik";
+import { Formik, FormikValues, Field as FormikField, FieldProps } from "formik";
 import Boolean from "@fourviere/ui/lib/form/fields/boolean";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
@@ -17,9 +11,16 @@ import { useTranslation } from "react-i18next";
 import Grid, { GridCell } from "@fourviere/ui/lib/layouts/grid";
 import Input from "@fourviere/ui/lib/form/fields/input";
 import Select from "@fourviere/ui/lib/form/fields/select";
-import { ComponentType, InputHTMLAttributes } from "react";
+import { ComponentType, InputHTMLAttributes, useMemo } from "react";
 import ArrayForm from "@fourviere/ui/lib/form/fields/array";
 import { ErrorBox } from "../box";
+import { ajvErrorsToJsonPath, getLabelByName } from "./utils";
+
+const ajv = addFormats(
+  new Ajv({
+    allErrors: true,
+  }),
+);
 
 const COMPONENT_MAP = {
   boolean: Boolean,
@@ -55,7 +56,7 @@ interface InputFieldConf extends BaseFieldConf {
   type?: "number" | "text" | "password";
 }
 
-interface ArrayFieldConf extends BaseFieldConf {
+export interface ArrayFieldConf extends BaseFieldConf {
   childrenFields: FieldConf[];
   defaultItem?: Record<string, unknown>;
   arrayErrorsFrom: string[];
@@ -101,30 +102,20 @@ export default function Form<DataType extends FormikValues>({
   };
 }) {
   const { i18n } = useTranslation();
+  const compiledSchema = useMemo(() => {
+    return ajv.compile(schema);
+  }, [schema]);
 
   return (
     <Formik
       initialValues={data}
       enableReinitialize
       validate={(values: DataType) => {
-        const ajv = addFormats(
-          new Ajv({
-            allErrors: true,
-          }),
-        );
-
-        const validate = ajv.compile(schema);
-        const valid = validate(values);
+        const valid = compiledSchema(values);
         if (!valid) {
           const language = i18n.language as keyof typeof localize;
-          localize[language](validate.errors);
-          const errors = validate.errors?.reduce((acc, error) => {
-            return {
-              ...acc,
-              [error.instancePath.split("/").join(".").substring(1)]:
-                error.message,
-            };
-          }, {});
+          localize[language](compiledSchema.errors);
+          const errors = ajvErrorsToJsonPath(compiledSchema?.errors);
           console.log("Validation errors", errors);
           return errors;
         }
@@ -136,6 +127,7 @@ export default function Form<DataType extends FormikValues>({
     >
       {({ dirty, isSubmitting, handleSubmit, isValid, touched, errors }) => (
         <VStack>
+          {/* {console.log("touched", touched, errors)} */}
           <ContainerTitle
             labels={{
               save: labels.save,
@@ -155,7 +147,7 @@ export default function Form<DataType extends FormikValues>({
                 <div>
                   <ul>
                     {Object.entries(errors)?.map(([k, e]) => (
-                      <li>
+                      <li key={k}>
                         <span className="font-semibold">
                           {`${getLabelByName(sections, k)}: `} {k}
                         </span>
@@ -167,12 +159,10 @@ export default function Form<DataType extends FormikValues>({
               </ErrorBox>
             )}
           </div>
-
           {sections.map((section) => (
-            <>
+            <div key={section.title}>
               {section.preSlot}
               <FormSection
-                key={section.title}
                 title={section.title}
                 description={section.description}
                 hideTitle={section.hideTitle}
@@ -182,13 +172,12 @@ export default function Form<DataType extends FormikValues>({
                     return generateFormikField({
                       field,
                       index,
-                      touched: getValueByPath(touched, field.name),
                     });
                   })}
                 </Grid>
               </FormSection>
               {section.postSlot}
-            </>
+            </div>
           ))}
         </VStack>
       )}
@@ -199,17 +188,17 @@ export default function Form<DataType extends FormikValues>({
 export function generateFormikField({
   field,
   index,
-  touched,
+  // touched,
   fieldNamePrefix,
 }: {
   field: FieldConf;
   index: number;
-  touched: FormikTouched<unknown>;
+  // touched: FormikTouched<unknown>;
   // Used for array fields
   fieldNamePrefix?: string;
 }) {
   const props: Record<string, unknown> = {
-    touched,
+    // touched,
   };
 
   if (field.fieldProps) {
@@ -260,39 +249,4 @@ export function generateFormikField({
       {field?.postSlot}
     </GridCell>
   );
-}
-
-function getLabelByName(sections: Section[], name: string) {
-  for (const section of sections) {
-    for (const field of section.fields) {
-      if (field.name === name) {
-        return field.label;
-      }
-      if (field.component === "array") {
-        for (const childField of (field as ArrayFieldConf).childrenFields) {
-          console.log(field.name + "." + childField.name, name);
-          const match = name.match(
-            RegExp(`${field.name}\\.([0-9])+\\.${childField.name}`),
-          );
-          if (match) {
-            return `${field.label} #${match?.[1]} - ${childField.label}`;
-          }
-        }
-      }
-    }
-  }
-  return "";
-}
-
-export function getValueByPath(obj: Record<string, unknown>, path: string) {
-  const keys = path.split(".");
-  let value = obj;
-  for (const key of keys) {
-    if (value && typeof value === "object") {
-      value = value[key] as Record<string, unknown>;
-    } else {
-      return undefined;
-    }
-  }
-  return value;
 }

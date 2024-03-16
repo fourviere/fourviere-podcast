@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { FieldArray, FieldProps, FormikTouched } from "formik";
+import { FieldArray, FieldProps } from "formik";
 import { Reorder } from "framer-motion";
 import { ArrowsUpDownIcon, TrashIcon } from "@heroicons/react/24/outline";
 import "./array.css";
@@ -7,19 +7,19 @@ import tw from "tailwind-styled-components";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { simpleHash } from "../../utils/string";
 import { v4 as uuidv4 } from "uuid";
-import { FieldConf, generateFormikField, getValueByPath } from "..";
+import { FieldConf, generateFormikField } from "..";
 import Grid from "../../layouts/grid";
 import ErrorAlert from "../../alerts/error";
+import { getError, getTouchedByPath } from "../utils";
 
 const ArrayForm: React.ComponentType<
   FieldProps<Array<Record<string, unknown>>> & {
     label: string;
-    touched: FormikTouched<unknown>;
     childrenFields: Array<FieldConf>;
     defaultItem: Record<string, unknown>;
     arrayErrorsFrom?: string[];
   }
-> = ({ field, form, childrenFields, touched, defaultItem }) => {
+> = ({ field, form, childrenFields, defaultItem }) => {
   const [dragEnabled, setDragEnabled] = useState(false);
 
   //const v = useMemo(() => keifyElements(field.value), [field.value]);
@@ -32,21 +32,13 @@ const ArrayForm: React.ComponentType<
     return () => clearTimeout(t);
   }, [dragEnabled, field.value]);
 
-  function getOrphanErrors(index): string[] {
-    const keys = [];
+  const touched = getTouchedByPath(form.touched, field.name);
+  const error = getError({
+    touched,
+    errors: form?.errors,
+    name: field?.name,
+  });
 
-    for (const [, v] of childrenFields.entries()) {
-      keys.push(`${field.name}.${index}.${v.name}`);
-    }
-
-    const errors: Record<string, string> = Object.keys(form.errors)
-      .filter(
-        (e) => e.startsWith(field.name + "." + index) && !keys.includes(e),
-      )
-      .reduce((acc, e) => ({ ...acc, [e]: form.errors[e] }), {});
-
-    return Object.keys(errors).map((e) => errors[e]);
-  }
   return (
     <>
       <FieldContainer>
@@ -91,12 +83,6 @@ const ArrayForm: React.ComponentType<
                         return generateFormikField({
                           field: subField,
                           index: subIndex,
-                          touched: getValueByPath(
-                            touched,
-                            `${index}${
-                              subField.name ? `.${subField.name}` : ""
-                            }`,
-                          ),
                           fieldNamePrefix: `${field.name}.${index}`,
                         });
                       })}
@@ -106,12 +92,6 @@ const ArrayForm: React.ComponentType<
                         <ArrowsUpDownIcon className="h-5 w-5 text-slate-600" />
                       </DisabledView>
                     )}
-                    {getValueByPath(touched, `${index}`) &&
-                    getOrphanErrors(index).length ? (
-                      <ErrorAlert
-                        message={getOrphanErrors(index).join(". ")}
-                      ></ErrorAlert>
-                    ) : null}
                   </ArrayItem>
                   <ButtonContainer>
                     <Button
@@ -138,11 +118,7 @@ const ArrayForm: React.ComponentType<
           )}
         </FieldArray>
       </FieldContainer>
-      {form?.errors?.[field.name] && touched && (
-        <ErrorAlert
-          message={[form?.errors[field.name]].join(". ")}
-        ></ErrorAlert>
-      )}
+      {error && <ErrorAlert message={error}></ErrorAlert>}
     </>
   );
 };

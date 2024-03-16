@@ -10,7 +10,9 @@ const linkSchema = Type.Object({
     href: Type.Optional(Type.String({ format: "uri" })),
   }),
 });
-const linksSchema = Type.Array(linkSchema);
+const linksSchema = Type.Array(linkSchema, {
+  minItems: 1,
+});
 const categorySchema = Type.String();
 const categoriesSchema = Type.Array(categorySchema);
 const copyrightSchema = Type.String();

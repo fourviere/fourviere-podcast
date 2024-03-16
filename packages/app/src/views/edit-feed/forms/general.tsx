@@ -171,7 +171,7 @@ export default function General() {
           defaultItem: {
             "@": {
               href: "test",
-              type: "test",
+              type: undefined,
               rel: "test",
               __k: uuidv4(),
             },

@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import React, { InputHTMLAttributes } from "react";
 import { FieldProps } from "formik";
+import { getError, getTouchedByPath } from "../utils";
 import ErrorAlert from "../../alerts/error";
 
 const STYLES = {
@@ -14,28 +15,36 @@ const STYLES = {
 const Input: React.ComponentType<
   FieldProps & {
     label: string;
-    touched: boolean;
+    // touched: boolean;
     style?: keyof typeof STYLES;
     type?: "text" | "password" | "number" | "email";
     fieldProps: Record<string, unknown>;
   } & React.InputHTMLAttributes<HTMLInputElement>
-> = ({ field, form, touched, style, type, fieldProps, ...props }) => (
-  <>
-    <input
-      type={type ?? "text"}
-      {...field}
-      {...props}
-      {...fieldProps}
-      className={classNames(
-        "focus:shadow-outline w-full appearance-none rounded-lg bg-slate-100 px-3 py-2 leading-tight focus:outline-none",
-        style ? STYLES[style as keyof typeof STYLES] : "",
-      )}
-    />
-    {form?.errors?.[field.name] && touched && (
-      <ErrorAlert message={[form?.errors[field.name]].join(". ")}></ErrorAlert>
-    )}
-  </>
-);
+> = ({ field, form, style, type, fieldProps, ...props }) => {
+  const touched = getTouchedByPath(form.touched, field.name);
+  const error = getError({
+    touched: touched,
+    errors: form?.errors,
+    name: field?.name,
+  });
+
+  return (
+    <>
+      <input
+        type={type ?? "text"}
+        {...field}
+        {...props}
+        {...fieldProps}
+        className={classNames(
+          "focus:shadow-outline w-full appearance-none rounded-lg bg-slate-100 px-3 py-2 leading-tight focus:outline-none",
+          style ? STYLES[style as keyof typeof STYLES] : "",
+        )}
+      />
+
+      {error && <ErrorAlert message={error}></ErrorAlert>}
+    </>
+  );
+};
 export default Input;
 
 export const InputRaw = ({
