@@ -16,6 +16,14 @@ const resources = {
         saturday: "Saturday",
         sunday: "Sunday",
       },
+      form: {
+        labels: {
+          isSaving: "Saving...",
+          save: "Save",
+          unsavedChanges: "Unsaved changes",
+          hasErrors: "This form has errors",
+        },
+      },
     },
     start: {
       index: {
@@ -126,7 +134,7 @@ const resources = {
               "This section contains the links to the podcast website and the feed.",
             fields: {
               links: { label: "Links" },
-              link_href: { label: "Link" },
+              link_href: { label: "Url" },
               link_type: { label: "Type" },
               link_rel: { label: "Rel" },
             },

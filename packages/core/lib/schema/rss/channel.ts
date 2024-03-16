@@ -6,7 +6,7 @@ const linkSchema = Type.Object({
   "#text": Type.Optional(Type.String()),
   "@": Type.Object({
     rel: Type.Optional(Type.String()),
-    type: Type.Optional(Type.String()),
+    type: Type.String(),
     href: Type.Optional(Type.String({ format: "uri" })),
   }),
 });
@@ -55,7 +55,7 @@ const RSSChannelSchema = Type.Object({
   title: titleSchema,
   description: descriptionSchema,
   link: Type.Optional(linksSchema),
-  category: Type.Optional(categorySchema),
+  category: Type.Optional(categoriesSchema),
   copyright: Type.Optional(copyrightSchema),
   generator: Type.Optional(generatorSchema),
   image: Type.Optional(imageSchema),

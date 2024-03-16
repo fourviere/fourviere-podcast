@@ -1,10 +1,6 @@
 import { PropsWithChildren } from "react";
 import Button from "./button";
-import {
-  ArrowLeftCircleIcon,
-  CheckIcon,
-  ExclamationCircleIcon,
-} from "@heroicons/react/24/outline";
+import { CheckIcon } from "@heroicons/react/24/outline";
 import { Title } from "./typography";
 
 type Props = {
@@ -16,6 +12,11 @@ type Props = {
   postSlot?: React.ReactNode;
   isDisabled?: boolean;
   hasErrors?: boolean;
+  labels: {
+    save: string;
+    unsavedChanges: string;
+    isSaving: string;
+  };
 };
 
 const ContainerTitle = ({
@@ -24,6 +25,7 @@ const ContainerTitle = ({
   onSave,
   children,
   postSlot,
+  labels,
 }: PropsWithChildren<Props>) => {
   function onSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
@@ -36,12 +38,12 @@ const ContainerTitle = ({
         <Title>{children}</Title>
         {isDirty && (
           <div className="mt-[3px] animate-pulse text-xs leading-tight text-slate-400">
-            This page contains unsaved changes
+            {labels.unsavedChanges}
           </div>
         )}
         {isSubmitting && (
           <div className="mt-[3px] animate-pulse text-xs leading-tight text-slate-400">
-            This page is saving
+            {labels.isSaving}
           </div>
         )}
       </div>
@@ -53,7 +55,7 @@ const ContainerTitle = ({
           onClick={onSubmit}
           Icon={CheckIcon}
         >
-          Save
+          {labels.save}
         </Button>
       )}
 

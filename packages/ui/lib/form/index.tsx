@@ -19,22 +19,7 @@ import Input from "@fourviere/ui/lib/form/fields/input";
 import Select from "@fourviere/ui/lib/form/fields/select";
 import { ComponentType, InputHTMLAttributes } from "react";
 import ArrayForm from "@fourviere/ui/lib/form/fields/array";
-import ErrorAlert from "../alerts/error";
-import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import { ErrorBox } from "../box";
-
-export function getValueByPath(obj: Record<string, unknown>, path: string) {
-  const keys = path.split(".");
-  let value = obj;
-  for (const key of keys) {
-    if (value && typeof value === "object") {
-      value = value[key] as Record<string, unknown>;
-    } else {
-      return undefined;
-    }
-  }
-  return value;
-}
 
 const COMPONENT_MAP = {
   boolean: Boolean,
@@ -59,6 +44,9 @@ type BaseFieldConf = {
         } & InputHTMLAttributes<HTMLInputElement>
       >;
   fieldProps?: Record<string, unknown>;
+  showLabel?: boolean;
+  preSlot?: React.ReactNode;
+  postSlot?: React.ReactNode;
   width?: "1" | "1/2";
 };
 
@@ -88,6 +76,8 @@ export type Section = {
   description?: string | null;
   hideTitle?: boolean;
   fields: FieldConf[];
+  preSlot?: React.ReactNode;
+  postSlot?: React.ReactNode;
 };
 
 export default function Form<DataType extends FormikValues>({
@@ -96,12 +86,19 @@ export default function Form<DataType extends FormikValues>({
   title,
   onSubmit,
   schema,
+  labels,
 }: {
   title: string;
   sections: Array<Section>;
   data: DataType;
   schema: Record<string, unknown>;
   onSubmit: (values: DataType) => void;
+  labels: {
+    save: string;
+    unsavedChanges: string;
+    hasErrors: string;
+    isSaving: string;
+  };
 }) {
   const { i18n } = useTranslation();
 
@@ -137,9 +134,14 @@ export default function Form<DataType extends FormikValues>({
         setSubmitting(false);
       }}
     >
-      {({ dirty, isSubmitting, handleSubmit, isValid, touched }) => (
+      {({ dirty, isSubmitting, handleSubmit, isValid, touched, errors }) => (
         <VStack>
           <ContainerTitle
+            labels={{
+              save: labels.save,
+              unsavedChanges: labels.unsavedChanges,
+              isSaving: labels.isSaving,
+            }}
             isDirty={dirty}
             isDisabled={!isValid}
             isSubmitting={isSubmitting}
@@ -150,31 +152,43 @@ export default function Form<DataType extends FormikValues>({
           <div className="sticky top-[75px] z-10 p-3">
             {Object.keys(touched).length > 0 && !isValid && (
               <ErrorBox>
-                <div className="flex items-center">
-                  <ExclamationCircleIcon className="mr-1 h-3 w-3" /> The form
-                  has errors
+                <div>
+                  <ul>
+                    {Object.entries(errors)?.map(([k, e]) => (
+                      <li>
+                        <span className="font-semibold">
+                          {`${getLabelByName(sections, k)}: `} {k}
+                        </span>
+                        <span className="lowercase">{e}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </ErrorBox>
             )}
           </div>
 
           {sections.map((section) => (
-            <FormSection
-              key={section.title}
-              title={section.title}
-              description={section.description}
-              hideTitle={section.hideTitle}
-            >
-              <Grid cols="1" mdCols="2" spacing="4">
-                {section.fields.map((field, index) => {
-                  return generateFormikField({
-                    field,
-                    index,
-                    touched: getValueByPath(touched, field.name),
-                  });
-                })}
-              </Grid>
-            </FormSection>
+            <>
+              {section.preSlot}
+              <FormSection
+                key={section.title}
+                title={section.title}
+                description={section.description}
+                hideTitle={section.hideTitle}
+              >
+                <Grid cols="1" mdCols="2" spacing="4">
+                  {section.fields.map((field, index) => {
+                    return generateFormikField({
+                      field,
+                      index,
+                      touched: getValueByPath(touched, field.name),
+                    });
+                  })}
+                </Grid>
+              </FormSection>
+              {section.postSlot}
+            </>
           ))}
         </VStack>
       )}
@@ -187,14 +201,12 @@ export function generateFormikField({
   index,
   touched,
   fieldNamePrefix,
-  postSlot,
 }: {
   field: FieldConf;
   index: number;
   touched: FormikTouched<unknown>;
   // Used for array fields
   fieldNamePrefix?: string;
-  postSlot?: React.ReactNode;
 }) {
   const props: Record<string, unknown> = {
     touched,
@@ -227,6 +239,7 @@ export function generateFormikField({
 
   return (
     <GridCell key={index} mdColSpan={field.width === "1/2" ? 1 : 2}>
+      {field?.preSlot}
       <FormRow
         key={field.id}
         htmlFor={field.id}
@@ -243,8 +256,43 @@ export function generateFormikField({
           style={field.style}
           {...props}
         />
-        {postSlot}
       </FormRow>
+      {field?.postSlot}
     </GridCell>
   );
+}
+
+function getLabelByName(sections: Section[], name: string) {
+  for (const section of sections) {
+    for (const field of section.fields) {
+      if (field.name === name) {
+        return field.label;
+      }
+      if (field.component === "array") {
+        for (const childField of (field as ArrayFieldConf).childrenFields) {
+          console.log(field.name + "." + childField.name, name);
+          const match = name.match(
+            RegExp(`${field.name}\\.([0-9])+\\.${childField.name}`),
+          );
+          if (match) {
+            return `${field.label} #${match?.[1]} - ${childField.label}`;
+          }
+        }
+      }
+    }
+  }
+  return "";
+}
+
+export function getValueByPath(obj: Record<string, unknown>, path: string) {
+  const keys = path.split(".");
+  let value = obj;
+  for (const key of keys) {
+    if (value && typeof value === "object") {
+      value = value[key] as Record<string, unknown>;
+    } else {
+      return undefined;
+    }
+  }
+  return value;
 }

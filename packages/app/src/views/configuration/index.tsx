@@ -30,6 +30,7 @@ type Schema = Static<typeof schema>;
 
 const Configurations: React.FC<Props> = () => {
   const { configurations, update } = useConfigurations();
+  const { t: tUtils } = useTranslation("utils", { keyPrefix: "" });
   const { t } = useTranslation("configuration", {
     keyPrefix: "index",
   });
@@ -43,6 +44,12 @@ const Configurations: React.FC<Props> = () => {
             i18n.changeLanguage(values.locale);
           }}
           title={t("title")}
+          labels={{
+            isSaving: tUtils("form.labels.isSaving"),
+            save: tUtils("form.labels.save"),
+            unsavedChanges: tUtils("form.labels.unsavedChanges"),
+            hasErrors: tUtils("form.labels.hasErrors"),
+          }}
           sections={[
             {
               title: t("locale.title"),

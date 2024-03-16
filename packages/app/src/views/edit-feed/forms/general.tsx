@@ -38,6 +38,8 @@ export default function General() {
       title: null,
       description: t("presentation.description"),
       hideTitle: false,
+      preSlot: <div>dddd</div>,
+      postSlot: <div>dddds</div>,
       fields: [
         {
           id: "rss.channel.title",
@@ -47,6 +49,8 @@ export default function General() {
           style: "2xl",
           component: "input",
           width: "1",
+          preSlot: <div>miao</div>,
+          postSlot: <div>bau</div>,
         },
       ],
     },
@@ -133,7 +137,7 @@ export default function General() {
         {
           id: "rss.channel.category",
           name: "rss.channel.category",
-          label: null,
+          label: t("category.fields.category.label"),
           component: "array",
           defaultItem: { _: "" },
           childrenFields: [
@@ -162,7 +166,7 @@ export default function General() {
         {
           id: "rss.channel.link",
           name: "rss.channel.link",
-          label: null,
+          label: t("links.title"),
           component: "array",
           defaultItem: {
             "@": {
@@ -210,11 +214,11 @@ export default function General() {
           component: "array",
           width: "1/2",
           style: "sm",
-          defaultItem: { _: "" },
+          defaultItem: { day: "Monday" },
           childrenFields: [
             {
-              id: "",
-              name: "",
+              id: "day",
+              name: "day",
               label: null,
               component: "select",
               options: {
@@ -239,39 +243,17 @@ export default function General() {
           component: "array",
           width: "1/2",
           style: "sm",
-          defaultItem: { _: "" },
+          defaultItem: { hour: 0 },
           childrenFields: [
             {
-              id: "",
-              name: "",
+              id: "hour",
+              name: "hour",
               label: null,
-              component: "select",
-              options: {
-                "": "",
-                "0": "0",
-                "1": "1",
-                "2": "2",
-                "3": "3",
-                "4": "4",
-                "5": "5",
-                "6": "6",
-                "7": "7",
-                "8": "8",
-                "9": "9",
-                "10": "10",
-                "11": "11",
-                "12": "12",
-                "13": "13",
-                "14": "14",
-                "15": "15",
-                "16": "16",
-                "17": "17",
-                "18": "18",
-                "19": "19",
-                "20": "20",
-                "21": "21",
-                "22": "22",
-                "23": "23",
+              component: "input",
+              type: "number",
+              fieldProps: {
+                min: 0,
+                max: 23,
               },
               width: "1",
               style: "sm",
@@ -296,6 +278,12 @@ export default function General() {
       <Form<PayloadType>
         onSubmit={(values) => {
           currentFeed.update(values as Feed);
+        }}
+        labels={{
+          isSaving: tUtils("form.labels.isSaving"),
+          save: tUtils("form.labels.save"),
+          unsavedChanges: tUtils("form.labels.unsavedChanges"),
+          hasErrors: tUtils("form.labels.hasErrors"),
         }}
         title={t("presentation.title")}
         sections={formSections}
