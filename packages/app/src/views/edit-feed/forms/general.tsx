@@ -33,9 +33,9 @@ export default function General() {
     return null;
   }
 
-  const formSections: Section[] = [
+  const formSections: Section<PayloadType>[] = [
     {
-      title: null,
+      title: undefined,
       description: t("presentation.description"),
       hideTitle: false,
       fields: [
@@ -215,7 +215,7 @@ export default function General() {
             {
               id: "day",
               name: "day",
-              label: null,
+              label: undefined,
               component: "select",
               options: {
                 "": "",
@@ -244,7 +244,7 @@ export default function General() {
             {
               id: "hour",
               name: "hour",
-              label: null,
+              label: undefined,
               component: "input",
               type: "number",
               fieldProps: {

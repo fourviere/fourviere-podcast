@@ -17,14 +17,12 @@ export function getError({
 }
 
 export function ajvErrorsToJsonPath(
-  ajvErrors?: ErrorObject[],
-): Record<string, string> {
-  console.log(ajvErrors);
-
+  ajvErrors?: ErrorObject[] | null,
+): Record<string, string> | undefined {
   // make the "must have required property" error to
   // be assigned to the child that is missing
   // instead with the parent node
-  ajvErrors.forEach((e: ErrorObject) => {
+  ajvErrors?.forEach((e: ErrorObject) => {
     if (e?.params?.missingProperty) {
       e.instancePath += `/${e?.params?.missingProperty}`;
     }
@@ -62,12 +60,15 @@ export function getLabelByName<T>(sections: Section<T>[], name: string) {
   return "";
 }
 
-export function getTouchedByPath(obj: FormikTouched<unknown>, path: string) {
+export function getTouchedByPath(
+  obj: FormikTouched<Record<string, unknown>>,
+  path: string,
+) {
   const keys = path.split(".");
-  let value = obj;
+  let value: FormikTouched<Record<string, unknown>> | boolean = obj;
   for (const key of keys) {
     if (value && typeof value === "object") {
-      value = value[key] as Record<string, unknown>;
+      value = value[key] as boolean;
     } else {
       return undefined;
     }

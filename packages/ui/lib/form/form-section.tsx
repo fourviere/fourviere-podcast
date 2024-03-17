@@ -4,7 +4,7 @@ import HStack from "../layouts/h-stack";
 
 interface FormSectionProps {
   title?: string;
-  description: string;
+  description?: string;
   hideTitle?: boolean;
 }
 export default function FormSection({

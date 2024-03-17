@@ -86,6 +86,25 @@ const resources = {
       },
     },
     feed: {
+      sync: {
+        title: "Feed sync",
+        save_title: "Save your feed",
+        error_persisting_feed: "An error occurred while persisting the feed",
+        remote_feed_not_valid:
+          "The remote feed you are trying to patch is not valid",
+        ask_overwrite: {
+          title: "Overwrite",
+          message:
+            "You are overwriting the remote feed that seem more recent, are you sure? This operation cannot be reverted",
+          not_valid:
+            "The feed URL point to a non valid feed, do you want to overwrite it?",
+          overwrite_skipped:
+            "The feed is not valid and you chose not to overwrite it",
+          not_last_skip_overwrite:
+            "The remote feed is not the last version, and you chosed not to overwrite it",
+          error_uploading_feed: "An error occurred while uploading the feed",
+        },
+      },
       forms: {
         general: {
           presentation: {

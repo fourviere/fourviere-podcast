@@ -32,7 +32,7 @@ const COMPONENT_MAP = {
 type BaseFieldConf = {
   id: string;
   name: string;
-  label?: string | null;
+  label?: string;
   style?: string;
   defaultValue?: unknown;
   component:
@@ -76,8 +76,8 @@ export type FieldConf =
   | ArrayFieldConf;
 
 export type Section<Data> = {
-  title?: string | null;
-  description?: string | null;
+  title?: string;
+  description?: string;
   hideTitle?: boolean;
   fields: FieldConf[];
   preSlot?: React.ReactNode;
@@ -119,9 +119,7 @@ export default function Form<DataType extends FormikValues>({
         if (!valid) {
           const language = i18n.language as keyof typeof localize;
           localize[language](compiledSchema.errors);
-          const errors = ajvErrorsToJsonPath(compiledSchema?.errors);
-
-          return errors;
+          return ajvErrorsToJsonPath(compiledSchema?.errors);
         }
       }}
       onSubmit={(values, { setSubmitting }) => {

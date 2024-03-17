@@ -1,6 +1,5 @@
 import { Container } from "@fourviere/ui/lib/box";
 import Drawer from "@fourviere/ui/lib/modals/drawer";
-import V4v from "./forms/v4v";
 import Itunes from "./forms/itunes";
 import GeneralForm from "./forms/general";
 import VStack from "@fourviere/ui/lib/layouts/v-stack";
@@ -11,7 +10,9 @@ import { H1, H3, P, Title } from "@fourviere/ui/lib/typography";
 import UseCurrentFeed from "../../hooks/use-current-feed";
 import { normalizeText } from "../../utils/text";
 import {
+  OneQuarterPageBox,
   OneThirdPageBox,
+  ThreeQuartersPageBox,
   TwoThirdsPageBox,
 } from "@fourviere/ui/lib/layouts/columns";
 import EditButton from "@fourviere/ui/lib/edit-button";
@@ -27,11 +28,11 @@ import {
 import Grid from "@fourviere/ui/lib/layouts/grid";
 import SourceCode from "./source-code";
 import Configuration from "./forms/configuration";
+import FeedUploader from "../../components/feed-uploader";
 
 export default function General() {
   const [descriptionModal, setDescriptionModal] = useState<boolean>(false);
   const [configurationModal, setConfigurationModal] = useState<boolean>(false);
-  const [v4vModal, setV4vModal] = useState<boolean>(false);
   const [itunesModal, setItunesModal] = useState<boolean>(false);
   const [generalModal, setGeneralModal] = useState<boolean>(false);
   const [sourceModal, setSourceModal] = useState<boolean>(false);
@@ -39,21 +40,29 @@ export default function General() {
 
   return (
     <VStack scroll wFull paddingX="6" paddingY="6" spacing="6">
-      <EditButton onClick={() => setGeneralModal(true)}>
-        <HStack spacing="4" alignItems="center">
-          <img
-            className="h-20 w-20 rounded-lg"
-            src={currentFeed?.feed.rss.channel.image?.url ?? "/logo.svg"}
-          />
-          <VStack>
-            <Title>{currentFeed?.feed.rss.channel.title}</Title>
-            <H3>
-              {currentFeed?.feed.rss.channel["itunes:author"] ??
-                currentFeed?.feed.rss.channel.link?.[0]["@"].href}
-            </H3>
-          </VStack>
-        </HStack>
-      </EditButton>
+      <HStack spacing="2" alignItems="center" responsive={true}>
+        <ThreeQuartersPageBox>
+          <EditButton onClick={() => setGeneralModal(true)}>
+            <HStack spacing="4" alignItems="center">
+              <img
+                className="h-20 w-20 rounded-lg"
+                src={currentFeed?.feed.rss.channel.image?.url ?? "/logo.svg"}
+              />
+              <VStack>
+                <Title>{currentFeed?.feed.rss.channel.title}</Title>
+                <H3>
+                  {currentFeed?.feed.rss.channel["itunes:author"] ??
+                    currentFeed?.feed.rss.channel.link?.[0]["@"].href}
+                </H3>
+              </VStack>
+            </HStack>
+          </EditButton>
+        </ThreeQuartersPageBox>
+        <OneQuarterPageBox $responsive={true}>
+          <FeedUploader />
+        </OneQuarterPageBox>
+      </HStack>
+
       <HStack spacing="6" responsive={true}>
         <OneThirdPageBox $responsive={true}>
           <VStack spacing="4">
@@ -90,12 +99,6 @@ export default function General() {
               onClick={() => setItunesModal(true)}
             />
 
-            <TileButton
-              icon={DocumentTextIcon}
-              title="Value 4 Value"
-              loading={70}
-              onClick={() => setV4vModal(true)}
-            />
             <TileButton theme="empty" icon={DocumentTextIcon} title="Podroll" />
             <TileButton
               icon={CodeBracketIcon}
@@ -162,13 +165,6 @@ export default function General() {
         {generalModal && (
           <Drawer type="right" onClose={() => setGeneralModal(false)}>
             <GeneralForm />
-          </Drawer>
-        )}
-        {v4vModal && (
-          <Drawer type="right" onClose={() => setV4vModal(false)}>
-            <Container scroll style={{ height: "100vh" }}>
-              <V4v />
-            </Container>
           </Drawer>
         )}
         {descriptionModal && (

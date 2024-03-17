@@ -30,7 +30,7 @@ export default function Itunes() {
     return null;
   }
 
-  const formSections: Section[] = [
+  const formSections: Section<PayloadType>[] = [
     {
       title: t("image.title"),
       description: t("image.description"),
@@ -118,9 +118,11 @@ export default function Itunes() {
 
                 return (
                   itunesCategories
-                    .find((e) => e.category === d)
-                    ?.subcategories.reduce((a, e) => ({ ...a, [e]: e }), {}) ||
-                  {}
+                    .find((cat) => cat.category === d)
+                    ?.subcategories.reduce(
+                      (a, subCat) => ({ ...a, [subCat]: subCat }),
+                      {},
+                    ) || {}
                 );
               },
             },
