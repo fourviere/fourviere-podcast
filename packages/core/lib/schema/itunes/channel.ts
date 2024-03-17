@@ -20,10 +20,10 @@ const itunesCategorySchema = Type.Array(
   }),
 );
 const itunesExplicitSchema = Type.String();
-const itunesAuthorSchema = Type.String();
+const itunesAuthorSchema = Type.String({ minLength: 3 });
 const itunesOwnerSchema = Type.Object({
-  "itunes:name": Type.String(),
-  "itunes:email": Type.String(),
+  "itunes:name": Type.String({ minLength: 3 }),
+  "itunes:email": Type.String({ minLength: 3 }),
 });
 const itunesTypeSchema = Type.Union([
   Type.Literal("episodic"),

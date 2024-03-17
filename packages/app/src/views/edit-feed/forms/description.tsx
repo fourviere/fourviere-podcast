@@ -7,9 +7,10 @@ import FormBlocker from "../../../components/form-blocker";
 
 export default function Description() {
   const currentFeed = UseCurrentFeed();
-  const { t } = useTranslation("", {
-    keyPrefix: "",
+  const { t } = useTranslation("feed", {
+    keyPrefix: "forms",
   });
+  const { t: tUtils } = useTranslation("utils", { keyPrefix: "" });
 
   if (!currentFeed) {
     return null;
@@ -33,8 +34,13 @@ export default function Description() {
                 isDirty={dirty}
                 isSubmitting={isSubmitting}
                 onSave={() => handleSubmit()}
+                labels={{
+                  isSaving: tUtils("form.labels.isSaving"),
+                  save: tUtils("form.labels.save"),
+                  unsavedChanges: tUtils("form.labels.unsavedChanges"),
+                }}
               >
-                {t("edit_feed.presentation.title")}
+                {t("description.title")}
               </ContainerTitle>
 
               <CKEditor

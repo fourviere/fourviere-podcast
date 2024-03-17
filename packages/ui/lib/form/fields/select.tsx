@@ -5,9 +5,9 @@ import { ChevronUpDownIcon } from "@heroicons/react/24/solid";
 
 import classNames from "classnames";
 import React from "react";
-import { FieldProps } from "formik";
+import { FieldProps, FormikValues } from "formik";
 import ErrorAlert from "../../alerts/error";
-import { getError } from "../utils";
+import { getError, normalizeJsonPath } from "../utils";
 
 const STYLES = {
   sm: "text-sm",
@@ -21,17 +21,33 @@ const Select: React.ComponentType<
   FieldProps & {
     label: string;
     touched: boolean;
-    options: Record<string, string>;
+    options:
+      | Record<string, string>
+      | ((fieldName: string, data: FormikValues) => Record<string, string>);
+    hideIfOptionsIsEmpty?: boolean;
     style?: keyof typeof STYLES;
   }
-> = ({ field, form, options, touched, style, ...props }) => {
+> = ({
+  field,
+  form,
+  options,
+  touched,
+  style,
+  hideIfOptionsIsEmpty,
+  ...props
+}) => {
   const error = getError({
     touched,
     errors: form?.errors,
     name: field?.name,
   });
 
-  return (
+  const _options =
+    typeof options === "function"
+      ? options(normalizeJsonPath(field.name), form.values as FormikValues)
+      : options;
+
+  return Object.keys(_options).length === 0 && hideIfOptionsIsEmpty ? null : (
     <div className="relative w-full">
       <ChevronUpDownIcon className="pointer-events-none absolute right-0 m-1.5 h-6 w-6 text-slate-400" />
 
@@ -44,7 +60,7 @@ const Select: React.ComponentType<
         )}
       >
         {options &&
-          Object.entries(options)?.map(([key, value]) => (
+          Object.entries(_options)?.map(([key, value]) => (
             <option value={key} key={key}>
               {value}
             </option>

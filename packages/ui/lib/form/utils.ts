@@ -74,3 +74,12 @@ export function getTouchedByPath(obj: FormikTouched<unknown>, path: string) {
   }
   return value;
 }
+
+export function normalizeJsonPath(path: string) {
+  return path.replace(".[", "[").replace(".@", `["@"]`);
+}
+
+export function extractIterationNumberFtomJsonPath(path: string) {
+  const match = path.match(/(\d+)/);
+  return match ? match[0] : "";
+}

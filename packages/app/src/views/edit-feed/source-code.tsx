@@ -16,6 +16,7 @@ export default function SourceCode() {
   const { t } = useTranslation("", {
     keyPrefix: "",
   });
+  const { t: tUtils } = useTranslation("utils", { keyPrefix: "" });
 
   if (!feedId) {
     return null;
@@ -50,6 +51,11 @@ export default function SourceCode() {
   return (
     <VStack wFull hFull>
       <ContainerTitle
+        labels={{
+          isSaving: tUtils("form.labels.isSaving"),
+          save: tUtils("form.labels.save"),
+          unsavedChanges: tUtils("form.labels.unsavedChanges"),
+        }}
         isDirty={isDirty}
         isSubmitting={false}
         onSave={() => {

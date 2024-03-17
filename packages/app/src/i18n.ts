@@ -150,6 +150,52 @@ const resources = {
             },
           },
         },
+        description: {
+          title: "Podcast description",
+        },
+        itunes: {
+          title: "Itunes specific configurations",
+          image: {
+            title: "Itunes Image",
+            description: `Artwork must be a minimum size of 1400 x 1400 pixels and a maximum size of 3000 x 3000 pixels, in JPEG or PNG format, 72 dpi, with appropriate file extensions (.jpg, .png), and in the RGB colorspace.`,
+          },
+          ownership: {
+            title: "Itunes Ownership",
+            description:
+              "Here you can configure specific ownership info for the itunes directory",
+            fields: {
+              itunes_owner: {
+                itunes_email: {
+                  label: "Email",
+                },
+                itunes_name: {
+                  label: "Name",
+                },
+              },
+              itunes_author: {
+                label: "author",
+              },
+            },
+          },
+          category: {
+            title: "Itunes Category",
+            description:
+              "Itunes requires a specific category, here you can set it.",
+            fields: {
+              itunes_category: { label: "Category" },
+            },
+          },
+          technical: {
+            title: "Itunes technical",
+            description:
+              "Itunes requires some technical fields, here you can set them.",
+            fields: {
+              itunes_block: { label: "Block" },
+              itunes_complete: { label: "Complete" },
+              itunes_new_feed_url: { label: "Redirect to new feed url" },
+            },
+          },
+        },
       },
     },
 

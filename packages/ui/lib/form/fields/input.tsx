@@ -37,7 +37,7 @@ const Input: React.ComponentType<
         {...fieldProps}
         className={classNames(
           "focus:shadow-outline w-full appearance-none rounded-lg bg-slate-100 px-3 py-2 leading-tight focus:outline-none",
-          style ? STYLES[style as keyof typeof STYLES] : "",
+          style ? STYLES[style as keyof typeof STYLES] : "text-sm",
         )}
       />
 

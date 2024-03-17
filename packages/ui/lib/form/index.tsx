@@ -45,7 +45,7 @@ type BaseFieldConf = {
         } & InputHTMLAttributes<HTMLInputElement>
       >;
   fieldProps?: Record<string, unknown>;
-  showLabel?: boolean;
+  hideLabel?: boolean;
   preSlot?: React.ReactNode;
   postSlot?: React.ReactNode;
   width?: "1" | "1/2";
@@ -63,7 +63,10 @@ export interface ArrayFieldConf extends BaseFieldConf {
 }
 
 interface SelectFieldConf extends BaseFieldConf {
-  options: Record<string, unknown>;
+  hideIfOptionsIsEmpty?: boolean;
+  options:
+    | Record<string, unknown>
+    | ((fieldName: string, data: FormikValues) => Record<string, unknown>);
 }
 
 export type FieldConf =
@@ -116,7 +119,7 @@ export default function Form<DataType extends FormikValues>({
           const language = i18n.language as keyof typeof localize;
           localize[language](compiledSchema.errors);
           const errors = ajvErrorsToJsonPath(compiledSchema?.errors);
-          console.log("Validation errors", errors);
+
           return errors;
         }
       }}
@@ -127,7 +130,6 @@ export default function Form<DataType extends FormikValues>({
     >
       {({ dirty, isSubmitting, handleSubmit, isValid, touched, errors }) => (
         <VStack>
-          {/* {console.log("touched", touched, errors)} */}
           <ContainerTitle
             labels={{
               save: labels.save,
@@ -149,7 +151,7 @@ export default function Form<DataType extends FormikValues>({
                     {Object.entries(errors)?.map(([k, e]) => (
                       <li key={k}>
                         <span className="font-semibold">
-                          {`${getLabelByName(sections, k)}: `} {k}
+                          {`${getLabelByName(sections, k)}: `}
                         </span>
                         <span className="lowercase">{e}</span>
                       </li>
@@ -205,8 +207,13 @@ export function generateFormikField({
     props["fieldProps"] = field.fieldProps;
   }
 
+  props["hideLabel"] = field.hideLabel;
+
   if (field.component === "select" && (field as SelectFieldConf).options) {
     props["options"] = (field as SelectFieldConf).options;
+    props["hideIfOptionsIsEmpty"] = (
+      field as SelectFieldConf
+    ).hideIfOptionsIsEmpty;
   }
 
   if (field.component === "input" && (field as InputFieldConf).type) {
@@ -232,7 +239,11 @@ export function generateFormikField({
       <FormRow
         key={field.id}
         htmlFor={field.id}
-        label={field.component !== "boolean" ? field.label : ""}
+        label={
+          field.component === "boolean" || props?.hideLabel === true
+            ? ""
+            : field.label
+        }
       >
         <FormikField
           name={name}
