@@ -3,8 +3,8 @@ type Props = {
   cancel: () => void;
   title: string;
   message: string;
-  okButton: string;
-  cancelButton: string;
+  okButton?: string;
+  cancelButton?: string;
   icon?: React.ElementType;
 };
 

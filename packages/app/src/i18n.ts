@@ -24,6 +24,10 @@ const resources = {
           hasErrors: "This form has errors",
         },
       },
+      confirm: {
+        ok: "Ok, continue",
+        cancel: "Cancel",
+      },
     },
     start: {
       index: {
@@ -248,6 +252,23 @@ const resources = {
               path: { label: "Path" },
               http_host: { label: "Public base url" },
               https: { label: "Check for enabling https" },
+            },
+          },
+          actions: {
+            title: "Actions",
+            description: "Here some advanced actions for the feed",
+            fields: {
+              overwrite_from_remote: {
+                label: "Overwrite the feed with the version hosted remotely",
+                modalTitle: "Do you want to overwrite?",
+                modalMessage: "This operation cannot be reverted!",
+              },
+              delete_feed: {
+                label: "Delete the feed",
+                modalTitle: "Do you want to delete the feed?",
+                modalMessage:
+                  "This operation cannot be reverted! This deletion does not remove the remote fields, but delete the data from the fourvierre.io application",
+              },
             },
           },
         },

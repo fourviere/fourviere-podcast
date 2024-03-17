@@ -160,7 +160,7 @@ export default function Form<DataType extends FormikValues>({
                     {Object.entries(errors)?.map(([k, e]) => (
                       <li key={k}>
                         <span className="font-semibold">
-                          {`${getLabelByName(sections, k)}: `}
+                          {`${getLabelByName<DataType>(sections, k)}: `}
                         </span>
                         <span className="lowercase">{e}</span>
                       </li>

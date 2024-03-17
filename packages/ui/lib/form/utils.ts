@@ -41,7 +41,7 @@ export function ajvErrorsToJsonPath(
   }, {});
 }
 
-export function getLabelByName(sections: Section[], name: string) {
+export function getLabelByName<T>(sections: Section<T>[], name: string) {
   for (const section of sections) {
     for (const field of section.fields) {
       if (field.name === name) {

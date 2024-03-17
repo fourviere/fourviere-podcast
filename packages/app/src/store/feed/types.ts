@@ -11,7 +11,7 @@ export const configurationSchema = Type.Object({
     filename: Type.String(),
   }),
   meta: Type.Object({
-    lastFeedUpdate: Type.String(),
+    lastFeedUpdate: Type.Date(),
     feedIsDirty: Type.Boolean(),
   }),
   remotes: Type.Object({
@@ -22,7 +22,7 @@ export const configurationSchema = Type.Object({
     ]),
     s3: Type.Optional(
       Type.Object({
-        endpoint: Type.String({ format: "uri" }),
+        endpoint: Type.String({ minLength: 4 }),
         region: Type.String({ minLength: 2 }),
         bucket_name: Type.String({ minLength: 1 }),
         access_key: Type.String({ minLength: 1 }),

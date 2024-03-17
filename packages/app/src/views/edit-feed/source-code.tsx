@@ -1,4 +1,4 @@
-import { Editor } from "@monaco-editor/react";
+import { Editor, useMonaco } from "@monaco-editor/react";
 import { useParams } from "react-router-dom";
 import feedStore from "../../store/feed/index";
 import { parseXML, serializeToXML } from "@fourviere/core/lib/converter";
@@ -13,6 +13,7 @@ export default function SourceCode() {
   const { addError } = appStore((state) => state);
   const [tempState, setTempState] = useState<string>();
   const [isDirty, setIsDirty] = useState<boolean>();
+  const monaco = useMonaco();
   const { t } = useTranslation("", {
     keyPrefix: "",
   });
@@ -33,6 +34,24 @@ export default function SourceCode() {
       setIsDirty(true);
     }
   }, [tempState]);
+
+  useEffect(() => {
+    // do conditional chaining
+    monaco?.editor.defineTheme("fourviere-io", {
+      base: "vs-dark",
+      inherit: true,
+      rules: [],
+      colors: {
+        "editor.foreground": "#e2e8f0",
+        "editor.background": "#0f172a",
+        "editor.selectionBackground": "#334155",
+        "editor.lineHighlightBackground": "#1e293b",
+        "editorCursor.foreground": "#D8DEE9",
+        "editorWhitespace.foreground": "#434C5ECC",
+      },
+    });
+    // or make sure that it exists by other ways
+  }, [monaco]);
 
   const setState = () => {
     try {
@@ -68,7 +87,7 @@ export default function SourceCode() {
       <Editor
         height="100%"
         defaultLanguage="xml"
-        theme="vs-dark"
+        theme="fourviere-io"
         onChange={setTempState}
         value={xml}
         options={{

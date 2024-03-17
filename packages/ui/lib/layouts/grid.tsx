@@ -149,8 +149,7 @@ export const GridCell = ({
   colSpan,
   mdColSpan,
   lgColSpan,
-
-  className,
+  className = "",
 }: GridCellProps) => {
   return (
     <div

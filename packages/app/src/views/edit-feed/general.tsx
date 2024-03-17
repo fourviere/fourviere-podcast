@@ -102,7 +102,7 @@ export default function General() {
               title="Code editor"
               onClick={() => setSourceModal(true)}
             />
-            <TileButton
+            {/* <TileButton
               label="coming soon"
               theme="disabled"
               icon={DocumentTextIcon}
@@ -139,7 +139,7 @@ export default function General() {
               theme="disabled"
               icon={DocumentTextIcon}
               title="Stats"
-            />
+            /> */}
             <TileButton
               icon={Cog6ToothIcon}
               title="Configuration"

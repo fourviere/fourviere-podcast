@@ -7,6 +7,11 @@ import {
   configurationSchema,
 } from "../../../store/feed/types";
 import { Type } from "@sinclair/typebox";
+import FormSection from "@fourviere/ui/lib/form/form-section";
+import FormRow from "@fourviere/ui/lib/form/form-row";
+import HStack from "@fourviere/ui/lib/layouts/h-stack";
+import FeedSync from "../../../components/feed-sync";
+import FeedDeleter from "../../../components/feed-deleter";
 
 const schema = Type.Omit(configurationSchema, ["meta"]);
 export default function Configuration() {
@@ -196,6 +201,17 @@ export default function Configuration() {
         data={currentFeed.configuration}
         schema={schema}
       />
+      <FormSection
+        title={t("actions.title")}
+        description={t("actions.description")}
+      >
+        <FormRow htmlFor="feed.actions">
+          <HStack wFull spacing="4">
+            <FeedSync />
+            <FeedDeleter />
+          </HStack>
+        </FormRow>
+      </FormSection>
     </VStack>
   );
 }

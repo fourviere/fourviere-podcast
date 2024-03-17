@@ -122,9 +122,11 @@ const feedStore = create<FeedState>((set, get) => {
     },
 
     patchFeedFromUrl: async (id, feedUrl) => {
+      console.log("path feed by url");
       const data = await fetchFeed(feedUrl);
       if (!data) return;
       const feed = parseXML(data, true);
+      console.log(feed);
       set((state: FeedState) => {
         return produce(state, (draft) => {
           draft.projects[id].feed = feed;
@@ -137,6 +139,7 @@ const feedStore = create<FeedState>((set, get) => {
     },
 
     patchFeedFromFileContents: (id, fileContents) => {
+      console.log("path feed by contents");
       const feed = parseXML(fileContents, true);
       set((state: FeedState) => {
         return produce(state, (draft) => {

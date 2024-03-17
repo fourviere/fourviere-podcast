@@ -7,7 +7,6 @@ import Toast from "@fourviere/ui/lib/modals/toast";
 import { ErrorBox } from "@fourviere/ui/lib/box";
 import EditFeed from "./views/edit-feed";
 import General from "./views/edit-feed/general";
-import FeedConfiguration from "./views/edit-feed/_configuration";
 import GlobalConfiguration from "./views/configuration";
 import { attachConsole } from "@tauri-apps/plugin-log";
 import ItemsIndex from "./views/edit-item/items-index";
