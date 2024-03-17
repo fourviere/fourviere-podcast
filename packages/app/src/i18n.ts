@@ -196,6 +196,61 @@ const resources = {
             },
           },
         },
+        configuration: {
+          title: "Feed Configuration",
+          general: {
+            title: "General",
+            description:
+              "This section contains the configuration for the general settings of the feed.",
+            fields: {
+              filename: { label: "Feed file name" },
+            },
+          },
+          remotes: {
+            title: "Remote configuration",
+            description:
+              "This section contains the configuration for uploading your assets (images, media files, chapter files and transcriptions) and your xml feed file. The assets can be uploaded to an ftp server or a compatible s3 service",
+            fields: {
+              remote: {
+                label: "Remote destination type",
+                options: {
+                  none: "None",
+                  ftp: "FTP",
+                  s3: "S3",
+                },
+              },
+            },
+          },
+          s3: {
+            title: "S3 configuration",
+            description:
+              "This section contains the configuration for a compatible s3 service like like Amazon AWS S3, Google Cloud Storage, Microsoft Azure Blob Storage, DigitalOcean Spaces, Alibaba Cloud OSS (Object Storage Service) and many more",
+            fields: {
+              endpoint: { label: "Endpoint" },
+              region: { label: "Region" },
+              bucket_name: { label: "Bucket" },
+              access_key: { label: "Access key" },
+              secret_key: { label: "Secret key" },
+              http_host: { label: "Public base url" },
+              https: { label: "Check for enabling https" },
+              path: { label: "Path" },
+            },
+          },
+          ftp: {
+            title: "FTP configuration",
+            description:
+              "This section contains the configuration for uploading your assets (images, media files, feed xml and chapters file)",
+            fields: {
+              host: { label: "Host" },
+              port: { label: "Port" },
+              user: { label: "Username" },
+              password: { label: "Password" },
+              path: { label: "Path" },
+              http_host: { label: "Public base url" },
+              https: { label: "Check for enabling https" },
+            },
+          },
+        },
       },
     },
 

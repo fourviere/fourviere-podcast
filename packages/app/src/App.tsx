@@ -6,15 +6,13 @@ import { AnimatePresence } from "framer-motion";
 import Toast from "@fourviere/ui/lib/modals/toast";
 import { ErrorBox } from "@fourviere/ui/lib/box";
 import EditFeed from "./views/edit-feed";
-import SourceCode from "./views/edit-feed/source-code";
 import General from "./views/edit-feed/general";
-import FeedConfiguration from "./views/edit-feed/configuration";
+import FeedConfiguration from "./views/edit-feed/_configuration";
 import GlobalConfiguration from "./views/configuration";
-import Itunes from "./views/edit-feed/forms/itunes";
 import { attachConsole } from "@tauri-apps/plugin-log";
 import ItemsIndex from "./views/edit-item/items-index";
 import ItemGeneral from "./views/edit-item/item-general";
-import V4v from "./views/edit-feed/forms/v4v";
+import Configuration from "./views/edit-feed/forms/configuration";
 
 void attachConsole();
 
@@ -36,12 +34,8 @@ const router = createBrowserRouter([
         Component: General,
       },
       {
-        path: "feed-itunes",
-        Component: Itunes,
-      },
-      {
-        path: "feed-v4v",
-        Component: V4v,
+        path: "feed-config",
+        Component: Configuration,
       },
       {
         path: "feed-items",
@@ -53,22 +47,6 @@ const router = createBrowserRouter([
           },
         ],
       },
-      {
-        path: "feed-source-code",
-        Component: SourceCode,
-      },
-      {
-        path: "feed-config",
-        Component: FeedConfiguration,
-      },
-      // {
-      //   path: "*",
-      //   Component: () => {
-      //     const location = useLocation();
-      //     console.log("location", location);
-      //     return <div>NOt found</div>;
-      //   },
-      // },
     ],
   },
 ]);

@@ -75,13 +75,14 @@ export type FieldConf =
   | SelectFieldConf
   | ArrayFieldConf;
 
-export type Section = {
+export type Section<Data> = {
   title?: string | null;
   description?: string | null;
   hideTitle?: boolean;
   fields: FieldConf[];
   preSlot?: React.ReactNode;
   postSlot?: React.ReactNode;
+  hideWhen?: (data: Data) => boolean;
 };
 
 export default function Form<DataType extends FormikValues>({
@@ -93,7 +94,7 @@ export default function Form<DataType extends FormikValues>({
   labels,
 }: {
   title: string;
-  sections: Array<Section>;
+  sections: Array<Section<DataType>>;
   data: DataType;
   schema: Record<string, unknown>;
   onSubmit: (values: DataType) => void;
@@ -128,7 +129,15 @@ export default function Form<DataType extends FormikValues>({
         setSubmitting(false);
       }}
     >
-      {({ dirty, isSubmitting, handleSubmit, isValid, touched, errors }) => (
+      {({
+        dirty,
+        isSubmitting,
+        handleSubmit,
+        isValid,
+        touched,
+        errors,
+        values,
+      }) => (
         <VStack>
           <ContainerTitle
             labels={{
@@ -161,26 +170,31 @@ export default function Form<DataType extends FormikValues>({
               </ErrorBox>
             )}
           </div>
-          {sections.map((section) => (
-            <div key={section.title}>
-              {section.preSlot}
-              <FormSection
-                title={section.title}
-                description={section.description}
-                hideTitle={section.hideTitle}
-              >
-                <Grid cols="1" mdCols="2" spacing="4">
-                  {section.fields.map((field, index) => {
-                    return generateFormikField({
-                      field,
-                      index,
-                    });
-                  })}
-                </Grid>
-              </FormSection>
-              {section.postSlot}
-            </div>
-          ))}
+          {sections.map((section) => {
+            if (section?.hideWhen && section.hideWhen(values)) {
+              return null;
+            }
+            return (
+              <div key={section.title}>
+                {section.preSlot}
+                <FormSection
+                  title={section.title}
+                  description={section.description}
+                  hideTitle={section.hideTitle}
+                >
+                  <Grid cols="1" mdCols="2" spacing="4">
+                    {section.fields.map((field, index) => {
+                      return generateFormikField({
+                        field,
+                        index,
+                      });
+                    })}
+                  </Grid>
+                </FormSection>
+                {section.postSlot}
+              </div>
+            );
+          })}
         </VStack>
       )}
     </Formik>

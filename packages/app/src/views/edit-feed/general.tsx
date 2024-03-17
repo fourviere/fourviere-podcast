@@ -19,15 +19,18 @@ import Description from "./forms/description";
 import TileButton from "@fourviere/ui/lib/buttons/tile-button";
 import {
   CodeBracketIcon,
+  Cog6ToothIcon,
   DocumentTextIcon,
   MusicalNoteIcon,
   PaintBrushIcon,
 } from "@heroicons/react/24/outline";
 import Grid from "@fourviere/ui/lib/layouts/grid";
 import SourceCode from "./source-code";
+import Configuration from "./forms/configuration";
 
 export default function General() {
   const [descriptionModal, setDescriptionModal] = useState<boolean>(false);
+  const [configurationModal, setConfigurationModal] = useState<boolean>(false);
   const [v4vModal, setV4vModal] = useState<boolean>(false);
   const [itunesModal, setItunesModal] = useState<boolean>(false);
   const [generalModal, setGeneralModal] = useState<boolean>(false);
@@ -137,6 +140,12 @@ export default function General() {
               icon={DocumentTextIcon}
               title="Stats"
             />
+            <TileButton
+              icon={Cog6ToothIcon}
+              title="Configuration"
+              loading={70}
+              onClick={() => setConfigurationModal(true)}
+            />
           </Grid>
         </TwoThirdsPageBox>
       </HStack>
@@ -180,6 +189,13 @@ export default function General() {
           <Drawer type="right" onClose={() => setSourceModal(false)}>
             <Container scroll style={{ height: "100vh" }}>
               <SourceCode />
+            </Container>
+          </Drawer>
+        )}
+        {configurationModal && (
+          <Drawer type="right" onClose={() => setConfigurationModal(false)}>
+            <Container scroll style={{ height: "100vh" }}>
+              <Configuration />
             </Container>
           </Drawer>
         )}
