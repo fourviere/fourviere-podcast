@@ -6,7 +6,7 @@ const linkSchema = Type.Object({
   "#text": Type.Optional(Type.String()),
   "@": Type.Object({
     rel: Type.Optional(Type.String()),
-    type: Type.String(),
+    type: Type.Optional(Type.String()),
     href: Type.Optional(Type.String({ format: "uri" })),
   }),
 });
