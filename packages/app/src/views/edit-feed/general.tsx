@@ -33,8 +33,8 @@ import FeedUploader from "../../components/feed-uploader";
 import HCard from "@fourviere/ui/lib/cards/h-card-1";
 import Button from "@fourviere/ui/lib/button";
 import ItemList from "@fourviere/ui/lib/item-list-scroll";
-import { formatDistanceToNowStrict } from "date-fns";
 import { useTranslation } from "react-i18next";
+import { parse } from "date-fns";
 
 export default function General() {
   const [descriptionModal, setDescriptionModal] = useState<boolean>(false);
@@ -201,9 +201,9 @@ export default function General() {
               items={currentFeed?.feed.rss.channel.item?.map((e) => ({
                 title: e.title,
                 key: e.guid["#text"],
-                subtitle: `${formatDistanceToNowStrict(e.pubDate)}  - ${
-                  e.pubDate
-                }`,
+                subtitle: t("episodes.published_date", {
+                  date: new Date(e.pubDate),
+                }),
                 imageSrc: e["itunes:image"]?.["@"].href ?? "/logo.svg",
               }))}
               keyProperty={"key"}

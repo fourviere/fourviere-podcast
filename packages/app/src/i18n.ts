@@ -1,5 +1,15 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import {
+  Locale,
+  format as formatDate,
+  formatDistance,
+  formatRelative,
+  isDate,
+} from "date-fns";
+import { enUS, it, fr, de, es } from "date-fns/locale"; // import all locales we need
+
+const locales: Record<string, Locale> = { en: enUS, it, fr, de, es };
 
 // the translations
 // (tip move them in a JSON file and import them,
@@ -297,6 +307,7 @@ const resources = {
           title: "Episodes",
           no_episodes: "No episodes available",
           add_episode: "Add a new episode",
+          published_date: "Published at: {{ date, long }}, {{ date, ago }}",
         },
       },
     },
@@ -565,12 +576,25 @@ i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
     resources,
-    lng: "en", // language to use, more information here: https://www.i18next.com/overview/configuration-options#languages-namespaces-resources
-    // you can use the i18n.changeLanguage function to change the language manually: https://www.i18next.com/overview/api#changelanguage
-    // if you're using a language detector, do not define the lng option
-
+    lng: "en",
     interpolation: {
       escapeValue: false, // react already safes from xss
+      format: function (value, format, lng = "en") {
+        const locale = locales[lng];
+        if (isDate(value)) {
+          if (format === "short") return formatDate(value, "P", { locale });
+          if (format === "long") return formatDate(value, "PPPPpp", { locale });
+          if (format === "relative")
+            return formatRelative(value, new Date(), { locale });
+          if (format === "ago")
+            return formatDistance(value, new Date(), {
+              locale,
+              addSuffix: true,
+            });
+        }
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        return value;
+      },
     },
   });
 
