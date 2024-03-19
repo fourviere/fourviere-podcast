@@ -6,7 +6,7 @@ import VStack from "@fourviere/ui/lib/layouts/v-stack";
 import HStack from "@fourviere/ui/lib/layouts/h-stack";
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import { H1, H3, P, Title } from "@fourviere/ui/lib/typography";
+import { H3, P, Title } from "@fourviere/ui/lib/typography";
 import UseCurrentFeed from "../../hooks/use-current-feed";
 import { normalizeText } from "../../utils/text";
 import {
@@ -24,11 +24,17 @@ import {
   DocumentTextIcon,
   MusicalNoteIcon,
   PaintBrushIcon,
+  PlusCircleIcon,
 } from "@heroicons/react/24/outline";
 import Grid from "@fourviere/ui/lib/layouts/grid";
 import SourceCode from "./source-code";
 import Configuration from "./forms/configuration";
 import FeedUploader from "../../components/feed-uploader";
+import HCard from "@fourviere/ui/lib/cards/h-card-1";
+import Button from "@fourviere/ui/lib/button";
+import ItemList from "@fourviere/ui/lib/item-list-scroll";
+import { formatDistanceToNowStrict } from "date-fns";
+import { useTranslation } from "react-i18next";
 
 export default function General() {
   const [descriptionModal, setDescriptionModal] = useState<boolean>(false);
@@ -37,10 +43,32 @@ export default function General() {
   const [generalModal, setGeneralModal] = useState<boolean>(false);
   const [sourceModal, setSourceModal] = useState<boolean>(false);
   const currentFeed = UseCurrentFeed();
+  const { t } = useTranslation("feed", {
+    keyPrefix: "index",
+  });
 
   return (
-    <VStack scroll wFull paddingX="6" paddingY="6" spacing="6">
-      <HStack spacing="2" alignItems="center" responsive={true}>
+    <VStack
+      wFull
+      spacing="6"
+      style={{
+        minHeight: "100vh",
+        position: "relative",
+      }}
+    >
+      <HStack
+        spacing="2"
+        alignItems="center"
+        paddingX="6"
+        paddingY="6"
+        responsive={true}
+        style={{
+          position: "sticky",
+          top: "0px",
+          background: "#fffffff0",
+          zIndex: 1,
+        }}
+      >
         <ThreeQuartersPageBox>
           <EditButton onClick={() => setGeneralModal(true)}>
             <HStack spacing="4" alignItems="center">
@@ -63,12 +91,12 @@ export default function General() {
         </OneQuarterPageBox>
       </HStack>
 
-      <HStack spacing="6" responsive={true}>
+      <HStack spacing="6" paddingX="6" paddingY="6" responsive={true}>
         <OneThirdPageBox $responsive={true}>
           <VStack spacing="4">
             <EditButton onClick={() => setDescriptionModal(true)}>
               <P
-                style={{ minHeight: "80px" }}
+                $lineClamp={4}
                 dangerouslySetInnerHTML={{
                   __html: normalizeText(
                     currentFeed?.feed.rss.channel.description,
@@ -153,12 +181,38 @@ export default function General() {
         </TwoThirdsPageBox>
       </HStack>
       <hr />
-      <H1>Episodes</H1>
-      <HStack spacing="6" responsive={true}>
-        <TwoThirdsPageBox>
-          <P>Episodes</P>
+
+      <HStack spacing="6" paddingX="6" paddingY="6" responsive={true}>
+        <TwoThirdsPageBox $responsive>
+          <VStack spacing="4" wFull>
+            <HStack justifyContent="between">
+              <Title>{t("episodes.title")}</Title>
+              <Button theme="secondary" size="sm" Icon={PlusCircleIcon}>
+                {t("episodes.add_episode")}
+              </Button>
+            </HStack>
+            <ItemList<{
+              title: string;
+              subtitle: string;
+              imageSrc: string;
+              key: string;
+            }>
+              labels={{ noEpisodes: t("episodes.no_episodes") }}
+              items={currentFeed?.feed.rss.channel.item?.map((e) => ({
+                title: e.title,
+                key: e.guid["#text"],
+                subtitle: `${formatDistanceToNowStrict(e.pubDate)}  - ${
+                  e.pubDate
+                }`,
+                imageSrc: e["itunes:image"]?.["@"].href ?? "/logo.svg",
+              }))}
+              keyProperty={"key"}
+              elementsPerPage={3}
+              itemElement={HCard}
+            />
+          </VStack>
         </TwoThirdsPageBox>
-        <OneThirdPageBox>ddd</OneThirdPageBox>
+        <OneThirdPageBox $responsive>ddd</OneThirdPageBox>
       </HStack>
 
       <AnimatePresence>

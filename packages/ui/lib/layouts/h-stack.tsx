@@ -71,6 +71,7 @@ interface HStackProps extends React.PropsWithChildren {
   scroll?: boolean;
   as?: ElementType;
   className?: string;
+  style?: React.CSSProperties;
 }
 
 type DivProps = React.JSX.IntrinsicElements["div"];
@@ -85,6 +86,7 @@ const HStack = ({
   wFull,
   responsive,
   children,
+  style,
   as,
   scroll,
   className,
@@ -109,7 +111,11 @@ const HStack = ({
     className,
   );
 
-  return <Component className={classes}>{children}</Component>;
+  return (
+    <Component className={classes} style={style}>
+      {children}
+    </Component>
+  );
 };
 
 export default HStack;

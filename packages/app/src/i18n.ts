@@ -292,6 +292,13 @@ const resources = {
           },
         },
       },
+      index: {
+        episodes: {
+          title: "Episodes",
+          no_episodes: "No episodes available",
+          add_episode: "Add a new episode",
+        },
+      },
     },
 
     ///OLD
