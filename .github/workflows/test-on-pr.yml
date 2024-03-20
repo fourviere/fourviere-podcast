@@ -48,6 +48,9 @@ jobs:
       - name: rustc details
         run: rustc -vV
 
+      - name: enable features
+        run: node .github/enable_features.js 
+
       - name: run rust tests
         run: cargo test
         working-directory: packages/app/src-tauri

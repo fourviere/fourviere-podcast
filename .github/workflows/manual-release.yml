@@ -80,6 +80,9 @@ jobs:
       - name: rustc details
         run: rustc -vV
 
+      - name: enable features
+        run: node .github/enable_features.js 
+
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

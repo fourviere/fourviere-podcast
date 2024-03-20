@@ -83,6 +83,9 @@ jobs:
       - name: disable updater
         run: node .github/disable_updater.js 
 
+      - name: enable features
+        run: node .github/enable_features.js 
+
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
