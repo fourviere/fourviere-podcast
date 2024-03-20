@@ -27,8 +27,8 @@ derive-new = "0.6.0"
 function_name = "0.3.0"
 get_chunk = { version = "1.2.1", features = ["size_format", "stream"] }
 getset = "0.1.2"
-kalosm-sound = "0.2.1"
-kalosm-vision = "0.2.1"
+kalosm-sound = { git = "https://github.com/floneum/floneum", features = ["mkl"]}
+kalosm-vision = { git = "https://github.com/floneum/floneum", features = ["mkl"]}
 log = "0.4.20"
 mime_guess = "2.0.4"
 reqwest = { version = "0.11", features = ["json"] }
@@ -37,13 +37,22 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 suppaftp = { version = "5.3.1", features = ["async-native-tls"] }
 tauri = { version = "1.5", features = [ "updater", "shell-sidecar", "dialog-all", "path-all", "fs-all", "shell-open", "process-command-api"] }
-tauri-plugin-channel = { git = "https://github.com/fourviere/tauri-plugin-channel.git", branch = "v0.1.x" }
+tauri-plugin-channel = { git = "https://github.com/fourviere/tauri-plugin-channel", branch = "v0.1.x" }
 tauri-plugin-log = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 tempfile = "3.10.0"
 thiserror = "1.0.57"
 tokio = { version = "1", features = ["fs", "macros"] }
 tokio-util = {version = "0.7.10", features = ["compat"] }
 uuid = {version = "1.7.0", features = ["v4", "fast-rng"]}
+
+# See https://github.com/rust-lang/cargo/issues/1197#issuecomment-1641086954
+[target.'cfg(target_os="macos")'.dependencies.kalosm-sound]
+git = "https://github.com/floneum/floneum"
+features = ["metal"]
+
+[target.'cfg(target_os="macos")'.dependencies.kalosm-vision]
+git = "https://github.com/floneum/floneum"
+features = ["metal"]
 
 [dev-dependencies]
 async-trait = "0.1.77"
@@ -59,3 +68,5 @@ unftp-sbe-fs = "0.2.4"
 # this feature is used for production builds or when `devPath` points to the filesystem
 # DO NOT REMOVE!!
 custom-protocol = ["tauri/custom-protocol"]
+mkl = ["kalosm-sound/mkl", "kalosm-vision/mkl"]
+metal = ["kalosm-sound/metal", "kalosm-vision/metal"]

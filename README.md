@@ -18,6 +18,7 @@ The features that Fourviere offers include:
 [![test-on-pr](https://github.com/fourviere/fourviere-podcast/actions/workflows/test-on-pr.yml/badge.svg)](https://github.com/fourviere/fourviere-podcast/actions/workflows/test-on-pr.yml)
 
 - Install [Node.js](https://nodejs.org/en) and [Rust](https://www.rust-lang.org/)
+- Windows and Linux only: Install [Intel oneMKL](https://www.intel.com/content/www/us/en/developer/tools/oneapi/onemkl-download.html)
 - Clone the repository
 - Run `npm install` from the project's root folder
 - Run `npm run dev` from the projects root folder
