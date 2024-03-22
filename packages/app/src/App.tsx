@@ -5,13 +5,11 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Toast from "@fourviere/ui/lib/modals/toast";
 import { ErrorBox } from "@fourviere/ui/lib/box";
-import EditFeed from "./views/edit-feed";
-import General from "./views/edit-feed/general";
+import EditFeed from "./views/feed/channel";
+import General from "./views/feed/channel/main";
 import GlobalConfiguration from "./views/configuration";
 import { attachConsole } from "@tauri-apps/plugin-log";
-import ItemsIndex from "./views/edit-item/items-index";
-import ItemGeneral from "./views/edit-item/item-general";
-import Configuration from "./views/edit-feed/forms/configuration";
+import Configuration from "./views/feed/channel/configuration";
 
 void attachConsole();
 
@@ -29,22 +27,12 @@ const router = createBrowserRouter([
     Component: EditFeed,
     children: [
       {
-        path: "feed-basic",
+        path: "",
         Component: General,
       },
       {
         path: "feed-config",
         Component: Configuration,
-      },
-      {
-        path: "feed-items",
-        children: [
-          { path: "", Component: ItemsIndex },
-          {
-            path: ":itemGUID",
-            Component: ItemGeneral,
-          },
-        ],
       },
     ],
   },

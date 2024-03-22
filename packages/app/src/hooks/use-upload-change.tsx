@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import uploadsStore from "../store/uploads";
 import { deepEquals } from "../utils/object";
 import { Upload } from "../store/uploads/types";
@@ -9,6 +9,8 @@ interface Props {
 }
 
 export default function useUploadChange({ onChange, id }: Props) {
+  const [hasFinishedUploadPending, setHasFinishedUploadPending] =
+    useState(false);
   useEffect(() => {
     // check if there is a finished upload in the store
     // set it into the formik field
@@ -17,6 +19,7 @@ export default function useUploadChange({ onChange, id }: Props) {
       const value = uploadsStore.getState().uploads[id];
       onChange(value);
       uploadsStore.getState().removeUpload(id);
+      setHasFinishedUploadPending(true);
     }
 
     // triggers the field value update when the upload is finished
@@ -28,10 +31,13 @@ export default function useUploadChange({ onChange, id }: Props) {
         onChange(value);
         state.removeUpload(id);
       }
+      setHasFinishedUploadPending(false);
     });
 
     return () => {
       unsubscribe();
     };
   }, [id]);
+
+  return { hasFinishedUploadPending };
 }

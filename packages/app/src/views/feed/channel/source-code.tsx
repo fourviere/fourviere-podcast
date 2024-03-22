@@ -1,8 +1,8 @@
 import { Editor, useMonaco } from "@monaco-editor/react";
 import { useParams } from "react-router-dom";
-import feedStore from "../../store/feed/index";
+import feedStore from "../../../store/feed/index";
 import { parseXML, serializeToXML } from "@fourviere/core/lib/converter";
-import appStore from "../../store/app";
+import appStore from "../../../store/app";
 import { useEffect, useState } from "react";
 import ContainerTitle from "@fourviere/ui/lib/container-title";
 import { useTranslation } from "react-i18next";

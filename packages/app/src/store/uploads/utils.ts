@@ -36,8 +36,16 @@ export function getTauriUploadCommandByRemote(
   }
 }
 
-export function generateId(feedId: string, field: string) {
-  return `${feedId}-${field}`;
+export function generateId({
+  feedId,
+  episodeId,
+  field,
+}: {
+  feedId: string;
+  episodeId?: string;
+  field: string;
+}) {
+  return `${feedId}-${episodeId ? episodeId + "-" : ""}${field}`;
 }
 
 export function isProgressEvent(event: UploadEvent): event is ProgressEvent {

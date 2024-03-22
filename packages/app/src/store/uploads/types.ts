@@ -6,6 +6,7 @@ export interface Upload {
   field: string;
   progress: number | false;
   feedId?: string;
+  episodeId?: string;
   receiver?: Receiver;
   sender?: Sender;
   error?: string;
@@ -18,6 +19,7 @@ export interface Upload {
 
 export interface StartUploadCommand {
   feedId: string;
+  episodeId?: string;
   localPath: string;
   field: string;
   fileName: string;

@@ -32,6 +32,10 @@ const resources = {
           save: "Save",
           unsavedChanges: "Unsaved changes",
           hasErrors: "This form has errors",
+          configureRemote:
+            "Configure remote storage for uploading files from your computer",
+          previusTriggeredUploadToSave:
+            "A previous triggered upload is confirmed, save the form to save the change",
         },
       },
       confirm: {
@@ -298,6 +302,34 @@ const resources = {
                 modalMessage:
                   "This operation cannot be reverted! This deletion does not remove the remote fields, but delete the data from the fourvierre.io application",
               },
+            },
+          },
+        },
+        item: {
+          presentation: {
+            title: "Episode presentation",
+            description:
+              "This area will contain the fields necessary for, once completed, having defined the presentation of the episode.",
+            fields: {
+              title: { label: "Title" },
+              guid: { label: "GUID" },
+              author: { label: "Author" },
+
+              description: { label: "Episode description" },
+            },
+          },
+          image: {
+            title: "Image",
+            description: "This section contains the image of the episode",
+            fields: {
+              image: { label: "Episode image" },
+            },
+          },
+          description: {
+            title: "Description",
+            description: "This section contains the description of the episode",
+            fields: {
+              description: { label: "Episode description" },
             },
           },
         },

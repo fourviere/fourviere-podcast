@@ -16,11 +16,7 @@ const SideMenu: React.FC = () => {
     .reverse()
     .map((key) => {
       return (
-        <Link
-          to={`/feed/${key}/feed-basic`}
-          style={{ display: "block" }}
-          key={key}
-        >
+        <Link to={`/feed/${key}`} style={{ display: "block" }} key={key}>
           <ImageLinkCard
             theme="dark"
             size="xs"

@@ -72,6 +72,7 @@ interface HStackProps extends React.PropsWithChildren {
   as?: ElementType;
   className?: string;
   style?: React.CSSProperties;
+  onClick?: () => void;
 }
 
 type DivProps = React.JSX.IntrinsicElements["div"];
@@ -91,6 +92,7 @@ const HStack = ({
   scroll,
   className,
   justifyContent,
+  onClick,
 }: HStackProps & (DivProps | FormProps)) => {
   const Component = as ?? "div";
   // Use classNames to dynamically build the class string
@@ -112,7 +114,7 @@ const HStack = ({
   );
 
   return (
-    <Component className={classes} style={style}>
+    <Component className={classes} style={style} onClick={onClick}>
       {children}
     </Component>
   );

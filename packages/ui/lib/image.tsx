@@ -25,7 +25,7 @@ const Image: React.FC<ImageProps> = ({ src, style, className, alt }) => {
         <div
           style={style}
           className={classNames([
-            "flex shrink-0 flex-col items-center justify-center rounded rounded-lg border border-slate-300 ",
+            "flex shrink-0 flex-col items-center justify-center rounded-lg border border-slate-300 ",
             className,
           ])}
         >

@@ -17,6 +17,7 @@ import { v4 as uuidv4 } from "uuid";
 import uploadsStore from "../../../store/uploads";
 import useUploadChange from "../../../hooks/use-upload-change";
 import MicroCircular from "@fourviere/ui/lib/progress/micro-circular";
+import { useTranslation } from "react-i18next";
 
 const FORMAT = "image";
 
@@ -26,12 +27,18 @@ const Input: React.ComponentType<
     touched: boolean;
     fieldProps: {
       feedId: string;
+      episodeId?: string;
     };
   } & React.InputHTMLAttributes<HTMLInputElement>
 > = ({ field, form, touched, type, fieldProps, ...props }) => {
   const feedId = fieldProps.feedId;
-  const id = generateId(feedId, field.name);
+  const id = generateId({
+    feedId,
+    episodeId: fieldProps?.episodeId,
+    field: field.name,
+  });
   const { hasRemote, remote } = UseRemoteConf({ feedId });
+  const { t } = useTranslation("utils", { keyPrefix: "form.labels" });
 
   const { uploads, startUpload, abortUpload } = uploadsStore((state) => ({
     uploads: state.uploads,
@@ -54,7 +61,7 @@ const Input: React.ComponentType<
     format: FORMAT,
   });
 
-  useUploadChange({
+  const { hasFinishedUploadPending } = useUploadChange({
     onChange: (changedValue) => {
       console.log(changedValue);
       if (changedValue.value && "url" in changedValue.value) {
@@ -109,11 +116,14 @@ const Input: React.ComponentType<
           />
           {!hasRemote ? (
             <Link to={`/feed/${feedId}/feed-config`}>
-              <Note>
-                Configure remote storage for uploading files from your computer
-              </Note>
+              <Note>{t("configureRemote")}</Note>
             </Link>
           ) : null}
+          {hasFinishedUploadPending && form.dirty && (
+            <ErrorAlert
+              message={t("previusTriggeredUploadToSave")}
+            ></ErrorAlert>
+          )}
         </VStack>
 
         {status?.progress && (

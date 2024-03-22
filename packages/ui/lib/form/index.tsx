@@ -4,6 +4,7 @@ import FormSection from "@fourviere/ui/lib/form/form-section";
 import VStack from "@fourviere/ui/lib/layouts/v-stack";
 import { Formik, FormikValues, Field as FormikField, FieldProps } from "formik";
 import Boolean from "@fourviere/ui/lib/form/fields/boolean";
+import Text from "@fourviere/ui/lib/form/fields/text";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
 import localize from "ajv-i18n/localize";
@@ -15,6 +16,7 @@ import { ComponentType, InputHTMLAttributes, useMemo } from "react";
 import ArrayForm from "@fourviere/ui/lib/form/fields/array";
 import { ErrorBox } from "../box";
 import { ajvErrorsToJsonPath, getLabelByName } from "./utils";
+import Uuid from "./fields/uuid";
 
 const ajv = addFormats(
   new Ajv({
@@ -27,6 +29,8 @@ const COMPONENT_MAP = {
   input: Input,
   select: Select,
   array: ArrayForm,
+  text: Text,
+  uuid: Uuid,
 } as const;
 
 type BaseFieldConf = {
@@ -56,6 +60,11 @@ interface InputFieldConf extends BaseFieldConf {
   type?: "number" | "text" | "password";
 }
 
+interface UuidFieldConf extends BaseFieldConf {
+  placeholder?: string;
+  type?: "number" | "text" | "password";
+}
+
 export interface ArrayFieldConf extends BaseFieldConf {
   childrenFields: FieldConf[];
   defaultItem?: Record<string, unknown>;
@@ -69,11 +78,15 @@ interface SelectFieldConf extends BaseFieldConf {
     | ((fieldName: string, data: FormikValues) => Record<string, unknown>);
 }
 
+interface TextFieldConf extends BaseFieldConf {}
+
 export type FieldConf =
   | BaseFieldConf
   | InputFieldConf
   | SelectFieldConf
-  | ArrayFieldConf;
+  | ArrayFieldConf
+  | TextFieldConf
+  | UuidFieldConf;
 
 export type Section<Data> = {
   title?: string;
@@ -230,6 +243,13 @@ export function generateFormikField({
 
   if (field.component === "input" && (field as InputFieldConf).type) {
     props["type"] = (field as InputFieldConf).type;
+  }
+
+  if (
+    typeof field.component === "string" &&
+    ["input", "uuid"].includes(field.component) &&
+    (field as InputFieldConf).placeholder
+  ) {
     props["placeholder"] = (field as InputFieldConf).placeholder;
   }
 

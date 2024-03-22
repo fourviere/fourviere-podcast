@@ -1,14 +1,14 @@
 import { Container } from "@fourviere/ui/lib/box";
 import Drawer from "@fourviere/ui/lib/modals/drawer";
-import Itunes from "./forms/itunes";
-import GeneralForm from "./forms/general";
+import Itunes from "./itunes";
+import GeneralForm from "./general";
 import VStack from "@fourviere/ui/lib/layouts/v-stack";
 import HStack from "@fourviere/ui/lib/layouts/h-stack";
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { H3, P, Title } from "@fourviere/ui/lib/typography";
-import UseCurrentFeed from "../../hooks/use-current-feed";
-import { normalizeText } from "../../utils/text";
+import UseCurrentFeed from "../../../hooks/use-current-feed";
+import { normalizeText } from "../../../utils/text";
 import {
   OneQuarterPageBox,
   OneThirdPageBox,
@@ -16,7 +16,7 @@ import {
   TwoThirdsPageBox,
 } from "@fourviere/ui/lib/layouts/columns";
 import EditButton from "@fourviere/ui/lib/edit-button";
-import Description from "./forms/description";
+import Description from "./description";
 import TileButton from "@fourviere/ui/lib/buttons/tile-button";
 import {
   CodeBracketIcon,
@@ -28,20 +28,26 @@ import {
 } from "@heroicons/react/24/outline";
 import Grid from "@fourviere/ui/lib/layouts/grid";
 import SourceCode from "./source-code";
-import Configuration from "./forms/configuration";
-import FeedUploader from "../../components/feed-uploader";
-import HCard from "@fourviere/ui/lib/cards/h-card-1";
+import Configuration from "./configuration";
+import FeedUploader from "../../../components/feed-uploader";
+import HCard from "../../../components/episode-card";
 import Button from "@fourviere/ui/lib/button";
 import ItemList from "@fourviere/ui/lib/item-list-scroll";
 import { useTranslation } from "react-i18next";
-import { parse } from "date-fns";
+import { Item } from "@fourviere/core/lib/schema/item";
+import ItemGeneral from "../item/general";
 
 export default function General() {
+  // Channel
   const [descriptionModal, setDescriptionModal] = useState<boolean>(false);
   const [configurationModal, setConfigurationModal] = useState<boolean>(false);
   const [itunesModal, setItunesModal] = useState<boolean>(false);
   const [generalModal, setGeneralModal] = useState<boolean>(false);
   const [sourceModal, setSourceModal] = useState<boolean>(false);
+  // Episode
+  const [currentEpisodeIndex, setCurrentEpisodeIndex] = useState<number>(0);
+  const [itemGeneralModal, setItemGeneralModal] = useState<boolean>(false);
+
   const currentFeed = UseCurrentFeed();
   const { t } = useTranslation("feed", {
     keyPrefix: "index",
@@ -133,44 +139,6 @@ export default function General() {
               title="Code editor"
               onClick={() => setSourceModal(true)}
             />
-            {/* <TileButton
-              label="coming soon"
-              theme="disabled"
-              icon={DocumentTextIcon}
-              title="Transcript"
-            />
-            <TileButton
-              label="coming soon"
-              theme="disabled"
-              icon={DocumentTextIcon}
-              title="Chapters"
-            />
-
-            <TileButton
-              label="coming soon"
-              theme="disabled"
-              icon={DocumentTextIcon}
-              title="Funding"
-            />
-            <TileButton
-              label="coming soon"
-              theme="disabled"
-              icon={DocumentTextIcon}
-              title="Team"
-            />
-
-            <TileButton
-              label="coming soon"
-              theme="disabled"
-              icon={DocumentTextIcon}
-              title="Live"
-            />
-            <TileButton
-              label="coming soon"
-              theme="disabled"
-              icon={DocumentTextIcon}
-              title="Stats"
-            /> */}
             <TileButton
               icon={Cog6ToothIcon}
               title="Configuration"
@@ -192,19 +160,17 @@ export default function General() {
               </Button>
             </HStack>
             <ItemList<{
-              title: string;
-              subtitle: string;
-              imageSrc: string;
               key: string;
+              item: Item;
             }>
               labels={{ noEpisodes: t("episodes.no_episodes") }}
-              items={currentFeed?.feed.rss.channel.item?.map((e) => ({
-                title: e.title,
+              items={currentFeed?.feed.rss.channel.item?.map((e, index) => ({
                 key: e.guid["#text"],
-                subtitle: t("episodes.published_date", {
-                  date: new Date(e.pubDate),
-                }),
-                imageSrc: e["itunes:image"]?.["@"].href ?? "/logo.svg",
+                item: e,
+                openBasicDetails: () => {
+                  setItemGeneralModal(true);
+                  setCurrentEpisodeIndex(index);
+                },
               }))}
               keyProperty={"key"}
               elementsPerPage={3}
@@ -246,6 +212,13 @@ export default function General() {
           <Drawer type="right" onClose={() => setConfigurationModal(false)}>
             <Container scroll style={{ height: "100vh" }}>
               <Configuration />
+            </Container>
+          </Drawer>
+        )}
+        {itemGeneralModal && (
+          <Drawer type="right" onClose={() => setItemGeneralModal(false)}>
+            <Container scroll style={{ height: "100vh" }}>
+              <ItemGeneral index={currentEpisodeIndex} />
             </Container>
           </Drawer>
         )}

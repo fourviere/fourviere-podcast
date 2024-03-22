@@ -1,8 +1,8 @@
 import { FullPageColumnLayout } from "@fourviere/ui/lib/layouts/full-page";
 import React, { useEffect } from "react";
-import SideMenu from "../../components/main-menu";
+import SideMenu from "../../../components/main-menu";
 import { Outlet, useNavigate } from "react-router-dom";
-import UseCurrentFeed from "../../hooks/use-current-feed";
+import UseCurrentFeed from "../../../hooks/use-current-feed";
 
 interface Props {}
 
