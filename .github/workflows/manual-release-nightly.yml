@@ -103,8 +103,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        #platform: [ubuntu-20.04, windows-latest]
-        platform: [ubuntu-20.04]
+        platform: [ubuntu-20.04, windows-latest]
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -151,6 +150,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CUDA_COMPUTE_CAP: "75" 
         with:
+          bundleIdentifier: "fourviere-podcast-cuda"
           releaseId: ${{ needs.create-release.outputs.release_id }}
           includeUpdaterJson: false
 
