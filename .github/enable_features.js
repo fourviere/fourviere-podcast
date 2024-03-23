@@ -20,6 +20,10 @@ fs.readFile(path, "utf8", (error, data) => {
   }
   else {
     config.build.features = [ovverride];
+    if( ovverride === "cuda") {
+      //Disable appimage on linux to avoid issues collecting libcuda1.so (installed by the nvidia driver)
+      config.tauri.bundle.targets = ["deb", "msi", "nsis"];
+    }
   }
 
   fs.writeFile(path, JSON.stringify(config, null, 2), (error) => {
