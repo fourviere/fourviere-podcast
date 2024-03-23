@@ -67,9 +67,12 @@ jobs:
 
       - name: install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-20.04'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
+        uses: myci-actions/add-deb-repo@11
+        with:
+          repo: deb https://apt.repos.intel.com/oneapi all main
+          repo-name: intel_onemkl
+          keys-asc: https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
+          install: libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf libasound2-dev intel-oneapi-mkl-devel
 
       - name: install frontend dependencies
         run: npm install

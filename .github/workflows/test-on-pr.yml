@@ -48,7 +48,7 @@ jobs:
       - name: rustc details
         run: rustc -vV
 
-      - name: enable features
+      - name: enable default features
         run: node .github/enable_features.js 
 
       - name: run rust tests

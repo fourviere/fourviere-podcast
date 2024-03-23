@@ -8,13 +8,20 @@ fs.readFile(path, "utf8", (error, data) => {
   }
   let config = JSON.parse(data);
 
-  const opsys = process.platform;
-  if (opsys == "darwin") {
-    config.build.features = ["metal"];
-  } else if (opsys == "linux") {
-    config.build.features = ["mkl"];
+  let ovverride = process.argv[2];
+
+  if (ovverride === undefined) {
+    const opsys = process.platform;
+    if (opsys == "darwin") {
+      config.build.features = ["metal"];
+    } else if (opsys == "linux") {
+      config.build.features = ["mkl"];
+    }
   }
-  
+  else {
+    config.build.features = [ovverride];
+  }
+
   fs.writeFile(path, JSON.stringify(config, null, 2), (error) => {
     if (error) {
       console.log('An error has occurred ', error);

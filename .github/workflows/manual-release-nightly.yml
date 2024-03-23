@@ -44,7 +44,7 @@ jobs:
             })
             return data.id
 
-  build-tauri:
+  build-tauri-standard:
     needs: create-release
     permissions:
       contents: write
@@ -67,9 +67,16 @@ jobs:
 
       - name: install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-20.04'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
+        uses: myci-actions/add-deb-repo@11
+        with:
+          repo: deb https://apt.repos.intel.com/oneapi all main
+          repo-name: intel_onemkl
+          keys-asc: https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
+          install: libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf libasound2-dev intel-oneapi-mkl-devel
+
+      - name: install cuda (windows and ubuntu)
+        if: matrix.platform == 'ubuntu-20.04' || matrix.platform == 'windows-latest'
+        uses: Jimver/cuda-toolkit@v0.2.14
 
       - name: install frontend dependencies
         run: npm install
@@ -82,7 +89,7 @@ jobs:
 
       - name: disable updater
         run: node .github/disable_updater.js 
-
+        
       - name: enable features
         run: node .github/enable_features.js 
 
@@ -93,11 +100,69 @@ jobs:
           releaseId: ${{ needs.create-release.outputs.release_id }}
           includeUpdaterJson: false
 
+  build-tauri-cuda:
+    needs: create-release
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        #platform: [ubuntu-20.04, windows-latest]
+        platform: [ubuntu-20.04]
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install cuda toolkit (windows and ubuntu)
+        if: matrix.platform == 'ubuntu-20.04' || matrix.platform == 'windows-latest'
+        uses: Jimver/cuda-toolkit@v0.2.14
+
+      - name: install cudnn dependencies (ubuntu only)
+        if: matrix.platform == 'ubuntu-20.04'
+        uses: myci-actions/add-deb-repo@11
+        with:
+          repo: deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/ /
+          repo-name: nvidia_cuda
+          keys-asc: https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/3bf863cc.pub
+          install: libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf libasound2-dev cudnn9-cuda-12
+
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: install frontend dependencies
+        run: npm install
+
+      - name: build ui
+        run: npm run build:ui
+
+      - name: rustc details
+        run: rustc -vV
+
+      - name: disable updater
+        run: node .github/disable_updater.js 
+        
+      - name: enable cuda features
+        run: node .github/enable_features.js cuda
+
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CUDA_COMPUTE_CAP: "75" 
+        with:
+          releaseId: ${{ needs.create-release.outputs.release_id }}
+          includeUpdaterJson: false
+
   publish-release:
     permissions:
       contents: write
     runs-on: ubuntu-20.04
-    needs: [create-release, build-tauri]
+    needs: [create-release, build-tauri-standard, build-tauri-cuda]
 
     steps:
       - name: publish release
