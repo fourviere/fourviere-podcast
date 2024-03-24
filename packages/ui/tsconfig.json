@@ -5,7 +5,8 @@
     "module": "CommonJS",
     "outDir": "./dist",
     "esModuleInterop": true,
-    "declaration": true
+    "declaration": true,
+    "skipLibCheck": true
   },
   "include": ["lib/**/*.tsx"],
   "exclude": ["node_modules", "dist", "tsconfig.json", "postcss.config.js"]
