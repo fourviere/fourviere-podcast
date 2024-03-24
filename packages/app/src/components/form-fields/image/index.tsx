@@ -111,6 +111,7 @@ const Input: React.ComponentType<
           <InputRaw
             type={type ?? "text"}
             componentStyle="sm"
+            disabled={!!status?.progress}
             {...field}
             {...props}
           />
@@ -157,6 +158,7 @@ const Input: React.ComponentType<
           message={[form?.errors[field.name]].join(". ")}
         ></ErrorAlert>
       )}
+      {status?.error && <ErrorAlert message={status.error}></ErrorAlert>}
     </>
   );
 };

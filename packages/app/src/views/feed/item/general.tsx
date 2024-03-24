@@ -8,6 +8,7 @@ import { Feed } from "@fourviere/core/lib/schema/feed";
 import Img from "../../../components/form-fields/image/index";
 import { ItunesItemSchema } from "@fourviere/core/lib/schema/itunes/item";
 import { Item } from "@fourviere/core/lib/schema/item";
+import AudioField from "../../../components/form-fields/audio";
 
 const payloadSchema = Type.Union([
   Type.Pick(RSSItemSchema, [
@@ -40,6 +41,17 @@ export default function ItemGeneral({ index }: { index: number }) {
       description: t("presentation.description"),
       hideTitle: false,
       fields: [
+        {
+          id: "enclosure.@",
+          name: "enclosure.@",
+          label: t("presentation.fields.enclosure.label"),
+          component: AudioField,
+          width: "1",
+          fieldProps: {
+            feedId: currentFeed.feedId,
+            itemId: currentFeed.feed.rss.channel.item[index],
+          },
+        },
         {
           id: "title",
           name: "title",

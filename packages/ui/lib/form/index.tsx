@@ -42,7 +42,7 @@ type BaseFieldConf = {
   component:
     | keyof typeof COMPONENT_MAP
     | ComponentType<
-        FieldProps<string, unknown> & {
+        FieldProps & {
           label: string;
           touched: boolean;
           fieldProps: { feedId: string };
@@ -224,9 +224,7 @@ export function generateFormikField({
   // Used for array fields
   fieldNamePrefix?: string;
 }) {
-  const props: Record<string, unknown> = {
-    // touched,
-  };
+  const props: Record<string, unknown> = {};
 
   if (field.fieldProps) {
     props["fieldProps"] = field.fieldProps;

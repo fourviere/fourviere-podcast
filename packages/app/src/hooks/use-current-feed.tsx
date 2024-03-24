@@ -9,6 +9,7 @@ export default function UseCurrentFeed() {
   const project = feedStore((state) => state.getProjectById(feedId!));
   const updateFeed = feedStore((state) => state.updateFeed);
   const updateConfiguration = feedStore((state) => state.updateConfiguration);
+  const addEpisodeToProject = feedStore((state) => state.addEpisodeToProject);
 
   if (!project) {
     return null;
@@ -21,5 +22,6 @@ export default function UseCurrentFeed() {
     feed: project.feed,
     configuration: project.configuration,
     feedId,
+    addEpisodeToProject: () => addEpisodeToProject(feedId!),
   };
 }

@@ -155,7 +155,12 @@ export default function General() {
           <VStack spacing="4" wFull>
             <HStack justifyContent="between">
               <Title>{t("episodes.title")}</Title>
-              <Button theme="secondary" size="sm" Icon={PlusCircleIcon}>
+              <Button
+                theme="secondary"
+                size="sm"
+                Icon={PlusCircleIcon}
+                onClick={() => currentFeed?.addEpisodeToProject()}
+              >
                 {t("episodes.add_episode")}
               </Button>
             </HStack>

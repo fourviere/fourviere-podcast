@@ -81,10 +81,12 @@ const EpisodeCard: React.FC<EpisodeCardProps> = ({
                 />
               </Grid>
 
-              <AudioPlayer
-                src={item.enclosure?.["@"]?.url}
-                preload="metadata"
-              />
+              {item.enclosure?.["@"]?.url ? (
+                <AudioPlayer
+                  src={item.enclosure?.["@"]?.url}
+                  preload="metadata"
+                />
+              ) : null}
             </div>
           </motion.div>
         )}
