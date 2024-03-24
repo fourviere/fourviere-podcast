@@ -18,6 +18,8 @@ fs.readFile(path, "utf8", (error, data) => {
       config.build.features = ["mkl"];
     } else if (opsys == "win32") {
       config.build.features = ["mkl"];
+      config.tauri.bundle.resources = ["./libiomp5md.dll"];
+      fs.copyFileSync("C:\\Program Files (x86)\\Intel\\oneAPI\\compiler\\2024.0\\bin\\libiomp5md.dll","./packages/app/src-tauri/libiomp5md.dll");
     }
   }
   else {
