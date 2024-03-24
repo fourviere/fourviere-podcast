@@ -164,7 +164,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CUDA_COMPUTE_CAP: "75" 
         with:
-          bundleIdentifier: "fourviere-podcast-cuda"
           releaseId: ${{ needs.create-release.outputs.release_id }}
           includeUpdaterJson: false
 
