@@ -126,11 +126,11 @@ jobs:
         if: matrix.platform == 'windows-2019'
         shell: pwsh
         run: |
-          Invoke-WebRequest -URI "https://developer.download.nvidia.com/compute/cudnn/redist/cudnn/windows-x86_64/cudnn-windows-x86_64-9.0.0.312_cuda12-archive.zip" -OutFile "cudnn.zip"\
+          Invoke-WebRequest -URI "https://developer.download.nvidia.com/compute/cudnn/redist/cudnn/windows-x86_64/cudnn-windows-x86_64-9.0.0.312_cuda12-archive.zip" -OutFile "cudnn.zip"
           Expand-Archive -Path cudnn.zip
           cd .\cudnn\cudnn-windows-x86_64-9.0.0.312_cuda12-archive
-          Copy-Item -Path "." -Destination "C:\CUDA" -Recurse
-
+          Copy-Item -Path "." -Destination "C:\CUDANN" -Recurse
+          echo "CUDNN_LIB=C:\CUDANN" >> $env:GITHUB_ENV
 
       - name: setup node
         uses: actions/setup-node@v4
