@@ -7,6 +7,6 @@
     "esModuleInterop": true,
     "declaration": true
   },
-  "include": ["lib/**/*.tsx", "../app/src/components/item-card.tsx"],
+  "include": ["lib/**/*.tsx"],
   "exclude": ["node_modules", "dist", "tsconfig.json", "postcss.config.js"]
 }

@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "build": "tsc && postcss lib/styles.css -o dist/styles.css",
+    "build": "tsc --project tsconfig.json && postcss lib/styles.css -o dist/styles.css",
     "dev": "watch 'npm run build' lib",
     "prettier": "prettier --write lib",
     "lint": "eslint --fix lib",
