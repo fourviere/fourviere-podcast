@@ -27,6 +27,7 @@ fs.readFile(path, "utf8", (error, data) => {
     if( ovverride === "cuda") {
       //Disable AppImage bundle to avoid issues collecting libcuda1.so (only avaialable when the nvidia driver is installed)
       config.tauri.bundle.targets = ["deb", "msi", "nsis"];
+      config.package.productName = "Fourviere Podcast Cuda";
     }
   }
 
