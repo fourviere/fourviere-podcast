@@ -16,6 +16,8 @@ fs.readFile(path, "utf8", (error, data) => {
       config.build.features = ["metal"];
     } else if (opsys == "linux") {
       config.build.features = ["mkl"];
+    } else if (opsys == "win32") {
+      config.build.features = ["mkl"];
     }
   }
   else {
