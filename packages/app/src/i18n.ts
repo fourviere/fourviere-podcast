@@ -314,7 +314,7 @@ const resources = {
               title: { label: "Title" },
               guid: { label: "GUID" },
               author: { label: "Author" },
-
+              itunes_duration: { label: "Duration" },
               description: { label: "Episode description" },
             },
           },

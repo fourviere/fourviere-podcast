@@ -9,6 +9,7 @@ import Img from "../../../components/form-fields/image/index";
 import { ItunesItemSchema } from "@fourviere/core/lib/schema/itunes/item";
 import { Item } from "@fourviere/core/lib/schema/item";
 import AudioField from "../../../components/form-fields/audio";
+import { getDuration } from "../../../native/audio";
 
 const payloadSchema = Type.Union([
   Type.Pick(RSSItemSchema, [
@@ -51,6 +52,15 @@ export default function ItemGeneral({ index }: { index: number }) {
             feedId: currentFeed.feedId,
             itemId: currentFeed.feed.rss.channel.item[index],
           },
+        },
+        {
+          id: "itunes:duration",
+          name: "itunes:duration",
+          label: t("presentation.fields.itunes_duration.label"),
+          type: "number",
+          style: "sm",
+          component: "input",
+          width: "1",
         },
         {
           id: "title",
@@ -143,6 +153,28 @@ export default function ItemGeneral({ index }: { index: number }) {
         sections={formSections}
         data={currentFeed.feed.rss.channel.item[index]}
         schema={payloadSchema}
+        onFieldChange={[
+          {
+            fieldName: `enclosure["@"].url`,
+            callback: (value, setFormValue, setFieldError) => {
+              getDuration(value as string)
+                .then((duration) => {
+                  if (duration) {
+                    setFormValue("itunes:duration", duration);
+                  } else {
+                    setFormValue("itunes:duration", 0);
+                  }
+                })
+                .catch(() => {
+                  setFormValue("itunes:duration", 0);
+                  setFieldError?.(
+                    "itunes:duration",
+                    t("edit_feed.audio.duration.error"),
+                  );
+                });
+            },
+          },
+        ]}
       />
     </VStack>
   );

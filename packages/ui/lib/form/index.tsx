@@ -2,7 +2,13 @@ import ContainerTitle from "@fourviere/ui/lib/container-title";
 import FormRow from "@fourviere/ui/lib/form/form-row";
 import FormSection from "@fourviere/ui/lib/form/form-section";
 import VStack from "@fourviere/ui/lib/layouts/v-stack";
-import { Formik, FormikValues, Field as FormikField, FieldProps } from "formik";
+import {
+  Formik,
+  FormikValues,
+  Field as FormikField,
+  FieldProps,
+  FormikErrors,
+} from "formik";
 import Boolean from "@fourviere/ui/lib/form/fields/boolean";
 import Text from "@fourviere/ui/lib/form/fields/text";
 import Ajv from "ajv";
@@ -17,6 +23,7 @@ import ArrayForm from "@fourviere/ui/lib/form/fields/array";
 import { ErrorBox } from "../box";
 import { ajvErrorsToJsonPath, getLabelByName } from "./utils";
 import Uuid from "./fields/uuid";
+import ChangeDetector from "./change-detector";
 
 const ajv = addFormats(
   new Ajv({
@@ -98,14 +105,7 @@ export type Section<Data> = {
   hideWhen?: (data: Data) => boolean;
 };
 
-export default function Form<DataType extends FormikValues>({
-  data,
-  sections,
-  title,
-  onSubmit,
-  schema,
-  labels,
-}: {
+export interface FormProps<DataType> {
   title: string;
   sections: Array<Section<DataType>>;
   data: DataType;
@@ -117,7 +117,34 @@ export default function Form<DataType extends FormikValues>({
     hasErrors: string;
     isSaving: string;
   };
-}) {
+  onFieldChange?: Array<{
+    fieldName: string;
+    callback: (
+      fieldValue: unknown,
+      setFormValue: (
+        field: string,
+        value: unknown,
+        shouldValidate?: boolean,
+      ) => Promise<void | FormikErrors<DataType>>,
+      setFieldError?: (field: string, message: string) => void,
+      setFieldTouched?: (
+        field: string,
+        isTouched?: boolean,
+        shouldValidate?: boolean,
+      ) => Promise<void | FormikErrors<DataType>>,
+    ) => void;
+  }>;
+}
+
+export default function Form<DataType extends FormikValues>({
+  data,
+  sections,
+  title,
+  onSubmit,
+  schema,
+  labels,
+  onFieldChange,
+}: FormProps<DataType>) {
   const { i18n } = useTranslation();
   const compiledSchema = useMemo(() => {
     return ajv.compile(schema);
@@ -148,66 +175,73 @@ export default function Form<DataType extends FormikValues>({
         touched,
         errors,
         values,
-      }) => (
-        <VStack>
-          <ContainerTitle
-            labels={{
-              save: labels.save,
-              unsavedChanges: labels.unsavedChanges,
-              isSaving: labels.isSaving,
-            }}
-            isDirty={dirty}
-            isDisabled={!isValid}
-            isSubmitting={isSubmitting}
-            onSave={() => handleSubmit()}
-          >
-            {title}
-          </ContainerTitle>
-          <div className="sticky top-[75px] z-10 p-3">
-            {Object.keys(touched).length > 0 && !isValid && (
-              <ErrorBox>
-                <div>
-                  <ul>
-                    {Object.entries(errors)?.map(([k, e]) => (
-                      <li key={k}>
-                        <span className="font-semibold">
-                          {`${getLabelByName<DataType>(sections, k)}: `}
-                        </span>
-                        <span className="lowercase">{e}</span>
-                      </li>
-                    ))}
-                  </ul>
+      }) => {
+        return (
+          <VStack>
+            <ChangeDetector<DataType>
+              changeCallbacks={onFieldChange}
+              initialData={data}
+            />
+
+            <ContainerTitle
+              labels={{
+                save: labels.save,
+                unsavedChanges: labels.unsavedChanges,
+                isSaving: labels.isSaving,
+              }}
+              isDirty={dirty}
+              isDisabled={!isValid}
+              isSubmitting={isSubmitting}
+              onSave={() => handleSubmit()}
+            >
+              {title}
+            </ContainerTitle>
+            <div className="sticky top-[75px] z-10 p-3">
+              {Object.keys(touched).length > 0 && !isValid && (
+                <ErrorBox>
+                  <div>
+                    <ul>
+                      {Object.entries(errors)?.map(([k, e]) => (
+                        <li key={k}>
+                          <span className="font-semibold">
+                            {`${getLabelByName<DataType>(sections, k)}: `}
+                          </span>
+                          <span className="lowercase">{e}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </ErrorBox>
+              )}
+            </div>
+            {sections.map((section) => {
+              if (section?.hideWhen && section.hideWhen(values)) {
+                return null;
+              }
+              return (
+                <div key={section.title}>
+                  {section.preSlot}
+                  <FormSection
+                    title={section.title}
+                    description={section.description}
+                    hideTitle={section.hideTitle}
+                  >
+                    <Grid cols="1" mdCols="2" spacing="4">
+                      {section.fields.map((field, index) => {
+                        return generateFormikField({
+                          field,
+                          index,
+                        });
+                      })}
+                    </Grid>
+                  </FormSection>
+                  {section.postSlot}
                 </div>
-              </ErrorBox>
-            )}
-          </div>
-          {sections.map((section) => {
-            if (section?.hideWhen && section.hideWhen(values)) {
-              return null;
-            }
-            return (
-              <div key={section.title}>
-                {section.preSlot}
-                <FormSection
-                  title={section.title}
-                  description={section.description}
-                  hideTitle={section.hideTitle}
-                >
-                  <Grid cols="1" mdCols="2" spacing="4">
-                    {section.fields.map((field, index) => {
-                      return generateFormikField({
-                        field,
-                        index,
-                      });
-                    })}
-                  </Grid>
-                </FormSection>
-                {section.postSlot}
-              </div>
-            );
-          })}
-        </VStack>
-      )}
+              );
+            })}
+          </VStack>
+        );
+      }}
     </Formik>
   );
 }
@@ -215,7 +249,6 @@ export default function Form<DataType extends FormikValues>({
 export function generateFormikField({
   field,
   index,
-  // touched,
   fieldNamePrefix,
 }: {
   field: FieldConf;
