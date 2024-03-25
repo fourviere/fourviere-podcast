@@ -6,7 +6,7 @@ export const RSSItemSchema = Type.Object({
   enclosure: Type.Object({
     "@": Type.Object({
       url: Type.String(),
-      length: Type.String(),
+      length: Type.Number(),
       type: Type.String(),
     }),
   }),

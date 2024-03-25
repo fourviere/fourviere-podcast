@@ -1,38 +1,48 @@
 import { Feed } from "@fourviere/core/lib/schema/feed";
+import { Static, Type } from "@sinclair/typebox";
 
 export interface Project {
   feed: Feed;
   configuration: Configuration;
 }
 
-export interface Configuration {
-  feed: {
-    filename: string;
-  };
-  meta: {
-    lastFeedUpdate: Date;
-    feedIsDirty: boolean;
-  };
-  remotes: {
-    remote: "s3" | "ftp" | "none";
-    s3?: {
-      endpoint: string;
-      region: string;
-      bucket_name: string;
-      access_key: string;
-      secret_key: string;
-      http_host: string;
-      https: boolean;
-      path: string;
-    };
-    ftp?: {
-      host: string;
-      port: number;
-      user: string;
-      password: string;
-      path: string | null;
-      http_host: string;
-      https: boolean;
-    };
-  };
-}
+export const configurationSchema = Type.Object({
+  feed: Type.Object({
+    filename: Type.String(),
+  }),
+  meta: Type.Object({
+    lastFeedUpdate: Type.Date(),
+    feedIsDirty: Type.Boolean(),
+  }),
+  remotes: Type.Object({
+    remote: Type.Union([
+      Type.Literal("s3"),
+      Type.Literal("ftp"),
+      Type.Literal("none"),
+    ]),
+    s3: Type.Optional(
+      Type.Object({
+        endpoint: Type.String({ minLength: 4 }),
+        region: Type.String({ minLength: 2 }),
+        bucket_name: Type.String({ minLength: 1 }),
+        access_key: Type.String({ minLength: 1 }),
+        secret_key: Type.String({ minLength: 1 }),
+        path: Type.String(),
+        https: Type.Boolean(),
+        http_host: Type.String({ minLength: 1 }),
+      }),
+    ),
+    ftp: Type.Optional(
+      Type.Object({
+        host: Type.String({ minLength: 1 }),
+        port: Type.Number(),
+        user: Type.String({ minLength: 1 }),
+        password: Type.String({ minLength: 1 }),
+        path: Type.Optional(Type.String()),
+        https: Type.Boolean(),
+        http_host: Type.String({ minLength: 1 }),
+      }),
+    ),
+  }),
+});
+export type Configuration = Static<typeof configurationSchema>;

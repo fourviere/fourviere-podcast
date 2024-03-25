@@ -1,5 +1,6 @@
 import { useState } from "react";
 import appStore from "../store/app";
+import { useTranslation } from "react-i18next";
 
 type Podcast = {
   id: number;
@@ -64,19 +65,17 @@ async function fetchAPI(search: string, apiKey: string, apiSecret: string) {
 }
 
 export const usePodcastIndex = (/* arguments */) => {
-  const { getConfigurations, addError, getTranslations } = appStore(
-    (state) => state,
-  );
+  const { getConfigurations, addError } = appStore((state) => state);
   const [feeds, setFeeds] = useState<Podcast[]>();
   const [isLoading, setIsLoading] = useState(false);
-
-  const t = getTranslations();
-
+  const { t } = useTranslation("start", {
+    keyPrefix: "start_by_podcast_index",
+  });
   async function search(query: string) {
     const { apiSecret, apiKey, enabled } = getConfigurations("podcastIndex");
 
     if (!enabled || !apiSecret || !apiKey) {
-      addError(t["start.start_by_index.errors.podcast_index_misconfigured"]);
+      addError(t("errors.misconfigured"));
       return;
     }
     setIsLoading(true);
@@ -84,7 +83,7 @@ export const usePodcastIndex = (/* arguments */) => {
       const response = await fetchAPI(query, apiKey, apiSecret);
       setFeeds(response.feeds);
     } catch (error) {
-      addError(t["start.start_by_index.errors.generic"]);
+      addError(t("errors.http_call_failure"));
     } finally {
       setIsLoading(false);
     }

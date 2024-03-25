@@ -1,28 +1,36 @@
 import { FunctionComponent, useState } from "react";
 import feedStore from "../../store/feed/index";
-import { Container } from "@fourviere/ui/lib/box";
 import { H1, Title } from "@fourviere/ui/lib/typography";
 import Button from "@fourviere/ui/lib/button";
-import Input from "@fourviere/ui/lib/form/fields/input";
+import { InputRaw } from "@fourviere/ui/lib/form/fields/input";
 import appStore from "../../store/app";
 import { useFormik } from "formik";
-import { ImageLinkCard, ImageLinkCardContainer } from "@fourviere/ui/lib/cards";
 import { usePodcastIndex } from "../../hooks/use-podcast-index";
 import {
   InvalidPodcastFeedError,
   InvalidXMLError,
 } from "@fourviere/core/lib/errors";
+import { useTranslation } from "react-i18next";
+import VStack from "@fourviere/ui/lib/layouts/v-stack";
+import HStack from "@fourviere/ui/lib/layouts/h-stack";
+import Grid from "@fourviere/ui/lib/layouts/grid";
+import HCard from "@fourviere/ui/lib/cards/h-card";
 
 interface Props {
   done: () => void;
 }
 
 const StartByIndex: FunctionComponent<Props> = ({ done }) => {
+  const { t } = useTranslation("start", {
+    keyPrefix: "start_by_podcast_index",
+  });
+  const { t: tErrors } = useTranslation("start", {
+    keyPrefix: "errors",
+  });
   const { initProjectFromUrl } = feedStore((state) => state);
-  const { getTranslations, addError } = appStore((state) => state);
+  const { addError } = appStore((state) => state);
   const { search, isLoading, feeds, resetFeeds } = usePodcastIndex();
   const [isImporting, setIsImporting] = useState(false);
-  const t = getTranslations();
 
   const formik = useFormik({
     initialValues: {
@@ -41,11 +49,11 @@ const StartByIndex: FunctionComponent<Props> = ({ done }) => {
       done();
     } catch (e) {
       if (e instanceof InvalidXMLError) {
-        addError(t["start.start_by_url.errors.invalid_xml"]);
+        addError(tErrors("errors.invalid_xml"));
       } else if (e instanceof InvalidPodcastFeedError) {
-        addError(t["start.start_by_url.errors.invalid_podcast_feed"]);
+        addError(tErrors("errors.invalid_podcast_feed"));
       } else {
-        addError(t["start.start_by_url.errors.generic"]);
+        addError(tErrors("errors.generic"));
       }
       console.error(e);
     } finally {
@@ -54,46 +62,44 @@ const StartByIndex: FunctionComponent<Props> = ({ done }) => {
   }
 
   return (
-    <Container spaceY="lg" padding="5xl" wFull>
-      <Title>{t["start.start_by_index.title"]}</Title>
+    <VStack paddingX="6" paddingY="6" spacing="7">
+      <VStack spacing="3">
+        <Title>{t("title")}</Title>
+        <form onSubmit={formik.handleSubmit}>
+          <HStack spacing="3">
+            <InputRaw
+              componentStyle="2xl"
+              placeholder="podcasting 2.0"
+              name="term"
+              onChange={formik.handleChange}
+              value={formik.values.term}
+            />
 
-      <form onSubmit={formik.handleSubmit}>
-        <Container flex="row-top" wFull spaceX="md">
-          <Input
-            size="2xl"
-            placeholder="podcasting 2.0"
-            name="term"
-            onChange={formik.handleChange}
-            value={formik.values.term}
-          />
-
-          <Button size="lg" type="submit" isLoading={isLoading}>
-            {t["start.start_by_index.action"]}
-          </Button>
-        </Container>
-      </form>
+            <Button size="lg" type="submit" isLoading={isLoading}>
+              {t("submit")}
+            </Button>
+          </HStack>
+        </form>
+      </VStack>
 
       {feeds && !isImporting ? (
-        <ImageLinkCardContainer>
+        <Grid cols="1" mdCols="3" lgCols="4" spacing="4">
           {feeds.slice(0, 20).map((feed) => (
-            <ImageLinkCard
-              theme="light"
+            <HCard
+              as="button"
               key={feed.id}
-              src={feed.artwork}
+              imageSrc={feed.artwork}
+              title={feed.title}
+              subtitle={feed.author}
               onClick={() => {
                 void podcastSelect(feed.url);
               }}
             />
           ))}
-        </ImageLinkCardContainer>
+        </Grid>
       ) : null}
-
-      {isImporting && (
-        <Container padding="md">
-          <H1>{t["start.start_by_index.importing_in_progress"]}</H1>
-        </Container>
-      )}
-    </Container>
+      {isImporting && <H1>{t("importing_in_progress")}</H1>}
+    </VStack>
   );
 };
 

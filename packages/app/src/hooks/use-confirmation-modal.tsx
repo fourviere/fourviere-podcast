@@ -2,7 +2,7 @@ import Alert from "@fourviere/ui/lib/dialogs/alert";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { ElementType, useState } from "react";
 import { createPortal } from "react-dom";
-import appStore from "../store/app";
+import { useTranslation } from "react-i18next";
 
 const useConfirmationModal = () => {
   const [modal, setModal] = useState<
@@ -15,8 +15,9 @@ const useConfirmationModal = () => {
       }
     | false
   >(false);
-  const { getTranslations } = appStore((state) => state);
-  const t = getTranslations();
+  const { t } = useTranslation("utils", {
+    keyPrefix: "confirm",
+  });
 
   const modals = document.getElementById("modals") as HTMLElement;
 
@@ -55,8 +56,8 @@ const useConfirmationModal = () => {
               icon={modal.icon ?? ExclamationTriangleIcon}
               title={modal.title}
               message={modal.message}
-              okButton={t["modals.confirmation.ok"]}
-              cancelButton={t["modals.confirmation.cancel"]}
+              okButton={t("ok")}
+              cancelButton={t("cancel")}
               ok={modal.ok}
               cancel={modal.cancel}
             />,

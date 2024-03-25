@@ -10,6 +10,7 @@ import { useState } from "react";
 import { ArrowUpCircleIcon } from "@heroicons/react/24/outline";
 import appStore from "../store/app";
 import useConfirmationModal from "../hooks/use-confirmation-modal";
+import { useTranslation } from "react-i18next";
 
 export default function FeedUploader() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -18,14 +19,18 @@ export default function FeedUploader() {
   const { hasRemote, currentRemote, remote } = UseRemoteConf({
     feedId: currentFeed.feedId!,
   });
-  const { getTranslations, addError } = appStore((state) => state);
-  const t = getTranslations();
+  const { addError } = appStore((state) => state);
+
+  const { t } = useTranslation("feed", {
+    keyPrefix: "sync",
+  });
+
   const { askForConfirmation, renderConfirmationModal } =
     useConfirmationModal();
 
   async function localPersist(xmlData: string) {
     const selected = await save({
-      title: t["edit_feed.feed-uploader.save_title"],
+      title: t("save_title"),
       filters: [{ name: "XML", extensions: ["xml"] }],
       defaultPath: await documentDir(),
     });
@@ -39,7 +44,7 @@ export default function FeedUploader() {
           },
         });
       } catch (e) {
-        addError(t["edit_feed.feed-uploader.error_persisting_feed"]);
+        addError(t("error_persisting_feed"));
       }
     }
   }
@@ -50,12 +55,12 @@ export default function FeedUploader() {
     setLoading(false);
 
     const feed = parseXML(data!);
-    if (!feed.rss.channel[0].lastBuildDate) {
-      addError(t["edit_feed.feed-uploader.remote_feed_not_valid"]);
+    if (!feed.rss.channel.lastBuildDate) {
+      addError(t("remote_feed_not_valid"));
       return;
     }
 
-    const remoteLastUpdate = new Date(feed.rss.channel[0].lastBuildDate);
+    const remoteLastUpdate = new Date(feed.rss.channel.lastBuildDate);
 
     return remoteLastUpdate.getTime() < localLastUpdate.getTime();
   }
@@ -68,9 +73,10 @@ export default function FeedUploader() {
       await localPersist(xml);
     } else {
       const { https, http_host, path } = currentRemote!;
-      const feedUrl = `${https ? "https" : "http"}://${http_host}/${path}/${
-        configuration.feed.filename
-      }`;
+      const pathWithSlash = path && path.length > 0 ? `${path}/` : "";
+      const feedUrl = `${
+        https ? "https" : "http"
+      }://${http_host}/${pathWithSlash}${configuration.feed.filename}`;
       console.log(feedUrl);
 
       let isLocalFeedLatest;
@@ -82,13 +88,11 @@ export default function FeedUploader() {
         );
       } catch (e) {
         const confirmed = await askForConfirmation({
-          title: t["edit_feed.feed-uploader.ask_overwrite.title"],
-          message: t["edit_feed.feed-uploader.ask_overwrite_not_valid"],
+          title: t("ask_overwrite.title"),
+          message: t("ask_overwrite.not_valid"),
         });
         if (!confirmed) {
-          addError(
-            t["edit_feed.feed-uploader.ask_overwrite_not_valid_skip_overwrite"],
-          );
+          addError(t("ask_overwrite.overwrite_skipped"));
           return;
         }
         isLocalFeedLatest = true;
@@ -96,13 +100,11 @@ export default function FeedUploader() {
 
       if (!isLocalFeedLatest) {
         const confirmed = await askForConfirmation({
-          title: t["edit_feed.feed-uploader.ask_overwrite.title"],
-          message: t["edit_feed.feed-uploader.ask_overwrite"],
+          title: t("ask_overwrite.title"),
+          message: t("ask_overwrite.message"),
         });
         if (!confirmed) {
-          addError(
-            t["edit_feed.feed-uploader.ask_overwrite_not_last_skip_overwrite"],
-          );
+          addError(t("ask_overwrite.not_last_skip_overwrite"));
           return;
         }
       }
@@ -122,7 +124,7 @@ export default function FeedUploader() {
       } catch (e) {
         //notify user
         console.error(e);
-        addError(t["edit_feed.feed-uploader.error_uploading_feed"]);
+        addError(t("ask_overwrite.error_uploading_feed"));
       } finally {
         setLoading(false);
       }
@@ -140,7 +142,7 @@ export default function FeedUploader() {
         isLoading={loading}
         Icon={ArrowUpCircleIcon}
       >
-        {t["edit_feed.feed-uploader.button_label"]}
+        {t("title")}
       </Button>
     </>
   );

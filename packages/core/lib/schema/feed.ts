@@ -1,7 +1,7 @@
 import { Static, Type } from "@sinclair/typebox";
 import { ChannelSchema } from "./channel";
 
-const FeedSchema = Type.Object({
+export const FeedSchema = Type.Object({
   rss: Type.Object({
     "@": Type.Object({
       version: Type.Literal("2.0"),
@@ -12,7 +12,7 @@ const FeedSchema = Type.Object({
         "https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md",
       ),
     }),
-    channel: Type.Array(ChannelSchema),
+    channel: ChannelSchema,
   }),
 });
 

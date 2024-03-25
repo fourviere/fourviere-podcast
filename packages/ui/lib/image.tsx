@@ -4,10 +4,11 @@ import React, { useEffect, useState } from "react";
 interface ImageProps {
   src: string;
   style?: React.CSSProperties;
+  alt?: string;
   className?: string;
 }
 
-const Image: React.FC<ImageProps> = ({ src, style, className }) => {
+const Image: React.FC<ImageProps> = ({ src, style, className, alt }) => {
   const [error, setError] = useState(false);
 
   const handleImageError = () => {
@@ -24,7 +25,7 @@ const Image: React.FC<ImageProps> = ({ src, style, className }) => {
         <div
           style={style}
           className={classNames([
-            "flex shrink-0 flex-col items-center justify-center rounded ",
+            "flex shrink-0 flex-col items-center justify-center rounded-lg border border-slate-300 ",
             className,
           ])}
         >
@@ -49,8 +50,9 @@ const Image: React.FC<ImageProps> = ({ src, style, className }) => {
           src={src}
           style={style}
           onError={handleImageError}
+          alt={alt}
           className={classNames([
-            "shrink-0 rounded border object-cover shadow",
+            "shrink-0 rounded border object-cover",
             className,
           ])}
         />

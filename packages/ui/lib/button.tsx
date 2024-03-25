@@ -7,6 +7,7 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: "sm" | "md" | "lg";
   Icon?: React.ElementType;
   isDisabled?: boolean;
+  type?: "button" | "submit" | "reset";
   wfull?: boolean;
   theme?: "primary" | "secondary" | "tertiary" | "warning";
   responsiveCollapse?: boolean;
@@ -21,12 +22,14 @@ const Button: React.FC<ButtonProps> = ({
   Icon,
   wfull,
   theme = "primary",
+  type = "button",
   responsiveCollapse = false,
   ...rest
 }) => {
   return (
     <button
       {...rest}
+      type={type}
       className={classNames(
         `button`,
         { "is-loading": isLoading },

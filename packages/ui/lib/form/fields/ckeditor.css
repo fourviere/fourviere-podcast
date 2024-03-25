@@ -21,3 +21,20 @@
   max-height: 400px;
   overflow-y: auto;
 }
+
+.ck.ck-editor__main > .ck-editor__editable {
+  background: transparent !important;
+  height: 100% !important;
+}
+
+.ck .ck-editor {
+  background: transparent !important;
+  height: 100% !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.ck.ck-editor__main {
+  height: inherit !important;
+  grow: 1;
+}

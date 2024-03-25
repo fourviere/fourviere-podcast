@@ -1,25 +1,13 @@
 import { create } from "zustand";
 import { v4 as uuidv4 } from "uuid";
-import TRANSLATIONS from "../translations";
 import { loadState, persistState } from "./persister";
-
-export enum View {
-  START = "start",
-}
-
-const Language = {
-  en: "en",
-  fr: "fr",
-  de: "de",
-  es: "es",
-  it: "it",
-} as const;
+import i18n from "../i18n";
 
 const ERROR_TIMEOUT = 5000;
 
 export interface AppState {
   //Translations
-  locale: keyof typeof TRANSLATIONS;
+  locale: string;
   services: {
     podcastIndex: {
       enabled: boolean;
@@ -27,37 +15,31 @@ export interface AppState {
       apiSecret?: string;
     };
   };
-  getTranslations: () => (typeof TRANSLATIONS)[keyof typeof TRANSLATIONS];
 
-  //Configurations
-
-  updateConfigurations: (configurations: AppState) => void;
-
-  getConfigurations: (
-    service: keyof AppState["services"],
-  ) => AppState["services"][keyof AppState["services"]];
-
-  //Error system
   errors: {
     id: string;
     message: string;
   }[];
+  //Configurations
+  updateConfigurations: (configurations: AppState) => void;
+  getConfigurations: (
+    service: keyof AppState["services"],
+  ) => AppState["services"][keyof AppState["services"]];
   addError: (error: string) => void;
 }
 
 const appStore = create<AppState>((set, get) => {
   return {
-    locale: Language.en,
+    locale: "en",
     services: {
       podcastIndex: {
         enabled: false,
+        apiKey: "",
+        apiSecret: "",
       },
     },
     errors: [],
 
-    getTranslations: () => {
-      return TRANSLATIONS[get().locale];
-    },
     // Error system
     addError: (error) => {
       const e = { message: error, id: uuidv4() };
@@ -86,6 +68,7 @@ loadState<AppState>("app")
   .then((state) => {
     if (state) {
       appStore.setState(state);
+      i18n.changeLanguage(state.locale);
     }
   })
   .catch((e) => {

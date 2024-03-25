@@ -1,27 +1,61 @@
-import { XMLParser, XMLBuilder, XMLValidator } from "fast-xml-parser";
+import {
+  XMLParser,
+  XMLBuilder,
+  XMLValidator,
+  X2jOptions,
+  XmlBuilderOptions,
+} from "fast-xml-parser";
 import Ajv from "ajv";
-import FeedSchema, { Feed } from "./schema/feed";
+import FeedSchema, { Feed } from "@fourviere/core/lib/schema/feed";
 import { InvalidPodcastFeedError, InvalidXMLError } from "./errors";
 import { normalize } from "./normalizer";
+import addFormats from "ajv-formats";
 
-const CONFIG = {
+const ARRAYS: string[] = [
+  "rss.channel.category",
+  `rss.channel.itunes:category`,
+  `rss.channel.item`,
+  `rss.channel.link`,
+  `rss.channel.item.link`,
+  `rss.channel.podcast:value.podcast:valueRecipient`,
+] as const;
+
+const CONFIG_PARSER: X2jOptions = {
+  // cdataPropName: "__cdata",
   ignoreAttributes: false,
   attributeNamePrefix: "",
   attributesGroupName: "@",
   allowBooleanAttributes: true,
-  format: true,
   trimValues: true,
+  parseAttributeValue: true,
+  htmlEntities: true,
+  isArray: (_tagName: string, jPath: string) => {
+    return ARRAYS.includes(jPath);
+  },
 };
 
-const parser = new XMLParser(CONFIG);
-const builder = new XMLBuilder(CONFIG);
-const podcastValidator = new Ajv({ allErrors: true }).compile(FeedSchema);
+const CONFIG_BUILDER: XmlBuilderOptions = {
+  cdataPropName: "__cdata",
+  ignoreAttributes: false,
+  attributeNamePrefix: "",
+  attributesGroupName: "@",
+  format: true,
+};
+
+const parser = new XMLParser(CONFIG_PARSER);
+const builder = new XMLBuilder(CONFIG_BUILDER);
+const podcastValidator = addFormats(new Ajv({ allErrors: true })).compile(
+  FeedSchema,
+);
 
 export function serializeToXML(feed: Feed): string {
   return builder.build(feed) as string;
 }
 
-export function parseXML(xmlString: string) {
+export function parseXML(
+  xmlString: string,
+  skipRequiredCheck: boolean = false,
+) {
   const validation = XMLValidator.validate(xmlString, {
     allowBooleanAttributes: true,
   });
@@ -34,8 +68,16 @@ export function parseXML(xmlString: string) {
 
   const isValid = podcastValidator(jsData);
 
-  if (!isValid) {
+  // skip required check used for importing
+  const errors = skipRequiredCheck
+    ? podcastValidator.errors?.filter(
+        (error) => error.keyword !== "required", //|| error.instancePath !== "/rss/channel",
+      )
+    : podcastValidator.errors;
+
+  if (!isValid && errors?.length) {
     const validationErrors = podcastValidator.errors;
+    console.error(validationErrors, jsData);
     throw new InvalidPodcastFeedError("Invalid podcast feed", validationErrors);
   }
 
