@@ -91,7 +91,7 @@ jobs:
 
       - name: mkl install (windows)
         if: matrix.platform == 'windows-latest' && steps.mkl-cache-install.outputs.cache-hit != 'true'
-        run: .github/mkl_scripts/install_windows.bat $WINDOWS_BASEKIT_URL $WINDOWS_DPCPP_COMPONENTS
+        run: .github/mkl_scripts/install_windows.bat ${{ env.WINDOWS_BASEKIT_URL }} ${{ env.WINDOWS_DPCPP_COMPONENTS }}
 
       - name: exclude unused files from mkl cache (windows)
         if: matrix.platform == 'windows-latest' && steps.mkl-cache-install.outputs.cache-hit != 'true'
