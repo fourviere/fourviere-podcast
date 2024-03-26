@@ -117,19 +117,16 @@ export default function General() {
             <TileButton
               icon={PaintBrushIcon}
               title="Presentation"
-              loading={70}
               onClick={() => setGeneralModal(true)}
             />
             <TileButton
               icon={DocumentTextIcon}
               title="Description"
-              loading={70}
               onClick={() => setDescriptionModal(true)}
             />
             <TileButton
               icon={MusicalNoteIcon}
               title="Itunes"
-              checked
               onClick={() => setItunesModal(true)}
             />
 
@@ -142,7 +139,6 @@ export default function General() {
             <TileButton
               icon={Cog6ToothIcon}
               title="Configuration"
-              loading={70}
               onClick={() => setConfigurationModal(true)}
             />
           </Grid>
