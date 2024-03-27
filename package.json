@@ -21,7 +21,8 @@
     "prepare": "husky install"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "website"
   ],
   "dependencies": {
     "concurrently": "^8.2.2"

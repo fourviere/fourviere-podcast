@@ -1,17 +1,32 @@
 # Fourviere Podcast
 
-Fourviere aims to be the most advanced RSS feed editor for open podcasting out there.
+The RSS feed editor designed for podcasters who dare to break free
+from the confines of centralized platforms, a beacon of independence
+in the digital age, offering you the flexibility to upload your
+podcast assets via FTP, S3, or even manual download, ensuring your
+content is exactly where you want it, when you want it.
 
-![Fourviere](./docs/fourviere.png)
+![Fourviere](./docs/01.png)
+
+## What is fourviere.io?
+
+Fourviere.io is a desktop application available for Mac, Windows, and Linux systems. It assists you in managing your RSS feed and is ideal for those who wish to host their feed and asset files (audio, images) independently, without relying on platforms or CMSs that require installation on a server and some technical skills.
+
+To get started, all you need is a shared hosting service that offers an FTP connection or an S3-compatible service, install the fourviere app in your computer, and configure your feed settings. We will soon provide guides to help you set this up. Additionally, for those who prefer to manage the process themselves, Fourviere.io offers the option to export the feed file.
+
+Now it's time to take control of your podcast feed and create a new episode of your show!
+
+## Why we created it?
 
 We all see that the world of podcasting is increasingly becoming a walled garden dominated by big players, so returning to its roots, the RSS feed, is both a political act and a matter of survival. To achieve this, we need to create software that meets all the requirements of modern software in terms of functionality, aesthetics, and ease of use, while under the hood, it has a heart made of XML.
 
-The features that Fourviere offers include:
+## Why and when should you use it?
 
-- Creation of RSS feeds with the ability to support all the parameters of podcasting 2.0
-- Uploading the feed and assets to S3 or FTP to decouple the creation of the podcast from its hosting (a practice often pushed by hosting providers for feeds). By doing this, we can host our feed on any web space, on a personal server, or even on more advanced cloud providers.
-- File editing and transformation features: creation of chapters and store it in the json file and the multimedia file in the form of ID3V2 tags, integration with Podcast Index web services, ChatGPT for creating episode notes, and integrated transcription function.
-- Native video tag support: It will be possible to configure the embedded tag for the video quickly, as well as upload the video with the same simplicity. Thanks to the power of FFMPEG integrated into the application, it will also be possible to compress and encode the video and audio files automatically.
+1. When you don't want to depend on third-party platforms whose aim is to centralize and monetize your content (sometimes without your knowledge and without sharing the profits).
+
+2. When you already have a web space and want to host a podcast without necessarily having to install CMSs that require databases, configurations, and computational power. After all, podcasting is about XML and assets; do we really need a CMS?
+
+3. When you want to scale the distribution of your episodes and independently manage the entire process using services like AWS, Cloudflare, etc.
 
 ## Bootstrap the project
 
