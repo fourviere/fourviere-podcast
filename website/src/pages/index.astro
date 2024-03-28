@@ -1,0 +1,176 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Paragraph from "../components/Paragraph.astro";
+import Mailing from "../components/Mailing.astro";
+---
+
+<Layout title="Fourviere.io - The missing rss editor for open podcasting">
+  <main class="lg:grid lg:grid-cols-2 w-full">
+    <aside
+      class="lg:sticky lg:top-0 lg:h-screen bg-gradient-to-b lg:bg-gradient-to-r from-white to-slate-100 flex flex-col items-center justify-center"
+    >
+      <img src="/icon.svg" alt="Fourviere.io" class="h-24" />
+      <div class="p-6 max-w-[600px] space-y-3">
+        <div class="flex justify-center"></div>
+        <h1 class="text-4xl font-slate-600 text-center lg:text-left">
+          <span class="font-bold">fourviere.io</span>, the opensource RSS feed
+          editor with <span class="font-bold">open podcasting</span> in mind.
+        </h1>
+
+        <p class="text-slate-700">
+          The RSS feed editor designed for podcasters who dare to break free
+          from the confines of centralized platforms, a beacon of independence
+          in the digital age, offering you the flexibility to upload your
+          podcast assets via FTP, S3, or even manual download, ensuring your
+          content is exactly where you want it, when you want it.
+        </p>
+
+        <div class="!mt-8">
+          <a
+            href="https://github.com/fourviere/fourviere-podcast"
+            class="bg-slate-800 inline-flex items-center text-slate-200 text-sm rounded-lg p-3 f hover:bg-slate-600 hover:border-0 hover:text-white transition-all duration-500"
+          >
+            <img src="/github-mark-white.png" class="h-6 w-6 mr-2" />
+            Source code on github</a
+          >
+        </div>
+      </div>
+    </aside>
+    <section class="w-full flex-col justify-center items-center">
+      <div
+        class="lg:h-screen py-12 flex flex-col justify-center space-y-12 items-center"
+      >
+        <div class="overflow-x-auto space-x-3 px-6 lg:px-12 flex w-full">
+          <img
+            src="/01.png"
+            class="rounded-lg border border-slate-100 h-[350px] max-w-max"
+            alt="Channel info ui"
+          />
+          <img
+            src="/02.png"
+            class="rounded-lg border border-slate-100 h-[350px] max-w-max"
+            alt="Channel info ui"
+          />
+          <img
+            src="/03.png"
+            class="rounded-lg border border-slate-100 h-[350px] max-w-max"
+            alt="Channel info ui"
+          />
+
+          <img
+            src="/05.png"
+            class="rounded-lg border border-slate-100 h-[350px] max-w-max"
+            alt="Channel info ui"
+          />
+          <img
+            src="/06.png"
+            class="rounded-lg border border-slate-100 h-[350px] max-w-max"
+            alt="Channel info ui"
+          />
+        </div>
+        <Mailing />
+        <div>
+          <div
+            class="text-center uppercase text-xs font-semibold text-slate-600"
+          >
+            Made by
+          </div>
+          <div
+            class="flex items-center justify-center space-x-2 bg-slate-200 rounded-full p-1"
+          >
+            <a href="https://github.com/brainrepo">
+              <img
+                class="h-10 w-10 rounded-full border-slate-300 border-2"
+                src="https://avatars.githubusercontent.com/u/1851362?s=64&v=4"
+                alt="Brainrepo"
+              />
+            </a>
+            <a href="https://github.com/newfla">
+              <img
+                class="h-10 w-10 rounded-full border-slate-300 border-2"
+                src="https://avatars.githubusercontent.com/u/33379291?s=64&v=4"
+                alt="Flavio"
+              />
+            </a>
+            <a href="https://github.com/LucaRainone">
+              <img
+                class="h-10 w-10 rounded-full border-slate-300 border-2"
+                src="https://avatars.githubusercontent.com/u/1136293?s=64&v=4"
+                alt="Luca"
+              />
+            </a>
+          </div>
+        </div>
+
+        <svg
+          viewBox="0 0 100 125"
+          version="1.1"
+          class="text-slate-600 bottom-12 w-16 h-16 animate-bounce hidden lg:block absolute"
+        >
+          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <g fill="currentColor">
+              <path
+                d="M32,23.004355 L32,23.004355 L32,48.995645 C32,58.9442689 40.056121,67 50,67 C59.942622,67 68,58.9403509 68,48.995645 L68,23.004355 C68,13.0557311 59.943879,5 50,5 C40.057378,5 32,13.0596491 32,23.004355 L32,23.004355 Z M28,23.004355 C28,10.8516853 37.847064,1 50,1 C62.1502645,1 72,10.8438387 72,23.004355 L72,48.995645 C72,61.1483147 62.152936,71 50,71 C37.8497355,71 28,61.1561613 28,48.995645 L28,23.004355 L28,23.004355 Z"
+              ></path>
+              <path
+                d="M48,17.0085302 C48,15.8992496 48.8877296,15 50,15 C51.1045695,15 52,15.9019504 52,17.0085302 L52,24.9914698 C52,26.1007504 51.1122704,27 50,27 C48.8954305,27 48,26.0980496 48,24.9914698 L48,17.0085302 Z"
+              ></path>
+              <path
+                d="M50,95.1715729 L58.5857864,86.5857864 C59.366835,85.8047379 60.633165,85.8047379 61.4142136,86.5857864 C62.1952621,87.366835 62.1952621,88.633165 61.4142136,89.4142136 L51.4142136,99.4142136 C51.0236893,99.8047379 50.5118446,100 50,100 C49.4881554,100 48.9763107,99.8047379 48.5857864,99.4142136 L38.5857864,89.4142136 C37.8047379,88.633165 37.8047379,87.366835 38.5857864,86.5857864 C39.366835,85.8047379 40.633165,85.8047379 41.4142136,86.5857864 L50,95.1715729 Z"
+              ></path>
+              <path
+                d="M50,82.1715729 L58.5857864,73.5857864 C59.366835,72.8047379 60.633165,72.8047379 61.4142136,73.5857864 C62.1952621,74.366835 62.1952621,75.633165 61.4142136,76.4142136 L51.4142136,86.4142136 C51.0236893,86.8047379 50.5118446,87 50,87 C49.4881554,87 48.9763107,86.8047379 48.5857864,86.4142136 L38.5857864,76.4142136 C37.8047379,75.633165 37.8047379,74.366835 38.5857864,73.5857864 C39.366835,72.8047379 40.633165,72.8047379 41.4142136,73.5857864 L50,82.1715729 Z"
+              ></path>
+            </g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="flex flex-col items-center space-y-12">
+        <Paragraph
+          title="What is fourviere.io?"
+          text={[
+            `
+		  Fourviere.io is a desktop application available for Mac, Windows, and Linux systems. 
+		  It assists you in managing your RSS feed and is ideal for those who wish to host 
+		  their feed and asset files (audio, images) independently, without relying 
+		  on platforms or CMSs that require installation on a server and some 
+		  technical skills.`,
+
+            `To get started, all you need is a shared hosting service that offers an FTP 
+		  connection or an S3-compatible service, install the fourviere app in your 
+		  computer, and configure your feed settings.	
+		  We will soon provide guides to help you set this up. 
+		  Additionally, for those who prefer to manage the process themselves, 
+		  Fourviere.io offers the option to export the feed file.`,
+
+            `Now it's time to take control of your podcast feed and create a new episode of
+		  your show!`,
+          ]}
+        />
+        <Paragraph
+          title="Why we created it?"
+          text=`We all see that the world of podcasting is increasingly becoming a walled garden dominated by big players, so returning to its roots, the RSS feed, is both a political act and a matter of survival. To achieve this, we need to create software that meets all the requirements of modern software in terms of functionality, aesthetics, and ease of use, while under the hood, it has a heart made of XML.`
+        />
+        <Paragraph
+          title="Why and when should you use it?"
+          text={[
+            `1. When you don't want to depend on third-party platforms whose aim is to centralize and monetize your content (sometimes without your knowledge and without sharing the profits).`,
+            `2. When you already have a web space and want to host a podcast without necessarily having to install CMSs that require databases, configurations, and computational power. After all, podcasting is about XML and assets; do we really need a CMS?`,
+            `3. When you want to scale the distribution of your episodes and independently manage the entire process using services like AWS, Cloudflare, etc.`,
+          ]}
+        />
+        <Paragraph
+          title="Which is the status of development?"
+          text={[
+            "Whe are planning to realease the <strong>0.1.0 for the 1st May 2024</strong>",
+            "This version will support essential tags for podcasting, feed imports from URLs, files, and podcast indexes, and uploading to FTP and S3.",
+            "<strong>Brainrepo</strong> is working on the podcasting 2.0 tags and integrations, chapters, transcription, podrolls, value for value, and more.",
+            "<strong>Flavio</strong> is working on an AI integration to help you write the best show notes ever and transcribe your episodes. The models will be integrated in the application, no third party service will be needed.",
+            `<strong>Subscribe the waiting list or <a href="https://github.com/orgs/fourviere/projects/2/views/1">follow us on github</a> to see the progress.</strong>`,
+          ]}
+        />
+      </div>
+    </section>
+  </main>
+</Layout>

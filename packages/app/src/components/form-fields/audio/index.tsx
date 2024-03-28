@@ -1,94 +1,62 @@
-import { useCallback } from "react";
-import { Container } from "@fourviere/ui/lib/box";
-import Button from "@fourviere/ui/lib/button";
-import { Note } from "@fourviere/ui/lib/typography";
-import { FolderOpenIcon, XCircleIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
-import Input from "@fourviere/ui/lib/form/fields/input";
-import { useField } from "formik";
-import uploadsStore from "../../../store/uploads";
-import { v4 as uuidv4 } from "uuid";
-import Progress from "@fourviere/ui/lib/progress";
-import { generateId } from "../../../store/uploads/utils";
-import useUploadChange from "../../../hooks/use-upload-change";
-import useSelectFile from "../../../hooks/use-select-file";
+import React from "react";
+import { FieldProps } from "formik";
+import ErrorAlert from "@fourviere/ui/lib/alerts/error";
+import { InputRaw } from "@fourviere/ui/lib/form/fields/input";
+import HStack from "@fourviere/ui/lib/layouts/h-stack";
 import UseRemoteConf from "../../../hooks/use-remote-conf";
-import AudioPlayer from "react-h5-audio-player";
-import "./audio.css";
+import { generateId } from "../../../store/uploads/utils";
+import { Link } from "react-router-dom";
+import { Note } from "@fourviere/ui/lib/typography";
+import Button from "@fourviere/ui/lib/button";
+import { FolderOpenIcon } from "@heroicons/react/24/outline";
+import VStack from "@fourviere/ui/lib/layouts/v-stack";
+import useSelectFile from "../../../hooks/use-select-file";
+import { v4 as uuidv4 } from "uuid";
+import uploadsStore from "../../../store/uploads";
+import useUploadChange from "../../../hooks/use-upload-change";
+import MicroCircular from "@fourviere/ui/lib/progress/micro-circular";
+import { useTranslation } from "react-i18next";
 import { readFileInfo } from "../../../native/fs";
+import AudioPlayer from "react-h5-audio-player";
 
-const FORMAT = "audio" as const;
+const FORMAT = "audio";
 
-interface AudioProps {
-  name: string;
-  feedId: string;
-}
-
-const Audio = ({ name, feedId }: AudioProps) => {
-  const id = generateId(feedId, name);
-  const [field, meta, helpers] = useField<{
+const AudioField: React.ComponentType<
+  FieldProps<{
     url: string;
     type: string;
     length: number;
-  }>(name);
-  const { hasRemote, remote } = UseRemoteConf({ feedId });
-
-  useUploadChange({
-    onChange: (changedValue) => {
-      if (changedValue.value && "url" in changedValue.value) {
-        helpers.setValue({
-          url: changedValue.value.url,
-          type: changedValue.value.mime_type,
-          length: changedValue.value.size,
-        });
-      }
-    },
-    id,
+  }> & {
+    label: string;
+    touched: boolean;
+    fieldProps: {
+      feedId: string;
+      episodeId?: string;
+    };
+  } & React.InputHTMLAttributes<HTMLInputElement>
+> = ({ field, form, touched, type, fieldProps }) => {
+  const feedId = fieldProps.feedId;
+  const id = generateId({
+    feedId,
+    episodeId: fieldProps?.episodeId,
+    field: field.name,
   });
+  const { hasRemote, remote } = UseRemoteConf({ feedId });
+  const { t } = useTranslation("utils", { keyPrefix: "form.labels" });
 
   const { uploads, startUpload, abortUpload } = uploadsStore((state) => ({
     uploads: state.uploads,
     startUpload: state.startUpload,
     abortUpload: state.abortUpload,
   }));
-
   const status = uploads[id];
-
-  // Manually set the value of the field to the changed value
-  const onChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      void helpers.setValue({
-        url: e.target.value,
-        length: 0,
-        type: "invalid",
-      });
-
-      readFileInfo(e.target.value)
-        .then((fileInfo) => {
-          if (!fileInfo) {
-            helpers.setError("Not correct file type");
-            return;
-          }
-
-          void helpers.setValue({
-            url: e.target.value,
-            length: Number(fileInfo?.content_length),
-            type: fileInfo?.content_type,
-          });
-        })
-        .catch(() => {
-          helpers.setError("Not correct file type");
-        });
-    },
-    [helpers],
-  );
 
   const { openFile } = useSelectFile({
     onceSelected: async (selected) => {
       await startUpload({
         feedId,
         localPath: selected,
-        field: name,
+        field: field.name,
         fileName: uuidv4(),
         remote,
       });
@@ -97,64 +65,128 @@ const Audio = ({ name, feedId }: AudioProps) => {
     format: FORMAT,
   });
 
+  const { hasFinishedUploadPending } = useUploadChange({
+    onChange: (changedValue) => {
+      if (changedValue.value && "url" in changedValue.value) {
+        // Set the field value to the changed value
+        form.setFieldValue(field.name, {
+          url: changedValue.value.url,
+          type: changedValue.value.mime_type,
+          length: changedValue.value.size,
+        });
+
+        onChange(changedValue.value.url);
+        // Update the metadata of the field
+      }
+    },
+    id,
+  });
+
+  const onChange = (url: string) => {
+    readFileInfo(url)
+      .then((fileInfo) => {
+        if (!fileInfo) {
+          form.setFieldError(field.name, "Not correct file type");
+          return;
+        }
+
+        form.setFieldValue(field.name, {
+          url,
+          type: fileInfo?.content_type,
+          length: Number(fileInfo?.content_length),
+        });
+      })
+      .catch(() => {
+        form.setFieldError(field.name, "Not correct file type");
+      });
+  };
+
   function abort() {
     abortUpload(id).catch(() => {});
   }
 
   return (
     <>
-      {status?.progress && (
-        <Container flex="row-middle" spaceX="sm" wFull>
-          <Progress progress={status.progress} />
-          <Button
-            theme="secondary"
-            size="sm"
-            Icon={XCircleIcon}
-            onClick={abort}
-          >
-            Abort
-          </Button>
-        </Container>
-      )}
+      <div className="rounded-lg bg-slate-50 p-3">
+        <VStack>
+          {field.value && !status?.progress && field?.value?.url ? (
+            <AudioPlayer src={field.value.url} />
+          ) : null}
+        </VStack>
 
-      {!status?.progress && (
-        <Container flex="col" spaceY="md" wFull>
-          {field.value && <AudioPlayer src={field?.value?.url} />}
-          <Container flex="col" spaceY="sm" wFull>
-            <Container flex="row-middle" spaceX="sm" wFull>
-              <Input
-                value={field.value?.url}
-                onChange={onChange}
-                error={status?.error || meta.error}
+        <div className="rounded-lg bg-white p-3">
+          <HStack alignItems="top" spacing="3" wFull>
+            <VStack
+              alignItems="center"
+              justifyContent="start"
+              spacing="1"
+              wFull
+            >
+              <InputRaw
+                type={type ?? "text"}
+                componentStyle="sm"
+                disabled={!!status?.progress}
+                value={field.value.url}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  form.setFieldValue(field.name, {
+                    ...field.value,
+                    url: e.target.value,
+                  });
+                  onChange(e.target.value);
+                }}
               />
-              {hasRemote && (
-                <Button
-                  theme="secondary"
-                  size="sm"
-                  Icon={FolderOpenIcon}
-                  onClick={() => {
-                    openFile();
-                  }}
-                >
-                  Upload
-                </Button>
-              )}
-            </Container>
-            {!hasRemote && (
-              <div>
+              <Note>
+                {field.value.type} - {field.value.length}
+              </Note>
+
+              {!hasRemote ? (
                 <Link to={`/feed/${feedId}/feed-config`}>
-                  <Note>
-                    Configure remote storage for uploading files from your
-                    computer
-                  </Note>
+                  <Note>{t("configureRemote")}</Note>
                 </Link>
-              </div>
+              ) : null}
+              {hasFinishedUploadPending && form.dirty && (
+                <ErrorAlert
+                  message={t("previusTriggeredUploadToSave")}
+                ></ErrorAlert>
+              )}
+            </VStack>
+
+            {status?.progress && (
+              <MicroCircular
+                value={status.progress}
+                radius={15}
+                showValue={true}
+                strokeWidth={2}
+              />
             )}
-          </Container>
-        </Container>
+            {status?.progress ? (
+              <Button theme="secondary" size="sm" onClick={abort}>
+                Abort
+              </Button>
+            ) : null}
+            {hasRemote && !status?.progress && (
+              <Button
+                theme="secondary"
+                size="sm"
+                Icon={FolderOpenIcon}
+                onClick={() => {
+                  openFile();
+                }}
+              >
+                Upload
+              </Button>
+            )}
+          </HStack>
+        </div>
+      </div>
+
+      {form?.errors?.[field.name] && touched && (
+        <ErrorAlert
+          message={[form?.errors[field.name]].join(". ")}
+        ></ErrorAlert>
       )}
+      {status?.error && <ErrorAlert message={status.error}></ErrorAlert>}
     </>
   );
 };
-
-export default Audio;
+export default AudioField;

@@ -1,8 +1,16 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  mode: "jit",
   content: ["./lib/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontSize: {
+        "2xs": ".625rem", // 10px
+      },
+    },
   },
-  plugins: [require("tailwind-scrollbar-hide")],
+  plugins: [
+    require("tailwind-scrollbar-hide"),
+    require("@tailwindcss/typography"),
+  ],
 };

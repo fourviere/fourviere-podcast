@@ -11,6 +11,8 @@ import {
 } from "@fourviere/core/lib/const";
 import { fetchFeed } from "../../native/network";
 import { Project } from "./types";
+import CONFIG from "../../../src-tauri/tauri.conf.json";
+import appStore from "../app";
 
 export interface FeedState {
   projects: Record<string, Project>;
@@ -66,24 +68,31 @@ const feedStore = create<FeedState>((set, get) => {
     initProjectFromUrl: async (feedUrl) => {
       const data = await fetchFeed(feedUrl);
       if (!data) return;
-      const feed = parseXML(data);
-      set((state: FeedState) => {
-        return produce(state, (draft) => {
-          const filename = feedUrl.split("/").pop() || DEFAULT_FEED_FILENAME;
-
-          const id = uuidv4();
-          const configuration = {
-            ...PROJECT_BASE_CONFIGURATION,
-            feed: { ...PROJECT_BASE_CONFIGURATION.feed, filename },
-          };
-          draft.projects[id] = { feed, configuration };
-          draft.projects[id].configuration.feed.filename = filename;
+      try {
+        const feed = parseXML(data, true);
+        set((state: FeedState) => {
+          return produce(state, (draft) => {
+            const filename = feedUrl.split("/").pop() || DEFAULT_FEED_FILENAME;
+            const id = uuidv4();
+            const configuration = {
+              ...PROJECT_BASE_CONFIGURATION,
+              feed: { ...PROJECT_BASE_CONFIGURATION.feed, filename },
+            };
+            draft.projects[id] = { feed, configuration };
+            draft.projects[id].configuration.feed.filename = filename;
+            draft.projects[id].feed.rss.channel.generator =
+              `${CONFIG.package.productName} ${CONFIG.package.version}`;
+          });
         });
-      });
+      } catch (e) {
+        console.error("Error parsing feed", e);
+        appStore.getState().addError("Error parsing feed");
+        throw e;
+      }
     },
 
     initProjectFromFileContents: (fileContents) => {
-      const feed = parseXML(fileContents);
+      const feed = parseXML(fileContents, true);
       set((state: FeedState) => {
         return produce(state, (draft) => {
           const id = uuidv4();
@@ -91,6 +100,8 @@ const feedStore = create<FeedState>((set, get) => {
             feed,
             configuration: PROJECT_BASE_CONFIGURATION,
           };
+          draft.projects[id].feed.rss.channel.generator =
+            `${CONFIG.package.productName} ${CONFIG.package.version}`;
         });
       });
     },
@@ -100,21 +111,27 @@ const feedStore = create<FeedState>((set, get) => {
       set((state: FeedState) => {
         return produce(state, (draft) => {
           draft.projects[id].feed = feed;
-          draft.projects[id].feed.rss.channel[0].lastBuildDate =
+          draft.projects[id].feed.rss.channel.lastBuildDate =
             new Date().toUTCString();
           draft.projects[id].configuration.meta.lastFeedUpdate = new Date();
           draft.projects[id].configuration.meta.feedIsDirty = true;
+          draft.projects[id].feed.rss.channel.generator =
+            `${CONFIG.package.productName} ${CONFIG.package.version}`;
         });
       });
     },
 
     patchFeedFromUrl: async (id, feedUrl) => {
+      console.log("path feed by url");
       const data = await fetchFeed(feedUrl);
       if (!data) return;
-      const feed = parseXML(data);
+      const feed = parseXML(data, true);
+      console.log(feed);
       set((state: FeedState) => {
         return produce(state, (draft) => {
           draft.projects[id].feed = feed;
+          draft.projects[id].feed.rss.channel.generator =
+            `${CONFIG.package.productName} ${CONFIG.package.version}`;
           draft.projects[id].configuration.meta.lastFeedUpdate = new Date();
           draft.projects[id].configuration.meta.feedIsDirty = false;
         });
@@ -122,10 +139,13 @@ const feedStore = create<FeedState>((set, get) => {
     },
 
     patchFeedFromFileContents: (id, fileContents) => {
-      const feed = parseXML(fileContents);
+      console.log("path feed by contents");
+      const feed = parseXML(fileContents, true);
       set((state: FeedState) => {
         return produce(state, (draft) => {
           draft.projects[id].feed = feed;
+          draft.projects[id].feed.rss.channel.generator =
+            `${CONFIG.package.productName} ${CONFIG.package.version}`;
           draft.projects[id].configuration.meta.lastFeedUpdate = new Date();
           draft.projects[id].configuration.meta.feedIsDirty = false;
         });
@@ -146,9 +166,9 @@ const feedStore = create<FeedState>((set, get) => {
     deleteEpisodeFromProject: (id: string, episodeGUID: string) => {
       set((state: FeedState) => {
         return produce(state, (draft) => {
-          draft.projects[id].feed.rss.channel[0].item = draft.projects[
+          draft.projects[id].feed.rss.channel.item = draft.projects[
             id
-          ].feed.rss.channel[0].item?.filter(
+          ].feed.rss.channel.item?.filter(
             (item) => item.guid["#text"] !== episodeGUID,
           );
         });
@@ -158,12 +178,12 @@ const feedStore = create<FeedState>((set, get) => {
     addEpisodeToProject: (id: string) => {
       set((state: FeedState) => {
         return produce(state, (draft) => {
-          if (!draft.projects[id].feed.rss.channel[0].item) {
-            draft.projects[id].feed.rss.channel[0].item = [];
+          if (!draft.projects[id].feed.rss.channel.item) {
+            draft.projects[id].feed.rss.channel.item = [];
           }
-          draft.projects[id].feed.rss.channel[0].item?.unshift(
-            EPISODE_TEMPLATE(),
-          );
+          draft.projects[id].feed.rss.channel.item?.unshift(EPISODE_TEMPLATE());
+          draft.projects[id].feed.rss.channel.generator =
+            `${CONFIG.package.productName} ${CONFIG.package.version}`;
         });
       });
     },

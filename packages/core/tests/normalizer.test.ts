@@ -1,40 +1,6 @@
 import { normalize } from "../lib/normalizer";
 
 describe("PodcastNormalizer", () => {
-  it("normalize arrays", () => {
-    const data = {
-      rss: {
-        channel: {
-          category: {
-            "itunes:category": "Technology",
-          },
-          "itunes:category": "Technology",
-          item: {
-            title: "Episode 1",
-          },
-        },
-      },
-    };
-    expect(normalize(data)).toEqual({
-      rss: {
-        channel: [
-          {
-            category: [
-              {
-                "itunes:category": "Technology",
-              },
-            ],
-            "itunes:category": ["Technology"],
-            item: [
-              {
-                title: "Episode 1",
-              },
-            ],
-          },
-        ],
-      },
-    });
-  });
   it("normalize itunes:image", () => {
     const data = {
       rss: {
@@ -45,15 +11,19 @@ describe("PodcastNormalizer", () => {
     };
     expect(normalize(data)).toEqual({
       rss: {
-        channel: [
-          {
-            "itunes:image": {
-              "@": {
-                href: "https://example.com/image.png",
-              },
+        "@": {
+          version: "2.0",
+          "xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
+          "xmlns:podcast":
+            "https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md",
+        },
+        channel: {
+          "itunes:image": {
+            "@": {
+              href: "https://example.com/image.png",
             },
           },
-        ],
+        },
       },
     });
   });
@@ -67,11 +37,15 @@ describe("PodcastNormalizer", () => {
     };
     expect(normalize(data)).toEqual({
       rss: {
-        channel: [
-          {
-            "itunes:explicit": "true",
-          },
-        ],
+        "@": {
+          version: "2.0",
+          "xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
+          "xmlns:podcast":
+            "https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md",
+        },
+        channel: {
+          "itunes:explicit": "true",
+        },
       },
     });
   });
@@ -80,23 +54,29 @@ describe("PodcastNormalizer", () => {
       const data = {
         rss: {
           channel: {
-            item: {
-              "itunes:duration": "01:01:01",
-            },
+            item: [
+              {
+                "itunes:duration": "01:01:01",
+              },
+            ],
           },
         },
       };
       expect(normalize(data)).toEqual({
         rss: {
-          channel: [
-            {
-              item: [
-                {
-                  "itunes:duration": 3661,
-                },
-              ],
-            },
-          ],
+          "@": {
+            version: "2.0",
+            "xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
+            "xmlns:podcast":
+              "https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md",
+          },
+          channel: {
+            item: [
+              {
+                "itunes:duration": 3661,
+              },
+            ],
+          },
         },
       });
     });
@@ -104,23 +84,29 @@ describe("PodcastNormalizer", () => {
       const data = {
         rss: {
           channel: {
-            item: {
-              "itunes:duration": "01",
-            },
+            item: [
+              {
+                "itunes:duration": "01",
+              },
+            ],
           },
         },
       };
       expect(normalize(data)).toEqual({
         rss: {
-          channel: [
-            {
-              item: [
-                {
-                  "itunes:duration": 1,
-                },
-              ],
-            },
-          ],
+          "@": {
+            version: "2.0",
+            "xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
+            "xmlns:podcast":
+              "https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md",
+          },
+          channel: {
+            item: [
+              {
+                "itunes:duration": 1,
+              },
+            ],
+          },
         },
       });
     });
@@ -128,23 +114,29 @@ describe("PodcastNormalizer", () => {
       const data = {
         rss: {
           channel: {
-            item: {
-              "itunes:duration": "10:01",
-            },
+            item: [
+              {
+                "itunes:duration": "10:01",
+              },
+            ],
           },
         },
       };
       expect(normalize(data)).toEqual({
         rss: {
-          channel: [
-            {
-              item: [
-                {
-                  "itunes:duration": 601,
-                },
-              ],
-            },
-          ],
+          "@": {
+            version: "2.0",
+            "xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
+            "xmlns:podcast":
+              "https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md",
+          },
+          channel: {
+            item: [
+              {
+                "itunes:duration": 601,
+              },
+            ],
+          },
         },
       });
     });
@@ -154,50 +146,31 @@ describe("PodcastNormalizer", () => {
     const data = {
       rss: {
         channel: {
-          link: "https://example.com",
+          link: ["https://example.com"],
         },
       },
     };
     expect(normalize(data)).toEqual({
       rss: {
-        channel: [
-          {
-            link: [
-              {
-                "@": {
-                  href: "https://example.com",
-                },
-              },
-            ],
-          },
-        ],
-      },
-    });
-  });
-  it("normalize item link", () => {
-    const data = {
-      rss: {
+        "@": {
+          version: "2.0",
+          "xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
+          "xmlns:podcast":
+            "https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md",
+        },
         channel: {
-          item: {
-            link: "https://example.com",
-          },
-        },
-      },
-    };
-    expect(normalize(data)).toEqual({
-      rss: {
-        channel: [
-          {
-            item: [
-              {
-                link: ["https://example.com"],
+          link: [
+            {
+              "@": {
+                href: "https://example.com",
               },
-            ],
-          },
-        ],
+            },
+          ],
+        },
       },
     });
   });
+
   it("normalize strings", () => {
     const data = {
       rss: {
@@ -208,11 +181,15 @@ describe("PodcastNormalizer", () => {
     };
     expect(normalize(data)).toEqual({
       rss: {
-        channel: [
-          {
-            copyright: "1234",
-          },
-        ],
+        "@": {
+          version: "2.0",
+          "xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
+          "xmlns:podcast":
+            "https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md",
+        },
+        channel: {
+          copyright: "1234",
+        },
       },
     });
   });
@@ -220,26 +197,145 @@ describe("PodcastNormalizer", () => {
     const data = {
       rss: {
         channel: {
-          item: {
-            guid: "1234",
-          },
+          item: [
+            {
+              guid: "1234",
+            },
+          ],
         },
       },
     };
     expect(normalize(data)).toEqual({
       rss: {
-        channel: [
-          {
+        "@": {
+          version: "2.0",
+          "xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
+          "xmlns:podcast":
+            "https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md",
+        },
+        channel: {
+          item: [
+            {
+              guid: {
+                "#text": "1234",
+              },
+            },
+          ],
+        },
+      },
+    });
+  });
+
+  describe("normalize namespaces", () => {
+    it("normalize no namespaces", () => {
+      const data = { rss: { channel: { item: [{ title: "Episode 1" }] } } };
+      expect(normalize(data)).toEqual({
+        rss: {
+          "@": {
+            version: "2.0",
+            "xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
+            "xmlns:podcast":
+              "https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md",
+          },
+          channel: {
             item: [
               {
-                guid: {
-                  "#text": "1234",
-                },
+                title: "Episode 1",
               },
             ],
           },
-        ],
-      },
+        },
+      });
+    });
+
+    it("normalize adding podcast namespace", () => {
+      const data = {
+        rss: {
+          "@": {
+            version: "2.0",
+            "xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
+          },
+          channel: { item: [{ title: "Episode 1" }] },
+        },
+      };
+      expect(normalize(data)).toEqual({
+        rss: {
+          "@": {
+            version: "2.0",
+            "xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
+            "xmlns:podcast":
+              "https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md",
+          },
+          channel: {
+            item: [
+              {
+                title: "Episode 1",
+              },
+            ],
+          },
+        },
+      });
+    });
+
+    it("normalize adding itunes namespace", () => {
+      const data = {
+        rss: {
+          "@": {
+            version: "2.0",
+            "xmlns:podcast":
+              "https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md",
+          },
+          channel: { item: [{ title: "Episode 1" }] },
+        },
+      };
+      expect(normalize(data)).toEqual({
+        rss: {
+          "@": {
+            version: "2.0",
+            "xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
+            "xmlns:podcast":
+              "https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md",
+          },
+          channel: {
+            item: [
+              {
+                title: "Episode 1",
+              },
+            ],
+          },
+        },
+      });
+    });
+
+    it("normalize adding rss 2 version", () => {
+      const data = {
+        rss: {
+          "@": {
+            version: "1",
+            "xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
+            "xmlns:podcast":
+              "https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md",
+          },
+          channel: { item: [{ title: "Episode 1" }] },
+        },
+      };
+      expect(normalize(data)).toEqual({
+        rss: {
+          "@": {
+            version: "2.0",
+            "xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
+            "xmlns:podcast":
+              "https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md",
+          },
+          channel: {
+            item: [
+              {
+                title: "Episode 1",
+              },
+            ],
+          },
+        },
+      });
     });
   });
 });

@@ -1,65 +1,63 @@
 import classNames from "classnames";
-import { Container } from "@fourviere/ui/lib/box";
-import React from "react";
+import React, { InputHTMLAttributes } from "react";
+import { FieldProps } from "formik";
+import { getError, getTouchedByPath } from "../utils";
+import ErrorAlert from "../../alerts/error";
 
-type InputSize = "sm" | "base" | "lg" | "xl" | "2xl";
+const STYLES = {
+  sm: "text-sm",
+  base: "text-base",
+  lg: "text-lg",
+  xl: "text-xl font-light",
+  "2xl": "text-2xl font-light",
+} as const;
 
-const style = ({ error, size }: Pick<InputProps, "error" | "size">) =>
-  classNames(
-    "shadow appearance-none border rounded-lg w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline ",
-    {
-      "text-sm": size === "sm",
-      "text-base": size === "base",
-      "text-lg": size === "lg",
-      "text-xl font-light": size === "xl",
-      "text-2xl font-light": size === "2xl",
-      "text-rose-600 border-rose-600 placeholder:text-rose-400": !!error,
-    },
-  );
+const Input: React.ComponentType<
+  FieldProps & {
+    label: string;
+    // touched: boolean;
+    style?: keyof typeof STYLES;
+    type?: "text" | "password" | "number" | "email";
+    fieldProps: Record<string, unknown>;
+  } & React.InputHTMLAttributes<HTMLInputElement>
+> = ({ field, form, style, type, fieldProps, ...props }) => {
+  const touched = getTouchedByPath(form.touched, field.name);
+  const error = getError({
+    touched: touched,
+    errors: form?.errors,
+    name: field?.name,
+  });
 
-interface InputProps {
-  label?: string;
-  name?: string;
-  type?: string;
-  placeholder?: string;
-  value?: string | number;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  size?: InputSize;
-  error?: boolean | string;
-}
-
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  (
-    {
-      name,
-      type,
-      placeholder,
-      value,
-      onChange,
-      size = "sm",
-      error,
-    }: InputProps,
-    ref,
-  ) => (
-    <Container wFull flex="col">
+  return (
+    <>
       <input
-        ref={ref}
-        className={style({ size, error })}
-        id={name}
-        name={name}
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
+        type={type ?? "text"}
+        {...field}
+        {...props}
+        {...fieldProps}
+        className={classNames(
+          "focus:shadow-outline w-full appearance-none rounded-lg bg-slate-100 px-3 py-2 leading-tight focus:outline-none",
+          style ? STYLES[style as keyof typeof STYLES] : "text-sm",
+        )}
       />
 
-      {error && typeof error === "string" && (
-        <div className="w-50%  mx-3 rounded-b bg-rose-50 px-2 py-1 text-xs text-rose-600">
-          {error}
-        </div>
-      )}
-    </Container>
-  ),
-);
-
+      {error && <ErrorAlert message={error}></ErrorAlert>}
+    </>
+  );
+};
 export default Input;
+
+export const InputRaw = ({
+  componentStyle,
+  ...props
+}: InputHTMLAttributes<unknown> & {
+  componentStyle?: keyof typeof STYLES;
+}) => (
+  <input
+    {...props}
+    className={classNames(
+      "focus:shadow-outline w-full appearance-none rounded-lg bg-slate-100 px-3 py-2 leading-tight focus:outline-none",
+      componentStyle ? STYLES[componentStyle as keyof typeof STYLES] : "",
+    )}
+  />
+);

@@ -3,18 +3,22 @@ import DragArea from "@fourviere/ui/lib/form/dragArea";
 import useTauriDragArea from "../../hooks/use-tauri-drag-area";
 import { readFile } from "../../native/fs";
 import feedStore from "../../store/feed/index";
+import appStore from "../../store/app";
+import { useTranslation } from "react-i18next";
 
 interface StartByDragProps {}
 const StartByDrag: FunctionComponent<PropsWithChildren<StartByDragProps>> = ({
   children,
 }) => {
   const { initProjectFromFileContents } = feedStore((state) => state);
+  const { t } = useTranslation("start");
+  const { addError } = appStore((state) => state);
   const { isHover, error } = useTauriDragArea({
     onFile: (file) => {
       void onDrop(file);
     },
-    onError: (error) => {
-      console.error(error);
+    onError: () => {
+      addError(t("errors.invalid_xml"));
     },
     fileExtensions: ["xml", "rss"],
   });
@@ -24,7 +28,11 @@ const StartByDrag: FunctionComponent<PropsWithChildren<StartByDragProps>> = ({
     if (!content) {
       return;
     }
-    initProjectFromFileContents(content);
+    try {
+      initProjectFromFileContents(content);
+    } catch (e) {
+      addError(t("errors.invalid_xml"));
+    }
   }
 
   return (

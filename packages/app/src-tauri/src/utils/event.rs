@@ -133,15 +133,20 @@ async fn run_abort_listener(
     canc_token: CancellationToken,
     start_token: CancellationToken,
 ) {
-    let data = match &mut rx {
-        Receiver::Tokio(rec) => rec.recv().await,
-        Receiver::Channel(rec) => rec.once().await,
-    };
+    loop {
+        let data = match &mut rx {
+            Receiver::Tokio(rec) => rec.recv().await,
+            Receiver::Channel(rec) => rec.once().await,
+        };
 
-    match data {
-        Some(Command::Abort) => canc_token.cancel(),
-        Some(Command::Start) => start_token.cancel(),
-        None => (),
+        match data {
+            Some(Command::Abort) => {
+                canc_token.cancel();
+                break;
+            }
+            Some(Command::Start) => start_token.cancel(),
+            None => (),
+        }
     }
 }
 

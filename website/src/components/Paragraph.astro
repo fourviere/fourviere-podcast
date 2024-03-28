@@ -1,0 +1,24 @@
+---
+interface Props {
+  title: string;
+  text: string | Array<string>;
+}
+
+const { title, text } = Astro.props;
+
+let _text: string[];
+if (typeof text === "string") {
+  _text = [text];
+} else {
+  _text = text;
+}
+---
+
+<div class="px-6 lg:px-12 max-w-[600px] prose">
+  <h2 class="font-bold">
+    {title}
+  </h2>
+  <p>
+    {_text.map((t) => <p set:html={t} />)}
+  </p>
+</div>

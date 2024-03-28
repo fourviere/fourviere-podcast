@@ -18,10 +18,12 @@
     "prettier": "npm run prettier --workspaces --if-present",
     "build:ui": "npm run build -w ./packages/ui",
     "build": "npm run tauri build -w ./packages/app",
-    "prepare": "husky install"
+    "prepare:husky": "husky install",
+    "build:website": "npm run build -w ./website"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "website"
   ],
   "dependencies": {
     "concurrently": "^8.2.2"
@@ -33,7 +35,7 @@
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-tailwindcss": "^3.13.0",
-    "husky": "^8.0.0",
+    "husky": "^8.0.3",
     "prettier": "3.1.1",
     "typescript": "^5.3.3"
   }

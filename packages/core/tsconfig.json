@@ -3,10 +3,10 @@
     "target": "ES6",
     "module": "CommonJS",
     "outDir": "./dist",
+    "baseUrl": "./src",
     "strict": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
   },
-  "files": ["lib/index.ts"],
   "exclude": ["node_modules", "dist", "tsconfig.json"]
 }

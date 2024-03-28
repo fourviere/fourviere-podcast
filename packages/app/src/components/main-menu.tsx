@@ -16,19 +16,15 @@ const SideMenu: React.FC = () => {
     .reverse()
     .map((key) => {
       return (
-        <Link
-          to={`/feed/${key}/feed-basic`}
-          style={{ display: "block" }}
-          key={key}
-        >
+        <Link to={`/feed/${key}`} style={{ display: "block" }} key={key}>
           <ImageLinkCard
             theme="dark"
             size="xs"
             faded={!!feedId && feedId !== key}
             active={feedId === key}
             src={
-              projects?.[key]?.feed?.rss?.channel?.[0]?.image?.url ||
-              // projects?.[key]?.feed?.rss?.channel?.[0]["itunes:image"]?.["@"]
+              projects?.[key]?.feed?.rss?.channel.image?.url ||
+              // projects?.[key]?.feed?.rss?.channel["itunes:image"]?.["@"]
               //   ?.href ||
               "/logo.svg"
             }

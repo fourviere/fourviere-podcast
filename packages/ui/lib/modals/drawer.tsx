@@ -1,6 +1,7 @@
 import tw from "tailwind-styled-components";
 import React, { PropsWithChildren } from "react";
 import { motion } from "framer-motion";
+import classNames from "classnames";
 
 const Backdrop = ({ onClick }: { onClick: React.MouseEventHandler }) => (
   <motion.button
@@ -10,25 +11,42 @@ const Backdrop = ({ onClick }: { onClick: React.MouseEventHandler }) => (
     animate={{
       opacity: 1,
       transition: { ease: "easeOut", duration: 0.6 },
+      zIndex: 10000,
     }}
     exit={{
       opacity: 0,
-      transition: { delay: 0.2, ease: "easeOut" },
+      transition: { delay: 0.5, ease: "easeOut" },
     }}
   />
 );
 
-const CloseButton = tw.button`rounded-full text-xs absolute right-2 leading-none px-3 py-2.5 top-2 bg-slate-800 hover:bg-slate-900 text-slate-100 hover:rounded-full z-20`;
+const CloseButton = ({
+  className,
+  onClick,
+}: React.ButtonHTMLAttributes<{ className: string }>) => {
+  return (
+    <button
+      onClick={onClick}
+      className={classNames("absolute z-20 ", className)}
+    >
+      <div>&times;</div>
+    </button>
+  );
+};
 
 const containerTypes = {
   top: {
-    classes: `fixed top-0 right-0 left-0 z-30`,
+    classes: `fixed top-0 right-0 left-0`,
+    closeButton:
+      "-bottom-8 leading-none w-8 h-8 right-5 bg-white text-slate-800 items-center justify-center rounded-b-full bg-slate-100",
+
     animations: {
       initial: { translateY: -100, opacity: 0 },
       animate: {
         translateY: 0,
         opacity: 1,
         transition: { delay: 0.2, ease: "easeOut" },
+        zIndex: 100000,
       },
       exit: {
         translateY: -100,
@@ -38,13 +56,17 @@ const containerTypes = {
     },
   },
   bottom: {
-    classes: `fixed bottom-0 right-5 left-5 z-30 rounded-t-xl`,
+    classes: `fixed bottom-0 right-5 left-5 rounded-t-xl`,
+    closeButton:
+      "-top-8 leading-none w-8 h-8 right-5 bg-white text-slate-800 items-center justify-center rounded-t-full bg-slate-100",
+
     animations: {
-      initial: { translateY: 100, opacity: 0 },
+      initial: { translateY: 100, opacity: 0, zIndex: 100000 },
       animate: {
         translateY: 0,
         opacity: 1,
         transition: { delay: 0.2, ease: "easeOut" },
+        zIndex: 100000,
       },
       exit: {
         translateY: 100,
@@ -54,13 +76,17 @@ const containerTypes = {
     },
   },
   left: {
-    classes: `fixed top-0 bottom-0 left-0 z-30`,
+    classes: `fixed top-0 bottom-0 left-0`,
+    closeButton:
+      "-rigth-8 leading-none w-8 h-8 top-5 bg-white text-slate-800 items-center justify-center rounded-l-full bg-slate-100",
+
     animations: {
-      initial: { translateX: -100, opacity: 0 },
+      initial: { translateX: -100, opacity: 0, zIndex: 100000 },
       animate: {
         translateX: 0,
         opacity: 1,
         transition: { delay: 0.2, ease: "easeOut" },
+        zIndex: 100000,
       },
       exit: {
         translateX: -100,
@@ -70,13 +96,16 @@ const containerTypes = {
     },
   },
   right: {
-    classes: `fixed top-0 bottom-0 right-0 z-30`,
+    classes: `fixed top-0 bottom-0 right-0 roundeed-l-full w-3/4 flex flex-col`,
+    closeButton:
+      "-left-8 leading-none w-8 h-8 top-5 bg-white text-slate-800 items-center justify-center rounded-l-full bg-slate-100",
     animations: {
       initial: { translateX: 100, opacity: 0 },
       animate: {
         translateX: 0,
         opacity: 1,
         transition: { delay: 0.2, ease: "easeOut" },
+        zIndex: 100000,
       },
       exit: {
         translateX: 100,
@@ -100,12 +129,15 @@ const Container = ({
     className={`${containerTypes[type].classes} bg-white shadow-lg`}
     {...containerTypes[type].animations}
   >
-    <CloseButton onClick={onClose}>&times;</CloseButton>
+    <CloseButton
+      className={containerTypes[type].closeButton}
+      onClick={onClose}
+    />
     {children}
   </motion.div>
 );
 
-const OuterContainer = tw.div`fixed top-0 right-0 bottom-0 left-0 `;
+const OuterContainer = tw.div`fixed top-0 right-0 bottom-0 left-0 z-30`;
 
 function Drawer({
   onClose,

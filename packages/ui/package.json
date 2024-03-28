@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "build": "tsc && postcss lib/styles.css -o dist/styles.css",
+    "build": "tsc --project tsconfig.json && postcss lib/styles.css -o dist/styles.css",
     "dev": "watch 'npm run build' lib",
     "prettier": "prettier --write lib",
     "lint": "eslint --fix lib",
@@ -15,18 +15,30 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/parser": "^7.24.1",
     "@ckeditor/ckeditor5-build-classic": "^41.1.0",
     "@ckeditor/ckeditor5-build-multi-root": "^41.1.0",
     "@ckeditor/ckeditor5-react": "^6.2.0",
+    "@floating-ui/dom": "^1.6.3",
     "@heroicons/react": "^2.0.18",
+    "@lexical/html": "^0.14.2",
+    "@lexical/list": "^0.14.2",
+    "@lexical/react": "^0.14.2",
     "@tailwindcss/line-clamp": "^0.4.4",
+    "@tailwindcss/typography": "^0.5.10",
+    "ajv-formats": "^2.1.1",
     "classnames": "^2.3.2",
+    "date-fns": "^3.6.0",
+    "dont-crop": "^0.2.0",
+    "framer-motion": "^11.0.15",
+    "lexical": "^0.14.2",
     "react-custom-scrollbars-2": "^4.5.0",
     "react-h5-audio-player": "^3.9.0",
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwind-styled-components": "^2.2.0",
     "tailwindcss": "^3.3.5",
-    "typescript": "^5.0.2"
+    "typescript": "^5.0.2",
+    "uuid": "^9.0.1"
   },
   "peerDependencies": {
     "formik": "^2.4.5",
@@ -41,6 +53,6 @@
     "postcss-cli": "^11.0.0",
     "prettier": "^3.0.3",
     "prettier-plugin-tailwindcss": "^0.5.6",
-    "watch": "^1.0.2"
+    "watch": "^0.13.0"
   }
 }

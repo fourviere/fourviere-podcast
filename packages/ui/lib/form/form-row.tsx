@@ -1,24 +1,30 @@
 import { PropsWithChildren, ReactElement } from "react";
+import HStack from "../layouts/h-stack";
+import { Label } from "../typography";
 
 export default function FormRow({
   children,
-  name,
+  htmlFor,
   label,
   slot,
-}: PropsWithChildren<{ name: string; label?: string; slot?: ReactElement }>) {
+}: PropsWithChildren<{
+  htmlFor: string;
+  label?: string;
+  slot?: ReactElement;
+}>) {
   return (
     <div className="w-full">
-      <div className="flex w-full">
+      <HStack wFull>
         {label && (
           <label
-            htmlFor={name}
-            className="mb-px ml-2 grow text-xs font-semibold capitalize text-slate-600"
+            htmlFor={htmlFor}
+            className="mb-1 ml-2 grow font-semibold capitalize"
           >
-            {label ?? name}
+            <Label>{label ?? htmlFor}</Label>
           </label>
         )}
         {slot}
-      </div>
+      </HStack>
 
       {children}
     </div>

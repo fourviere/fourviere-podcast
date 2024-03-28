@@ -27,7 +27,7 @@ const uploadsStore = create<UploadsStore>((set) => ({
       return;
     }
 
-    const id = generateId(upload.feedId, upload.field);
+    const id = generateId(upload);
 
     const [sender, receiver] = await channel(command, { uploadableConf });
 
@@ -47,6 +47,7 @@ const uploadsStore = create<UploadsStore>((set) => ({
             draft.uploads[id].progress = false;
             draft.uploads[id].value = event.Ok.FileResult;
             draft.uploads[id].feedId = upload.feedId;
+            draft.uploads[id].episodeId = upload.episodeId;
             delete draft.uploads[id].receiver;
             delete draft.uploads[id].sender;
           });

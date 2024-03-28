@@ -8,6 +8,7 @@ import feedStore from "../store/feed";
 import useSelectFile from "../hooks/use-select-file";
 import { readFile } from "../native/fs";
 import useConfirmationModal from "../hooks/use-confirmation-modal";
+import { useTranslation } from "react-i18next";
 
 export default function FeedSync() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -16,8 +17,10 @@ export default function FeedSync() {
   const { hasRemote, currentRemote } = UseRemoteConf({
     feedId: currentFeed.feedId!,
   });
-  const { getTranslations, addError } = appStore((state) => state);
-  const t = getTranslations();
+  const { addError } = appStore((state) => state);
+  const { t } = useTranslation("feed", {
+    keyPrefix: "forms.configuration",
+  });
   const { patchFeedFromUrl, patchFeedFromFileContents } = feedStore(
     (state) => state,
   );
@@ -34,8 +37,8 @@ export default function FeedSync() {
           }
           if (
             await askForConfirmation({
-              title: t["edit_feed.feed-sync.ask_overwrite.title"],
-              message: t["edit_feed.feed-sync.ask_overwrite"],
+              title: t("actions.fields.overwrite_from_remote.modalTitle"),
+              message: t("actions.fields.overwrite_from_remote.modalMessage"),
             })
           ) {
             patchFeedFromFileContents(currentFeed.feedId!, content);
@@ -48,14 +51,15 @@ export default function FeedSync() {
     } else {
       try {
         const { https, http_host, path } = currentRemote!;
-        const feedUrl = `${https ? "https" : "http"}://${http_host}/${path}/${
-          configuration.feed.filename
-        }`;
+        const pathWithSlash = path && path != "" ? `${path}/` : ``;
+        const feedUrl = `${
+          https ? "https" : "http"
+        }://${http_host}/${pathWithSlash}${configuration.feed.filename}`;
 
         if (
           await askForConfirmation({
-            title: t["edit_feed.feed-sync.ask_overwrite.title"],
-            message: t["edit_feed.feed-sync.ask_overwrite"],
+            title: t("actions.fields.overwrite_from_remote.modalTitle"),
+            message: t("actions.fields.overwrite_from_remote.modalMessage"),
           })
         ) {
           setLoading(true);
@@ -63,7 +67,8 @@ export default function FeedSync() {
           setLoading(false);
         }
       } catch (e) {
-        addError(t["edit_feed.feed-sync.error_fetching_feed"]);
+        console.error(e);
+        addError((e as Error)?.message);
         setLoading(false);
       }
     }
@@ -80,7 +85,7 @@ export default function FeedSync() {
         isLoading={loading}
         Icon={ArrowDownOnSquareIcon}
       >
-        {t["edit_feed.feed-sync.button_label"]}
+        {t("actions.fields.overwrite_from_remote.label")}
       </Button>
     </>
   );

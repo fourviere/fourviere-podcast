@@ -9,7 +9,7 @@ interface Props {
 
 const SideMenu: React.FC<Props> = ({ main, header, footer }) => {
   return (
-    <div className="flex h-full w-[60px] flex-col border-r  border-slate-100  bg-slate-50 lg:w-1/5 ">
+    <div className="flex h-full w-[80px] flex-col border-r  border-slate-100  bg-slate-50 lg:w-1/5 ">
       {header && <div className="grow-0">{header}</div>}
       {main && (
         <div className="overflow-x-no inner-shadow shrink grow space-y-2 overflow-y-auto px-3 py-3">
