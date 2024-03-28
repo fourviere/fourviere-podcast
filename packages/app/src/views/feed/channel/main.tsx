@@ -114,6 +114,7 @@ export default function General() {
         </OneThirdPageBox>
         <TwoThirdsPageBox $responsive>
           <Grid cols="2" mdCols="4" lgCols="6" wFull spacing="3">
+            <div></div>
             <TileButton
               icon={PaintBrushIcon}
               title="Presentation"
@@ -130,7 +131,6 @@ export default function General() {
               onClick={() => setItunesModal(true)}
             />
 
-            <TileButton theme="empty" icon={DocumentTextIcon} title="Podroll" />
             <TileButton
               icon={CodeBracketIcon}
               title="Code editor"
