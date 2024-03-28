@@ -38,14 +38,13 @@ export default function ItemGeneral({ index }: { index: number }) {
 
   const formSections: Section<PayloadType>[] = [
     {
-      title: undefined,
-      description: t("presentation.description"),
-      hideTitle: false,
+      hideTitle: true,
       fields: [
         {
           id: "enclosure.@",
           name: "enclosure.@",
           label: t("presentation.fields.enclosure.label"),
+          hideLabel: true,
           component: AudioField,
           width: "1",
           fieldProps: {
@@ -57,11 +56,19 @@ export default function ItemGeneral({ index }: { index: number }) {
           id: "itunes:duration",
           name: "itunes:duration",
           label: t("presentation.fields.itunes_duration.label"),
-          type: "number",
+          type: "hidden",
+          hideLabel: true,
           style: "sm",
           component: "input",
           width: "1",
         },
+      ],
+    },
+    {
+      title: t("presentation.title"),
+      description: t("presentation.description"),
+      hideTitle: false,
+      fields: [
         {
           id: "title",
           name: "title",
@@ -77,14 +84,6 @@ export default function ItemGeneral({ index }: { index: number }) {
           label: t("presentation.fields.guid.label"),
           style: "sm",
           component: "uuid",
-          width: "1",
-        },
-        {
-          id: "author",
-          name: "author",
-          label: t("presentation.fields.author.label"),
-          type: "text",
-          component: "input",
           width: "1",
         },
       ],
@@ -122,6 +121,20 @@ export default function ItemGeneral({ index }: { index: number }) {
         },
       ],
     },
+    {
+      title: t("additional.title"),
+      description: t("additional.description"),
+      fields: [
+        {
+          id: "author",
+          name: "author",
+          label: t("additional.fields.author.label"),
+          type: "text",
+          component: "input",
+          width: "1",
+        },
+      ],
+    },
   ];
 
   return (
@@ -149,7 +162,7 @@ export default function ItemGeneral({ index }: { index: number }) {
           unsavedChanges: tUtils("form.labels.unsavedChanges"),
           hasErrors: tUtils("form.labels.hasErrors"),
         }}
-        title={t("presentation.title")}
+        title={t("presentation.main_title")}
         sections={formSections}
         data={currentFeed.feed.rss.channel.item[index]}
         schema={payloadSchema}

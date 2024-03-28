@@ -179,7 +179,7 @@ export default function General() {
             />
           </VStack>
         </TwoThirdsPageBox>
-        <OneThirdPageBox $responsive>ddd</OneThirdPageBox>
+        {/* <OneThirdPageBox $responsive>ddd</OneThirdPageBox> */}
       </HStack>
 
       <AnimatePresence>
