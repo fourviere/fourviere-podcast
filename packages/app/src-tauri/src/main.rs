@@ -28,6 +28,8 @@ fn main() {
             commands::ftp::ftp_upload_progress,
             commands::log::log_status,
             commands::log::set_log_status,
+            commands::transcription::whisper_transcriber,
+            commands::diffusion::wuerstchen_diffusion,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -1,6 +1,8 @@
 pub mod common;
+pub mod diffusion;
 pub mod fs;
 pub mod ftp;
 pub mod log;
 pub mod network;
 pub mod s3;
+pub mod transcription;

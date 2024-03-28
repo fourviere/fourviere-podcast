@@ -23,6 +23,14 @@ pub enum Error {
     LocalPathConversion,
     #[error("Task aborted before completion")]
     Aborted,
+    #[error("Error while decoding audio file")]
+    Decoder(#[from] kalosm_sound::rodio::decoder::DecoderError),
+    #[error("Whisper instantation failed")]
+    Whisper,
+    #[error("Wuerstchen instantation failed")]
+    Wuerstchen,
+    #[error("F64 parsing  failed")]
+    ParseFloat(#[from] std::num::ParseFloatError),
 }
 
 impl Serialize for Error {

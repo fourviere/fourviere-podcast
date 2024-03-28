@@ -4,3 +4,4 @@ packages/*/node_modules
 bin
 packages/app/src-tauri/binaries
 package-lock.json
+packages/app/src-tauri/libiomp5md.dll
