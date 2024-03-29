@@ -3,7 +3,7 @@ use std::{fs::File, io::BufReader, path::PathBuf};
 use function_name::named;
 use kalosm_sound::{
     rodio::{decoder::DecoderError, Decoder},
-    Whisper, WhisperLanguage, WhisperSource,
+    ModelLoadingProgress, Whisper, WhisperLanguage, WhisperSource,
 };
 use serde::{Deserialize, Deserializer};
 use tauri::{
@@ -11,7 +11,7 @@ use tauri::{
     AppHandle,
 };
 use tauri_plugin_channel::Channel;
-use tokio::{select, spawn, sync::mpsc};
+use tokio::{select, spawn, sync::mpsc, task::spawn_blocking};
 use tokio_util::sync::CancellationToken;
 
 use crate::{
@@ -68,11 +68,29 @@ async fn whisper_transcriber_internal(
     let audio = load_audio(&conf.audio_path)?;
     let audio_duration_secs = get_audio_duration_secs(&conf.audio_path).await?;
     let (tx, mut rx) = mpsc::unbounded_channel();
+    receiver.started().await;
 
-    let model = Whisper::builder()
+    let producer_download = producer.clone();
+    let mut last_progress: u8 = 0;
+    let whisper = Whisper::builder()
         .with_language(conf.language)
         .with_source(conf.model)
-        .build()
+        .build_with_loading_handler(move |data| {
+            if let ModelLoadingProgress::Downloading { source, progress } = data {
+                let progress = (progress * 100.).ceil() as u8;
+                if last_progress != progress {
+                    last_progress = progress;
+                    let mut producer = producer_download.clone();
+                    spawn_blocking(move || {
+                        producer.blocking_send(Ok(Event::DownloadProgress {
+                            file: source,
+                            progress,
+                        }));
+                    });
+                }
+            }
+        })
+        .await
         .map_err(|_| Error::Whisper)?;
 
     spawn(async move {
@@ -80,7 +98,10 @@ async fn whisper_transcriber_internal(
         producer.send(Ok(Event::Progress(0))).await;
         let canc_token: CancellationToken = receiver.into();
 
-        if let Err(err) = model.transcribe_into(audio, tx).map_err(|_| Error::Whisper) {
+        if let Err(err) = whisper
+            .transcribe_into(audio, tx)
+            .map_err(|_| Error::Whisper)
+        {
             producer.send(Err(err)).await;
             canc_token.cancel();
         }
@@ -161,7 +182,10 @@ async fn get_audio_duration_secs(path: &Option<PathBuf>) -> Result<f64> {
 
 #[cfg(test)]
 mod test {
-    use std::path::PathBuf;
+    use std::{path::PathBuf, time::Duration};
+
+    use tauri::async_runtime::spawn;
+    use tokio::time::sleep;
 
     use crate::{
         commands::common::build_local_channel,
@@ -186,16 +210,22 @@ mod test {
         copy_binary_to_deps("ffprobe").unwrap();
 
         let (producer, receiver, mut rx_event, tx_command) = build_local_channel();
-
-        assert!(whisper_transcriber_internal(conf, producer, receiver)
-            .await
-            .is_ok());
+        let _ = tx_command.send(Command::Start).await;
+        spawn(async move {
+            assert!(whisper_transcriber_internal(conf, producer, receiver)
+                .await
+                .is_ok());
+        });
+        sleep(Duration::from_secs(2)).await;
         let _ = tx_command.send(Command::Start).await;
         let mut test_transcription = false;
         let mut test_100 = false;
         while let Some(transcribed) = rx_event.recv().await {
             match transcribed {
                 Ok(event) => match event {
+                    Event::DownloadProgress { file, progress } => {
+                        println!("Downloading {file}: {progress}%");
+                    }
                     Event::TranscriptionSegment { text, .. } => {
                         test_transcription = true;
                         println!("{text}");
