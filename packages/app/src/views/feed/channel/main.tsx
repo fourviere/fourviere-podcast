@@ -117,28 +117,28 @@ export default function General() {
             <div></div>
             <TileButton
               icon={PaintBrushIcon}
-              title="Presentation"
+              title={t("buttons.presentation")}
               onClick={() => setGeneralModal(true)}
             />
             <TileButton
               icon={DocumentTextIcon}
-              title="Description"
+              title={t("buttons.description")}
               onClick={() => setDescriptionModal(true)}
             />
             <TileButton
               icon={MusicalNoteIcon}
-              title="Itunes"
+              title={t("buttons.itunes")}
               onClick={() => setItunesModal(true)}
             />
 
             <TileButton
               icon={CodeBracketIcon}
-              title="Code editor"
+              title={t("buttons.code_editor")}
               onClick={() => setSourceModal(true)}
             />
             <TileButton
               icon={Cog6ToothIcon}
-              title="Configuration"
+              title={t("buttons.configuration")}
               onClick={() => setConfigurationModal(true)}
             />
           </Grid>

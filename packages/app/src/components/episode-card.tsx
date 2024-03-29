@@ -33,6 +33,9 @@ const EpisodeCard: React.FC<EpisodeCardProps> = ({
   index,
   as = "div",
 }) => {
+  const { t: tButtons } = useTranslation("feed", {
+    keyPrefix: "index",
+  });
   const Component = as;
   const [isHovered, setIsHovered] = React.useState(false);
 
@@ -102,13 +105,13 @@ const EpisodeCard: React.FC<EpisodeCardProps> = ({
               <Grid cols="2" mdCols="4" lgCols="5" spacing="3">
                 <TileButton
                   icon={PaintBrushIcon}
-                  title="Configuration"
+                  title={tButtons("item_buttons.presentation")}
                   onClick={() => openBasicDetails(index)}
                 />
                 <TileButton
                   theme="error"
                   icon={TrashIcon}
-                  title="Delete"
+                  title={tButtons("item_buttons.delete")}
                   onClick={() => remove()}
                   hoverEffect={false}
                 />

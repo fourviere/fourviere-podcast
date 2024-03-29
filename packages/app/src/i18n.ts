@@ -356,6 +356,17 @@ const resources = {
           add_episode: "Add a new episode",
           published_date: "Published at: {{ date, long }}, {{ date, ago }}",
         },
+        buttons: {
+          presentation: "Presentation",
+          description: "Description",
+          itunes: "Itunes",
+          code_editor: "Code editor",
+          configuration: "Configuration",
+        },
+        item_buttons: {
+          presentation: "Episode info",
+          delete: "Delete episode",
+        },
       },
     },
 
