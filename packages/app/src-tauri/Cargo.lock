@@ -1592,7 +1592,7 @@ dependencies = [
  "reqwest 0.12.2",
  "rss",
  "rust-s3",
- "s3s",
+ "s3s 0.8.1",
  "s3s-fs",
  "serde",
  "serde_json",
@@ -4377,10 +4377,50 @@ dependencies = [
 ]
 
 [[package]]
-name = "s3s-fs"
-version = "0.8.1"
+name = "s3s"
+version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cfed24ce7b786e2d8979f0468e7745482cc1f5114ed75dd214c71e5c5620d87e"
+checksum = "faa2c53267bd0a991fd549cc6b05bdfbf6c6dfcb156d9fae1357bb5bdb40c879"
+dependencies = [
+ "arrayvec",
+ "async-trait",
+ "atoi",
+ "base64-simd",
+ "bytes",
+ "bytestring",
+ "chrono",
+ "crc32fast",
+ "futures",
+ "hex-simd",
+ "hmac",
+ "http-body 0.4.6",
+ "httparse",
+ "hyper 0.14.28",
+ "itoa 1.0.10",
+ "memchr",
+ "mime",
+ "nom",
+ "nugine-rust-utils",
+ "pin-project-lite",
+ "quick-xml 0.31.0",
+ "serde",
+ "serde_urlencoded",
+ "sha1",
+ "sha2",
+ "smallvec",
+ "thiserror",
+ "time",
+ "tracing",
+ "transform-stream",
+ "urlencoding",
+ "zeroize",
+]
+
+[[package]]
+name = "s3s-fs"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e4dbdc71acd8ac488d3272456151b906d51894d68fa42c10b5b74cc3d7586bcc"
 dependencies = [
  "async-trait",
  "base64-simd",
@@ -4396,7 +4436,7 @@ dependencies = [
  "nugine-rust-utils",
  "numeric_cast",
  "path-absolutize",
- "s3s",
+ "s3s 0.9.0",
  "serde_json",
  "sha1",
  "sha2",
