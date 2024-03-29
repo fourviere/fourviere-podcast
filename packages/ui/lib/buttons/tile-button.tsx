@@ -23,6 +23,7 @@ interface TileButtonProps {
   error?: boolean;
   label?: string;
   loading?: number;
+  hoverEffect?: boolean;
   onClick?: () => void;
 }
 
@@ -33,6 +34,7 @@ const TileButton = ({
   checked,
   error,
   label,
+  hoverEffect = true,
   loading,
   onClick,
   ...props
@@ -61,8 +63,14 @@ const TileButton = ({
           {label}
         </div>
       )}
+
       {theme !== "disabled" && (
-        <div className="absolute bottom-0 left-0 right-0 top-0 grid place-items-center opacity-0 transition-all duration-500 group-hover:opacity-100">
+        <div
+          className={classNames(
+            "absolute bottom-0 left-0 right-0 top-0 grid place-items-center opacity-0 transition-all duration-500 group-hover:opacity-100 ",
+            { hidden: !hoverEffect },
+          )}
+        >
           <div className="rounded-full bg-slate-600 p-2 text-slate-50">
             <PencilIcon className="h-3 w-3" />
           </div>
@@ -79,9 +87,10 @@ const TileButton = ({
       <div
         className={classNames(
           {
-            "group-hover:scale-[.96] group-hover:opacity-30":
-              theme !== "disabled",
+            "group-hover:scale-[.96] ": theme !== "disabled",
+            "group-hover:opacity-30": hoverEffect !== false,
           },
+
           "flex flex-col items-center justify-center transition-all duration-500",
         )}
       >

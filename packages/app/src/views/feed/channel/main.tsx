@@ -114,31 +114,31 @@ export default function General() {
         </OneThirdPageBox>
         <TwoThirdsPageBox $responsive>
           <Grid cols="2" mdCols="4" lgCols="6" wFull spacing="3">
+            <div></div>
             <TileButton
               icon={PaintBrushIcon}
-              title="Presentation"
+              title={t("buttons.presentation")}
               onClick={() => setGeneralModal(true)}
             />
             <TileButton
               icon={DocumentTextIcon}
-              title="Description"
+              title={t("buttons.description")}
               onClick={() => setDescriptionModal(true)}
             />
             <TileButton
               icon={MusicalNoteIcon}
-              title="Itunes"
+              title={t("buttons.itunes")}
               onClick={() => setItunesModal(true)}
             />
 
-            <TileButton theme="empty" icon={DocumentTextIcon} title="Podroll" />
             <TileButton
               icon={CodeBracketIcon}
-              title="Code editor"
+              title={t("buttons.code_editor")}
               onClick={() => setSourceModal(true)}
             />
             <TileButton
               icon={Cog6ToothIcon}
-              title="Configuration"
+              title={t("buttons.configuration")}
               onClick={() => setConfigurationModal(true)}
             />
           </Grid>
@@ -179,7 +179,7 @@ export default function General() {
             />
           </VStack>
         </TwoThirdsPageBox>
-        <OneThirdPageBox $responsive>ddd</OneThirdPageBox>
+        {/* <OneThirdPageBox $responsive>ddd</OneThirdPageBox> */}
       </HStack>
 
       <AnimatePresence>

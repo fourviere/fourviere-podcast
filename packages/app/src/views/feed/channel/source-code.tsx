@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import feedStore from "../../../store/feed/index";
 import { parseXML, serializeToXML } from "@fourviere/core/lib/converter";
 import appStore from "../../../store/app";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import ContainerTitle from "@fourviere/ui/lib/container-title";
 import { useTranslation } from "react-i18next";
 import VStack from "@fourviere/ui/lib/layouts/v-stack";
@@ -35,7 +35,7 @@ export default function SourceCode() {
     }
   }, [tempState]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // do conditional chaining
     monaco?.editor.defineTheme("fourviere-io", {
       base: "vs-dark",
