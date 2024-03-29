@@ -300,22 +300,37 @@ const resources = {
                 label: "Delete the feed",
                 modalTitle: "Do you want to delete the feed?",
                 modalMessage:
-                  "This operation cannot be reverted! This deletion does not remove the remote fields, but delete the data from the fourvierre.io application",
+                  "This operation cannot be reverted! This deletion does not remove the remote files, but delete the data from the fourviere.io application",
+              },
+              delete_episode: {
+                label: "Delete this episode",
+                modalTitle: "Do you want to delete this episode?",
+                modalMessage:
+                  "This operation cannot be reverted! This deletion does not remove the remote files, but delete the data from the fourviere.io application",
               },
             },
           },
         },
         item: {
           presentation: {
+            main_title: "Episode",
             title: "Episode presentation",
             description:
               "This area will contain the fields necessary for, once completed, having defined the presentation of the episode.",
             fields: {
               title: { label: "Title" },
               guid: { label: "GUID" },
-              author: { label: "Author" },
+
               itunes_duration: { label: "Duration" },
               description: { label: "Episode description" },
+            },
+          },
+          additional: {
+            title: "Additional information",
+            description:
+              "This area will contain additional fields necessary for give more information about the episode",
+            fields: {
+              author: { label: "Author" },
             },
           },
           image: {

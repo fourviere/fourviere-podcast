@@ -64,7 +64,7 @@ type BaseFieldConf = {
 
 interface InputFieldConf extends BaseFieldConf {
   placeholder?: string;
-  type?: "number" | "text" | "password";
+  type?: "number" | "text" | "password" | "hidden";
 }
 
 interface UuidFieldConf extends BaseFieldConf {
