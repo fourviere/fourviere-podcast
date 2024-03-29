@@ -6,8 +6,11 @@ const ValueRecipientSchema = Type.Object({
     address: Type.String(),
     split: Type.Number(),
     name: Type.Optional(Type.String()),
-    customKey: Type.Optional(Type.Number()),
-    customValue: Type.Optional(Type.String()),
+    // was integer but made string
+    customKey: Type.Optional(
+      Type.Union([Type.String(), Type.Number(), Type.Null()]),
+    ),
+    customValue: Type.Optional(Type.Union([Type.String(), Type.Null()])),
     fee: Type.Optional(Type.Boolean()),
   }),
 });

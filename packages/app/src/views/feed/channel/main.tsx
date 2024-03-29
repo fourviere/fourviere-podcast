@@ -19,6 +19,7 @@ import EditButton from "@fourviere/ui/lib/edit-button";
 import Description from "./description";
 import TileButton from "@fourviere/ui/lib/buttons/tile-button";
 import {
+  BanknotesIcon,
   CodeBracketIcon,
   Cog6ToothIcon,
   DocumentTextIcon,
@@ -36,6 +37,8 @@ import ItemList from "@fourviere/ui/lib/item-list-scroll";
 import { useTranslation } from "react-i18next";
 import { Item } from "@fourviere/core/lib/schema/item";
 import ItemGeneral from "../item/general";
+import ValueForValue from "./value-4-value";
+import ValueForValueItem from "../item/value-4-value";
 
 export default function General() {
   // Channel
@@ -44,9 +47,12 @@ export default function General() {
   const [itunesModal, setItunesModal] = useState<boolean>(false);
   const [generalModal, setGeneralModal] = useState<boolean>(false);
   const [sourceModal, setSourceModal] = useState<boolean>(false);
+  const [ValueForValueModal, setValueForValueModal] = useState<boolean>(false);
   // Episode
   const [currentEpisodeIndex, setCurrentEpisodeIndex] = useState<number>(0);
   const [itemGeneralModal, setItemGeneralModal] = useState<boolean>(false);
+  const [itemValueForValueModal, setItemValueForValueModal] =
+    useState<boolean>(false);
 
   const currentFeed = UseCurrentFeed();
   const { t } = useTranslation("feed", {
@@ -114,7 +120,6 @@ export default function General() {
         </OneThirdPageBox>
         <TwoThirdsPageBox $responsive>
           <Grid cols="2" mdCols="4" lgCols="6" wFull spacing="3">
-            <div></div>
             <TileButton
               icon={PaintBrushIcon}
               title={t("buttons.presentation")}
@@ -130,7 +135,11 @@ export default function General() {
               title={t("buttons.itunes")}
               onClick={() => setItunesModal(true)}
             />
-
+            <TileButton
+              icon={BanknotesIcon}
+              title={t("buttons.value_4_value")}
+              onClick={() => setValueForValueModal(true)}
+            />
             <TileButton
               icon={CodeBracketIcon}
               title={t("buttons.code_editor")}
@@ -170,6 +179,10 @@ export default function General() {
                 item: e,
                 openBasicDetails: () => {
                   setItemGeneralModal(true);
+                  setCurrentEpisodeIndex(index);
+                },
+                openValueToValue: () => {
+                  setItemValueForValueModal(true);
                   setCurrentEpisodeIndex(index);
                 },
               }))}
@@ -220,6 +233,20 @@ export default function General() {
           <Drawer type="right" onClose={() => setItemGeneralModal(false)}>
             <Container scroll style={{ height: "100vh" }}>
               <ItemGeneral index={currentEpisodeIndex} />
+            </Container>
+          </Drawer>
+        )}
+        {ValueForValueModal && (
+          <Drawer type="right" onClose={() => setValueForValueModal(false)}>
+            <Container scroll style={{ height: "100vh" }}>
+              <ValueForValue />
+            </Container>
+          </Drawer>
+        )}
+        {itemValueForValueModal && (
+          <Drawer type="right" onClose={() => setItemValueForValueModal(false)}>
+            <Container scroll style={{ height: "100vh" }}>
+              <ValueForValueItem index={currentEpisodeIndex} />
             </Container>
           </Drawer>
         )}

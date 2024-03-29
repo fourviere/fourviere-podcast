@@ -156,6 +156,7 @@ export default function Form<DataType extends FormikValues>({
       enableReinitialize
       validate={(values: DataType) => {
         const valid = compiledSchema(values);
+        console.log(compiledSchema.errors);
         if (!valid) {
           const language = i18n.language as keyof typeof localize;
           localize[language](compiledSchema.errors);
@@ -176,6 +177,7 @@ export default function Form<DataType extends FormikValues>({
         errors,
         values,
       }) => {
+        JSON.stringify(values);
         return (
           <VStack>
             <ChangeDetector<DataType>
