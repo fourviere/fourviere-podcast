@@ -5,13 +5,17 @@ use std::{
 
 use derive_new::new;
 use getset::Getters;
+use kalosm_sound::ModelLoadingProgress;
 use serde::{Deserialize, Deserializer, Serialize};
 use tauri::AppHandle;
 use tauri_plugin_channel::{channel, Channel};
-use tokio::sync::mpsc::{Receiver, Sender};
+use tokio::{
+    sync::mpsc::{Receiver, Sender},
+    task::spawn_blocking,
+};
 
 use crate::utils::{
-    event::{Command, Message},
+    event::{Command, Event, Message},
     file::{get_file_info, get_payload_info, write_to_temp_file, TempFile},
     result::{Error, Result},
 };
@@ -169,4 +173,27 @@ pub fn build_local_channel() -> (
     let receiver = CommandReceiver::new(rx_command);
 
     (producer, receiver, rx_event, tx_command)
+}
+
+pub fn build_loading_handler(
+    producer: &EventProducer,
+) -> impl FnMut(ModelLoadingProgress) + Send + Sync + 'static {
+    let mut last_progress: u8 = 0;
+    let producer_download = producer.clone();
+
+    move |data| {
+        if let ModelLoadingProgress::Downloading { source, progress } = data {
+            let progress = (progress * 100.).ceil() as u8;
+            if last_progress != progress {
+                last_progress = progress;
+                let mut producer = producer_download.clone();
+                spawn_blocking(move || {
+                    producer.blocking_send(Ok(Event::DownloadProgress {
+                        file: source,
+                        progress,
+                    }));
+                });
+            }
+        }
+    }
 }

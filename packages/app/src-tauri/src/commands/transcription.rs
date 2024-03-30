@@ -3,7 +3,7 @@ use std::{fs::File, io::BufReader, path::PathBuf};
 use function_name::named;
 use kalosm_sound::{
     rodio::{decoder::DecoderError, Decoder},
-    ModelLoadingProgress, Whisper, WhisperLanguage, WhisperSource,
+    Whisper, WhisperLanguage, WhisperSource,
 };
 use serde::{Deserialize, Deserializer};
 use tauri::{
@@ -11,7 +11,7 @@ use tauri::{
     AppHandle,
 };
 use tauri_plugin_channel::Channel;
-use tokio::{select, spawn, sync::mpsc, task::spawn_blocking};
+use tokio::{select, spawn, sync::mpsc};
 use tokio_util::sync::CancellationToken;
 
 use crate::{
@@ -23,6 +23,8 @@ use crate::{
         whisper::{whisper_lang, whisper_model},
     },
 };
+
+use super::common::build_loading_handler;
 
 #[derive(Deserialize)]
 pub struct WhisperConf {
@@ -70,26 +72,10 @@ async fn whisper_transcriber_internal(
     let (tx, mut rx) = mpsc::unbounded_channel();
     receiver.started().await;
 
-    let producer_download = producer.clone();
-    let mut last_progress: u8 = 0;
     let whisper = Whisper::builder()
         .with_language(conf.language)
         .with_source(conf.model)
-        .build_with_loading_handler(move |data| {
-            if let ModelLoadingProgress::Downloading { source, progress } = data {
-                let progress = (progress * 100.).ceil() as u8;
-                if last_progress != progress {
-                    last_progress = progress;
-                    let mut producer = producer_download.clone();
-                    spawn_blocking(move || {
-                        producer.blocking_send(Ok(Event::DownloadProgress {
-                            file: source,
-                            progress,
-                        }));
-                    });
-                }
-            }
-        })
+        .build_with_loading_handler(build_loading_handler(&producer))
         .await
         .map_err(|_| Error::Whisper)?;
 
@@ -109,6 +95,7 @@ async fn whisper_transcriber_internal(
         loop {
             select! {
                 _ = canc_token.cancelled() => {
+                    producer.send(Err(Error::Aborted)).await;
                     break
                 }
                 res = rx.recv() => {

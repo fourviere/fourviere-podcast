@@ -1,11 +1,11 @@
 use std::path::PathBuf;
 
 use function_name::named;
-use kalosm_vision::{ModelLoadingProgress, Wuerstchen, WuerstchenInferenceSettings};
+use kalosm_vision::{Wuerstchen, WuerstchenInferenceSettings};
 use serde::Deserialize;
-use tauri::{async_runtime::spawn_blocking, AppHandle};
+use tauri::AppHandle;
 use tauri_plugin_channel::Channel;
-use tokio::{select, spawn};
+use tokio::{select, spawn, task::spawn_blocking};
 use tokio_util::sync::CancellationToken;
 use uuid::Uuid;
 
@@ -18,6 +18,8 @@ use crate::{
         result::{Error, Result},
     },
 };
+
+use super::common::build_loading_handler;
 
 const IMAGE_FOLDER: &str = "images_wuerstchen";
 
@@ -83,27 +85,11 @@ async fn wuerstchen_diffusion_internal(
     receiver: CommandReceiver,
 ) -> Result<()> {
     receiver.started().await;
-    let producer_download = producer.clone();
-    let mut last_progress: u8 = 0;
 
     let path = conf.dest_path.clone();
     let model = Wuerstchen::builder()
         .with_flash_attn(conf.flash_attn)
-        .build_with_loading_handler(move |data| {
-            if let ModelLoadingProgress::Downloading { source, progress } = data {
-                let progress = (progress * 100.).ceil() as u8;
-                if last_progress != progress {
-                    last_progress = progress;
-                    let mut producer = producer_download.clone();
-                    spawn_blocking(move || {
-                        producer.blocking_send(Ok(Event::DownloadProgress {
-                            file: source,
-                            progress,
-                        }));
-                    });
-                }
-            }
-        })
+        .build_with_loading_handler(build_loading_handler(&producer))
         .await
         .map_err(|_| Error::Wuerstchen)?;
 
@@ -111,12 +97,13 @@ async fn wuerstchen_diffusion_internal(
 
     spawn(async move {
         let canc_token: CancellationToken = receiver.into();
-
+        let handle = spawn_blocking(move || model.run(conf.into()));
+        let abort_handle = handle.abort_handle();
         select! {
-            _ = canc_token.cancelled() => (),
-            res = spawn_blocking(move || {
-                model.run(conf.into())
-            }) => {
+            _ = canc_token.cancelled() => {
+                abort_handle.abort();
+            }
+            res = handle => {
                 match res {
                     Ok(Ok(images)) => {
                         let paths = images.iter().map(|img| {
@@ -128,6 +115,7 @@ async fn wuerstchen_diffusion_internal(
                         }).collect();
                         producer.send(Ok(Event::DiffusionImages(paths))).await
                     },
+                    Err(_) => producer.send(Err(Error::Aborted)).await,
                     _ => producer.send(Err(Error::Wuerstchen)).await,
                 }
             }
@@ -177,8 +165,8 @@ mod test {
                 .is_ok())
         });
         let mut test_diffusion = false;
-        while let Some(transcribed) = rx_event.recv().await {
-            match transcribed {
+        while let Some(data) = rx_event.recv().await {
+            match data {
                 Ok(event) => match event {
                     Event::DownloadProgress { file, progress } => {
                         println!("Downloading {file}: {progress}%");
