@@ -1,3 +1,7 @@
+/* This script alters the /packages/app/src-tauri/tauri.conf.json 
+   for configuring custom build features per environment
+   and copies the needed assets for compiling deps for ML features.
+*/
 const os = require('os');
 const fs = require("fs");
 const path = "./packages/app/src-tauri/tauri.conf.json";
@@ -8,9 +12,9 @@ fs.readFile(path, "utf8", (error, data) => {
   }
   let config = JSON.parse(data);
 
-  let ovverride = process.argv[2];
+  let override = process.argv[2];
 
-  if (ovverride === undefined) {
+  if (override === undefined) {
     const opsys = process.platform;
     if (opsys == "darwin") {
       config.build.features = ["metal"];
@@ -23,8 +27,8 @@ fs.readFile(path, "utf8", (error, data) => {
     }
   }
   else {
-    config.build.features = [ovverride];
-    if( ovverride === "cuda") {
+    config.build.features = [override];
+    if( override === "cuda") {
       //Disable AppImage bundle to avoid issues collecting libcuda1.so (only avaialable when the nvidia driver is installed)
       config.tauri.bundle.targets = ["deb", "msi", "nsis"];
       config.package.productName = "Fourviere Podcast Cuda";

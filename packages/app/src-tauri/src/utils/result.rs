@@ -15,6 +15,8 @@ pub enum Error {
     S3Operation(#[from] s3::error::S3Error),
     #[error("Internal tauri error")]
     Tauri(#[from] tauri::Error),
+    #[error("Internal tauri error")]
+    TauriApi(#[from] tauri::api::Error),
     #[error("Tokio channel closed")]
     TokioSendClosed,
     #[error("Task failed to execute to completion")]
@@ -29,8 +31,8 @@ pub enum Error {
     Whisper,
     #[error("Wuerstchen instantation failed")]
     Wuerstchen,
-    #[error("F64 parsing  failed")]
-    ParseFloat(#[from] std::num::ParseFloatError),
+    #[error("Serde failure")]
+    Serde(#[from] serde_json::Error),
 }
 
 impl Serialize for Error {

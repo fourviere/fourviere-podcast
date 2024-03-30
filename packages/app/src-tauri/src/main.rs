@@ -22,6 +22,7 @@ fn main() {
             commands::fs::read_text_file,
             commands::fs::read_file_info,
             commands::fs::persist_file,
+            commands::fs::create_app_folder,
             commands::s3::s3_upload,
             commands::s3::s3_upload_progress,
             commands::ftp::ftp_upload,
@@ -30,6 +31,7 @@ fn main() {
             commands::log::set_log_status,
             commands::transcription::whisper_transcriber,
             commands::diffusion::wuerstchen_diffusion,
+            commands::ffmpeg::get_audio_duration_secs,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

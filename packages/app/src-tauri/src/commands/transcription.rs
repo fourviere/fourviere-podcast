@@ -1,15 +1,13 @@
-use std::{fs::File, io::BufReader, path::PathBuf};
+use std::{
+    fs::File,
+    io::BufReader,
+    path::{Path, PathBuf},
+};
 
 use function_name::named;
-use kalosm_sound::{
-    rodio::{decoder::DecoderError, Decoder},
-    Whisper, WhisperLanguage, WhisperSource,
-};
+use kalosm_sound::{rodio::Decoder, Whisper, WhisperLanguage, WhisperSource};
 use serde::{Deserialize, Deserializer};
-use tauri::{
-    api::process::{Command, CommandEvent},
-    AppHandle,
-};
+use tauri::AppHandle;
 use tauri_plugin_channel::Channel;
 use tokio::{select, spawn, sync::mpsc};
 use tokio_util::sync::CancellationToken;
@@ -24,11 +22,11 @@ use crate::{
     },
 };
 
-use super::common::build_loading_handler;
+use super::{common::build_loading_handler, ffmpeg::get_audio_duration_secs};
 
 #[derive(Deserialize)]
 pub struct WhisperConf {
-    audio_path: Option<PathBuf>,
+    audio_path: PathBuf,
 
     #[serde(deserialize_with = "string_to_whisper_lang")]
     language: Option<WhisperLanguage>,
@@ -131,40 +129,9 @@ async fn whisper_transcriber_internal(
     Ok(())
 }
 
-fn load_audio(path: &Option<PathBuf>) -> Result<Decoder<BufReader<File>>> {
-    match path {
-        Some(path) => {
-            let file = BufReader::new(File::open(path)?);
-            Decoder::new(file).map_err(Into::into)
-        }
-        None => Err(Error::Decoder(DecoderError::UnrecognizedFormat)),
-    }
-}
-
-async fn get_audio_duration_secs(path: &Option<PathBuf>) -> Result<f64> {
-    let mut duration_string = "".to_owned();
-    if let Some(path) = path {
-        let sidecar = Command::new_sidecar("ffprobe")?.args([
-            "-show_entries",
-            "format=duration",
-            "-v",
-            "quiet",
-            "-print_format",
-            "json",
-            path.to_str().unwrap_or(""),
-        ]);
-        let (mut rx, _) = sidecar.spawn().unwrap();
-        while let Some(event) = rx.recv().await {
-            if let CommandEvent::Stdout(line) = event {
-                if line.contains("duration") {
-                    if let Some((_, value)) = line.split_once(':') {
-                        duration_string = value.trim().replace('"', "")
-                    }
-                }
-            }
-        }
-    }
-    duration_string.parse().map_err(Into::into)
+fn load_audio(path: &Path) -> Result<Decoder<BufReader<File>>> {
+    let file = BufReader::new(File::open(path)?);
+    Decoder::new(file).map_err(Into::into)
 }
 
 #[cfg(test)]
@@ -189,7 +156,7 @@ mod test {
     #[tokio::test(flavor = "multi_thread")]
     async fn simple_transcription_test() {
         let conf = WhisperConf {
-            audio_path: Some(PathBuf::from(test_file!("gitbar_189_110_secs.mp3"))),
+            audio_path: PathBuf::from(test_file!("gitbar_189_110_secs.mp3")),
             language: Some(kalosm_sound::WhisperLanguage::Italian),
             model: kalosm_sound::WhisperSource::Tiny,
         };

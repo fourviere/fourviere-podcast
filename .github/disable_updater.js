@@ -1,3 +1,7 @@
+/* This script alters the /packages/app/src-tauri/tauri.conf.json 
+   for disabling tauri updater feature.
+   Required for nightly builds
+*/ 
 const fs = require("fs");
 const path = "./packages/app/src-tauri/tauri.conf.json";
 fs.readFile(path, "utf8", (error, data) => {

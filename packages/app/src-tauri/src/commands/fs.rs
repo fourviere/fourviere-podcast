@@ -1,4 +1,4 @@
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 use crate::{
     log_if_error_and_return,
@@ -8,6 +8,13 @@ use ::function_name::named;
 use reqwest::header;
 use serde::{Deserialize, Serialize};
 use tokio::fs::read_to_string;
+
+#[named]
+#[tauri::command]
+pub async fn create_app_folder(folder: &str) -> Result<PathBuf> {
+    let path = crate::utils::file::create_app_folder(folder);
+    log_if_error_and_return!(path)
+}
 
 #[named]
 #[tauri::command]
