@@ -348,6 +348,37 @@ const resources = {
             },
           },
         },
+        monetization: {
+          title: "Monetization",
+
+          funding: {
+            title: "Funding",
+            description:
+              "This tag lists possible donation/funding links for the podcast. The content of the tag is the recommended string to be used with the link.",
+            fields: {
+              url: { label: "Url" },
+              description: { label: "Description" },
+            },
+          },
+          value_4_value: {
+            title: "Value for value",
+            description: `This element designates the cryptocurrency or payment layer that will be used, the transport method for transacting the payments, and a suggested amount denominated in the given cryptocurrency.`,
+            fields: {
+              type: { label: "Type" },
+              method: { label: "Method" },
+              suggested: { label: "Suggested value" },
+              recipient_name: { label: "Recipient name" },
+              recipient_type: { label: "Recipient type" },
+              recipient_address: { label: "Recipient address" },
+              recipient_split: { label: "Recipient split" },
+              recipient_fee: { label: "Recipient fee" },
+              recipient_custom_key: { label: "Custom key" },
+              recipient_custom_value: { label: "Custom value" },
+            },
+            recipient_title: "Recipients",
+            recipient_description: `The valueRecipient tag designates various destinations for payments to be sent to during consumption of the enclosed media. Each recipient is considered to receive a "split" of the total payment according to the number of shares given in the split attribute.`,
+          },
+        },
       },
       index: {
         episodes: {
@@ -361,10 +392,12 @@ const resources = {
           description: "Description",
           itunes: "Itunes",
           code_editor: "Code editor",
+          value_4_value: "Monetization",
           configuration: "Configuration",
         },
         item_buttons: {
           presentation: "Episode info",
+          value_4_value: "Value for value",
           delete: "Delete episode",
         },
       },

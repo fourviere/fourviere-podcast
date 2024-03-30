@@ -18,6 +18,7 @@ const ARRAYS: string[] = [
   `rss.channel.link`,
   `rss.channel.item.link`,
   `rss.channel.podcast:value.podcast:valueRecipient`,
+  `rss.channel.podcast:funding`,
 ] as const;
 
 const CONFIG_PARSER: X2jOptions = {

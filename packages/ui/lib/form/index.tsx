@@ -176,6 +176,7 @@ export default function Form<DataType extends FormikValues>({
         errors,
         values,
       }) => {
+        JSON.stringify(values);
         return (
           <VStack>
             <ChangeDetector<DataType>

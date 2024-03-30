@@ -153,7 +153,7 @@ export const GridCell = ({
 }: GridCellProps) => {
   return (
     <div
-      className={classNames({
+      className={classNames("self-end", {
         [COLSPAN[colSpan ?? 1]]: colSpan,
         [MD_COLSPAN[mdColSpan ?? colSpan ?? 1]]: mdColSpan,
         [LG_COLSPAN[lgColSpan ?? mdColSpan ?? colSpan ?? 1]]: lgColSpan,
