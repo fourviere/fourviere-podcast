@@ -1226,7 +1226,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/696/",
           ],
-          "podcast:episode": 696,
+          "podcast:episode": {
+            "#text": 696,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia696.jpg 1400w",
@@ -1273,7 +1275,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/695/",
           ],
-          "podcast:episode": 695,
+          "podcast:episode": {
+            "#text": 695,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia695.jpg 1400w",
@@ -1320,7 +1324,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/694/",
           ],
-          "podcast:episode": 694,
+          "podcast:episode": {
+            "#text": 694,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia694.jpg 1400w",
@@ -1368,7 +1374,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/693/",
           ],
-          "podcast:episode": 693,
+          "podcast:episode": {
+            "#text": 693,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia693.jpg 1400w",
@@ -1415,7 +1423,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/692/",
           ],
-          "podcast:episode": 692,
+          "podcast:episode": {
+            "#text": 692,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia692.jpg 1400w",
@@ -1463,7 +1473,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/691/",
           ],
-          "podcast:episode": 691,
+          "podcast:episode": {
+            "#text": 691,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia691.jpg 1400w",
@@ -1511,7 +1523,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/690/",
           ],
-          "podcast:episode": 690,
+          "podcast:episode": {
+            "#text": 690,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia690.jpg 1400w",
@@ -1558,7 +1572,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/689/",
           ],
-          "podcast:episode": 689,
+          "podcast:episode": {
+            "#text": 689,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia689.jpg 1400w",
@@ -1606,7 +1622,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/688/",
           ],
-          "podcast:episode": 688,
+          "podcast:episode": {
+            "#text": 688,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia688.jpg 1400w",
@@ -1655,7 +1673,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/687/",
           ],
-          "podcast:episode": 687,
+          "podcast:episode": {
+            "#text": 687,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia687.jpg 1400w",
@@ -1702,7 +1722,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/686/",
           ],
-          "podcast:episode": 686,
+          "podcast:episode": {
+            "#text": 686,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia686.jpg 1400w",
@@ -1750,7 +1772,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/685/",
           ],
-          "podcast:episode": 685,
+          "podcast:episode": {
+            "#text": 685,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia685.jpg 1400w",
@@ -1798,7 +1822,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/684/",
           ],
-          "podcast:episode": 684,
+          "podcast:episode": {
+            "#text": 684,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia684.jpg 1400w",
@@ -1846,7 +1872,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/683/",
           ],
-          "podcast:episode": 683,
+          "podcast:episode": {
+            "#text": 683,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia683.jpg 1400w",
@@ -1894,7 +1922,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/682/",
           ],
-          "podcast:episode": 682,
+          "podcast:episode": {
+            "#text": 682,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia682.jpg 1400w",
@@ -1942,7 +1972,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/681/",
           ],
-          "podcast:episode": 681,
+          "podcast:episode": {
+            "#text": 681,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia681.jpg 1400w",
@@ -1990,7 +2022,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/680/",
           ],
-          "podcast:episode": 680,
+          "podcast:episode": {
+            "#text": 680,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia680.jpg 1400w",
@@ -2038,7 +2072,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/679/",
           ],
-          "podcast:episode": 679,
+          "podcast:episode": {
+            "#text": 679,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia679.jpg 1400w",
@@ -2086,7 +2122,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/678/",
           ],
-          "podcast:episode": 678,
+          "podcast:episode": {
+            "#text": 678,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia678.jpg 1400w",
@@ -2133,7 +2171,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/677/",
           ],
-          "podcast:episode": 677,
+          "podcast:episode": {
+            "#text": 677,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia677.jpg 1400w",
@@ -2181,7 +2221,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/676/",
           ],
-          "podcast:episode": 676,
+          "podcast:episode": {
+            "#text": 676,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia676.jpg 1400w",
@@ -2228,7 +2270,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/675/",
           ],
-          "podcast:episode": 675,
+          "podcast:episode": {
+            "#text": 675,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia675.jpg 1400w",
@@ -2276,7 +2320,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/674/",
           ],
-          "podcast:episode": 674,
+          "podcast:episode": {
+            "#text": 674,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia674.jpg 1400w",
@@ -2324,7 +2370,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/673/",
           ],
-          "podcast:episode": 673,
+          "podcast:episode": {
+            "#text": 673,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia673.jpg 1400w",
@@ -2371,7 +2419,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/672/",
           ],
-          "podcast:episode": 672,
+          "podcast:episode": {
+            "#text": 672,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia672.jpg 1400w",
@@ -2417,7 +2467,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/671/",
           ],
-          "podcast:episode": 671,
+          "podcast:episode": {
+            "#text": 671,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia671.jpg 1400w",
@@ -2465,7 +2517,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/670/",
           ],
-          "podcast:episode": 670,
+          "podcast:episode": {
+            "#text": 670,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia670.jpg 1400w",
@@ -2513,7 +2567,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/669/",
           ],
-          "podcast:episode": 669,
+          "podcast:episode": {
+            "#text": 669,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia669.jpg 1400w",
@@ -2560,7 +2616,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/668/",
           ],
-          "podcast:episode": 668,
+          "podcast:episode": {
+            "#text": 668,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia668.jpg 1400w",
@@ -2608,7 +2666,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/667/",
           ],
-          "podcast:episode": 667,
+          "podcast:episode": {
+            "#text": 667,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia667.jpg 1400w",
@@ -2655,7 +2715,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/666/",
           ],
-          "podcast:episode": 666,
+          "podcast:episode": {
+            "#text": 666,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia666.jpg 1400w",
@@ -2703,7 +2765,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/665/",
           ],
-          "podcast:episode": 665,
+          "podcast:episode": {
+            "#text": 665,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia665.jpg 1400w",
@@ -2750,7 +2814,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/664/",
           ],
-          "podcast:episode": 664,
+          "podcast:episode": {
+            "#text": 664,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia664.jpg 1400w",
@@ -2797,7 +2863,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/663/",
           ],
-          "podcast:episode": 663,
+          "podcast:episode": {
+            "#text": 663,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia663.jpg 1400w",
@@ -2843,7 +2911,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/662/",
           ],
-          "podcast:episode": 662,
+          "podcast:episode": {
+            "#text": 662,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia662.jpg 1400w",
@@ -2889,7 +2959,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/661/",
           ],
-          "podcast:episode": 661,
+          "podcast:episode": {
+            "#text": 661,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia661.jpg 1400w",
@@ -2935,7 +3007,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/660/",
           ],
-          "podcast:episode": 660,
+          "podcast:episode": {
+            "#text": 660,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia660.jpg 1400w",
@@ -2981,7 +3055,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/659/",
           ],
-          "podcast:episode": 659,
+          "podcast:episode": {
+            "#text": 659,
+          },
           "podcast:images": {
             "@": {
               "srcset": "https://cdn.dgt.fm/digitalia659.jpg 1400w",
@@ -3027,7 +3103,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/658",
           ],
-          "podcast:episode": 658,
+          "podcast:episode": {
+            "#text": 658,
+          },
           "podcast:images": {
             "@": {
               "srcset": "http://cdn.dgt.fm/digitalia658.jpg 1400w",
@@ -3074,7 +3152,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/657/",
           ],
-          "podcast:episode": 657,
+          "podcast:episode": {
+            "#text": 657,
+          },
           "podcast:images": {
             "@": {
               "srcset": "http://cdn.dgt.fm/digitalia657.jpg 1400w",
@@ -3109,7 +3189,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/656/",
           ],
-          "podcast:episode": 656,
+          "podcast:episode": {
+            "#text": 656,
+          },
           "pubDate": "Mon, 16 Jan 2023 23:48:49 +0100",
           "title": " Digitalia #656 - Tagliare l'erba nei campi digitali ",
         },
@@ -3139,7 +3221,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/655/",
           ],
-          "podcast:episode": 655,
+          "podcast:episode": {
+            "#text": 655,
+          },
           "pubDate": "Tue, 10 Jan 2023 00:00:32 +0100",
           "title": "Digitalia #655 - Sfonda la sbarra",
         },
@@ -3169,7 +3253,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/654",
           ],
-          "podcast:episode": 654,
+          "podcast:episode": {
+            "#text": 654,
+          },
           "pubDate": "Mon, 19 Dec 2022 23:50:56 +0100",
           "title": "Digitalia #654 - Il consolador umano",
         },
@@ -3199,7 +3285,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/653/",
           ],
-          "podcast:episode": 653,
+          "podcast:episode": {
+            "#text": 653,
+          },
           "pubDate": "Tue, 13 Dec 2022 00:06:16 +0100",
           "title": "Digitalia #653 - Mean time to disillusion",
         },
@@ -3229,7 +3317,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/652/",
           ],
-          "podcast:episode": 652,
+          "podcast:episode": {
+            "#text": 652,
+          },
           "pubDate": "Mon, 05 Dec 2022 23:48:38 +0100",
           "title": "Digitalia #652 - Segue dibattito",
         },
@@ -3259,7 +3349,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/651/",
           ],
-          "podcast:episode": 651,
+          "podcast:episode": {
+            "#text": 651,
+          },
           "pubDate": "Mon, 28 Nov 2022 23:45:47 +0100",
           "title": " Digitalia #651 - Elon alle porte dell'inferno ",
         },
@@ -3288,7 +3380,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/650/",
           ],
-          "podcast:episode": 650,
+          "podcast:episode": {
+            "#text": 650,
+          },
           "pubDate": "Mon, 21 Nov 2022 23:52:15 +0100",
           "title": "Digitalia #650 - Quando torneremo a comprare carta igienica",
         },
@@ -3318,7 +3412,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/649/",
           ],
-          "podcast:episode": 649,
+          "podcast:episode": {
+            "#text": 649,
+          },
           "pubDate": "Tue, 15 Nov 2022 00:09:25 +0100",
           "title": "Digitalia #649 - Filetto di panda",
         },
@@ -3349,7 +3445,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/648/",
           ],
-          "podcast:episode": 648,
+          "podcast:episode": {
+            "#text": 648,
+          },
           "pubDate": "Mon, 07 Nov 2022 23:48:16 +0100",
           "title": "Digitalia #648 - A Roma si dice come dico io",
         },
@@ -3379,7 +3477,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/647/",
           ],
-          "podcast:episode": 647,
+          "podcast:episode": {
+            "#text": 647,
+          },
           "pubDate": "Tue, 01 Nov 2022 00:30:33 +0100",
           "title": "Digitalia #647 - Speciale Machine Learning",
         },
@@ -3409,7 +3509,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/646/",
           ],
-          "podcast:episode": 646,
+          "podcast:episode": {
+            "#text": 646,
+          },
           "pubDate": "Mon, 24 Oct 2022 23:39:00 +0200",
           "title": "Digitalia #646 - La postilla di Solerio",
         },
@@ -3437,7 +3539,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/645/",
           ],
-          "podcast:episode": 645,
+          "podcast:episode": {
+            "#text": 645,
+          },
           "pubDate": "Tue, 18 Oct 2022 19:02:40 +0200",
           "title": "Digitalia #645 - Oggi lavoro due giorni in più",
         },
@@ -3466,7 +3570,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/644/",
           ],
-          "podcast:episode": 644,
+          "podcast:episode": {
+            "#text": 644,
+          },
           "pubDate": "Tue, 11 Oct 2022 07:56:56 +0200",
           "title": "Digitalia #644 - Il Metaverso è dentro di te",
         },
@@ -3496,7 +3602,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/643/",
           ],
-          "podcast:episode": 643,
+          "podcast:episode": {
+            "#text": 643,
+          },
           "pubDate": "Mon, 03 Oct 2022 23:43:22 +0200",
           "title": "Digitalia #643 - Vado a farmi su DALL-E",
         },
@@ -3526,7 +3634,9 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
           "link": [
             "http://digitalia.fm/642/",
           ],
-          "podcast:episode": 642,
+          "podcast:episode": {
+            "#text": 642,
+          },
           "pubDate": "Mon, 26 Sep 2022 23:37:38 +0200",
           "title": "Digitalia #642 - Google come Maradona",
         },
@@ -3775,8 +3885,12 @@ exports[`PodcastConverter Should correctly serialize a "gitbar" with required fi
           "link": [
             "https://www.spreaker.com/user/brainrepo/ep174-the-vercel-drama",
           ],
-          "podcast:episode": 174,
-          "podcast:season": 4,
+          "podcast:episode": {
+            "#text": 174,
+          },
+          "podcast:season": {
+            "#text": 4,
+          },
           "pubDate": "Thu, 19 Oct 2023 05:42:10 +0000",
           "title": "Ep.174 - The vercel drama",
         },
