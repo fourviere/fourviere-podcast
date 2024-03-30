@@ -124,6 +124,22 @@ export default function General() {
           width: "1",
           style: "sm",
         },
+        {
+          id: "rss.channel.podcast:license.#text",
+          name: "rss.channel.podcast:license.#text",
+          label: t("ownership.fields.license.label"),
+          type: "text",
+          component: "input",
+          width: "1/2",
+        },
+        {
+          id: "rss.channel.podcast:license.@.url",
+          name: "rss.channel.podcast:license.@.url",
+          label: t("ownership.fields.license_url.label"),
+          type: "text",
+          component: "input",
+          width: "1/2",
+        },
       ],
     },
     {

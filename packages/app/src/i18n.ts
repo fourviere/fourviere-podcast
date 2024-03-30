@@ -155,6 +155,8 @@ const resources = {
               webmaster: { label: "Webmaster" },
               managingEditor: { label: "Managing editor" },
               copyright: { label: "Copyright" },
+              license: { label: "License" },
+              license_url: { label: "License url" },
             },
           },
           category: {
@@ -320,7 +322,10 @@ const resources = {
             fields: {
               title: { label: "Title" },
               guid: { label: "GUID" },
-
+              season_name: { label: "Season name" },
+              season_number: { label: "Season number" },
+              episode_display: { label: "Episode display" },
+              episode_number: { label: "Episode number" },
               itunes_duration: { label: "Duration" },
               description: { label: "Episode description" },
             },
@@ -331,6 +336,8 @@ const resources = {
               "This area will contain additional fields necessary for give more information about the episode",
             fields: {
               author: { label: "Author" },
+              license: { label: "License" },
+              license_url: { label: "License url" },
             },
           },
           image: {

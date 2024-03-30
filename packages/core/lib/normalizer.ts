@@ -105,10 +105,10 @@ function normalizeSeasonEpisode(data: unknown): unknown {
       const dd = {
         ...(value as Record<string, unknown>),
         ...(value["itunes:season"]
-          ? { "podcast:season": value["itunes:season"] }
+          ? { "podcast:season": { "#text": value["itunes:season"] } }
           : undefined),
         ...(value["itunes:episode"]
-          ? { "podcast:episode": value["itunes:episode"] }
+          ? { "podcast:episode": { "#text": value["itunes:episode"] } }
           : undefined),
       };
       //itunes:season and itunes:episode are not valid in the final feed
