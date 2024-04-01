@@ -30,7 +30,7 @@ pub struct WuerstchenConf {
     negative_prompt: Option<String>,
     width: Option<usize>,
     height: Option<usize>,
-    sliced_attention_size: Option<usize>,
+    prior_guidance_scale: Option<f64>,
     n_steps: Option<usize>,
     num_samples: Option<i64>,
 
@@ -54,8 +54,8 @@ impl From<WuerstchenConf> for WuerstchenInferenceSettings {
             settings = settings.with_height(height);
         }
 
-        if let Some(sliced_attention_size) = value.sliced_attention_size {
-            settings = settings.with_sliced_attention_size(sliced_attention_size);
+        if let Some(prior_guidance_scale) = value.prior_guidance_scale {
+            settings = settings.with_prior_guidance_scale(prior_guidance_scale);
         }
 
         if let Some(n_steps) = value.n_steps {
@@ -146,12 +146,13 @@ mod test {
     #[tokio::test(flavor = "multi_thread")]
     async fn simple_diffusion_test() {
         let conf = WuerstchenConf {
-            prompt: "An hipster Pikachu".to_owned(),
+            prompt: "a cute cat with a hat in a room covered with fur with incredible detail"
+                .to_owned(),
             flash_attn: false,
             negative_prompt: None,
-            width: Some(32),
-            height: Some(32),
-            sliced_attention_size: Some(128),
+            width: Some(256),
+            height: Some(256),
+            prior_guidance_scale: None,
             n_steps: Some(1),
             dest_path: images_app_folder(),
             num_samples: Some(1),
@@ -171,7 +172,10 @@ mod test {
                     Event::DownloadProgress { file, progress } => {
                         println!("Downloading {file}: {progress}%");
                     }
-                    Event::DiffusionImages { .. } => {
+                    Event::DiffusionImages(data) => {
+                        for image in data {
+                            println!("{image:?}");
+                        }
                         test_diffusion = true;
                     }
                     _ => (),
