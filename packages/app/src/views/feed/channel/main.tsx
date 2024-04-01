@@ -174,18 +174,20 @@ export default function General() {
               item: Item;
             }>
               labels={{ noEpisodes: t("episodes.no_episodes") }}
-              items={currentFeed?.feed.rss.channel.item?.map((e, index) => ({
-                key: e.guid["#text"],
-                item: e,
-                openBasicDetails: () => {
-                  setItemGeneralModal(true);
-                  setCurrentEpisodeIndex(index);
-                },
-                openValueToValue: () => {
-                  setItemValueForValueModal(true);
-                  setCurrentEpisodeIndex(index);
-                },
-              }))}
+              items={currentFeed?.feed.rss.channel.item?.map((e, index) => {
+                return {
+                  key: e.guid["#text"],
+                  item: e,
+                  openBasicDetails: () => {
+                    setItemGeneralModal(true);
+                    setCurrentEpisodeIndex(index);
+                  },
+                  openValueToValue: () => {
+                    setItemValueForValueModal(true);
+                    setCurrentEpisodeIndex(index);
+                  },
+                };
+              })}
               keyProperty={"key"}
               elementsPerPage={3}
               itemElement={HCard}

@@ -120,6 +120,20 @@ function normalizeSeasonEpisode(data: unknown): unknown {
   return d;
 }
 
+function normalizePodcastBlock(data: unknown): unknown {
+  const d = data;
+  jsonpath.apply(data, `rss.channel["podcast:block"].*`, (value) => {
+    console.log("value", value);
+    if (typeof value === "string") {
+      return {
+        "#text": value,
+      };
+    }
+    return value as unknown;
+  });
+  return d;
+}
+
 function normalizeNamespaces(data: unknown): Feed {
   //check if minimal namespace are there and inject the basic ones
   const d = data as Feed;
@@ -177,5 +191,6 @@ export function normalize(data: unknown): unknown {
   data = normalizeGuid(data);
   data = normalizeSeasonEpisode(data);
   data = normalizeNamespaces(data);
+  data = normalizePodcastBlock(data);
   return data;
 }

@@ -3569,7 +3569,11 @@ exports[`PodcastConverter Should correctly serialize a "digitalia" with required
         },
       ],
       "managingEditor": "franco@digitalia.fm (Franco Solerio)",
-      "podcast:block": "no",
+      "podcast:block": [
+        {
+          "#text": "no",
+        },
+      ],
       "podcast:complete": "no",
       "podcast:guid": "6e5c2b93-276c-5ded-82c1-2ea3a6068eab",
       "podcast:images": {
@@ -19714,7 +19718,9 @@ exports[`PodcastConverter Should correctly serialize a "podcast20" with required
       ],
       "managingEditor": "adam@curry.com (Adam Curry)",
       "podcast:block": [
-        "no",
+        {
+          "#text": "no",
+        },
         {
           "#text": "yes",
           "@": {
