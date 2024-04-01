@@ -188,12 +188,14 @@ const resources = {
             },
           },
           access_rights: {
-            title: "Access rights",
+            title: "Import rights",
             description:
-              "Locked: The purpose is to tell other podcast hosting platforms whether they are allowed to import this feed. A value of yes means that any attempt to import this feed into a new platform should be rejected",
+              "The purpose is to tell podcast hosting platforms whether they are allowed to import this feed. A value of yes means that any attempt to import this feed into a new platform should be rejected",
             fields: {
               locked: { label: "Locked" },
               locked_owner: { label: "Locked owner" },
+              block: { label: "Block" },
+              block_id: { label: "Provider blocked" },
             },
           },
         },

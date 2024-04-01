@@ -315,11 +315,11 @@ export default function General() {
         {
           id: "rss.channel.podcast:block",
           name: "rss.channel.podcast:block",
-          label: t("access_rights.fields.block.label"),
+          label: "",
           component: "array",
           width: "1",
           style: "sm",
-          defaultItem: { day: "Monday" },
+          defaultItem: { "#text": "yes", "@": { id: "" } },
           childrenFields: [
             {
               id: "#text",
