@@ -6,7 +6,11 @@ import Image from "@fourviere/ui/lib/image";
 import Grid from "@fourviere/ui/lib/layouts/grid";
 import { motion, AnimatePresence } from "framer-motion";
 import TileButton from "@fourviere/ui/lib/buttons/tile-button";
-import { PaintBrushIcon, TrashIcon } from "@heroicons/react/24/outline";
+import {
+  BanknotesIcon,
+  PaintBrushIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline";
 import AudioPlayer from "react-h5-audio-player";
 import "../styles/audio.css";
 import { Item } from "@fourviere/core/lib/schema/item";
@@ -23,6 +27,7 @@ type Extend = React.HTMLAttributes<HTMLDivElement> &
 interface EpisodeCardProps extends Extend {
   item: Item;
   openBasicDetails: (index: number) => void;
+  openValueToValue: (index: number) => void;
   index: number;
   as: React.ElementType;
 }
@@ -30,6 +35,7 @@ interface EpisodeCardProps extends Extend {
 const EpisodeCard: React.FC<EpisodeCardProps> = ({
   item,
   openBasicDetails,
+  openValueToValue,
   index,
   as = "div",
 }) => {
@@ -107,6 +113,11 @@ const EpisodeCard: React.FC<EpisodeCardProps> = ({
                   icon={PaintBrushIcon}
                   title={tButtons("item_buttons.presentation")}
                   onClick={() => openBasicDetails(index)}
+                />
+                <TileButton
+                  icon={BanknotesIcon}
+                  title={tButtons("item_buttons.value_4_value")}
+                  onClick={() => openValueToValue(index)}
                 />
                 <TileButton
                   theme="error"

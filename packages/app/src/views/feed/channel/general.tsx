@@ -11,12 +11,14 @@ import { v4 as uuidv4 } from "uuid";
 import { Feed } from "@fourviere/core/lib/schema/feed";
 import PODCAST_CATEGORIES from "@fourviere/core/lib/podcast-namespace/categories";
 import { ItunesChannelSchema } from "@fourviere/core/lib/schema/itunes/channel";
+import { PodcastChannelSchema } from "@fourviere/core/lib/schema/podcasting/channel";
 
 const payloadSchema = Type.Object({
   rss: Type.Object({
     channel: Type.Intersect([
       Type.Omit(RSSChannelSchema, ["pubDate", "lastBuildDate"]),
       Type.Pick(ItunesChannelSchema, ['"itunes:type"', '"itunes:explicit"']),
+      Type.Pick(PodcastChannelSchema, ["podcast:medium"]),
     ]),
   }),
 });
@@ -84,6 +86,29 @@ export default function General() {
           label: t("presentation_tags.fields.explicit.label"),
           component: "select",
           options: { yes: "Yes", no: "No" },
+          width: "1/2",
+        },
+        {
+          id: "rss.channel.podcast:medium",
+          name: "rss.channel.podcast:medium",
+          label: t("presentation_tags.fields.medium.label"),
+          component: "select",
+          options: {
+            podcast: "Podcast",
+            music: "Music",
+            video: "Video",
+            film: "Film",
+            audioBook: "AudioBook",
+            newsletter: "Newsletter",
+            blog: "Blog",
+            podcastL: "Podcast List",
+            musicL: "Music List",
+            videoL: "Video List",
+            filmL: "Film List",
+            audioBookL: "AudioBook List",
+            newsletterL: "Newsletter List",
+            blogL: "Blog List",
+          },
           width: "1/2",
         },
         {
@@ -264,6 +289,55 @@ export default function General() {
           width: "1",
           style: "sm",
           type: "number",
+        },
+      ],
+    },
+    {
+      title: t("access_rights.title"),
+      description: t("access_rights.description"),
+      fields: [
+        {
+          id: "rss.channel.podcast:locked.#text",
+          name: "rss.channel.podcast:locked.#text",
+          label: t("access_rights.fields.locked.label"),
+          component: "select",
+          options: { yes: "Yes", no: "No" },
+          width: "1/2",
+        },
+        {
+          id: "rss.channel.podcast:locked.@.owner",
+          name: "rss.channel.podcast:locked.@.owner",
+          label: t("access_rights.fields.locked_owner.label"),
+          component: "input",
+          style: "sm",
+          width: "1/2",
+        },
+        {
+          id: "rss.channel.podcast:block",
+          name: "rss.channel.podcast:block",
+          label: "",
+          component: "array",
+          width: "1",
+          style: "sm",
+          defaultItem: { "#text": "yes", "@": { id: "" } },
+          childrenFields: [
+            {
+              id: "#text",
+              name: "#text",
+              label: t("access_rights.fields.block.label"),
+              component: "select",
+              options: { yes: "Yes", no: "No" },
+              width: "1/2",
+            },
+            {
+              id: "@.id",
+              name: "@.id",
+              label: t("access_rights.fields.block_id.label"),
+              component: "input",
+              style: "sm",
+              width: "1/2",
+            },
+          ],
         },
       ],
     },

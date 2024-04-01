@@ -59,6 +59,7 @@ const Select: React.ComponentType<
           style && STYLES[style],
         )}
       >
+        <option key=""></option>
         {options &&
           Object.entries(_options)?.map(([key, value]) => (
             <option value={key} key={key}>
