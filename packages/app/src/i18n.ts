@@ -145,6 +145,7 @@ const resources = {
               language: { label: "Language" },
               type: { label: "Show type" },
               explicit: { label: "Explicit" },
+              medium: { label: "Medium" },
             },
           },
           ownership: {
@@ -184,6 +185,15 @@ const resources = {
               skipHours: { label: "Skip hours" },
               skipDays: { label: "Skip days" },
               ttl: { label: "TTL" },
+            },
+          },
+          access_rights: {
+            title: "Access rights",
+            description:
+              "Locked: The purpose is to tell other podcast hosting platforms whether they are allowed to import this feed. A value of yes means that any attempt to import this feed into a new platform should be rejected",
+            fields: {
+              locked: { label: "Locked" },
+              locked_owner: { label: "Locked owner" },
             },
           },
         },
