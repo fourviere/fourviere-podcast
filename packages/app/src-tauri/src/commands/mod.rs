@@ -1,3 +1,4 @@
+pub mod accelerator;
 pub mod common;
 pub mod diffusion;
 pub mod ffmpeg;

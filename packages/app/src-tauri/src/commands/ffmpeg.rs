@@ -7,36 +7,6 @@ use tauri::api::process::{Command, CommandEvent};
 
 use crate::{log_if_error_and_return, utils::result::Result};
 
-#[named]
-#[tauri::command]
-pub async fn get_audio_duration_secs(path: &Path) -> Result<f64> {
-    let json = raw_ffprobe_call(path).await;
-    log_if_error_and_return!(&json);
-    let outuput = serde_json::from_str::<FFProbeOutput>(&json?);
-    log_if_error_and_return!(&outuput);
-    Ok(outuput?.format.duration)
-}
-
-async fn raw_ffprobe_call(path: &Path) -> Result<String> {
-    let mut json_data = String::new();
-    let sidecar = Command::new_sidecar("ffprobe")?.args([
-        "-v",
-        "quiet",
-        "-print_format",
-        "json",
-        "-show_format",
-        "-show_streams",
-        path.to_str().unwrap_or(""),
-    ]);
-    let (mut rx, _) = sidecar.spawn()?;
-    while let Some(event) = rx.recv().await {
-        if let CommandEvent::Stdout(line) = event {
-            json_data += &line;
-        }
-    }
-    Ok(json_data)
-}
-
 /* Structure is intentionally incomplete.
    Fields will be added whenever necessary
 */
@@ -62,4 +32,58 @@ struct Format {
     #[serde(deserialize_with = "deserialize_number_from_string")]
     bit_rate: usize,
     probe_score: u8,
+}
+
+#[named]
+#[tauri::command]
+pub async fn get_audio_duration_secs(path: &Path) -> Result<f64> {
+    let args = [
+        "-v",
+        "quiet",
+        "-print_format",
+        "json",
+        "-show_format",
+        "-show_streams",
+        path.to_str().unwrap_or(""),
+    ];
+    let json = raw_ffprobe_call(args).await;
+    log_if_error_and_return!(&json);
+    let outuput = serde_json::from_str::<FFProbeOutput>(&json?);
+    log_if_error_and_return!(&outuput);
+    Ok(outuput?.format.duration)
+}
+
+async fn raw_ffprobe_call<I, S>(args: I) -> Result<String>
+where
+    I: IntoIterator<Item = S>,
+    S: AsRef<str>,
+{
+    let mut json_data = String::new();
+    let sidecar = Command::new_sidecar("ffprobe")?.args(args);
+    let (mut rx, _) = sidecar.spawn()?;
+    while let Some(event) = rx.recv().await {
+        if let CommandEvent::Stdout(line) = event {
+            json_data += &line;
+        }
+    }
+    Ok(json_data)
+}
+
+#[cfg(test)]
+mod test {
+    use std::path::PathBuf;
+
+    use crate::{
+        commands::ffmpeg::get_audio_duration_secs, test_file,
+        utils::test::test_utility::copy_binary_to_deps,
+    };
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn test_ffprobe_duration() {
+        copy_binary_to_deps("ffprobe").unwrap();
+        let path = PathBuf::from(test_file!("gitbar_189_110_secs.mp3"));
+        let result = get_audio_duration_secs(&path).await;
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap(), 110.968163)
+    }
 }
