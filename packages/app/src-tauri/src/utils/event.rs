@@ -4,6 +4,7 @@ use std::{
         atomic::{AtomicU8, Ordering},
         Arc,
     },
+    time::Duration,
 };
 
 use serde::{Deserialize, Serialize};
@@ -28,9 +29,11 @@ pub enum Event {
     DiffusionImages(Vec<PathBuf>),
     TranscriptionSegment {
         text: String,
-        offset: f64,
-        duration: f64,
         probability_of_no_speech: f64,
+        offset: f64,
+        duration_secs: f64,
+        #[serde(with = "humantime_serde")]
+        remaining_time: Duration,
     },
 }
 

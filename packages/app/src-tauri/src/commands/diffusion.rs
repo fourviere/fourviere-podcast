@@ -150,10 +150,10 @@ mod test {
                 .to_owned(),
             flash_attn: false,
             negative_prompt: None,
-            width: Some(256),
-            height: Some(256),
+            width: Some(1024),
+            height: Some(1024),
             prior_guidance_scale: None,
-            n_steps: Some(1),
+            n_steps: None,
             dest_path: images_app_folder(),
             num_samples: Some(1),
         };
