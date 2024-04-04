@@ -1,7 +1,7 @@
 use serde::Serialize;
 
 #[allow(dead_code)]
-#[derive(Serialize)]
+#[derive(Debug, Serialize)]
 pub enum Accelerator {
     None,
     Cuda,
@@ -11,14 +11,17 @@ pub enum Accelerator {
 
 #[tauri::command]
 pub async fn get_accelerator() -> Accelerator {
-    #[cfg(feature = "cuda")]
-    return Accelerator::Cuda;
+    if cfg!(feature = "cuda") {
+        return Accelerator::Cuda;
+    }
 
-    #[cfg(feature = "metal")]
-    return Accelerator::Metal;
+    if cfg!(feature = "metal") {
+        return Accelerator::Metal;
+    }
 
-    #[cfg(feature = "mkl")]
-    return Accelerator::Mkl;
+    if cfg!(feature = "mkl") {
+        return Accelerator::Mkl;
+    }
 
     Accelerator::None
 }

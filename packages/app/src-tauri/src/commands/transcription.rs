@@ -120,7 +120,7 @@ mod test {
     use std::path::PathBuf;
 
     use crate::{
-        commands::common::build_local_channel,
+        commands::{accelerator::get_accelerator, common::build_local_channel},
         test_file,
         utils::{
             event::{Command, Event},
@@ -140,6 +140,9 @@ mod test {
         };
 
         copy_binary_to_deps("ffprobe").unwrap();
+
+        let accelerator = get_accelerator().await;
+        println!("Using {accelerator:?} library");
 
         let (producer, receiver, mut rx_event, tx_command) = build_local_channel();
         let _ = tx_command.send(Command::Start).await;

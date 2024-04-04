@@ -134,6 +134,7 @@ mod test {
 
     use crate::{
         commands::{
+            accelerator::get_accelerator,
             common::build_local_channel,
             diffusion::{images_app_folder, wuerstchen_diffusion_internal},
         },
@@ -157,6 +158,9 @@ mod test {
             dest_path: images_app_folder(),
             num_samples: Some(1),
         };
+
+        let accelerator = get_accelerator().await;
+        println!("Using {accelerator:?} library");
 
         let (producer, receiver, mut rx_event, tx_command) = build_local_channel();
         let _ = tx_command.send(Command::Start).await;
