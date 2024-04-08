@@ -26,7 +26,11 @@ pub enum Event {
     DeltaProgress(u8),
     Progress(u8),
     FileResult(crate::commands::common::RemoteFileInfo),
-    DiffusionImages(Vec<PathBuf>),
+    DiffusionImage {
+        image: PathBuf,
+        #[serde(with = "humantime_serde")]
+        remaining_time: Duration,
+    },
     TranscriptionSegment {
         text: String,
         probability_of_no_speech: f64,

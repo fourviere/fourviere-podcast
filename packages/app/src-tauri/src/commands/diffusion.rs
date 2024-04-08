@@ -5,7 +5,7 @@ use kalosm_vision::{Wuerstchen, WuerstchenInferenceSettings};
 use serde::Deserialize;
 use tauri::AppHandle;
 use tauri_plugin_channel::Channel;
-use tokio::{select, spawn, task::spawn_blocking};
+use tokio::{select, spawn, sync::mpsc};
 use tokio_util::sync::CancellationToken;
 use uuid::Uuid;
 
@@ -31,8 +31,7 @@ pub struct WuerstchenConf {
     width: Option<usize>,
     height: Option<usize>,
     prior_guidance_scale: Option<f64>,
-    n_steps: Option<usize>,
-    num_samples: Option<i64>,
+    sample_count: Option<i64>,
 
     #[serde(skip_deserializing, default = "images_app_folder")]
     dest_path: PathBuf,
@@ -58,12 +57,8 @@ impl From<WuerstchenConf> for WuerstchenInferenceSettings {
             settings = settings.with_prior_guidance_scale(prior_guidance_scale);
         }
 
-        if let Some(n_steps) = value.n_steps {
-            settings = settings.with_n_steps(n_steps);
-        }
-
-        if let Some(num_samples) = value.num_samples {
-            settings = settings.with_num_samples(num_samples);
+        if let Some(sample_count) = value.sample_count {
+            settings = settings.with_sample_count(sample_count);
         }
 
         settings
@@ -85,7 +80,7 @@ async fn wuerstchen_diffusion_internal(
     receiver: CommandReceiver,
 ) -> Result<()> {
     receiver.started().await;
-
+    let (tx, mut rx) = mpsc::unbounded_channel();
     let path = conf.dest_path.clone();
     let model = Wuerstchen::builder()
         .with_flash_attn(conf.flash_attn)
@@ -93,30 +88,41 @@ async fn wuerstchen_diffusion_internal(
         .await
         .map_err(|_| Error::Wuerstchen)?;
 
-    producer.send(Ok(Event::Working)).await;
-
     spawn(async move {
+        producer.send(Ok(Event::Working)).await;
         let canc_token: CancellationToken = receiver.into();
-        let handle = spawn_blocking(move || model.run(conf.into()));
-        let abort_handle = handle.abort_handle();
-        select! {
-            _ = canc_token.cancelled() => {
-                abort_handle.abort();
-            }
-            res = handle => {
-                match res {
-                    Ok(Ok(images)) => {
-                        let paths = images.iter().map(|img| {
-                            let mut path = path.clone();
-                            let uuid = Uuid::new_v4();
-                            path.push(format!("{uuid}.png"));
-                            let _ = img.save(&path);
-                            path
-                        }).collect();
-                        producer.send(Ok(Event::DiffusionImages(paths))).await
-                    },
-                    Err(_) => producer.send(Err(Error::Aborted)).await,
-                    _ => producer.send(Err(Error::Wuerstchen)).await,
+        if let Err(err) = model
+            .run_into(conf.into(), tx)
+            .map_err(|_| Error::Wuerstchen)
+        {
+            producer.send(Err(err)).await;
+            canc_token.cancel();
+        }
+
+        loop {
+            select! {
+                _ = canc_token.cancelled() => {
+                    producer.send(Err(Error::Aborted)).await;
+                    break
+                }
+                res = rx.recv() => {
+                    match res {
+                        Some(data) => {
+                            if let Some(img) = data.generated_image() {
+                                let progress = u8::min((data.progress() * 100.).floor() as u8, 100);
+                                let mut path = path.clone();
+                                let uuid = Uuid::new_v4();
+                                path.push(format!("{uuid}.png"));
+                                let _ = img.save(&path);
+                                producer.send(Ok(Event::DeltaProgress(progress))).await;
+                                producer.send(Ok(Event::DiffusionImage{ image: path, remaining_time: data.remaining_time()})).await
+                            }
+                        },
+                        None => {
+                            producer.send(Ok(Event::Progress(100))).await;
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -154,9 +160,8 @@ mod test {
             width: Some(1024),
             height: Some(1024),
             prior_guidance_scale: None,
-            n_steps: None,
             dest_path: images_app_folder(),
-            num_samples: Some(1),
+            sample_count: Some(1),
         };
 
         let accelerator = get_accelerator().await;
@@ -176,10 +181,8 @@ mod test {
                     Event::DownloadProgress { file, progress } => {
                         println!("Downloading {file}: {progress}%");
                     }
-                    Event::DiffusionImages(data) => {
-                        for image in data {
-                            println!("{image:?}");
-                        }
+                    Event::DiffusionImage { image, .. } => {
+                        println!("{image:?}");
                         test_diffusion = true;
                     }
                     _ => (),
