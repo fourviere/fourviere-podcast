@@ -1,10 +1,7 @@
 use ::function_name::named;
-use get_chunk::{
-    data_size_format::si::{SISize, SIUnit},
-    stream::{FileStream, StreamExt},
-};
+use get_chunk::stream::{FileStream, StreamExt};
 use serde::Deserialize;
-use std::str;
+use std::{io, net::ToSocketAddrs, str, time::Duration};
 use suppaftp::{types::FileType, AsyncFtpStream, Mode};
 use tauri::AppHandle;
 use tauri_plugin_channel::Channel;
@@ -31,8 +28,20 @@ struct FtpConnection {
 
 impl FtpConnection {
     async fn connect(&self) -> Result<AsyncFtpStream> {
-        let addr = format!("{}:{}", self.host, self.port);
-        let mut ftp_stream = AsyncFtpStream::connect(addr).await?;
+        let addr = format!("{}:{}", self.host, self.port)
+            .to_socket_addrs()?
+            .next()
+            .ok_or_else(|| {
+                io::Error::new(
+                    io::ErrorKind::AddrNotAvailable,
+                    format!(
+                        "Could not find destination address for {}:{}",
+                        self.host, self.port
+                    ),
+                )
+            })?;
+
+        let mut ftp_stream = AsyncFtpStream::connect_timeout(addr, Duration::from_secs(10)).await?;
         ftp_stream.login(&self.user, &self.password).await?;
 
         // As default set the FTP connection to passive mode
@@ -120,24 +129,22 @@ async fn ftp_upload_progress_task(
 
     // Trasfer phase: 80-88%
 
-    let min_chunck_size = SIUnit::new(6., SISize::Megabyte);
-    let mut file_stream = FileStream::new(local_path)
-        .await?
-        .set_mode(get_chunk::ChunkSize::Bytes(min_chunck_size.into()));
+    let mut file_stream = FileStream::new(local_path).await?;
 
     let mut writer = ftp_stream.put_with_stream(filename).await?.compat_write();
 
-    let chunk_number = <SIUnit as Into<f64>>::into(
-        SIUnit::auto(file_stream.get_file_size()) / min_chunck_size.into(),
-    )
-    .ceil() as u16;
-    let delta_progress = 80 / (chunk_number) as u8;
+    let mut temp_progress: i32 = 0;
+    let temp_progress_max: i32 = file_stream.get_file_size() as i32 / 80;
 
     while let Ok(Some(chunk)) = file_stream.try_next().await {
         select! {
             res = writer.write_all(&chunk) => {
+                temp_progress += 1;
+                if temp_progress == temp_progress_max {
+                    temp_progress = 0;
+                    event_producer.send(Ok(Event::DeltaProgress(1 as u8))).await;
+                }
                 res?;
-                event_producer.send(Ok(Event::DeltaProgress(delta_progress))).await;
             },
             _ = receiver.cancelled() => {
                 let _ = ftp_stream.abort(writer.into_inner()).await;
@@ -252,7 +259,7 @@ mod test {
         let port = 2121;
         let uploadable_conf = UploadableConf {
             connection: FtpConnection {
-                host: "localhost".to_owned(),
+                host: "127.0.0.1".to_owned(),
                 port,
                 user: USER.to_owned(),
                 password: PASSWORD.to_owned(),
@@ -274,6 +281,7 @@ mod test {
         sleep(Duration::from_secs(2)).await;
 
         let info_result = ftp_upload(uploadable_conf).await;
+        print!("{:?}", info_result);
         assert!(info_result.is_ok());
         let file_info = info_result.unwrap();
         assert_eq!(file_info.size(), &FILESIZE);
@@ -377,7 +385,7 @@ mod test {
         let port = 2125;
         let uploadable_conf = UploadableConf {
             connection: FtpConnection {
-                host: "localhost".to_owned(),
+                host: "127.0.0.1".to_owned(),
                 port,
                 user: USER.to_owned(),
                 password: PASSWORD.to_owned(),
