@@ -119,6 +119,8 @@ fn load_audio(path: &Path) -> Result<Decoder<BufReader<File>>> {
 mod test {
     use std::path::PathBuf;
 
+    use tokio::spawn;
+
     use crate::{
         commands::{accelerator::get_accelerator, common::build_local_channel},
         test_file,
@@ -146,9 +148,12 @@ mod test {
 
         let (producer, receiver, mut rx_event, tx_command) = build_local_channel();
         let _ = tx_command.send(Command::Start).await;
-        assert!(whisper_transcriber_internal(conf, producer, receiver)
-            .await
-            .is_ok());
+        spawn(async move {
+            assert!(whisper_transcriber_internal(conf, producer, receiver)
+                .await
+                .is_ok())
+        });
+
         let mut test_transcription = false;
         let mut test_100 = false;
         while let Some(transcribed) = rx_event.recv().await {

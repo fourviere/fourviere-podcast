@@ -182,7 +182,10 @@ pub fn build_loading_handler(
     let producer_download = producer.clone();
 
     move |data| {
-        if let ModelLoadingProgress::Downloading { source, progress } = data {
+        if let ModelLoadingProgress::Downloading {
+            source, progress, ..
+        } = data
+        {
             let progress = (progress * 100.).ceil() as u8;
             if last_progress != progress {
                 last_progress = progress;
