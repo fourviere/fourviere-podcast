@@ -55,18 +55,24 @@ async fn whisper_transcriber_internal(
     let (tx, mut rx) = mpsc::unbounded_channel();
     receiver.started().await;
 
-    let whisper = Whisper::builder()
-        .with_language(Some(conf.language))
-        .with_source(conf.model)
-        .build_with_loading_handler(build_loading_handler(&producer))
-        .await
-        .map_err(|_| Error::Whisper)?;
-
     spawn(async move {
+        let whisper = Whisper::builder()
+            .with_language(Some(conf.language))
+            .with_source(conf.model)
+            .build_with_loading_handler(build_loading_handler(&producer))
+            .await
+            .map_err(|_| Error::Whisper);
+
+        if let Err(err) = whisper {
+            producer.send(Err(err)).await;
+            return;
+        }
+
         producer.send(Ok(Event::Progress(0))).await;
         let canc_token: CancellationToken = receiver.into();
 
         if let Err(err) = whisper
+            .unwrap()
             .transcribe_into(audio, tx)
             .map_err(|_| Error::Whisper)
         {
@@ -119,8 +125,6 @@ fn load_audio(path: &Path) -> Result<Decoder<BufReader<File>>> {
 mod test {
     use std::path::PathBuf;
 
-    use tokio::spawn;
-
     use crate::{
         commands::{accelerator::get_accelerator, common::build_local_channel},
         test_file,
@@ -148,11 +152,10 @@ mod test {
 
         let (producer, receiver, mut rx_event, tx_command) = build_local_channel();
         let _ = tx_command.send(Command::Start).await;
-        spawn(async move {
-            assert!(whisper_transcriber_internal(conf, producer, receiver)
-                .await
-                .is_ok())
-        });
+
+        assert!(whisper_transcriber_internal(conf, producer, receiver)
+            .await
+            .is_ok());
 
         let mut test_transcription = false;
         let mut test_100 = false;

@@ -82,16 +82,24 @@ async fn wuerstchen_diffusion_internal(
     receiver.started().await;
     let (tx, mut rx) = mpsc::unbounded_channel();
     let path = conf.dest_path.clone();
-    let model = Wuerstchen::builder()
-        .with_flash_attn(conf.flash_attn)
-        .build_with_loading_handler(build_loading_handler(&producer))
-        .await
-        .map_err(|_| Error::Wuerstchen)?;
 
     spawn(async move {
+        let model = Wuerstchen::builder()
+            .with_flash_attn(conf.flash_attn)
+            .build_with_loading_handler(build_loading_handler(&producer))
+            .await
+            .map_err(|_| Error::Wuerstchen);
+
+        if let Err(err) = model {
+            producer.send(Err(err)).await;
+            return;
+        }
+
         producer.send(Ok(Event::Working)).await;
         let canc_token: CancellationToken = receiver.into();
+
         if let Err(err) = model
+            .unwrap()
             .run_into(conf.into(), tx)
             .map_err(|_| Error::Wuerstchen)
         {
@@ -136,8 +144,6 @@ fn images_app_folder() -> PathBuf {
 
 #[cfg(test)]
 mod test {
-    use tokio::spawn;
-
     use crate::{
         commands::{
             accelerator::get_accelerator,
@@ -169,11 +175,11 @@ mod test {
 
         let (producer, receiver, mut rx_event, tx_command) = build_local_channel();
         let _ = tx_command.send(Command::Start).await;
-        spawn(async move {
-            assert!(wuerstchen_diffusion_internal(conf, producer, receiver)
-                .await
-                .is_ok())
-        });
+
+        assert!(wuerstchen_diffusion_internal(conf, producer, receiver)
+            .await
+            .is_ok());
+
         let mut test_diffusion = false;
         while let Some(data) = rx_event.recv().await {
             match data {
