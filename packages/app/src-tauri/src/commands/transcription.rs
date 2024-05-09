@@ -4,7 +4,6 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use function_name::named;
 use kalosm_sound::{rodio::Decoder, Whisper, WhisperLanguage, WhisperSource};
 use serde::Deserialize;
 use serde_with::{serde_as, DisplayFromStr};
@@ -15,7 +14,6 @@ use tokio_util::sync::CancellationToken;
 
 use crate::{
     commands::common::build_channel,
-    log_if_error_and_return,
     utils::{
         event::{CommandReceiver, Event, EventProducer},
         result::{Error, Result},
@@ -36,12 +34,15 @@ pub struct WhisperConf {
     model: WhisperSource,
 }
 
-#[named]
 #[tauri::command]
 pub async fn whisper_transcriber(app_handle: AppHandle, conf: WhisperConf) -> Result<Channel> {
     let (producer, receiver, channel) = build_channel(app_handle);
-    let transcribe = whisper_transcriber_internal(conf, producer, receiver).await;
-    log_if_error_and_return!(transcribe)?;
+    spawn(async move {
+        let mut producer_2 = producer.clone();
+        if let Err(err) = whisper_transcriber_internal(conf, producer, receiver).await {
+            producer_2.send(Err(err)).await
+        }
+    });
     Ok(channel)
 }
 
@@ -54,65 +55,53 @@ async fn whisper_transcriber_internal(
     let audio_duration_secs = get_audio_duration_secs(&conf.audio_path).await?;
     let (tx, mut rx) = mpsc::unbounded_channel();
     receiver.started().await;
+    let canc_token: CancellationToken = receiver.into();
 
-    spawn(async move {
-        let whisper = Whisper::builder()
-            .with_language(Some(conf.language))
-            .with_source(conf.model)
-            .build_with_loading_handler(build_loading_handler(&producer))
-            .await
-            .map_err(|_| Error::Whisper);
+    let whisper = Whisper::builder()
+        .with_language(Some(conf.language))
+        .with_source(conf.model)
+        .build_with_loading_handler(build_loading_handler(&producer))
+        .await
+        .map_err(|_| Error::Whisper)?;
 
-        if let Err(err) = whisper {
-            producer.send(Err(err)).await;
-            return;
-        }
+    producer.send(Ok(Event::Progress(0))).await;
 
-        producer.send(Ok(Event::Progress(0))).await;
-        let canc_token: CancellationToken = receiver.into();
+    whisper
+        .transcribe_into(audio, tx)
+        .map_err(|_| Error::Whisper)?;
 
-        if let Err(err) = whisper
-            .unwrap()
-            .transcribe_into(audio, tx)
-            .map_err(|_| Error::Whisper)
-        {
-            producer.send(Err(err)).await;
-            canc_token.cancel();
-        }
+    loop {
+        select! {
+            _ = canc_token.cancelled() => {
+                producer.send(Err(Error::Aborted)).await;
+                break
+            }
+            res = rx.recv() => {
+                match res {
+                    Some(transcribed) => {
+                        let text = transcribed.text().to_owned();
+                        let probability_of_no_speech = transcribed.probability_of_no_speech();
+                        let progress = u8::min((transcribed.progress() * 100.).floor() as u8, 100);
+                        let offset = transcribed.start();
+                        let remaining_time = transcribed.remaining_time();
+                        let mut duration_secs = transcribed.duration();
 
-        loop {
-            select! {
-                _ = canc_token.cancelled() => {
-                    producer.send(Err(Error::Aborted)).await;
-                    break
-                }
-                res = rx.recv() => {
-                    match res {
-                        Some(transcribed) => {
-                            let text = transcribed.text().to_owned();
-                            let probability_of_no_speech = transcribed.probability_of_no_speech();
-                            let progress = u8::min((transcribed.progress() * 100.).floor() as u8, 100);
-                            let offset = transcribed.start();
-                            let remaining_time = transcribed.remaining_time();
-                            let mut duration_secs = transcribed.duration();
-
-                            //transcribed.duration() seems to be fixed at 30.
-                            //This can brake progress count when the last segment real duration <30
-                            if offset + duration_secs > audio_duration_secs {
-                                duration_secs = audio_duration_secs - offset;
-                            }
-                            producer.send(Ok(Event::DeltaProgress(progress))).await;
-                            producer.send(Ok(Event::TranscriptionSegment{text, probability_of_no_speech, offset, duration_secs, remaining_time})).await;
-                        },
-                        None => {
-                            producer.send(Ok(Event::Progress(100))).await;
-                            break;
+                        //transcribed.duration() seems to be fixed at 30.
+                        //This can brake progress count when the last segment real duration <30
+                        if offset + duration_secs > audio_duration_secs {
+                            duration_secs = audio_duration_secs - offset;
                         }
+                        producer.send(Ok(Event::DeltaProgress(progress))).await;
+                        producer.send(Ok(Event::TranscriptionSegment{text, probability_of_no_speech, offset, duration_secs, remaining_time})).await;
+                    },
+                    None => {
+                        producer.send(Ok(Event::Progress(100))).await;
+                        break;
                     }
                 }
             }
         }
-    });
+    }
     Ok(())
 }
 
@@ -124,6 +113,8 @@ fn load_audio(path: &Path) -> Result<Decoder<BufReader<File>>> {
 #[cfg(test)]
 mod test {
     use std::path::PathBuf;
+
+    use tokio::spawn;
 
     use crate::{
         commands::{accelerator::get_accelerator, common::build_local_channel},
@@ -139,23 +130,23 @@ mod test {
     #[ignore]
     #[tokio::test(flavor = "multi_thread")]
     async fn simple_transcription_test() {
+        let model = kalosm_sound::WhisperSource::Base;
         let conf = WhisperConf {
             audio_path: PathBuf::from(test_file!("gitbar_189_110_secs.mp3")),
             language: kalosm_sound::WhisperLanguage::Italian,
-            model: kalosm_sound::WhisperSource::Tiny,
+            model: model,
         };
 
         copy_binary_to_deps("ffprobe").unwrap();
 
         let accelerator = get_accelerator().await;
         println!("Using {accelerator:?} library");
+        println!("Using {model} model");
 
         let (producer, receiver, mut rx_event, tx_command) = build_local_channel();
         let _ = tx_command.send(Command::Start).await;
 
-        assert!(whisper_transcriber_internal(conf, producer, receiver)
-            .await
-            .is_ok());
+        spawn(async move { whisper_transcriber_internal(conf, producer, receiver).await });
 
         let mut test_transcription = false;
         let mut test_100 = false;
@@ -169,6 +160,7 @@ mod test {
                         test_transcription = true;
                         println!("{text}");
                     }
+                    Event::Progress(0) => println!("Download phase completed"),
                     Event::Progress(100) => test_100 = true,
                     _ => (),
                 },

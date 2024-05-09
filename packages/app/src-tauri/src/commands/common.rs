@@ -167,8 +167,8 @@ pub fn build_local_channel() -> (
     Receiver<Message>,
     Sender<Command>,
 ) {
-    let (tx_event, rx_event) = tokio::sync::mpsc::channel(2);
-    let (tx_command, rx_command) = tokio::sync::mpsc::channel(2);
+    let (tx_event, rx_event) = tokio::sync::mpsc::channel(100);
+    let (tx_command, rx_command) = tokio::sync::mpsc::channel(100);
     let producer = EventProducer::new(tx_event);
     let receiver = CommandReceiver::new(rx_command);
 
