@@ -137,7 +137,7 @@ mod test {
             model: model,
         };
 
-        copy_binary_to_deps("ffprobe").unwrap();
+        let _ = copy_binary_to_deps("ffprobe");
 
         let accelerator = get_accelerator().await;
         println!("Using {accelerator:?} library");

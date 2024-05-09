@@ -80,7 +80,7 @@ mod test {
 
     #[tokio::test(flavor = "multi_thread")]
     async fn test_ffprobe_duration() {
-        copy_binary_to_deps("ffprobe").unwrap();
+        let _ = copy_binary_to_deps("ffprobe");
         let path = PathBuf::from(test_file!("gitbar_189_110_secs.mp3"));
         let result = get_audio_duration_secs(&path).await;
         assert!(result.is_ok());
