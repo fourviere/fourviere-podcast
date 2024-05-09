@@ -35,7 +35,7 @@ pub struct WhisperConf {
 }
 
 #[tauri::command]
-pub async fn whisper_transcriber(app_handle: AppHandle, conf: WhisperConf) -> Result<Channel> {
+pub async fn whisper_transcriber(app_handle: AppHandle, conf: WhisperConf) -> Channel {
     let (producer, receiver, channel) = build_channel(app_handle);
     spawn(async move {
         let mut producer_2 = producer.clone();
@@ -43,7 +43,7 @@ pub async fn whisper_transcriber(app_handle: AppHandle, conf: WhisperConf) -> Re
             producer_2.send(Err(err)).await
         }
     });
-    Ok(channel)
+    channel
 }
 
 async fn whisper_transcriber_internal(

@@ -1,6 +1,5 @@
 use std::path::PathBuf;
 
-use function_name::named;
 use kalosm_vision::{Wuerstchen, WuerstchenInferenceSettings};
 use serde::Deserialize;
 use tauri::AppHandle;
@@ -11,7 +10,6 @@ use uuid::Uuid;
 
 use crate::{
     commands::common::build_channel,
-    log_if_error_and_return,
     utils::{
         event::{CommandReceiver, Event, EventProducer},
         file::create_app_folder,
@@ -65,13 +63,16 @@ impl From<WuerstchenConf> for WuerstchenInferenceSettings {
     }
 }
 
-#[named]
 #[tauri::command]
-pub async fn wuerstchen_diffusion(app_handle: AppHandle, conf: WuerstchenConf) -> Result<Channel> {
+pub async fn wuerstchen_diffusion(app_handle: AppHandle, conf: WuerstchenConf) -> Channel {
     let (producer, receiver, channel) = build_channel(app_handle);
-    let result = wuerstchen_diffusion_internal(conf, producer, receiver).await;
-    log_if_error_and_return!(result)?;
-    Ok(channel)
+    spawn(async move {
+        let mut producer_2 = producer.clone();
+        if let Err(err) = wuerstchen_diffusion_internal(conf, producer, receiver).await {
+            producer_2.send(Err(err)).await
+        }
+    });
+    channel
 }
 
 async fn wuerstchen_diffusion_internal(
@@ -83,58 +84,46 @@ async fn wuerstchen_diffusion_internal(
     let (tx, mut rx) = mpsc::unbounded_channel();
     let path = conf.dest_path.clone();
 
-    spawn(async move {
-        let model = Wuerstchen::builder()
-            .with_flash_attn(conf.flash_attn)
-            .build_with_loading_handler(build_loading_handler(&producer))
-            .await
-            .map_err(|_| Error::Wuerstchen);
+    let model = Wuerstchen::builder()
+        .with_flash_attn(conf.flash_attn)
+        .build_with_loading_handler(build_loading_handler(&producer))
+        .await
+        .map_err(|_| Error::Wuerstchen)?;
 
-        if let Err(err) = model {
-            producer.send(Err(err)).await;
-            return;
-        }
+    producer.send(Ok(Event::Working)).await;
+    let canc_token: CancellationToken = receiver.into();
 
-        producer.send(Ok(Event::Working)).await;
-        let canc_token: CancellationToken = receiver.into();
+    model
+        .run_into(conf.into(), tx)
+        .map_err(|_| Error::Wuerstchen)?;
 
-        if let Err(err) = model
-            .unwrap()
-            .run_into(conf.into(), tx)
-            .map_err(|_| Error::Wuerstchen)
-        {
-            producer.send(Err(err)).await;
-            canc_token.cancel();
-        }
-
-        loop {
-            select! {
-                _ = canc_token.cancelled() => {
-                    producer.send(Err(Error::Aborted)).await;
-                    break
-                }
-                res = rx.recv() => {
-                    match res {
-                        Some(data) => {
-                            if let Some(img) = data.generated_image() {
-                                let progress = u8::min((data.progress() * 100.).floor() as u8, 100);
-                                let mut path = path.clone();
-                                let uuid = Uuid::new_v4();
-                                path.push(format!("{uuid}.png"));
-                                let _ = img.save(&path);
-                                producer.send(Ok(Event::DeltaProgress(progress))).await;
-                                producer.send(Ok(Event::DiffusionImage{ image: path, remaining_time: data.remaining_time()})).await
-                            }
-                        },
-                        None => {
-                            producer.send(Ok(Event::Progress(100))).await;
-                            break;
+    loop {
+        select! {
+            _ = canc_token.cancelled() => {
+                producer.send(Err(Error::Aborted)).await;
+                break
+            }
+            res = rx.recv() => {
+                match res {
+                    Some(data) => {
+                        if let Some(img) = data.generated_image() {
+                            let progress = u8::min((data.progress() * 100.).floor() as u8, 100);
+                            let mut path = path.clone();
+                            let uuid = Uuid::new_v4();
+                            path.push(format!("{uuid}.png"));
+                            let _ = img.save(&path);
+                            producer.send(Ok(Event::DeltaProgress(progress))).await;
+                            producer.send(Ok(Event::DiffusionImage{ image: path, remaining_time: data.remaining_time()})).await
                         }
+                    },
+                    None => {
+                        producer.send(Ok(Event::Progress(100))).await;
+                        break;
                     }
                 }
             }
         }
-    });
+    }
     Ok(())
 }
 
@@ -144,6 +133,8 @@ fn images_app_folder() -> PathBuf {
 
 #[cfg(test)]
 mod test {
+    use tokio::spawn;
+
     use crate::{
         commands::{
             accelerator::get_accelerator,
@@ -175,10 +166,7 @@ mod test {
 
         let (producer, receiver, mut rx_event, tx_command) = build_local_channel();
         let _ = tx_command.send(Command::Start).await;
-
-        assert!(wuerstchen_diffusion_internal(conf, producer, receiver)
-            .await
-            .is_ok());
+        spawn(async move { wuerstchen_diffusion_internal(conf, producer, receiver).await });
 
         let mut test_diffusion = false;
         while let Some(data) = rx_event.recv().await {
@@ -191,6 +179,7 @@ mod test {
                         println!("{image:?}");
                         test_diffusion = true;
                     }
+                    Event::Working => println!("Download phase completed"),
                     _ => (),
                 },
                 Err(_) => (),
