@@ -21,7 +21,7 @@
     "@ckeditor/ckeditor5-react": "^6.2.0",
     "@floating-ui/dom": "^1.6.3",
     "@heroicons/react": "^2.0.18",
-    "@lexical/html": "^0.14.2",
+    "@lexical/html": "^0.15.0",
     "@lexical/list": "^0.14.2",
     "@lexical/react": "^0.14.2",
     "@tailwindcss/line-clamp": "^0.4.4",
