@@ -52,12 +52,9 @@ The following table summurizes the feature-builds matrix:
 | darwin_x86_64   | Y     | N   | N    | metal --> app, dmg                     | metal --> app, dmg    |
 | darwin_aaarch64 | Y     | N   | N    | metal --> app, dmg                     | metal --> app, dmg    |
 | linux_x86_64    | N     | Y   | Y    | mkl  --> deb, AppImage<br>cuda --> deb | mkl --> deb, AppImage |
-| windows_x86_64  | N     | Y   | N    | mkl --> msi, exe                       | mkl --> msi, exe      |
+| windows_x86_64  | N     | Y   | Y    | mkl --> msi, exe<br>cuda --> msi, exe  | mkl --> msi, exe      |
  
 ### FAQ
 
 - Where can I find the link for the linux CUDA version?
   - Unfortunately the pkg2appimage/excludelist does not exclude `libcuda1.so` when grabbing libs dependencies. The library is provided by proprietary Nvidia drivers
-
-- Why CUDA is not supported under Windows environment?
-  - See [candle #1882](https://github.com/huggingface/candle/issues/1882)
