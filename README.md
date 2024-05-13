@@ -35,6 +35,26 @@ We all see that the world of podcasting is increasingly becoming a walled garden
 [![test-on-pr](https://github.com/fourviere/fourviere-podcast/actions/workflows/test-on-pr.yml/badge.svg)](https://github.com/fourviere/fourviere-podcast/actions/workflows/test-on-pr.yml)
 
 - Install [Node.js](https://nodejs.org/en) and [Rust](https://www.rust-lang.org/)
+- Install [Intel oneMKL](https://www.intel.com/content/www/us/en/developer/tools/oneapi/onemkl-download.html) (Optional Linux and Windows)
+- Install [CUDA Toolkit](https://developer.nvidia.com/cuda-downloads) and [cuDNN](https://developer.nvidia.com/cudnn-downloads) (Optional Linux and Windows) 
 - Clone the repository
+- Optionally enable the desired [feature flag](#accelerated-ai-features) 
 - Run `npm install` from the project's root folder
 - Run `npm run dev` from the projects root folder
+
+## Accelerated AI features
+The project come packed with `metal` `mkl` `cuda` features flag that enables optimization for AI tasks.
+
+The following table summurizes the feature-builds matrix:
+
+| environment     | metal | mkl | cuda | nightly_builds                         | stable_builds         |
+|-----------------|-------|-----|------|----------------------------------------|-----------------------|
+| darwin_x86_64   | Y     | N   | N    | metal --> app, dmg                     | metal --> app, dmg    |
+| darwin_aaarch64 | Y     | N   | N    | metal --> app, dmg                     | metal --> app, dmg    |
+| linux_x86_64    | N     | Y   | Y    | mkl  --> deb, AppImage<br>cuda --> deb | mkl --> deb, AppImage |
+| windows_x86_64  | N     | Y   | Y    | mkl --> msi, exe<br>cuda --> msi, exe  | mkl --> msi, exe      |
+ 
+### FAQ
+
+- Where can I find the link for the linux CUDA version?
+  - Unfortunately the pkg2appimage/excludelist does not exclude `libcuda1.so` when grabbing libs dependencies. The library is provided by proprietary Nvidia drivers

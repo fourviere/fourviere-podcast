@@ -41,7 +41,7 @@ impl FtpConnection {
         if ftp_stream
             .feat()
             .await
-            .is_ok_and(|opts| opts.get("EPSV").is_some())
+            .is_ok_and(|opts| opts.contains_key("EPSV"))
         {
             ftp_stream.set_mode(Mode::ExtendedPassive);
         }
@@ -174,9 +174,8 @@ async fn ftp_upload_internal(uploadable_conf: UploadableConf) -> Result<RemoteFi
 
     while let Some(data) = rx_event.recv().await {
         match data {
-            Ok(Event::Progress(_)) => (),
-            Ok(Event::DeltaProgress(_)) => (),
             Ok(Event::FileResult(res)) => return Ok(res),
+            Ok(_) => (),
             Err(err) => return Err(err),
         }
     }

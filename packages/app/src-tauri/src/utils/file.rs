@@ -1,9 +1,13 @@
-use std::{fs, path::Path};
+use std::{
+    fs::{self, create_dir},
+    path::{Path, PathBuf},
+};
 
-use crate::utils::result::Result;
+use crate::utils::result::{Error, Result};
 use getset::Getters;
 use mime_guess::{from_ext, from_path};
 use serde::Serialize;
+use tauri::api::path::data_dir;
 use tempfile::{tempdir, TempDir};
 
 #[derive(Serialize)]
@@ -47,6 +51,16 @@ pub async fn write_to_temp_file(data: impl AsRef<[u8]>, filename: &str) -> Resul
 pub async fn write_to_file(data: impl AsRef<[u8]>, path: &str) -> Result<String> {
     tokio::fs::write(&path, data).await?;
     Ok(path.to_owned())
+}
+
+pub fn create_app_folder(folder: &str) -> Result<PathBuf> {
+    let mut path = data_dir().ok_or(Error::LocalPathConversion)?;
+    path.push(folder);
+
+    if !path.exists() {
+        create_dir(path.as_path())?
+    }
+    Ok(path)
 }
 
 #[cfg(test)]

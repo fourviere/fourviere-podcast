@@ -1,12 +1,16 @@
-use std::sync::{
-    atomic::{AtomicU8, Ordering},
-    Arc,
+use std::{
+    path::PathBuf,
+    sync::{
+        atomic::{AtomicU8, Ordering},
+        Arc,
+    },
+    time::Duration,
 };
 
 use serde::{Deserialize, Serialize};
 use tokio::{
     spawn,
-    sync::mpsc::{self},
+    sync::{mpsc, Notify},
 };
 use tokio_util::sync::CancellationToken;
 
@@ -14,9 +18,27 @@ use super::result::{Error, Result};
 
 #[derive(Debug, PartialEq, Serialize)]
 pub enum Event {
+    DownloadProgress {
+        file: String,
+        progress: u8,
+    },
+    Working,
     DeltaProgress(u8),
     Progress(u8),
     FileResult(crate::commands::common::RemoteFileInfo),
+    DiffusionImage {
+        image: PathBuf,
+        #[serde(with = "humantime_serde")]
+        remaining_time: Duration,
+    },
+    TranscriptionSegment {
+        text: String,
+        probability_of_no_speech: f64,
+        offset: f64,
+        duration_secs: f64,
+        #[serde(with = "humantime_serde")]
+        remaining_time: Duration,
+    },
 }
 
 pub type Message = Result<Event>;
@@ -81,8 +103,8 @@ impl EventProducer {
         Self { tx, progress }
     }
 
-    pub async fn send(&mut self, mut event: Message) {
-        event = match event {
+    fn transform_message(&mut self, event: Message) -> Message {
+        match event {
             Ok(Event::DeltaProgress(delta)) => {
                 let progress = delta + self.progress.fetch_add(delta, Ordering::Relaxed);
                 Ok(Event::Progress(progress))
@@ -93,9 +115,19 @@ impl EventProducer {
             }
             Ok(_) => event,
             Err(_) => event,
-        };
+        }
+    }
+
+    pub async fn send(&mut self, mut event: Message) {
+        event = self.transform_message(event);
 
         let _ = self.tx.send(event).await;
+    }
+
+    pub fn blocking_send(&mut self, mut event: Message) {
+        event = self.transform_message(event);
+
+        let _ = self.tx.blocking_send(event);
     }
 }
 
@@ -125,7 +157,7 @@ impl<T> From<tauri_plugin_channel::Receiver> for Receiver<T> {
 async fn run_abort_listener(
     mut rx: Receiver<Command>,
     canc_token: CancellationToken,
-    start_token: CancellationToken,
+    start_token: Arc<Notify>,
 ) {
     loop {
         let data = match &mut rx {
@@ -138,14 +170,14 @@ async fn run_abort_listener(
                 canc_token.cancel();
                 break;
             }
-            Some(Command::Start) => start_token.cancel(),
+            Some(Command::Start) => start_token.notify_one(),
             None => (),
         }
     }
 }
 
 pub struct CommandReceiver {
-    start_token: CancellationToken,
+    start_token: Arc<Notify>,
     canc_token: CancellationToken,
 }
 
@@ -153,8 +185,8 @@ impl CommandReceiver {
     pub fn new<T: Into<Receiver<Command>>>(rx: T) -> Self {
         let canc_token_listener = CancellationToken::new();
         let canc_token = canc_token_listener.clone();
-        let start_token_listener = CancellationToken::new();
-        let start_token = start_token_listener.clone();
+        let start_token = Arc::new(Notify::new());
+        let start_token_listener = start_token.clone();
         let rx: Receiver<Command> = rx.into();
         spawn(async move {
             run_abort_listener(rx, canc_token_listener, start_token_listener).await;
@@ -171,7 +203,7 @@ impl CommandReceiver {
     }
 
     pub async fn started(&self) {
-        self.start_token.cancelled().await
+        self.start_token.notified().await;
     }
 }
 
