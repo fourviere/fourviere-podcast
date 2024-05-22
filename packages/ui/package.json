@@ -18,7 +18,7 @@
     "@babel/parser": "^7.24.1",
     "@ckeditor/ckeditor5-build-classic": "^41.1.0",
     "@ckeditor/ckeditor5-build-multi-root": "^41.1.0",
-    "@ckeditor/ckeditor5-react": "^6.2.0",
+    "@ckeditor/ckeditor5-react": "^7.0.0",
     "@floating-ui/dom": "^1.6.3",
     "@heroicons/react": "^2.0.18",
     "@lexical/html": "^0.14.2",
