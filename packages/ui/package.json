@@ -22,7 +22,7 @@
     "@floating-ui/dom": "^1.6.3",
     "@heroicons/react": "^2.0.18",
     "@lexical/html": "^0.14.2",
-    "@lexical/list": "^0.14.2",
+    "@lexical/list": "^0.16.1",
     "@lexical/react": "^0.14.2",
     "@tailwindcss/line-clamp": "^0.4.4",
     "@tailwindcss/typography": "^0.5.10",
